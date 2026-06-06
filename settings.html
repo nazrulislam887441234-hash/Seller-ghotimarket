@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | Ghoti Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f8f9fa; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
+
+        .profile-container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .profile-header {
+            background: var(--primary);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .avatar-box {
+            width: 90px;
+            height: 90px;
+            background: white;
+            color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            margin: 0 auto 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .profile-header h2 { margin: 0; font-size: 22px; }
+        .uid-badge { 
+            display: inline-block; 
+            background: rgba(255,255,255,0.1); 
+            padding: 5px 15px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-body { padding: 30px 25px; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; font-size: 14px; }
+        
+        .input-box { position: relative; }
+        .input-box i { position: absolute; left: 15px; top: 14px; color: #aaa; }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(52,152,219,0.1); }
+
+        .btn-update {
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        .btn-update:active { transform: scale(0.97); }
+
+        .btn-back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="avatar-box"><i class="fas fa-store"></i></div>
+            <h2 id="displayShopName">লোড হচ্ছে...</h2>
+            <div class="uid-badge">UID: <span id="uidText">...</span></div>
+        </div>
+
+        <div class="form-body">
+            <div class="input-group">
+                <label>দোকানের নাম</label>
+                <div class="input-box">
+                    <i class="fas fa-shopping-bag"></i>
+                    <input type="text" id="shopName" placeholder="দোকানের নাম">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>আপনার নাম</label>
+                <div class="input-box">
+                    <i class="fas fa-user-edit"></i>
+                    <input type="text" id="ownerName" placeholder="আপনার নাম">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>WhatsApp নাম্বার</label>
+                <div class="input-box">
+                    <i class="fab fa-whatsapp"></i>
+                    <input type="number" id="whatsapp" placeholder="৮৮০ ছাড়া নাম্বার">
+                </div>
+            </div>
+
+            <button class="btn-update" onclick="updateProfile()" id="upBtn">
+                তথ্য আপডেট করুন
+            </button>
+
+            <a href="dashboard.html" class="btn-back"><i class="fas fa-arrow-left"></i> ড্যাশবোর্ডে ফিরুন</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const app = initializeApp({ 
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
+            projectId: "ghotimarket",
+            authDomain: "ghotimarket.firebaseapp.com"
+        });
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        onAuthStateChanged(auth, async user => {
+            if(user) {
+                document.getElementById('uidText').innerText = user.uid;
+                const snap = await getDoc(doc(db, "users", user.uid));
+                if(snap.exists()) {
+                    const data = snap.data();
+                    document.getElementById('displayShopName').innerText = data.shopName;
+                    document.getElementById('shopName').value = data.shopName;
+                    document.getElementById('ownerName').value = data.ownerName || "";
+                    document.getElementById('whatsapp').value = data.whatsapp || "";
+                }
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+        window.updateProfile = async () => {
+            const btn = document.getElementById('upBtn');
+            const sName = document.getElementById('shopName').value.trim();
+            const oName = document.getElementById('ownerName').value.trim();
+            const wa = document.getElementById('whatsapp').value.trim();
+
+            if(!sName || !oName || !wa) return alert("সবগুলো ঘর পূরণ করুন!");
+
+            btn.disabled = true;
+            btn.innerText = "আপডেট হচ্ছে...";
+
+            try {
+                await updateDoc(doc(db, "users", auth.currentUser.uid), {
+                    shopName: sName,
+                    ownerName: oName,
+                    whatsapp: wa
+                });
+                alert("আপনার প্রোফাইল সফলভাবে আপডেট হয়েছে!");
+                location.reload();
+            } catch (err) {
+                alert("আপডেট করতে সমস্যা হয়েছে!");
+                btn.disabled = false;
+                btn.innerText = "তথ্য আপডেট করুন";
+            }
+        }
+    </script>
+</body>
+</html>
