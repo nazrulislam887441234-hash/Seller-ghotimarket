@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful | Ghoti Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #1a2a3a; --warning: #f1c40f; --accent: #3498db; --bg: #f8f9fa; }
+        
+        body { 
+            font-family: 'Hind Siliguri', sans-serif; 
+            background: var(--bg); 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .notice-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 25px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .icon-box {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            background: #fff9e6;
+            color: var(--warning);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            margin: 0 auto 25px;
+        }
+
+        .icon-box::after {
+            content: '';
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            border: 2px dashed var(--warning);
+            border-radius: 50%;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        h2 { margin: 0 0 15px; font-size: 24px; color: var(--primary); }
+        p { color: #666; line-height: 1.7; font-size: 15px; margin-bottom: 30px; }
+        
+        .info-badge {
+            background: #f0f7ff;
+            color: var(--accent);
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .home-btn {
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: 0.3s;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .home-btn:hover { background: #2c3e50; transform: translateY(-2px); }
+        .home-btn:active { transform: scale(0.98); }
+
+        .support-link {
+            margin-top: 20px;
+            display: block;
+            color: #aaa;
+            font-size: 13px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notice-card">
+        <div class="icon-box">
+            <i class="fas fa-clock"></i>
+        </div>
+
+        <h2>আপনার সাইনআপ সফল হয়েছে!</h2>
+        
+        <p>আমাদের টিম আপনার তথ্যগুলো যাচাই করছে। ভেরিফিকেশন সম্পন্ন হতে <b>১ ঘন্টা থেকে সর্বোচ্চ ১ দিন</b> সময় লাগতে পারে।</p>
+
+        <div class="info-badge">
+            <i class="fas fa-info-circle"></i> ভেরিফাইড হলে আপনি ইমেইল পাবেন।
+        </div>
+
+        <button onclick="window.location.href='index.html'" class="home-btn">
+            <i class="fas fa-home"></i> হোমপেইজে ফিরুন
+        </button>
+
+        <a href="contact.html" class="support-link">কোনো সমস্যা হলে আমাদের জানান</a>
+    </div>
+
+</body>
+</html> 
