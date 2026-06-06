@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support | Ghoti Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #1a2a3a; --accent: #3498db; --whatsapp: #25d366; --fb: #1877f2; --bg: #f4f7f6; }
+        
+        body { 
+            font-family: 'Hind Siliguri', sans-serif; 
+            background: var(--bg); 
+            margin: 0; 
+            color: #333;
+        }
+
+        .contact-header {
+            background: var(--primary);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 0 0 40px 40px;
+        }
+
+        .contact-header h1 { margin: 0; font-size: 28px; }
+        .contact-header p { opacity: 0.8; margin-top: 10px; font-size: 15px; }
+
+        .container {
+            max-width: 500px;
+            margin: -40px auto 40px;
+            padding: 0 20px;
+        }
+
+        .contact-card {
+            background: white;
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .method-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+            border-bottom: 1px solid #f0f0f0;
+            transition: 0.3s;
+        }
+
+        .method-item:last-child { border-bottom: none; }
+        .method-item:active { background: #f9f9f9; transform: scale(0.98); }
+
+        .icon-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+
+        .info h4 { margin: 0; font-size: 14px; color: #777; }
+        .info p { margin: 2px 0 0; font-size: 16px; font-weight: 600; color: var(--primary); }
+
+        /* Social Styles */
+        .fb-card {
+            background: linear-gradient(135deg, var(--fb), #0056b3);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 25px;
+            box-shadow: 0 10px 20px rgba(24,119,242,0.2);
+        }
+
+        .fb-card i { font-size: 40px; margin-bottom: 10px; }
+        .fb-card h3 { margin: 10px 0 5px; }
+        .fb-card p { font-size: 14px; opacity: 0.9; margin-bottom: 20px; }
+        
+        .fb-btn {
+            background: white;
+            color: var(--fb);
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .back-nav {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contact-header">
+        <a href="javascript:history.back()" class="back-nav"><i class="fas fa-arrow-left"></i></a>
+        <h1>সাপোর্ট সেন্টার</h1>
+        <p>আপনার যেকোনো সমস্যায় আমরা আছি আপনার পাশে</p>
+    </div>
+
+    <div class="container">
+        <div class="contact-card">
+            <a href="tel:+8801316487435" class="method-item">
+                <div class="icon-circle" style="background: var(--accent);">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <div class="info">
+                    <h4>সরাসরি কল করুন</h4>
+                    <p>+880 1316487435</p>
+                </div>
+            </a>
+
+            <a href="https://wa.me/8801316487435" class="method-item">
+                <div class="icon-circle" style="background: var(--whatsapp);">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <div class="info">
+                    <h4>হোয়াটসঅ্যাপ মেসেজ</h4>
+                    <p>+8801316487435</p>
+                </div>
+            </a>
+
+            <a href="mailto:support@ghotimarket.com" class="method-item">
+                <div class="icon-circle" style="background: #e74c3c;">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="info">
+                    <h4>ইমেইল অ্যাড্রেস</h4>
+                    <p>support@ghotimarket.com</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="fb-card">
+            <i class="fab fa-facebook"></i>
+            <h3>আমাদের ফেসবুক পেজ</h3>
+            <p>নতুন সব আপডেট পেতে আমাদের ফেসবুক পেজে যুক্ত থাকুন</p>
+            <a href="https://www.facebook.com/ghotimarket" target="_blank" class="fb-btn">পেজ ভিজিট করুন</a>
+        </div>
+
+        <p style="text-align: center; color: #bbb; font-size: 12px; margin-top: 30px;">
+            © 2026 Ghoti Market. All Rights Reserved.
+        </p>
+    </div>
+
+</body>
+</html>
