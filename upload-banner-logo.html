@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Decoration | Ghoti Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #2c3e50; --accent: #3498db; --success: #2ecc71; --bg: #f8f9fa; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { width: 90%; max-width: 500px; background: white; padding: 30px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); text-align: center; }
+        h2 { color: var(--primary); margin-top: 0; }
+        .back-btn { display: flex; align-items: center; gap: 5px; color: var(--accent); text-decoration: none; font-weight: 600; margin-bottom: 20px; font-size: 14px; }
+        
+        .upload-section { background: #fdfdfd; border: 2px dashed #ccc; padding: 20px; border-radius: 15px; margin-bottom: 25px; position: relative; }
+        .upload-section h3 { margin: 0 0 10px; font-size: 16px; color: #555; }
+        .upload-section p { font-size: 12px; color: #888; margin: 0 0 15px; }
+        
+        .preview-box { width: 100%; background: #eee; border-radius: 10px; overflow: hidden; margin-top: 15px; display: none; }
+        .preview-box.ratio-16-9 { padding-top: 56.25%; position: relative; }
+        .preview-box.ratio-16-9 img { position: absolute; top:0; left:0; width:100%; height:100%; object-fit: cover; }
+        .preview-box.circle-logo { width: 100px; height: 100px; border-radius: 50%; margin: 15px auto 0; border: 3px solid var(--accent); }
+        .preview-box.circle-logo img { width: 100%; height: 100%; object-fit: cover; }
+
+        .file-input { display: none; }
+        .select-btn { padding: 10px 20px; background: #e3f2fd; color: var(--accent); border-radius: 10px; font-weight: 600; cursor: pointer; display: inline-block; transition: 0.3s; }
+        .select-btn:hover { background: var(--accent); color: white; }
+
+        .submit-btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .submit-btn:hover { background: #1a252f; }
+        .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-left"></i> ড্যাশবোর্ডে ফিরুন</a>
+        <h2>শপ ডেকোরেশন</h2>
+        <p style="color:#777; font-size:14px; margin-bottom:25px;">আপনার দোকানের প্রফেশনাল লগো এবং ব্যানার সেট করুন।</p>
+
+        <div class="upload-section">
+            <h3>১. শপ লগো (Square/Circle)</h3>
+            <p>লগো সাইজ ১:১ (বর্গাকার) হওয়া বাঞ্ছনীয়</p>
+            <label for="logoInput" class="select-btn"><i class="fas fa-image"></i> লগো সিলেক্ট করুন</label>
+            <input type="file" id="logoInput" class="file-input" accept="image/*" onchange="previewImage(this, 'logoPreview', 'circle-logo')">
+            <div id="logoPreview" class="preview-box circle-logo"><img src="" id="logoImg" alt="Logo"></div>
+        </div>
+
+        <div class="upload-section">
+            <h3>২. শপ ব্যানার (YouTube Thumbnail Size)</h3>
+            <p>ব্যানার সাইজ ১৬:৯ রেশিও (যেমন: 1280x720 পিক্সেল) হতে হবে</p>
+            <label for="bannerInput" class="select-btn"><i class="fas fa-images"></i> ব্যানার সিলেক্ট করুন</label>
+            <input type="file" id="bannerInput" class="file-input" accept="image/*" onchange="previewImage(this, 'bannerPreview', 'ratio-16-9')">
+            <div id="bannerPreview" class="preview-box ratio-16-9"><img src="" id="bannerImg" alt="Banner"></div>
+        </div>
+
+        <button id="btnSave" class="submit-btn" onclick="uploadToImgBB()">সব পরিবর্তন সেভ করুন</button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
+            authDomain: "ghotimarket.firebaseapp.com",
+            projectId: "ghotimarket" 
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUid = null;
+        const IMGBB_API_KEY = "e1da51b6d309ac3a5a235b5088ebc334"; // নজরুল ভাই, এখানে আপনার আসল ImgBB API Key বসাবেন।
+
+        onAuthStateChanged(auth, user => {
+            if (user) currentUid = user.uid;
+            else window.location.href = "index.html";
+        });
+
+        // ইমেজ প্রিভিউ লজিক
+        window.previewImage = (input, previewId, className) => {
+            const preview = document.getElementById(previewId);
+            const img = preview.querySelector('img');
+            const file = input.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                    preview.style.display = className === 'ratio-16-9' ? 'block' : 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        };
+
+        // ImgBB-তে আপলোড করার মেইন ফাংশন
+        window.uploadToImgBB = async () => {
+            const logoFile = document.getElementById('logoInput').files[0];
+            const bannerFile = document.getElementById('bannerInput').files[0];
+            const btnSave = document.getElementById('btnSave');
+
+            if(!logoFile && !bannerFile) {
+                alert("অনুগ্রহ করে লগো অথবা ব্যানার যেকোনো একটি পরিবর্তন করুন!");
+                return;
+            }
+
+            if(IMGBB_API_KEY === "YOUR_IMGBB_API_KEY"){
+                alert("ডেভেলপার অ্যালার্ট: কোডে আপনার ImgBB API Key-টি সেট করুন!");
+                return;
+            }
+
+            btnSave.disabled = true;
+            btnSave.innerText = "আপলোড হচ্ছে...";
+
+            let updateData = {};
+
+            try {
+                // ১. লগো আপলোড প্রোসেস
+                if(logoFile) {
+                    const logoUrl = await sendToImgBB(logoFile);
+                    if(logoUrl) updateData["shopLogo"] = logoUrl;
+                }
+
+                // ২. ব্যানার আপলোড প্রোসেস
+                if(bannerFile) {
+                    const bannerUrl = await sendToImgBB(bannerFile);
+                    if(bannerUrl) updateData["shopBanner"] = bannerUrl;
+                }
+
+                // ফায়ারস্টোর আপডেট
+                if(Object.keys(updateData).length > 0) {
+                    await updateDoc(doc(db, "users", currentUid), updateData);
+                    alert("অভিনন্দন! আপনার শপ লগো ও ব্যানার সফলভাবে আপডেট হয়েছে।");
+                }
+
+            } catch (err) {
+                console.error(err);
+                alert("আপলোড করতে কোনো সমস্যা হয়েছে! আবার চেষ্টা করুন।");
+            } finally {
+                btnSave.disabled = false;
+                btnSave.innerText = "সব পরিবর্তন সেভ করুন";
+            }
+        };
+
+        // ImgBB API রিকোয়েস্ট হ্যান্ডলার
+        async function sendToImgBB(file) {
+            let formData = new FormData();
+            formData.append("image", file);
+
+            const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                method: "POST",
+                body: formData
+            });
+            const result = await response.json();
+            if(result.success) {
+                return result.data.url; // লাইভ ইমেজের ডিরেক্ট URL রিটার্ন করবে
+            } else {
+                throw new Error("ImgBB Upload Failed");
+            }
+        }
+    </script>
+</body>
+</html>
