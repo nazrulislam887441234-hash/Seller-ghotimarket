@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promote Product | Ghoti Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #2c3e50; --accent: #f39c12; --bg: #f4f7f6; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; padding-bottom: 100px; }
+        
+        .nav-header { background: white; padding: 15px; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+        .nav-header h3 { margin: 0; font-size: 18px; color: var(--primary); }
+
+        .instruction { padding: 20px; background: #fff3cd; color: #856404; font-size: 14px; border-bottom: 1px solid #ffeeba; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
+        
+        .p-card { background: white; border-radius: 12px; overflow: hidden; border: 2px solid transparent; transition: 0.3s; cursor: pointer; position: relative; }
+        .p-card.selected { border-color: var(--accent); background: #fff9f0; }
+        .p-card.selected::after { content: '\f058'; font-family: 'Font Awesome 5 Free'; font-weight: 900; position: absolute; top: 10px; right: 10px; color: var(--accent); font-size: 20px; }
+
+        .img-box { width: 100%; aspect-ratio: 1/1; background: #eee; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .p-info { padding: 10px; }
+        .p-info h4 { margin: 0; font-size: 14px; color: #333; height: 38px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .p-info b { color: #e74c3c; font-size: 16px; }
+
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); display: none; }
+        .promote-btn { background: var(--accent); color: white; border: none; width: 100%; padding: 15px; border-radius: 12px; font-size: 18px; font-weight: 600; cursor: pointer; }
+        
+        .loading-overlay { display: none; position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 2000; align-items: center; justify-content: center; flex-direction: column; }
+    </style>
+</head>
+<body>
+
+    <div class="nav-header" onclick="history.back()">
+        <i class="fas fa-arrow-left"></i>
+        <h3>প্রমোশন করতে পণ্য বেছে নিন</h3>
+    </div>
+
+    <div class="instruction">
+        আপনার যে পণ্যটি প্রমোট করতে চান তার ওপর ক্লিক করে সিলেক্ট করুন।
+    </div>
+
+    <div id="productGrid" class="product-grid">
+        </div>
+
+    <div class="bottom-bar" id="actionBtnBox">
+        <button class="promote-btn" onclick="submitPromotion()">প্রমোট করুন</button>
+    </div>
+
+    <div class="loading-overlay" id="loader">
+        <i class="fas fa-spinner fa-spin" style="font-size: 40px; color: var(--accent);"></i>
+        <p>অপেক্ষা করুন...</p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, query, where, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
+            authDomain: "ghotimarket.firebaseapp.com",
+            projectId: "ghotimarket" 
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let selectedProduct = null;
+        let userData = null;
+
+        onAuthStateChanged(auth, async user => {
+            if(user) {
+                // সেলারের তথ্য আগে লোড করে রাখি
+                const usersRef = collection(db, "users");
+                const qUser = query(usersRef, where("__name__", "==", user.uid));
+                const userSnap = await getDocs(qUser);
+                userSnap.forEach(d => userData = d.data());
+
+                loadProducts(user.uid);
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+        async function loadProducts(uid) {
+            const q = query(collection(db, "products"), where("sellerId", "==", uid));
+            const snap = await getDocs(q);
+            const grid = document.getElementById('productGrid');
+            
+            if(snap.empty) {
+                grid.innerHTML = "<p style='grid-column:1/3; text-align:center;'>কোনো পণ্য পাওয়া যায়নি!</p>";
+                return;
+            }
+
+            let html = "";
+            snap.forEach(d => {
+                const p = d.data();
+                html += `
+                    <div class="p-card" onclick="selectMe(this, '${d.id}')" data-info='${JSON.stringify(p)}'>
+                        <div class="img-box"><img src="${p.images[0]}"></div>
+                        <div class="p-info">
+                            <h4>${p.name}</h4>
+                            <b>৳ ${p.price}</b>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+
+        window.selectMe = (el, id) => {
+            // আগের সিলেকশন বাদ দেওয়া
+            document.querySelectorAll('.p-card').forEach(card => card.classList.remove('selected'));
+            // নতুন সিলেকশন
+            el.classList.add('selected');
+            selectedProduct = { id: id, ...JSON.parse(el.dataset.info) };
+            document.getElementById('actionBtnBox').style.display = "block";
+        }
+
+        window.submitPromotion = async () => {
+            if(!selectedProduct) return;
+
+            const confirmBox = confirm(`আপনি কি নিশ্চিত যে "${selectedProduct.name}" পণ্যটি প্রমোট করতে চান?`);
+            if(!confirmBox) return;
+
+            document.getElementById('loader').style.display = "flex";
+
+            try {
+                // অ্যাডমিন প্যানেলে রিকোয়েস্ট পাঠানো
+                await addDoc(collection(db, "promotion_requests"), {
+                    sellerId: auth.currentUser.uid,
+                    sellerName: userData.fullName || "N/A",
+                    shopName: userData.shopName || "N/A",
+                    whatsapp: userData.whatsapp || selectedProduct.whatsapp,
+                    productId: selectedProduct.id,
+                    productName: selectedProduct.name,
+                    productPrice: selectedProduct.price,
+                    productImage: selectedProduct.images[0],
+                    status: "pending",
+                    requestedAt: serverTimestamp()
+                });
+
+                document.getElementById('loader').style.display = "none";
+                alert("আপনার প্রমোশন সফল হয়েছে! ১ থেকে ২ ঘন্টা বা তার কম সময়ের ভেতরে আপনার সাথে যোগাযোগ করা হবে। ধন্যবাদ।");
+                window.location.href = "dashboard.html";
+
+            } catch (err) {
+                document.getElementById('loader').style.display = "none";
+                alert("দুঃখিত, রিকোয়েস্ট পাঠানো সম্ভব হয়নি। আবার চেষ্টা করুন।");
+                console.error(err);
+            }
+        }
+    </script>
+</body>
+</html>
