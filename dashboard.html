@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Ghoti Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #2c3e50; --accent: #3498db; --success: #2ecc71; --danger: #e74c3c; --orange: #f39c12; --purple: #9b59b6; --white: #ffffff; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: #f8f9fa; margin: 0; padding-bottom: 100px; }
+        
+        .header { background: var(--primary); color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 30px 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; }
+        .nav-links { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; }
+        .nav-btn { color: white; background: rgba(255,255,255,0.1); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 18px; transition: 0.3s; }
+        .nav-btn:active { background: var(--accent); }
+
+        .header h2 { margin: 0; font-size: 28px; }
+        .header p { opacity: 0.8; margin-top: 5px; font-size: 14px; }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr; gap: 15px; padding: 20px; margin-top: -30px; }
+        .stat-card { background: white; padding: 25px; border-radius: 20px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        
+        .action-container { padding: 0 20px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .btn-wide { width: 100%; padding: 15px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font-size: 16px; font-weight: 600; border: none; transition: 0.3s; color: white; box-sizing: border-box; }
+        
+        /* Buttons Colors */
+        .promo-btn { background: linear-gradient(135deg, var(--orange), #e67e22); box-shadow: 0 6px 15px rgba(243,156,18,0.3); }
+        .shop-btn { background: var(--accent); box-shadow: 0 6px 15px rgba(52,152,219,0.3); }
+        .decor-btn { background: linear-gradient(135deg, var(--purple), #8e44ad); box-shadow: 0 6px 15px rgba(155,89,182,0.3); }
+        .apk-btn { background: #2c3e50; box-shadow: 0 6px 15px rgba(44,62,80,0.3); }
+        
+        .btn-wide:active { transform: scale(0.96); }
+
+        .search-container { padding: 0 20px; margin-bottom: 15px; }
+        .search-box { background: white; padding: 12px 20px; border-radius: 12px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .search-box input { border: none; outline: none; width: 100%; font-family: inherit; font-size: 16px; margin-left: 10px; }
+
+        .section-title { padding: 0 20px; font-size: 18px; color: var(--primary); }
+        .product-list { padding: 0 20px; }
+        .product-item { background: white; margin-bottom: 15px; padding: 15px; border-radius: 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 5px 10px rgba(0,0,0,0.03); }
+        .product-item img { width: 65px; height: 65px; border-radius: 10px; object-fit: cover; }
+        .p-info { flex: 1; }
+        .p-info h4 { margin: 0; font-size: 16px; color: #333; }
+        .p-info p { margin: 3px 0 0; color: var(--danger); font-weight: bold; }
+        
+        .p-actions { display: flex; gap: 8px; }
+        .p-actions button { border: none; padding: 10px; border-radius: 10px; cursor: pointer; }
+        .edit-btn { background: #e3f2fd; color: var(--accent); }
+        .del-btn { background: #ffebee; color: var(--danger); }
+
+        .fab { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; border-radius: 50%; background: var(--success); color: white; border: none; font-size: 25px; box-shadow: 0 8px 20px rgba(46,204,113,0.3); z-index: 1000; }
+        .empty { text-align: center; padding: 40px; color: #999; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="nav-links">
+            <a href="termsandcondition.html" class="nav-btn" title="Terms and Condition"><i class="fas fa-file-contract"></i></a>
+            <a href="privacy-policy.html" class="nav-btn" title="Privacy Policy"><i class="fas fa-user-shield"></i></a>
+            <a href="change-password.html" class="nav-btn" title="পাসওয়ার্ড পরিবর্তন"><i class="fas fa-key"></i></a>
+            <a href="settings.html" class="nav-btn" title="সেটিংস"><i class="fas fa-cog"></i></a>
+            <a href="contact.html" class="nav-btn" title="সাপোর্ট"><i class="fas fa-headset"></i></a>
+        </div>
+        <h2 id="sName">লোড হচ্ছে...</h2>
+        <p>UID: <span id="uidDisplay">...</span></p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <i class="fas fa-box-open"></i>
+            <h3 id="pCount">0</h3>
+            <p>মোট পণ্য</p>
+        </div>
+    </div>
+
+    <div class="action-container">
+        <a href="promotion.html" class="btn-wide promo-btn">
+            <i class="fas fa-bullhorn"></i> পণ্য প্রমোশন করুন
+        </a>
+        <a href="upload-banner-logo.html" class="btn-wide decor-btn">
+            <i class="fas fa-magic"></i> শপ ডেকোরেশন (লোগো ও ব্যানার)
+        </a>
+        <a href="https://www.ghotimarket.com" class="btn-wide shop-btn">
+            <i class="fas fa-store"></i> শপ ঘুরে আসি
+        </a>
+        <a href="seller-apk.html" class="btn-wide apk-btn">
+            <i class="fas fa-download"></i> সেলার অ্যাপ ডাউনলোড করুন
+        </a>
+    </div>
+
+    <div class="search-container">
+        <div class="search-box">
+            <i class="fas fa-search" style="color: #bbb;"></i>
+            <input type="text" id="searchInput" placeholder="পণ্য বা কিওয়ার্ড দিয়ে খুঁজুন..." onkeyup="searchProducts()">
+        </div>
+    </div>
+
+    <div class="section-title">
+        <h3>আপনার পণ্যসমূহ</h3>
+    </div>
+
+    <div id="productList" class="product-list"></div>
+
+    <button class="fab" onclick="checkLock()">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, query, where, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
+            authDomain: "ghotimarket.firebaseapp.com",
+            projectId: "ghotimarket" 
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUserId = "";
+        let allProducts = [];
+
+        onAuthStateChanged(auth, async user => {
+            if(user) {
+                currentUserId = user.uid;
+                document.getElementById('uidDisplay').innerText = user.uid;
+                const userSnap = await getDoc(doc(db, "users", user.uid));
+                if(userSnap.exists()) {
+                    document.getElementById('sName').innerText = userSnap.data().shopName;
+                }
+                loadMyProducts(user.uid);
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+        function loadMyProducts(uid) {
+            const q = query(collection(db, "products"), where("sellerId", "==", uid));
+            onSnapshot(q, (snapshot) => {
+                allProducts = [];
+                snapshot.forEach(d => allProducts.push({id: d.id, ...d.data()}));
+                renderList(allProducts);
+            });
+        }
+
+        window.renderList = (products) => {
+            const listDiv = document.getElementById('productList');
+            document.getElementById('pCount').innerText = products.length;
+
+            if(products.length === 0) {
+                listDiv.innerHTML = `<div class="empty"><i class="fas fa-folder-open"></i><p>কোনো পণ্য পাওয়া যায়নি!</p></div>`;
+                return;
+            }
+
+            let html = "";
+            products.forEach(p => {
+                html += `
+                    <div class="product-item">
+                        <img src="${p.images[0]}" alt="product">
+                        <div class="p-info">
+                            <h4>${p.name}</h4>
+                            <p>৳ ${p.price}</p>
+                        </div>
+                        <div class="p-actions">
+                            <button class="edit-btn" onclick="editProduct('${p.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="del-btn" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            listDiv.innerHTML = html;
+        }
+
+        window.searchProducts = () => {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allProducts.filter(p => 
+                p.name.toLowerCase().includes(term) || 
+                (p.keywords && p.keywords.toLowerCase().includes(term))
+            );
+            renderList(filtered);
+        }
+
+        window.editProduct = (id) => {
+            window.location.href = `edit.html?id=${id}`;
+        }
+
+        window.deleteProduct = async (id) => {
+            if(confirm("আপনি কি নিশ্চিতভাবে এই পণ্যটি ডিলিট করতে চান?")) {
+                try {
+                    await deleteDoc(doc(db, "products", id));
+                } catch (err) { alert("ডিলিট করতে সমস্যা হয়েছে!"); }
+            }
+        }
+
+        window.checkLock = async () => {
+            const snap = await getDoc(doc(db, "users", currentUserId));
+            const data = snap.data();
+            if(!data.profileUnlockedUntil || data.profileUnlockedUntil < Date.now()) {
+                window.location.href = "locked.html";
+            } else {
+                window.location.href = "upload.html";
+            }
+        }
+    </script>
+</body>
+</html>
