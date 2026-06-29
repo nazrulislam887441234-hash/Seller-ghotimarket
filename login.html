@@ -10,7 +10,10 @@
         :root { --primary: #2c3e50; --accent: #3498db; --bg: #f4f7f6; }
         body { font-family: 'Hind Siliguri', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: linear-gradient(135deg, #2c3e50, #4ca1af); padding: 20px; }
         .box { background: white; padding: 40px 30px; border-radius: 20px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.2); box-sizing: border-box; }
-        .logo-icon { font-size: 50px; color: var(--accent); margin-bottom: 15px; }
+        
+        /* লোগো স্টাইল */
+        .logo-img { width: 80px; height: auto; margin-bottom: 15px; }
+        
         h2 { margin: 0 0 10px; color: #333; font-size: 24px; }
         .input-group { position: relative; margin-bottom: 15px; text-align: left; }
         .input-group i { position: absolute; left: 15px; top: 14px; color: #aaa; }
@@ -23,14 +26,17 @@
 <body>
     <div id="pageLoader"><p>অপেক্ষা করুন...</p></div>
     <div class="box">
-        <div class="logo-icon"><i class="fas fa-user-circle"></i></div>
-        <h2>লগিন করুন</h2>
+        <!-- লোগো ইমেজ বসানো হয়েছে -->
+        <img src="https://www.ghotimarket.com/logo.png" alt="Ghoti Market Logo" class="logo-img">
+        
+        <h2>GHOTI MARKET</h2>
+        <h2>Seller Login</h2>
         <div class="input-group"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="আপনার ইমেইল" /></div>
         <div class="input-group"><i class="fas fa-lock"></i><input type="password" id="pass" placeholder="পাসওয়ার্ড" /></div>
         
         <button id="loginBtn" class="main-btn">প্রবেশ করুন</button>
         <button id="resetBtn" class="linkBtn">পাসওয়ার্ড ভুলে গেছেন?</button>
-        <button onclick="location.href='signup.html'" class="linkBtn" style="color:#27ae60; margin-top:5px;">নতুন অ্যাকাউন্ট খুলুন</button>
+        
     </div>
 
     <script type="module">
