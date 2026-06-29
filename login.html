@@ -11,23 +11,26 @@
         body { font-family: 'Hind Siliguri', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: linear-gradient(135deg, #2c3e50, #4ca1af); padding: 20px; }
         .box { background: white; padding: 40px 30px; border-radius: 20px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.2); box-sizing: border-box; }
         
-        /* লোগো স্টাইল */
         .logo-img { width: 80px; height: auto; margin-bottom: 15px; }
-        
         h2 { margin: 0 0 10px; color: #333; font-size: 24px; }
         .input-group { position: relative; margin-bottom: 15px; text-align: left; }
         .input-group i { position: absolute; left: 15px; top: 14px; color: #aaa; }
         input { width: 100%; padding: 12px 15px 12px 45px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; outline: none; font-size: 16px; }
         button.main-btn { background: var(--accent); color: white; border: none; width: 100%; padding: 14px; border-radius: 10px; cursor: pointer; font-weight: 600; margin-top: 10px; }
-        .linkBtn { background: none; color: var(--accent); border: none; margin-top: 15px; cursor: pointer; display: block; width: 100%; }
+        
+        /* নতুন বাটন স্টাইল */
+        .linkBtn { background: none; color: #555; border: none; margin-top: 10px; cursor: pointer; display: block; width: 100%; font-size: 14px; text-decoration: underline; }
+        .nav-link { color: var(--accent); font-weight: 600; }
+        .footer-links { margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; display: flex; justify-content: space-between; }
+        .footer-links a { color: #777; text-decoration: none; font-size: 12px; }
+
         #pageLoader { position: fixed; inset: 0; background: white; display: flex; justify-content: center; align-items: center; z-index: 9999; }
     </style>
 </head>
 <body>
     <div id="pageLoader"><p>অপেক্ষা করুন...</p></div>
     <div class="box">
-        <!-- লোগো ইমেজ বসানো হয়েছে -->
-        <img src="https://www.ghotimarket.com/logo.png" alt="Ghoti Market Logo" class="logo-img">
+        <img src="1811-Photoroom.png" alt="Ghoti Market Logo" class="logo-img">
         
         <h2>GHOTI MARKET</h2>
         <h2>Seller Login</h2>
@@ -35,7 +38,15 @@
         <div class="input-group"><i class="fas fa-lock"></i><input type="password" id="pass" placeholder="পাসওয়ার্ড" /></div>
         
         <button id="loginBtn" class="main-btn">প্রবেশ করুন</button>
+        
         <button id="resetBtn" class="linkBtn">পাসওয়ার্ড ভুলে গেছেন?</button>
+        
+        <a href="signup.html" style="text-decoration:none;"><button class="main-btn" style="background:#27ae60;">সেলার একাউন্ট কিভাবে বানাবেন?</button></a>
+
+        <div class="footer-links">
+            <a href="https://www.ghotimarket.com/privacy-policy.html">প্রাইভেসি পলিসি</a>
+            <a href="https://www.ghotimarket.com/contact.html">সাপোর্ট</a>
+        </div>
         
     </div>
 
