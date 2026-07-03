@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ইমেইল পরিবর্তন | ঘটি মার্কেট</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background: linear-gradient(135deg, #2c3e50, #4ca1af); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
+        .box { background: white; padding: 30px; border-radius: 20px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .logo-img { width: 80px; margin-bottom: 15px; }
+        .info-box { background: #f4f7f6; padding: 10px; border-radius: 10px; margin-bottom: 20px; font-size: 14px; color: #555; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
+        button { background: #3498db; color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+        #status { margin-top: 15px; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <img src="https://www.ghotimarket.com/logo.png" alt="Logo" class="logo-img">
+    <h2>ইমেইল পরিবর্তন</h2>
+    <div class="info-box">বর্তমান ইমেইল: <br><strong id="currentEmail">লোড হচ্ছে...</strong></div>
+    
+    <input type="email" id="newEmail" placeholder="নতুন ইমেইল দিন">
+    <button id="submitBtn">আপডেট রিকোয়েস্ট পাঠান</button>
+    <p id="status"></p>
+    <a href="dashboard.html" style="color:#777; font-size:12px; text-decoration:none;">ড্যাশবোর্ডে ফিরে যান</a>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, verifyBeforeUpdateEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    const firebaseConfig = { apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket", authDomain: "ghotimarket.firebaseapp.com" };
+    const auth = getAuth(initializeApp(firebaseConfig));
+
+    // লগইন চেক এবং ইমেইল প্রদর্শন
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            document.getElementById('currentEmail').innerText = user.email;
+        } else {
+            window.location.href = "login.html"; // লগইন না থাকলে লগইন পেজে পাঠান
+        }
+    });
+
+    document.getElementById('submitBtn').addEventListener('click', async () => {
+        const user = auth.currentUser;
+        const newEmail = document.getElementById('newEmail').value.trim();
+        const status = document.getElementById('status');
+
+        if (!newEmail) return alert("নতুন ইমেইল দিন!");
+
+        status.innerText = "লিঙ্ক পাঠানো হচ্ছে...";
+        try {
+            await verifyBeforeUpdateEmail(user, newEmail);
+            status.style.color = "green";
+            status.innerText = "আপনার নতুন ইমেইলে একটি ভেরিফিকেশন লিঙ্ক পাঠানো হয়েছে। ইমেইলটি চেক করুন।";
+        } catch (err) {
+            status.style.color = "red";
+            status.innerText = err.code === 'auth/email-already-in-use' ? "এই ইমেইলটি অন্য অ্যাকাউন্টে ব্যবহৃত।" : "লিঙ্ক পাঠাতে সমস্যা হয়েছে।";
+        }
+    });
+</script>
+</body>
+</html>
