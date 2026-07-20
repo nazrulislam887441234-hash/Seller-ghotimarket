@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>My Account | GHOTI MARKET</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+:root{
+  --primary:#FF6A00;--primary-dark:#E55A00;--bg:#FFF8F3;--card:#FFFFFF;
+  --text:#1e293b;--text-sub:#64748b;--border:#FFE3D1;--shadow:0 8px 30px rgba(255,106,0,0.08);
+  --radius:18px;--green:#22c55e;--blue:#3b82f6;--purple:#8b5cf6;--red:#EF4444;--orange:#F97316;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Hind Siliguri','Inter',sans-serif;}
+body{background:var(--bg);color:var(--text);}
+
+header{
+  background:var(--card);display:flex;justify-content:space-between;align-items:center;
+  padding:12px 20px;box-shadow:var(--shadow);position:sticky;top:0;z-index:100;
+}
+.header-left{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800;color:var(--primary);}
+.header-left img{width:40px;height:40px;}
+.btn-logout{background:var(--primary);color:#fff;border:none;padding:10px 16px;border-radius:10px;cursor:pointer;font-weight:700;}
+.btn-logout:hover{background:var(--primary-dark);}
+
+.container{max-width:1300px;margin:0 auto;padding:20px 15px;}
+.page-title{font-size:24px;font-weight:800;margin-bottom:20px;}
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-bottom:25px;}
+.stat-card{background:var(--card);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.stat-card i{position:absolute;right:20px;top:20px;font-size:35px;opacity:0.15;}
+.stat-card h4{font-size:13px;color:var(--text-sub);font-weight:600;}
+.stat-card h2{font-size:32px;color:var(--primary);margin-top:8px;font-weight:800;}
+.stat-card.green h2{color:var(--green);} 
+.stat-card.blue h2{color:var(--blue);} 
+.stat-card.purple h2{color:var(--purple);}
+.stat-card.red h2{color:var(--red);}
+.stat-card.orange h2{color:var(--orange);}
+
+.section-title{font-size:18px;font-weight:700;margin:30px 0 15px 0;}
+.table-card{background:var(--card);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow);}
+.table-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px dashed var(--border);}
+.table-row:last-child{border-bottom:none;font-weight:800;font-size:16px;}
+.table-row span:first-child{color:var(--text-sub);}
+
+.date-filter{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.date-filter input, .date-filter button{padding:12px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;}
+.date-filter button{background:var(--primary);color:#fff;border:none;font-weight:700;cursor:pointer;}
+
+.skeleton{background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:load 1.5s infinite;border-radius:var(--radius);}
+@keyframes load{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.stat-card.skeleton{height:110px;}
+
+#toast{position:fixed;bottom:20px;right:20px;background:#22c55e;color:#fff;padding:14px 20px;border-radius:12px;display:none;z-index:10000;font-weight:600;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <img src="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png" alt="Logo">
+    <span>GHOTI SELLER</span>
+  </div>
+  <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+</header>
+
+<main class="container">
+  <h1 class="page-title"><i class="fas fa-calculator"></i> আমার হিসাব</h1>
+
+  <div class="date-filter">
+    <input type="date" id="startDate">
+    <input type="date" id="endDate">
+    <button onclick="applyDateFilter()"><i class="fas fa-filter"></i> ফিল্টার</button>
+    <button onclick="resetFilter()" style="background:#64748b;"><i class="fas fa-rotate"></i> সব</button>
+  </div>
+
+  <div class="stats-grid" id="statsGrid">
+    <div class="stat-card skeleton"></div><div class="stat-card skeleton"></div>
+    <div class="stat-card skeleton"></div><div class="stat-card skeleton"></div>
+    <div class="stat-card skeleton"></div><div class="stat-card skeleton"></div>
+  </div>
+
+  <h2 class="section-title">বিস্তারিত হিসাব</h2>
+  <div class="table-card" id="detailsTable"></div>
+
+</main>
+
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ========== PASTE YOUR FIREBASE CONFIG HERE ==========
+const firebaseConfig = {
+  apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+  authDomain: "ghotimarket.firebaseapp.com",
+  projectId: "ghotimarket",
+  storageBucket: "ghotimarket.firebasestorage.app",
+  messagingSenderId: "481257644093",
+  appId: "1:481257644093:web:0dfc3699d6b3c86afeca54"
+};
+// =====================================================
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let allOrders = [];
+let startFilter = null;
+let endFilter = null;
+
+// Auth Check
+onAuthStateChanged(auth, (user) => {
+  if (!user) { window.location.href = "index.html"; } 
+  else { currentUser = user; loadOrders(); }
+});
+
+// Logout
+document.getElementById('logoutBtn').onclick = async () => {
+  await signOut(auth); window.location.href = "index.html";
+};
+
+// Load Orders Realtime
+function loadOrders() {
+  const q = query(collection(db, "orders"), where("sellerId", "==", currentUser.uid));
+  onSnapshot(q, (snapshot) => {
+    allOrders = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    calculateAndRender();
+  });
+}
+
+function calculateAndRender(){
+  let deliveredOrders = allOrders.filter(o => o.orderStatus === 'Delivered');
+
+  if(startFilter && endFilter){
+    deliveredOrders = deliveredOrders.filter(o => {
+      const orderDate = o.createdAt?.toDate();
+      return orderDate >= startFilter && orderDate <= endFilter;
+    });
+  }
+
+  const stats = {
+    totalSales: deliveredOrders.reduce((a,b)=>a+(b.subtotal||0),0),
+    totalDelivery: deliveredOrders.reduce((a,b)=>a+(b.deliveryCharge||0),0),
+    totalRevenue: deliveredOrders.reduce((a,b)=>a+(b.grandTotal||0),0),
+    totalDelivered: deliveredOrders.length,
+    pendingAmount: allOrders.filter(o=>o.orderStatus!=='Delivered' && o.orderStatus!=='Cancelled' && o.orderStatus!=='Returned').reduce((a,b)=>a+(b.grandTotal||0),0),
+    cancelledOrders: allOrders.filter(o=>o.orderStatus==='Cancelled').length,
+    returnedOrders: allOrders.filter(o=>o.orderStatus==='Returned').length,
+    totalOrders: allOrders.length,
+  };
+
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card green"><i class="fas fa-bag-shopping"></i><h4>Total Delivered</h4><h2>${stats.totalDelivered}</h2></div>
+    <div class="stat-card"><i class="fas fa-coins"></i><h4>Total Sales</h4><h2>৳${stats.totalSales}</h2></div>
+    <div class="stat-card blue"><i class="fas fa-truck"></i><h4>Total Delivery Charge</h4><h2>৳${stats.totalDelivery}</h2></div>
+    <div class="stat-card purple"><i class="fas fa-wallet"></i><h4>Total Revenue</h4><h2>৳${stats.totalRevenue}</h2></div>
+    <div class="stat-card red"><i class="fas fa-xmark-circle"></i><h4>Total Cancelled</h4><h2>${stats.cancelledOrders}</h2></div>
+    <div class="stat-card orange"><i class="fas fa-rotate-left"></i><h4>Total Returned</h4><h2>${stats.returnedOrders}</h2></div>
+  `;
+
+  document.getElementById('detailsTable').innerHTML = `
+    <div class="table-row"><span>মোট অর্ডার</span><span>${stats.totalOrders} টি</span></div>
+    <div class="table-row"><span>মোট Delivered অর্ডার</span><span>${stats.totalDelivered} টি</span></div>
+    <div class="table-row"><span>পণ্যের মোট বিক্রি</span><span>৳${stats.totalSales}</span></div>
+    <div class="table-row"><span>মোট ডেলিভারি চার্জ</span><span>৳${stats.totalDelivery}</span></div>
+    <div class="table-row"><span>আপনার মোট আয়</span><span>৳${stats.totalRevenue}</span></div>
+    <div class="table-row"><span>Pending/Processing অর্ডারের টাকা</span><span>৳${stats.pendingAmount}</span></div>
+    <div class="table-row"><span>Cancelled অর্ডার</span><span>${stats.cancelledOrders} টি</span></div>
+    <div class="table-row"><span>Returned অর্ডার</span><span>${stats.returnedOrders} টি</span></div>
+  `;
+}
+
+// Date Filter
+window.applyDateFilter = () => {
+  const s = document.getElementById('startDate').value;
+  const e = document.getElementById('endDate').value;
+  if(!s || !e){ showToast('দুইটা তারিখ সিলেক্ট করুন'); return; }
+  startFilter = new Date(s); 
+  endFilter = new Date(e); endFilter.setHours(23,59,59);
+  calculateAndRender();
+  showToast('ফিল্টার করা হয়েছে');
+}
+window.resetFilter = () => {
+  startFilter = null; endFilter = null;
+  document.getElementById('startDate').value = '';
+  document.getElementById('endDate').value = '';
+  calculateAndRender();
+}
+
+function showToast(msg){
+  const toast = document.getElementById('toast');
+  toast.innerText = msg; toast.style.display = 'block';
+  setTimeout(()=>toast.style.display='none', 3000);
+}
+</script>
+</body>
+</html>
