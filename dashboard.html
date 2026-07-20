@@ -63,10 +63,31 @@
             <a href="settings.html" class="nav-btn" title="সেটিংস"><i class="fas fa-cog"></i></a>
             <a href="https://www.ghotimarket.com/contact.html" class="nav-btn" title="সাপোর্ট"><i class="fas fa-headset"></i></a>
         </div>
-        <h2 id="sName">লোড হচ্ছে...</h2>
-        <p>UID: <span id="uidDisplay">...</span></p>
-    </div>
+<h2 id="sName">লোড হচ্ছে...</h2>
 
+<p>UID: <span id="uidDisplay">...</span></p>
+
+<p id="shopLinkBox" style="display:none; margin-top:10px;">
+    🌐
+    <a id="shopLink"
+       href="#"
+       target="_blank"
+       style="color:#4fc3f7;font-weight:bold;text-decoration:none;">
+    </a>
+
+    <button id="copyBtn"
+        onclick="copyShopLink()"
+        style="margin-left:8px;
+               padding:6px 12px;
+               border:none;
+               border-radius:8px;
+               background:#3498db;
+               color:#fff;
+               cursor:pointer;">
+        <i class="fas fa-copy"></i> Copy
+    </button>
+</p>
+</div>
     <div class="stats-grid">
         <div class="stat-card">
             <i class="fas fa-box-open"></i>
@@ -80,10 +101,15 @@
         <a href="upload-banner-logo.html" class="btn-wide decor-btn">
             <i class="fas fa-upload"></i>লোগো ও ব্যানার সেট করুন
         </a>
-             
+      
         
     </div>
-
+    <div id="usernameBox" style="display:none;padding:20px;">
+    <button onclick="window.location.href='set-username.html'" class="btn-wide shop-btn">
+        <i class="fas fa-at"></i>
+        Username সেট করুন
+    </button>
+</div>   
     <div class="search-container">
         <div class="search-box">
             <i class="fas fa-search" style="color: #bbb;"></i>
@@ -98,7 +124,7 @@
     <div id="productList" class="product-list"></div>
 
     <button class="fab" onclick="checkLock()">
-        <i class="fas fa-plus"></i>
+        <i class="fas fa-upload"></i>
     </button>
 
     <script type="module">
@@ -123,9 +149,26 @@
                 currentUserId = user.uid;
                 document.getElementById('uidDisplay').innerText = user.uid;
                 const userSnap = await getDoc(doc(db, "users", user.uid));
-                if(userSnap.exists()) {
-                    document.getElementById('sName').innerText = userSnap.data().shopName;
-                }
+             if(userSnap.exists()) {
+    const data = userSnap.data();
+
+    document.getElementById("sName").innerText = data.shopName;
+
+if (!data.username || data.username.trim() === "") {
+    document.getElementById("usernameBox").style.display = "block";
+    document.getElementById("shopLinkBox").style.display = "none";
+} else {
+    document.getElementById("usernameBox").style.display = "none";
+
+    const shopUrl = `https://ghotimarket.com/seller?@${data.username}`;
+
+    const link = document.getElementById("shopLink");
+    link.href = shopUrl;
+    link.innerText = shopUrl;
+
+    document.getElementById("shopLinkBox").style.display = "block";
+}
+}
                 loadMyProducts(user.uid);
             } else {
                 window.location.href = "login.html";
@@ -168,6 +211,24 @@
             });
             listDiv.innerHTML = html;
         }
+
+window.copyShopLink = async () => {
+    const url = document.getElementById("shopLink").href;
+
+    try {
+        await navigator.clipboard.writeText(url);
+
+        const btn = document.getElementById("copyBtn");
+        btn.innerHTML = '<i class="fas fa-check"></i> Copied';
+
+        setTimeout(() => {
+            btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+        }, 2000);
+
+    } catch (e) {
+        alert("লিংক কপি করা যায়নি");
+    }
+};
 
         window.searchProducts = () => {
             const term = document.getElementById('searchInput').value.toLowerCase();
