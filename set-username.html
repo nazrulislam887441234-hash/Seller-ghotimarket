@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Username সেট করুন - GHOTI MARKET</title>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary-orange: #ff6b00;
+            --dark-bg: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0 24px;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary-orange);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 107, 0, 0.25);
+            border-radius: 28px;
+            padding: 40px 32px;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 6px;
+            background: linear-gradient(90deg, #ff6b00, #ffb366);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 15.5px;
+            margin-bottom: 32px;
+        }
+
+        .shop-info {
+            background: rgba(255, 107, 0, 0.12);
+            border: 1px solid rgba(255, 107, 0, 0.35);
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 28px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper .prefix {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        #usernameInput {
+            width: 100%;
+            padding: 18px 20px 18px 52px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 2px solid rgba(255, 107, 0, 0.4);
+            border-radius: 18px;
+            color: white;
+            font-size: 19px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #usernameInput:focus {
+            outline: none;
+            border-color: #ff6b00;
+            box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.25);
+        }
+
+        #availabilityStatus {
+            min-height: 28px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .preview-box {
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px dashed rgba(255, 107, 0, 0.5);
+            border-radius: 18px;
+            padding: 24px;
+            text-align: center;
+            margin: 28px 0;
+        }
+
+        .preview-label {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        #urlPreview {
+            font-size: 17px;
+            font-weight: 600;
+            color: #ff6b00;
+            word-break: break-all;
+        }
+
+        .btn {
+            padding: 18px 28px;
+            border-radius: 18px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #ff6b00, #ff8533);
+            color: white;
+            border: none;
+            box-shadow: 0 10px 20px -5px rgb(255 107 0 / 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #cbd5e1;
+            border: 2px solid rgba(203, 213, 225, 0.4);
+        }
+
+        .status-box {
+            padding: 20px;
+            border-radius: 18px;
+            text-align: center;
+            font-size: 17px;
+            font-weight: 600;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .status-set {
+            background: rgba(16, 185, 129, 0.15);
+            color: #4ade80;
+            border: 1px solid #4ade80;
+        }
+
+        .loader-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 9999;
+            gap: 24px;
+        }
+
+        .spinner {
+            width: 56px;
+            height: 56px;
+            border: 5px solid rgba(255,107,0,0.2);
+            border-top-color: #ff6b00;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e2937;
+            border: 1px solid #ff6b00;
+            color: #f1f5f9;
+            padding: 16px 28px;
+            border-radius: 9999px;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.4);
+            display: none;
+            align-items: center;
+            gap: 14px;
+            z-index: 10000;
+            font-weight: 500;
+            max-width: 90%;
+        }
+
+        .success-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 11000;
+        }
+
+        .success-content {
+            text-align: center;
+            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.6); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .footer {
+            margin-top: auto;
+            padding: 30px 0 20px;
+            text-align: center;
+            color: #64748b;
+            font-size: 13.5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-fish"></i>
+                GHOTI MARKET
+            </div>
+            <a href="dashboard.html" style="color:#94a3b8; text-decoration:none; font-size:15px; display:flex; align-items:center; gap:6px;">
+                <i class="fas fa-arrow-left"></i> ড্যাশবোর্ড
+            </a>
+        </header>
+
+        <div class="glass-card" id="mainCard">
+            <h1>ইউজারনেম সেট করুন</h1>
+            <p class="subtitle">আপনার শপের জন্য একটি অনন্য ইউজারনেম তৈরি করুন</p>
+
+            <!-- Shop Info -->
+            <div id="shopInfo" class="shop-info" style="display: none;">
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <i class="fas fa-store fa-2x" style="color:#ff6b00;"></i>
+                    <div style="flex:1;">
+                        <div style="font-size:13px; color:#94a3b8;">আপনার শপের নাম</div>
+                        <div id="shopNameDisplay" style="font-size:19px; font-weight:600;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Already Set Status -->
+            <div id="alreadySetStatus" class="status-box status-set"></div>
+
+            <!-- Setup Form -->
+            <div id="setupForm">
+                <div class="preview-box">
+                    <div class="preview-label">আপনার শপ লিংক হবে</div>
+                    <div id="urlPreview" style="font-size:17px; font-weight:600;">https://ghotimarket.com/@username</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="usernameInput">ইউজারনেম</label>
+                    <div class="input-wrapper">
+                        <span class="prefix">@</span>
+                        <input type="text" id="usernameInput" maxlength="30" placeholder="yourshopname" autocomplete="off">
+                    </div>
+                    <div id="availabilityStatus"></div>
+                </div>
+
+                <button id="setupBtn" class="btn btn-primary">
+                    <i class="fas fa-user-check"></i>
+                    ইউজারনেম সেট করুন
+                </button>
+
+                <button id="cancelBtn" class="btn btn-secondary">
+                    <i class="fas fa-times"></i>
+                    বাতিল
+                </button>
+            </div>
+        </div>
+
+        <div class="footer">
+            © ২০২৬ GHOTI MARKET • সর্বস্বত্ব সংরক্ষিত
+        </div>
+    </div>
+
+    <!-- Loader -->
+    <div id="loaderOverlay" class="loader-overlay">
+        <div class="spinner"></div>
+        <div style="color:#cbd5e1; font-weight:500;">প্রসেসিং হচ্ছে...</div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="success-modal">
+        <div class="success-content">
+            <svg width="110" height="110" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:20px;">
+                <circle cx="60" cy="60" r="54" stroke="#4ade80" stroke-width="10"/>
+                <path id="successCheck" d="M38 62 L54 78 L88 42" stroke="#4ade80" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <h2 style="color:#4ade80; margin-bottom:8px;">সফল হয়েছে!</h2>
+            <p id="successText" style="color:#e2e8f0;">Username সেট করা হয়েছে</p>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast">
+        <i id="toastIcon" class="fas fa-check-circle" style="color:#4ade80;"></i>
+        <span id="toastMessage"></span>
+    </div>
+
+    <script>
+        // Firebase Configuration - REPLACE WITH YOUR OWN
+        const firebaseConfig = {
+  apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+  authDomain: "ghotimarket.firebaseapp.com",
+  databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+  projectId: "ghotimarket",
+  storageBucket: "ghotimarket.firebasestorage.app",
+  messagingSenderId: "481257644093",
+  appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+  measurementId: "G-4SR8V2EKC1"
+};
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let currentUserUID = null;
+        let shopNameGlobal = "";
+        let isUsernameSet = false;
+
+        function showLoader(show) {
+            document.getElementById('loaderOverlay').style.display = show ? 'flex' : 'none';
+        }
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const message = document.getElementById('toastMessage');
+            
+            message.textContent = msg;
+            icon.className = isError ? "fas fa-exclamation-circle" : "fas fa-check-circle";
+            icon.style.color = isError ? "#f87171" : "#4ade80";
+            toast.style.display = 'flex';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3200);
+        }
+
+        function sanitizeForUsername(text) {
+            if (!text) return "shop";
+            return text
+                .toLowerCase()
+                .replace(/[^a-z0-9]/g, '')
+                .replace(/_/g, '')
+                .trim() || "shop";
+        }
+
+        async function isUsernameTaken(username) {
+            if (!username) return true;
+            try {
+                const q = db.collection("users").where("usernameLower", "==", username.toLowerCase());
+                const snap = await q.get();
+                return !snap.empty;
+            } catch (e) {
+                console.error("Availability check failed", e);
+                return true;
+            }
+        }
+
+        async function generateUniqueUsername(base) {
+            let username = base;
+            let counter = 1;
+            
+            while (await isUsernameTaken(username)) {
+                username = `\( {base} \){counter}`;
+                counter++;
+                if (counter > 100) break; // safety
+            }
+            return username;
+        }
+
+        async function loadUserProfile() {
+            showLoader(true);
+            
+            try {
+                const userDoc = await db.collection("users").doc(currentUserUID).get();
+                
+                if (!userDoc.exists) {
+                    showToast("প্রোফাইল পাওয়া যায়নি।", true);
+                    showLoader(false);
+                    return;
+                }
+                
+                const data = userDoc.data();
+                shopNameGlobal = data.shopName || "My Shop";
+                
+                document.getElementById('shopNameDisplay').textContent = shopNameGlobal;
+                document.getElementById('shopInfo').style.display = 'block';
+                
+                const existingUsername = data.username;
+                
+                if (existingUsername) {
+                    // Already configured
+                    isUsernameSet = true;
+                    document.getElementById('setupForm').style.display = 'none';
+                    const statusEl = document.getElementById('alreadySetStatus');
+                    statusEl.innerHTML = `
+                        <i class="fas fa-check-circle"></i>
+                        ইউজারনেম ইতিমধ্যে সেট করা আছে<br>
+                        <span style="font-size:15px; font-weight:400; margin-top:8px; display:block;">@${existingUsername}</span>
+                    `;
+                    statusEl.style.display = 'flex';
+                    
+                    document.getElementById('urlPreview').textContent = `https://ghotimarket.com/@${existingUsername}`;
+                } else {
+                    // Generate new
+                    const base = sanitizeForUsername(shopNameGlobal);
+                    const uniqueName = await generateUniqueUsername(base);
+                    
+                    const input = document.getElementById('usernameInput');
+                    input.value = uniqueName;
+                    updateURLPreview();
+                    checkLiveAvailability();
+                }
+            } catch (err) {
+                console.error(err);
+                showToast("ডেটা লোড করতে সমস্যা হয়েছে", true);
+            } finally {
+                showLoader(false);
+            }
+        }
+
+        function updateURLPreview() {
+            const val = document.getElementById('usernameInput').value.trim();
+            const preview = document.getElementById('urlPreview');
+            preview.textContent = val ? `https://ghotimarket.com/seller?@${val}` : "https://ghotimarket.com/seller?@username";
+        }
+
+        let debounceTimer = null;
+
+        async function checkLiveAvailability() {
+            const statusEl = document.getElementById('availabilityStatus');
+            const username = document.getElementById('usernameInput').value.trim();
+            
+            if (username.length < 3) {
+                statusEl.innerHTML = `<span style="color:#94a3b8;">কমপক্ষে ৩ অক্ষর দিন</span>`;
+                return;
+            }
+            
+            statusEl.innerHTML = `<span style="color:#94a3b8;">চেক করা হচ্ছে...</span>`;
+            
+            const taken = await isUsernameTaken(username);
+            
+            if (taken) {
+                statusEl.innerHTML = `<i class="fas fa-times" style="color:#ef4444"></i><span style="color:#ef4444;">নেওয়া হয়েছে</span>`;
+            } else {
+                statusEl.innerHTML = `<i class="fas fa-check" style="color:#22c55e"></i><span style="color:#22c55e;">উপলব্ধ</span>`;
+            }
+        }
+
+        async function saveUsername() {
+            const usernameRaw = document.getElementById('usernameInput').value.trim();
+            if (!usernameRaw || usernameRaw.length < 3) {
+                showToast("ইউজারনেম কমপক্ষে ৩ অক্ষরের হতে হবে", true);
+                return;
+            }
+            
+            const username = usernameRaw.toLowerCase();
+            
+            if (!/^[a-z0-9]+$/.test(username)) {
+                showToast("শুধু ইংরেজি ছোট হাতের অক্ষর ও সংখ্যা ব্যবহার করুন", true);
+                return;
+            }
+            
+            showLoader(true);
+            
+            try {
+                const taken = await isUsernameTaken(username);
+                if (taken) {
+                    const newSuggestion = await generateUniqueUsername(username.replace(/\d+$/, ''));
+                    document.getElementById('usernameInput').value = newSuggestion;
+                    updateURLPreview();
+                    showToast(`নতুন সাজেশন: ${newSuggestion}`, false);
+                    showLoader(false);
+                    return;
+                }
+                
+                // Save to Firestore
+                await db.collection("users").doc(currentUserUID).update({
+                    username: username,
+                    usernameLower: username,
+                    usernameCreatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Show success
+                showSuccessScreen();
+                
+            } catch (error) {
+                console.error(error);
+                showToast("সংরক্ষণ করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।", true);
+            } finally {
+                showLoader(false);
+            }
+        }
+
+        function showSuccessScreen() {
+            const modal = document.getElementById('successModal');
+            const check = document.getElementById('successCheck');
+            
+            modal.style.display = 'flex';
+            
+            // Animate checkmark
+            setTimeout(() => {
+                check.style.strokeDasharray = "80";
+                check.style.strokeDashoffset = "80";
+                check.style.transition = "stroke-dashoffset 700ms ease";
+                check.style.strokeDashoffset = "0";
+            }, 300);
+            
+            setTimeout(() => {
+                window.location.href = "dashboard.html";
+            }, 1850);
+        }
+
+        // Main initialization
+        function initializePage() {
+            // Auth state listener
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    window.location.href = "login.html";
+                    return;
+                }
+                
+                currentUserUID = user.uid;
+                await loadUserProfile();
+            });
+            
+            // Input listeners
+            const usernameInput = document.getElementById('usernameInput');
+            usernameInput.addEventListener('input', () => {
+                updateURLPreview();
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(checkLiveAvailability, 450);
+            });
+            
+            // Buttons
+            document.getElementById('setupBtn').addEventListener('click', saveUsername);
+            document.getElementById('cancelBtn').addEventListener('click', () => {
+                window.location.href = "dashboard.html";
+            });
+            
+            // Prevent form submit on enter
+            document.getElementById('usernameInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    saveUsername();
+                }
+            });
+        }
+
+        // Start the app
+        window.onload = initializePage;
+    </script>
+</body>
+</html>
