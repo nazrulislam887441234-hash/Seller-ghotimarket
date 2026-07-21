@@ -217,16 +217,56 @@ if (!data.username || data.username.trim() === "") {
                             <h4>${p.name}</h4>
                             <p>৳ ${p.price}</p>
                         </div>
-                        <div class="p-actions">
-                            <button class="edit-btn" onclick="editProduct('${p.id}')"><i class="fas fa-edit"></i></button>
-                            <button class="del-btn" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash-alt"></i></button>
-                        </div>
-                    </div>
+                      <div class="p-actions">
+    <button class="edit-btn" onclick="editProduct('${p.id}')">
+        <i class="fas fa-edit"></i>
+    </button>
+
+    <button onclick="copyProductLink('${p.id}','${p.slug || ""}',this)"
+            style="background:#3498db;color:#fff;border:none;padding:10px;border-radius:10px;">
+        <i class="fas fa-copy"></i>
+    </button>
+
+    <button class="del-btn" onclick="deleteProduct('${p.id}')">
+        <i class="fas fa-trash-alt"></i>
+    </button>
+</div>
+    </div>
                 `;
             });
             listDiv.innerHTML = html;
         }
 
+window.copyProductLink = async (id, slug, btn) => {
+
+    const productUrl = slug
+        ? `https://ghotimarket.com/product?${slug}`
+        : `https://ghotimarket.com/product?id=${id}`;
+
+    try {
+
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(productUrl);
+        } else {
+            const textarea = document.createElement("textarea");
+            textarea.value = productUrl;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+        }
+
+        btn.innerHTML = '<i class="fas fa-check"></i>';
+
+        setTimeout(() => {
+            btn.innerHTML = '<i class="fas fa-copy"></i>';
+        }, 2000);
+
+    } catch (e) {
+        alert("লিংক কপি করা যায়নি");
+    }
+
+};
 window.copyShopLink = async () => {
     const url = document.getElementById("shopLink").href;
 
