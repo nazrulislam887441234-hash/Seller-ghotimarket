@@ -192,6 +192,15 @@
       font-weight:600;
     }
     .back-link i{margin-right:5px;}
+.add-btn{
+    background:var(--orange);
+    color:#fff;
+    border:none;
+    padding:0 18px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+}
 </style>
 </head>
 <body>
@@ -244,7 +253,10 @@
     <div class="form-group">
         <label>কিওয়ার্ড আবশ্যক - Add বাটনে ক্লিক করুন)</label>
         <div class="kw-box">
-            <div style="display: flex; gap: 5px;"><input type="text" id="kwInput" placeholder="উদা: পাঞ্জাবি"><button onclick="addKW()" style="background:var(--primary); color:white; border:none; padding:0 15px; border-radius:8px;">Add</button></div>
+            <div style="display: flex; gap: 5px;"><input type="text" id="kwInput" placeholder="উদা: পাঞ্জাবি"><button onclick="addKW()"
+style="background:var(--orange);color:#fff;border:none;padding:0 15px;border-radius:8px;font-weight:bold;cursor:pointer;">
+    Add
+</button></div>
             <div id="kwList"></div>
         </div>
     </div>
