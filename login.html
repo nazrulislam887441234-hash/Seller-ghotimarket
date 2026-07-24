@@ -3,21 +3,41 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login | Ghoti Market</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet" />
+    <title>Login | GHOTI MARKET</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <style>
-        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f4f7f6; }
+        :root { --gm-dark: #2c3e50; --gm-blue: #3498db; --bg: #f4f7f6; }
+        * { box-sizing: border-box; }
         body { font-family: 'Hind Siliguri', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: linear-gradient(135deg, #2c3e50, #4ca1af); padding: 20px; }
-        .box { background: white; padding: 40px 30px; border-radius: 20px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+        .box { background: white; padding: 40px 30px; border-radius: 20px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.25); border-top: 4px solid var(--gm-blue); }
         .logo-img { width: 80px; height: auto; margin-bottom: 15px; }
-        h2 { margin: 0 0 10px; color: #333; font-size: 24px; }
+        h2 { margin: 0 0 5px; color: #333; font-size: 24px; font-weight: 700; }
+        .subtitle { color: #777; margin-bottom: 20px; font-size: 15px; }
         .input-group { position: relative; margin-bottom: 15px; text-align: left; }
-        .input-group i { position: absolute; left: 15px; top: 14px; color: #aaa; }
-        input { width: 100%; padding: 12px 15px 12px 45px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 16px; }
-        button.main-btn { background: var(--accent); color: white; border: none; width: 100%; padding: 14px; border-radius: 10px; cursor: pointer; font-weight: 600; margin-top: 10px; }
-        .linkBtn { background: none; color: #555; border: none; margin-top: 10px; cursor: pointer; display: block; width: 100%; font-size: 14px; text-decoration: underline; }
-        #pageLoader { position: fixed; inset: 0; background: white; display: flex; justify-content: center; align-items: center; z-index: 9999; font-weight: bold; }
+        .input-group i { position: absolute; left: 15px; top: 14px; color: var(--gm-blue); }
+        input { width: 100%; padding: 12px 15px 12px 45px; border: 2px solid #eee; border-radius: 10px; font-size: 16px; }
+        input:focus { outline: none; border-color: var(--gm-blue); }
+        button.main-btn { background: linear-gradient(90deg, var(--gm-dark), var(--gm-blue)); color: white; border: none; width: 100%; padding: 14px; border-radius: 10px; cursor: pointer; font-weight: 600; margin-top: 10px; font-size: 16px; transition: 0.3s; }
+        button.main-btn:hover { transform: translateY(-2px); }
+        .linkBtn { background: none; color: var(--gm-blue); border: none; margin-top: 10px; cursor: pointer; display: block; width: 100%; font-size: 14px; font-weight: 600; text-decoration: none; }
+        .linkBtn:hover { text-decoration: underline; }
+        #pageLoader { position: fixed; inset: 0; background: white; display: flex; justify-content: center; align-items: center; z-index: 9999; font-weight: bold; color: var(--gm-dark); }
+
+        /* GHOTI MARKET Custom Popup */
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(44,62,80,0.7); display: none; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(5px); }
+        .popup { background: white; padding: 30px 25px; border-radius: 20px; max-width: 350px; width: 90%; text-align: center; border-top: 4px solid var(--gm-blue); animation: popIn 0.3s ease; }
+        @keyframes popIn { from {transform: scale(0.8); opacity: 0;} to {transform: scale(1); opacity: 1;} }
+        .popup-icon { font-size: 50px; margin-bottom: 12px; }
+        .popup.success { border-top-color: #27ae60; }
+        .popup.success .popup-icon { color: #27ae60; }
+        .popup.error { border-top-color: #e74c3c; }
+        .popup.error .popup-icon { color: #e74c3c; }
+        .popup.warning { border-top-color: #f39c12; }
+        .popup.warning .popup-icon { color: #f39c12; }
+        .popup h2 { margin: 0 0 10px; font-size: 20px; color: var(--gm-dark); }
+        .popup p { margin: 0 0 20px; color: #555; font-size: 14px; }
+        .popup-btn { padding: 12px 30px; border: none; border-radius: 10px; background: linear-gradient(90deg, var(--gm-dark), var(--gm-blue)); color: white; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -26,7 +46,7 @@
     <div class="box">
         <img src="https://www.ghotimarket.com/logo.png" alt="Ghoti Market Logo" class="logo-img" />
         <h2>GHOTI MARKET</h2>
-        <h2>Seller Login</h2>
+        <p class="subtitle">Seller Login</p>
         <div class="input-group">
             <i class="fas fa-envelope"></i>
             <input type="email" id="email" placeholder="আপনার ইমেইল" />
@@ -42,10 +62,19 @@
         </a>
     </div>
 
+    <!-- Custom Popup -->
+    <div class="popup-overlay" id="popupOverlay" onclick="closePopup()">
+        <div class="popup" id="popupBox" onclick="event.stopPropagation()">
+            <div class="popup-icon" id="popupIcon"></div>
+            <h2 id="popupTitle"></h2>
+            <p id="popupMsg"></p>
+            <button class="popup-btn" onclick="closePopup()">ঠিক আছে</button>
+        </div>
+    </div>
+
     <script type="module">
-        // Firebase মডিউলগুলো লোড হওয়ার জন্য অপেক্ষা না করে দ্রুত স্ক্রিপ্ট রান করার জন্য
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket", authDomain: "ghotimarket.firebaseapp.com" };
@@ -55,7 +84,23 @@
 
         setPersistence(auth, browserLocalPersistence);
 
-        // ইউজার চেক করার সময় লডার সরানো
+        function showPopup(type, title, msg) {
+            const popupBox = document.getElementById('popupBox');
+            popupBox.className = `popup ${type}`;
+            document.getElementById('popupIcon').innerHTML = 
+                type === 'success' ? '<i class="fas fa-check-circle"></i>' : 
+                type === 'warning' ? '<i class="fas fa-exclamation-triangle"></i>' : 
+                '<i class="fas fa-times-circle"></i>';
+            document.getElementById('popupTitle').innerText = title;
+            document.getElementById('popupMsg').innerText = msg;
+            document.getElementById('popupOverlay').style.display = 'flex';
+        }
+        
+        window.closePopup = function() {
+            document.getElementById('popupOverlay').style.display = 'none';
+        }
+
+        // ইউজার চেক
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const snap = await getDoc(doc(db, "users", user.uid));
@@ -69,32 +114,39 @@
             }
         });
 
+        // Login Button
         document.getElementById('loginBtn').addEventListener('click', async () => {
             const e = document.getElementById('email').value.trim();
             const p = document.getElementById('pass').value;
-            if(!e || !p) return alert("ইমেইল এবং পাসওয়ার্ড দিন!");
+            if(!e || !p) {
+                showPopup("warning", "তথ্য দিন!", "ইমেইল এবং পাসওয়ার্ড উভয়ই দিন!");
+                return;
+            }
+
+            document.getElementById('loginBtn').disabled = true;
+            document.getElementById('loginBtn').innerText = "লগইন হচ্ছে...";
 
             try {
                 const userCredential = await signInWithEmailAndPassword(auth, e, p);
                 const snap = await getDoc(doc(db, "users", userCredential.user.uid));
                 if(!snap.exists() || !snap.data().verified) {
-                    alert("অ্যাকাউন্ট ভেরিফাইড হয়নি!");
+                    showPopup("error", "অ্যাক্সেস নেই!", "আপনার অ্যাকাউন্ট এখনো ভেরিফাইড হয়নি।");
                     await auth.signOut();
                 } else {
-                    window.location.href = "dashboard.html";
+                    showPopup("success", "স্বাগতম!", "লগইন সফল হয়েছে।");
+                    setTimeout(() => { window.location.href = "dashboard.html"; }, 1500);
                 }
             } catch (err) {
-                alert("ভুল ইমেইল অথবা পাসওয়ার্ড!");
+                showPopup("error", "লগইন ব্যর্থ!", "ভুল ইমেইল অথবা পাসওয়ার্ড দিয়েছেন।");
+            } finally {
+                document.getElementById('loginBtn').disabled = false;
+                document.getElementById('loginBtn').innerText = "প্রবেশ করুন";
             }
         });
 
-        document.getElementById('resetBtn').addEventListener('click', async () => {
-            const email = document.getElementById('email').value.trim();
-            if(!email) return alert("আগে আপনার ইমেইলটি লিখুন!");
-            try {
-                await sendPasswordResetEmail(auth, email);
-                alert("রিসেট লিংক ইমেইলে পাঠানো হয়েছে।");
-            } catch (err) { alert("ভুল ইমেইল!"); }
+        // Password Reset Button -> অন্য পেজে পাঠাবে
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            window.location.href = "/forgot-password.html"; // এখানে আপনার রিসেট পেজের লিংক
         });
     </script>
 </body>
