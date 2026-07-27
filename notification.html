@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications | Ghoti Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --orange: #FF6A00;
+            --orange-light: #FFF4EC;
+            --orange-dark: #E55F00;
+            --white: #FFFFFF;
+            --text: #1A1A1A;
+            --text-light: #666666;
+            --border: rgba(255, 106, 0, 0.15);
+            --shadow: 0 10px 30px rgba(255, 106, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #FFF4EC 0%, #FFF9F5 50%, #FFFFFF 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 15px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+
+        .header-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-btn {
+            background: var(--orange-light);
+            color: var(--orange);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 18px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .back-btn:hover {
+            background: var(--orange);
+            color: var(--white);
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-title i {
+            color: var(--orange);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            background: rgba(0,0,0,0.05);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .icon-btn:hover {
+            background: var(--orange-light);
+            color: var(--orange);
+        }
+
+        /* Container */
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Search & Filter Bar */
+        .controls-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 240px;
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--text);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-box input {
+            padding-left: 45px;
+        }
+
+        .form-control:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.15);
+            background: var(--white);
+        }
+
+        .filter-select {
+            width: 160px;
+        }
+
+        /* Notification List */
+        .notification-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .notif-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .notif-card.unread {
+            background: #FFFFFF;
+            border-color: rgba(255, 106, 0, 0.4);
+            box-shadow: 0 6px 25px rgba(255, 106, 0, 0.12);
+        }
+
+        .notif-card.unread::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--orange);
+        }
+
+        .notif-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 106, 0, 0.15);
+        }
+
+        .notif-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 14px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: var(--orange-light);
+        }
+
+        .notif-placeholder-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 14px;
+            background: var(--orange-light);
+            color: var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .notif-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .notif-header-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .notif-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .status-badge {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-unread {
+            background: rgba(255, 106, 0, 0.15);
+            color: var(--orange);
+        }
+
+        .badge-read {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--text-light);
+        }
+
+        .notif-message {
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.5;
+            white-space: pre-line;
+        }
+
+        .notif-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 8px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .notif-time {
+            font-size: 12px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .notif-time i {
+            color: var(--orange);
+        }
+
+        .notif-link-btn {
+            background: var(--orange-light);
+            color: var(--orange);
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .notif-link-btn:hover {
+            background: var(--orange);
+            color: var(--white);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 20px;
+            border: 1px dashed var(--border);
+        }
+
+        .empty-icon {
+            font-size: 54px;
+            color: var(--orange);
+            margin-bottom: 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+
+        .empty-desc {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        /* Skeleton Loaders */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 10px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-card {
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .skeleton-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 14px;
+            flex-shrink: 0;
+        }
+
+        .skeleton-lines {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .skeleton-line {
+            height: 14px;
+        }
+
+        /* Toast Container */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--white);
+            padding: 14px 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            border-left: 4px solid var(--orange);
+            animation: slideIn 0.3s ease forwards;
+            max-width: 350px;
+        }
+
+        .toast.success { border-left-color: #4CAF50; }
+        .toast.success i { color: #4CAF50; }
+        .toast.error { border-left-color: #F44336; }
+        .toast.error i { color: #F44336; }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        @media(max-width: 600px) {
+            .notif-card {
+                flex-direction: column;
+            }
+            .notif-img, .notif-placeholder-img {
+                width: 100%;
+                height: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+            <div class="header-title">
+                <i class="fas fa-bell"></i>
+                <span>নোটিফিকেশনসমূহ</span>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" id="markAllReadBtn" title="সব পঠিত হিসেবে চিহ্নিত করুন"><i class="fas fa-check-double"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- Search & Filter Controls -->
+        <div class="controls-card">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" class="form-control" placeholder="নোটিফিকেশন খুঁজুন...">
+            </div>
+            <div class="search-box" style="flex: 0 0 auto;">
+                <select id="filterSelect" class="form-control filter-select">
+                    <option value="all">সব নোটিফিকেশন</option>
+                    <option value="unread">অপঠিত (Unread)</option>
+                    <option value="read">পঠিত (Read)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Notification List -->
+        <div class="notification-list" id="notificationList">
+            <!-- Skeleton Loaders initially -->
+            <div class="skeleton-card">
+                <div class="skeleton skeleton-img"></div>
+                <div class="skeleton-lines">
+                    <div class="skeleton skeleton-line" style="width: 50%;"></div>
+                    <div class="skeleton skeleton-line" style="width: 100%;"></div>
+                    <div class="skeleton skeleton-line" style="width: 30%;"></div>
+                </div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton skeleton-img"></div>
+                <div class="skeleton-lines">
+                    <div class="skeleton skeleton-line" style="width: 50%;"></div>
+                    <div class="skeleton skeleton-line" style="width: 100%;"></div>
+                    <div class="skeleton skeleton-line" style="width: 30%;"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Firebase SDK & Application Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot, doc, setDoc, getDocs, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
+            authDomain: "ghotimarket.firebaseapp.com",
+            projectId: "ghotimarket",
+            storageBucket: "ghotimarket.firebasestorage.app",
+            messagingSenderId: "481257644093",
+            appId: "1:481257644093:web:0dfc3699d6b3c86afeca54"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        let messaging = null;
+        try {
+            messaging = getMessaging(app);
+        } catch(e) {
+            console.warn("FCM not supported in this browser context", e);
+        }
+
+        let currentUser = null;
+        let allNotifications = [];
+        let userReadStatusMap = {};
+
+        // Toast Utility
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            if(!container) return;
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'}"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Bengali Date Formatter
+        function formatBengaliDateTime(timestamp) {
+            if (!timestamp) return "এইমাত্র";
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            
+            const months = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+            const day = date.getDate();
+            const month = months[date.getMonth()];
+            const year = date.getFullYear();
+
+            const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+            const toBnNum = (str) => String(str).replace(/\d/g, d => bnDigits[d]);
+
+            const formattedDay = toBnNum(day);
+            const formattedYear = toBnNum(year);
+
+            let hours = date.getHours();
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const formattedTime = `${toBnNum(hours)}:${toBnNum(minutes)} ${ampm}`;
+
+            return `${formattedDay} ${month} ${formattedYear}, ${formattedTime}`;
+        }
+
+        // Authentication State Handler
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            currentUser = user;
+            
+            // Request FCM Permission & Save Token
+            await initFCM(user.uid);
+
+            // Load User Read Status & Notifications
+            initRealtimeData(user.uid);
+        });
+
+        // FCM Initialization & Token Storage
+        async function initFCM(uid) {
+            if (!messaging) return;
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    const token = await getToken(messaging, { 
+                        vapidKey: "BEl42iUYgUiv5-k9G9Vw8w9G9Vw8w9G9Vw8w9G9Vw8w9G9Vw8w9G9Vw8w9G9Vw8w9G9Vw8w9G9Vw8w9G9" // Replace with valid public VAPID key if required
+                    }).catch(err => {
+                        console.warn("FCM getToken error:", err);
+                        return null;
+                    });
+
+                    if (token) {
+                        const tokenRef = doc(db, "fcm_tokens", `${uid}_${token.substring(0, 10)}`);
+                        await setDoc(tokenRef, {
+                            uid: uid,
+                            token: token,
+                            device: navigator.userAgent,
+                            createdAt: serverTimestamp()
+                        }, { merge: true });
+                    }
+                }
+            } catch (err) {
+                console.error("FCM Setup Error:", err);
+            }
+        }
+
+        // Realtime Listeners for Notifications and Read Status
+        function initRealtimeData(uid) {
+            // 1. Listen to user_notifications for this user
+            onSnapshot(query(collection(db, "user_notifications"), where("userId", "==", uid)), (userNotifSnap) => {
+                userReadStatusMap = {};
+                userNotifSnap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    userReadStatusMap[data.notificationId] = data.read;
+                });
+                renderNotifications();
+            }, (error) => {
+                console.error("Error loading user read states:", error);
+            });
+
+            // 2. Listen to main notifications collection
+            const notifQuery = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
+            onSnapshot(notifQuery, (snapshot) => {
+                allNotifications = [];
+                snapshot.forEach(docSnap => {
+                    allNotifications.push({
+                        id: docSnap.id,
+                        ...docSnap.data()
+                    });
+                });
+                renderNotifications();
+            }, (error) => {
+                console.error("Error loading notifications:", error);
+                document.getElementById('notificationList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon"><i class="fas fa-triangle-exclamation"></i></div>
+                        <div class="empty-title">লোড করতে সমস্যা হয়েছে</div>
+                        <div class="empty-desc">দয়া করে ইন্টারনেট সংযোগ চেক করুন।</div>
+                    </div>
+                `;
+            });
+        }
+
+        // Render Notifications List
+        function renderNotifications() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            const filterValue = document.getElementById('filterSelect').value;
+            const listContainer = document.getElementById('notificationList');
+
+            let filtered = allNotifications.filter(item => {
+                const title = (item.title || "").toLowerCase();
+                const message = (item.message || "").toLowerCase();
+                const matchesSearch = title.includes(searchTerm) || message.includes(searchTerm);
+                
+                const isRead = userReadStatusMap[item.id] === true;
+                if (filterValue === 'unread') return matchesSearch && !isRead;
+                if (filterValue === 'read') return matchesSearch && isRead;
+                return matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon"><i class="fas fa-bell-slash"></i></div>
+                        <div class="empty-title">কোনো নোটিফিকেশন নেই</div>
+                        <div class="empty-desc">আপনার জন্য বর্তমানে কোনো নতুন নোটিফিকেশন উপলব্ধ নেই।</div>
+                    </div>
+                `;
+                return;
+            }
+
+            listContainer.innerHTML = filtered.map(item => {
+                const isRead = userReadStatusMap[item.id] === true;
+                const cardClass = isRead ? "notif-card" : "notif-card unread";
+                const badgeClass = isRead ? "status-badge badge-read" : "status-badge badge-unread";
+                const badgeText = isRead ? "পঠিত" : "অপঠিত";
+
+                return `
+                    <div class="${cardClass}" onclick="window.handleNotificationClick('${item.id}', '${item.link || ''}')">
+                        ${item.image ? `<img src="${item.image}" class="notif-img" alt="Banner" loading="lazy">` : `<div class="notif-placeholder-img"><i class="fas fa-bullhorn"></i></div>`}
+                        <div class="notif-content">
+                            <div class="notif-header-row">
+                                <span class="notif-title">${escapeHtml(item.title)}</span>
+                                <span class="${badgeClass}">${badgeText}</span>
+                            </div>
+                            <div class="notif-message">${escapeHtml(item.message)}</div>
+                            <div class="notif-footer">
+                                <span class="notif-time"><i class="fas fa-clock"></i> ${formatBengaliDateTime(item.createdAt)}</span>
+                                ${item.link ? `<a href="${escapeHtml(item.link)}" target="_blank" class="notif-link-btn" onclick="event.stopPropagation(); window.handleNotificationClick('${item.id}', '${item.link}')"><i class="fas fa-external-link-alt"></i> ভিজিট করুন</a>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        // Mark Single Notification as Read and Navigate if Link exists
+        window.handleNotificationClick = async function(notificationId, link) {
+            if (!currentUser) return;
+            
+            const userNotifDocId = `${currentUser.uid}_${notificationId}`;
+            try {
+                await setDoc(doc(db, "user_notifications", userNotifDocId), {
+                    userId: currentUser.uid,
+                    notificationId: notificationId,
+                    read: true,
+                    readAt: serverTimestamp()
+                }, { merge: true });
+            } catch (err) {
+                console.error("Failed to mark notification read:", err);
+            }
+
+            if (link) {
+                window.open(link, '_blank');
+            }
+        };
+
+        // Mark All Notifications as Read
+        document.getElementById('markAllReadBtn').addEventListener('click', async () => {
+            if (!currentUser || allNotifications.length === 0) return;
+            try {
+                const batch = writeBatch(db);
+                allNotifications.forEach(item => {
+                    const userNotifDocId = `${currentUser.uid}_${item.id}`;
+                    const docRef = doc(db, "user_notifications", userNotifDocId);
+                    batch.set(docRef, {
+                        userId: currentUser.uid,
+                        notificationId: item.id,
+                        read: true,
+                        readAt: serverTimestamp()
+                    }, { merge: true });
+                });
+                await batch.commit();
+                showToast("সব নোটিফিকেশন পঠিত হিসেবে চিহ্নিত করা হয়েছে", "success");
+            } catch (err) {
+                console.error("Error marking all read:", err);
+                showToast("স্ট্যাটাস আপডেট করতে সমস্যা হয়েছে", "error");
+            }
+        });
+
+        // Search & Filter Event Listeners
+        document.getElementById('searchInput').addEventListener('input', renderNotifications);
+        document.getElementById('filterSelect').addEventListener('change', renderNotifications);
+
+    </script>
+</body>
+</html>
