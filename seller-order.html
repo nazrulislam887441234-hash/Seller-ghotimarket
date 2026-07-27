@@ -183,8 +183,17 @@ header{
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, query, where, onSnapshot, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  onSnapshot,
+  doc,
+  getDoc,
+  updateDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 // ========== PASTE YOUR FIREBASE CONFIG HERE ==========
 const firebaseConfig = {
   apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
@@ -206,14 +215,42 @@ let confirmCallback = null;
 let isFirstLoad = true;
 
 // Auth Check
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
+
+  // লগইন না থাকলে
   if (!user) {
     window.location.href = "index.html";
-  } else {
-    currentUser = user;
-    document.getElementById('sellerName').innerText = user.displayName || user.email;
-    loadOrders();
+    return;
   }
+
+  // ইউজারের তথ্য আনুন
+  const userRef = doc(db, "users", user.uid);
+  const userSnap = await getDoc(userRef);
+
+  // ইউজার না থাকলে
+  if (!userSnap.exists()) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  const userData = userSnap.data();
+
+  // Subscription Lock Check
+  if (
+      !userData.profileUnlockedUntil ||
+      userData.profileUnlockedUntil < Date.now()
+  ) {
+      window.location.href = "locked.html";
+      return;
+  }
+
+  // Dashboard চালু
+  currentUser = user;
+  document.getElementById("sellerName").innerText =
+      userData.shopName || user.displayName || user.email;
+
+  loadOrders();
+
 });
 
 // Logout
