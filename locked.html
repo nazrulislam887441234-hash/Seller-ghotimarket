@@ -1,63 +1,215 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Locked | Ghoti Market</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root { --primary: #2c3e50; --danger: #e74c3c; }
-        body { font-family: 'Hind Siliguri', sans-serif; background: #f4f7f6; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        
-        .lock-container { background: white; padding: 40px 30px; border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); max-width: 400px; width: 100%; text-align: center; border-top: 5px solid var(--danger); margin-bottom: 20px; }
-        .lock-icon { font-size: 60px; color: var(--danger); background: #ffebee; width: 100px; height: 100px; line-height: 100px; border-radius: 50%; margin: 0 auto 20px; animation: shake 0.5s ease-in-out infinite alternate; }
-        @keyframes shake { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
-        
-        h1 { font-size: 24px; color: #333; margin: 0 0 10px; }
-        p { color: #666; font-size: 15px; margin-bottom: 20px; }
+<!DOCTYPE html> 
+<html lang="bn">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Account Locked | Ghoti Market</title>  
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">  
+  <style>  
+    :root { 
+        --primary: #2c3e50; 
+        --danger: #e74c3c; 
+        --success: #27ae60;
+        --bg: #f4f7f6;
+        --card-bg: #ffffff;
+    }  
+    * { box-sizing: border-box; }
+    body { 
+        font-family: 'Hind Siliguri', sans-serif; 
+        background: linear-gradient(135deg, #f4f7f6 0%, #e8f0fe 100%); 
+        margin: 0; 
+        padding: 20px; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        min-height: 100vh;
+    }  
 
-        .pack-card { background: white; padding: 20px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; max-width: 400px; width: 100%; }
-        .price { font-size: 28px; font-weight: bold; color: #2c3e50; }
-        .wa-btn { background: #25d366; color: white; padding: 15px; border-radius: 12px; display: block; text-decoration: none; font-weight: bold; margin-top: 10px; }
-        .wa-btn:hover { background: #1ebe57; }
-    </style>
-</head>
-<body>
+    /* Lock Container */
+    .lock-container { 
+        background: var(--card-bg); 
+        padding: 40px 30px; 
+        border-radius: 25px; 
+        box-shadow: 0 15px 40px rgba(231, 76, 60, 0.15); 
+        max-width: 450px; 
+        width: 100%; 
+        text-align: center; 
+        border-top: 5px solid var(--danger); 
+        margin-bottom: 30px; 
+        animation: fadeIn 0.6s ease;
+    }  
+    .lock-icon { 
+        font-size: 55px; 
+        color: var(--danger); 
+        background: linear-gradient(135deg, #ffebee, #ffcdd2); 
+        width: 90px; 
+        height: 90px; 
+        line-height: 90px; 
+        border-radius: 50%; 
+        margin: 0 auto 20px; 
+        animation: shake 0.8s ease-in-out infinite alternate; 
+    }  
+    @keyframes shake { 
+        0% { transform: rotate(-8deg) scale(1); } 
+        100% { transform: rotate(8deg) scale(1.05); } 
+    }  
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+      
+    h1 { font-size: 26px; color: var(--primary); margin: 0 0 10px; font-weight: 600; }  
+    p { color: #666; font-size: 15px; margin-bottom: 0; line-height: 1.6; }  
 
-    <div class="lock-container">
-        <div class="lock-icon">
-            <i class="fas fa-lock"></i>
-        </div>
-        <h1>আপনার একাউন্ট লক করা</h1>
-        <p>আপনার পণ্যের প্রমোশন এবং সেলার ড্যাশবোর্ড সচল রাখতে নিচে থেকে যেকোনো একটি সাবস্ক্রিপশন কিনুন।</p>
-    </div>
+    /* Plans Grid */
+    #plans { 
+        width: 100%; 
+        max-width: 1000px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        padding: 10px;
+    }
 
-    <div id="plans" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-        </div>
+    /* Pro Pack Card */
+    .pack-card { 
+        background: var(--card-bg); 
+        padding: 25px 20px; 
+        border-radius: 20px; 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+        text-align: center; 
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+        animation: fadeIn 0.6s ease;
+    }  
+    .pack-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(44, 62, 80, 0.15);
+        border-color: var(--primary);
+    }
+    .pack-card h3 {
+        font-size: 20px;
+        color: var(--primary);
+        margin: 0 0 10px;
+    }
+    .price { 
+        font-size: 32px; 
+        font-weight: bold; 
+        color: var(--success); 
+        margin: 10px 0;
+    }  
+    .price span { font-size: 14px; color: #888; font-weight: 400; }
+    .pack-card p {
+        font-size: 14px;
+        color: #555;
+        white-space: pre-line;
+        min-height: 60px;
+    }
 
-    <script type="module">
-        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        
-        const firebaseConfig = { projectId: "ghotimarket" };
-        const db = getFirestore(initializeApp(firebaseConfig));
+    /* Popular Badge */
+    .pack-card.popular::before {
+        content: "সবচেয়ে জনপ্রিয়";
+        position: absolute;
+        top: 15px;
+        right: -35px;
+        background: var(--danger);
+        color: white;
+        padding: 5px 40px;
+        font-size: 12px;
+        font-weight: bold;
+        transform: rotate(45deg);
+    }
 
-        onSnapshot(collection(db, "packages"), snap => {
-            let html = "";
-            snap.forEach(d => {
-                let p = d.data();
-                let waLink = `https://wa.me/8801316487435?text=আমি ${p.name} টি কিনতে চাই। দাম: ${p.price} টাকা, মেয়াদ: ${p.days} দিন।`;
-                html += `<div class='pack-card'>
-                    <h3 style="margin-top:0">${p.name}</h3>
-                    <div class='price'>৳ ${p.price}</div>
-                    <p style="margin:5px 0">মেয়াদ: ${p.days} দিন</p>
-                    <p style='white-space:pre-line; color:#555;'>${p.desc}</p>
-                    <a href='${waLink}' class='wa-btn'><i class="fab fa-whatsapp"></i> এই প্যাকটি কিনুন</a>
-                </div>`;
-            });
-            document.getElementById('plans').innerHTML = html;
-        });
-    </script>
-</body>
+    /* WhatsApp Button */
+    .wa-btn { 
+        background: linear-gradient(135deg, #25d366, #1ebe57); 
+        color: white; 
+        padding: 14px; 
+        border-radius: 12px; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none; 
+        font-weight: bold; 
+        margin-top: 15px; 
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }  
+    .wa-btn:hover { 
+        background: linear-gradient(135deg, #1ebe57, #17a44a); 
+        transform: scale(1.03);
+    }  
+    .wa-btn i { font-size: 20px; }
+
+    /* Mobile Responsive */
+    @media (max-width: 600px) {
+        .lock-container { padding: 30px 20px; }
+        h1 { font-size: 22px; }
+        #plans { grid-template-columns: 1fr; }
+    }
+</style>
+
+</head>  
+<body>  <div class="lock-container">  
+    <div class="lock-icon">  
+        <i class="fas fa-lock"></i>  
+    </div>  
+    <h1>আপনার একাউন্ট লক করা</h1>  
+    <p>আপনার পণ্যের প্রমোশন এবং সেলার ড্যাশবোর্ড সচল রাখতে নিচে থেকে যেকোনো একটি সাবস্ক্রিপশন কিনুন।</p>  
+</div>  
+
+<div id="plans" style="width: 100%; display: flex; flex-direction: column; align-items: center;">  
+<script type="module">  
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+    apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+    authDomain: "ghotimarket.firebaseapp.com",
+    projectId: "ghotimarket",
+    storageBucket: "ghotimarket.appspot.com",
+    messagingSenderId: "9382019283",
+    appId: "1:9382019283:web:abc12345"
+};
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    // 1. পেজ লোড হওয়ার সাথে সাথেই Auth Check
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            console.log("Seller Logged In:", user.uid);
+            loadPackages(); // লগিন থাকলে প্যাকেজ লোড করো
+        } else {
+            console.log("Guest User - Redirecting");
+            window.location.href = "login.html"; // লগিন না থাকলে Login পেজে পাঠায় দাও
+        }
+    });      
+
+    // 2. প্যাকেজ লোড করার ফাংশন
+    function loadPackages() {
+        onSnapshot(collection(db, "packages"), snap => {  
+            let html = "";  
+            snap.forEach(d => {  
+                let p = d.data();  
+                let waLink = `https://wa.me/8801316487435?text=আমি ${p.name} প্যাকটি কিনতে চাই। দাম: ${p.price} টাকা, মেয়াদ: ${p.days} দিন।`;  
+                html += `<div class='pack-card'>  
+                    <h3 style="margin-top:0">${p.name}</h3>  
+                    <div class='price'>৳ ${p.price}</div>  
+                    <p style="margin:5px 0">মেয়াদ: ${p.days} দিন</p>  
+                    <p style='white-space:pre-line; color:#555;'>${p.desc}</p>  
+                    <a href='${waLink}' target="_blank" class='wa-btn'><i class="fab fa-whatsapp"></i> এই প্যাকটি কিনুন</a>  
+                </div>`;  
+            });  
+            document.getElementById('plans').innerHTML = html;  
+        });  
+    }
+</script>
+
+</body>  
 </html>
