@@ -400,38 +400,40 @@ window.closeModal = () => document.getElementById('detailsModal').classList.remo
 // Update Status
 window.requestStatusUpdate = (id, status) => {
   if (status === 'Update Status') return;
-  document.getElementById('confirmText').innerText = `Are you sure to change status to "${status}"?`;
+
+  document.getElementById('confirmText').innerText =
+    `Are you sure to change status to "${status}"?`;
+
   document.getElementById('confirmModal').classList.add('show');
+
   confirmCallback = async () => {
-  const order = allOrders.find(o => o.id === id);
-  if (!order) return;
+    const order = allOrders.find(o => o.id === id);
+    if (!order) return;
 
-  try {
+    try {
+      await Promise.all([
+        updateDoc(doc(db, "orders", id), {
+          orderStatus: status,
+          deliveryStatus: status,
+          updatedAt: serverTimestamp()
+        }),
 
-    await Promise.all([
-      updateDoc(doc(db, "orders", id), {
-        orderStatus: status,
-        deliveryStatus: status,
-        updatedAt: serverTimestamp()
-      }),
+        updateDoc(doc(db, "order_tracking", order.orderTrackId), {
+          orderStatus: status,
+          deliveryStatus: status,
+          updatedAt: serverTimestamp()
+        })
+      ]);
 
-      updateDoc(doc(db, "order_tracking", order.orderTrackId), {
-        orderStatus: status,
-        deliveryStatus: status,
-        updatedAt: serverTimestamp()
-      })
-    ]);
+      showToast("Status updated successfully!");
 
-    showToast("Status updated successfully!");
-
-  } catch (e) {
-
-    console.error(e);
-    alert(e.message);
-
-  }
-};
+    } catch (e) {
+      console.error(e);
+      alert(e.message);
+    }
   };
+
+}; // ← এই দুইটা ব্রেস এবং সেমিকোলন ছিল না
 window.closeConfirm = () => document.getElementById('confirmModal').classList.remove('show');
 document.getElementById('confirmUpdateBtn').onclick = () => { confirmCallback(); closeConfirm(); };
 
