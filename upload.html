@@ -3,122 +3,472 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>পণ্য আপলোড - ঘটি মার্কেট সেলার প্যানেল</title>
-    <link rel="stylesheet" href="upload.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Upload Product | Ghoti Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+ <style>
+    :root {
+      --orange: #FF6A00;
+      --orange-dark: #E55A00;
+      --green: #22c55e;
+      --red: #e11d48;
+      --bg: #FFF8F3;
+      --card: #fff;
+      --text: #1a1a1a;
+      --muted: #666;
+      --border: #FFE3D1;
+      --shadow: 0 8px 30px rgba(255,106,0,0.08);
+    }
+    *{box-sizing:border-box;}
+    body {
+      font-family: -apple-system,BlinkMacSystemFont,'Segoe UI','Hind Siliguri', sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 0;
+      color: var(--text);
+      padding-bottom: 80px;
+    }
+    /* Lock Screen */
+    #lock-screen {
+      position: fixed; inset: 0; background: var(--card); z-index: 9999;
+      display: flex; justify-content: center; align-items: center;
+      flex-direction: column; gap:10px;
+    }
+    #lock-screen i{color:var(--orange);}
+
+   .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--card);
+      padding: 20px;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    @media(min-width:768px){
+     .container{margin:20px auto;border-radius:20px;box-shadow:var(--shadow);border:1px solid var(--border);}
+    }
+
+    /* Warning */
+   .warning-box {
+      background: #FEF2F2;
+      border: 1.5px solid #FECACA;
+      color: var(--red);
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 700;
+      display:flex;align-items:center;gap:8px;justify-content:center;
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--orange);
+      margin-bottom: 25px;
+      font-size: 22px;
+      font-weight: 800;
+      display:flex;align-items:center;justify-content:center;gap:10px;
+    }
+
+    /* Form */
+   .form-group { margin-bottom: 18px; }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text);
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 15px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 15px;
+      background: #fff;
+      outline: none;
+      transition: 0.2s;
+      font-family: inherit;
+    }
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF6A00' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 15px center;
+      background-size: 18px;
+      padding-right: 40px;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(255,106,0,0.1);
+    }
+    textarea{min-height:100px;resize:vertical;}
+
+    /* Image Upload */
+   .img-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+   .img-box {
+      background: #FFF8F3;
+      border: 2px dashed var(--border);
+      border-radius: 14px;
+      height: 110px;
+      display: flex;
+      flex-direction:column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      color:var(--muted);
+      font-size:12px;
+      gap:5px;
+    }
+   .img-box i{font-size:22px;color:var(--orange);}
+   .img-box input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+   .img-box img { width: 100%; height: 100%; object-fit: cover; display: none; position:absolute;inset:0; }
+
+    /* Keywords */
+   .kw-box {
+      background: #FFF8F3;
+      padding: 15px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+    }
+   .kw-input-row{display:flex;gap:8px;}
+    #kwList { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+   .keyword-tag {
+      background: var(--orange);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight:600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+   .keyword-tag i{cursor:pointer;font-size:12px;}
+
+    /* Button */
+   .up-btn {
+      width: 100%;
+      padding: 17px;
+      background: var(--green);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 17px;
+      margin-top: 20px;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(34,197,94,0.25);
+      display:flex;align-items:center;justify-content:center;gap:8px;
+    }
+   .up-btn:disabled { background: #ccc; box-shadow:none; }
+
+   .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 18px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight:600;
+    }
+   .back-link i{margin-right:5px;}
+
+   .add-btn{
+      background:var(--orange);
+      color:#fff;
+      border:none;
+      padding:0 18px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    /* Custom Popup */
+   .popup-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000;
+      display: none; justify-content: center; align-items: center;
+    }
+   .popup-box {
+      background: white; padding: 25px; border-radius: 16px; max-width: 400px;
+      width: 90%; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+   .popup-box i { font-size: 40px; margin-bottom: 15px; }
+   .popup-box.success i { color: var(--green); }
+   .popup-box.error i { color: var(--red); }
+   .popup-box h3 { margin: 0 0 10px 0; font-size: 18px; }
+   .popup-box p { margin: 0 0 20px 0; color: var(--muted); font-size: 14px; }
+   .popup-btn {
+      background: var(--orange); color: white; border: none; padding: 12px 25px;
+      border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%;
+    }
+</style>
+
 </head>
 <body>
-    <div class="seller-wrapper">
-        <!-- Header -->
-        <header class="seller-header">
-            <div class="logo-area">
-                <h1>ঘটি মার্কেট</h1>
-                <span>সেলার প্যানেল</span>
-            </div>
-            <div class="seller-info">
-                <span id="shopNameDisplay">লোড হচ্ছে...</span>
-                <button id="logoutBtn" class="logout-btn">লগআউট</button>
-            </div>
-        </header>
-
-        <!-- Main Form Container -->
-        <main class="form-container">
-            <div class="form-card">
-                <h2>নতুন পণ্য যুক্ত করুন</h2>
-                <p class="form-subtitle">আপনার পণ্যের সঠিক তথ্য প্রদান করুন</p>
-
-                <form id="productUploadForm">
-                    <!-- Product Name -->
-                    <div class="input-group">
-                        <label for="productName">পণ্যের নাম <span class="required">*</span></label>
-                        <input type="text" id="productName" placeholder="যেমন: অরিজিনাল অ্যাপল আইফোন" required>
-                    </div>
-
-                    <!-- Category -->
-                    <div class="input-group">
-                        <label for="productCategory">ক্যাটাগরি <span class="required">*</span></label>
-                        <select id="productCategory" required>
-                            <option value="">ক্যাটাগরি নির্বাচন করুন</option>
-                        </select>
-                    </div>
-
-                    <!-- Description -->
-                    <div class="input-group">
-                        <label for="productDescription">পণ্যের বিবরণ <span class="required">*</span></label>
-                        <textarea id="productDescription" rows="4" placeholder="পণ্যের বিস্তারিত বিবরণ লিখুন..." required></textarea>
-                    </div>
-
-                    <!-- Pricing Row -->
-                    <div class="price-row">
-                        <div class="input-group">
-                            <label for="productPrice">বর্তমান মূল্য (টাকা) <span class="required">*</span></label>
-                            <input type="number" id="productPrice" placeholder="৮৫০০০" min="0" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="productOldPrice">পূর্বের মূল্য (টাকা)</label>
-                            <input type="number" id="productOldPrice" placeholder="৯০০০০" min="0">
-                        </div>
-                    </div>
-
-                    <!-- Images Upload Section -->
-                    <div class="images-section">
-                        <label>পণ্যের ছবি (সর্বোচ্চ ২টি) <span class="required">*</span></label>
-                        <p class="instruction-text">ছবি স্বয়ংক্রিয়ভাবে রিসাইজ, ওয়েিপি ফরম্যাট এবং ওয়াটারমার্ক যুক্ত হবে।</p>
-                        
-                        <div class="image-upload-grid">
-                            <div class="image-box">
-                                <input type="file" id="image1" accept="image/*" class="file-input" required>
-                                <label for="image1" class="file-label" id="labelImage1">
-                                    <span>+ ছবি ১ আপলোড</span>
-                                </label>
-                            </div>
-                            <div class="image-box">
-                                <input type="file" id="image2" accept="image/*" class="file-input">
-                                <label for="image2" class="file-label" id="labelImage2">
-                                    <span>+ ছবি ২ (ঐচ্ছিক)</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Keywords System -->
-                    <div class="input-group">
-                        <label>কীওয়ার্ড (সর্বোচ্চ ৫০টি)</label>
-                        <div class="keyword-input-wrapper">
-                            <input type="text" id="keywordInput" placeholder="একটি করে কীওয়ার্ড লিখে যোগ করুন">
-                            <button type="button" id="addKeywordBtn">যোগ করুন</button>
-                        </div>
-                        <div id="keywordTagsContainer" class="keyword-tags"></div>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <button type="submit" id="submitProductBtn" class="submit-btn">পণ্য প্রকাশ করুন</button>
-                </form>
-            </div>
-        </main>
-    </div>
-
-    <!-- Custom Popup Modal -->
-    <div id="customPopup" class="popup-overlay hidden">
-        <div class="popup-box">
-            <div id="popupIcon" class="popup-icon"></div>
-            <h3 id="popupTitle">সতর্কবার্তা</h3>
-            <p id="popupMessage">বার্তা এখানে প্রদর্শিত হবে।</p>
-            <button id="popupCloseBtn" class="popup-btn">ঠিক আছে</button>
+    <div id="lock-screen">
+        <div style="text-align: center;">
+            <i class="fas fa-spinner fa-spin" style="font-size: 40px;"></i>
+            <p>সিকিউরিটি চেক করা হচ্ছে...</p>
         </div>
     </div>
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay hidden">
-        <div class="spinner-box">
-            <div class="spinner"></div>
-            <p id="loadingText">প্রক্রিয়াধীন রয়েছে...</p>
+    <!-- Custom Popup -->
+    <div id="popup" class="popup-overlay">
+      <div id="popupBox" class="popup-box">
+        <i id="popupIcon" class="fas fa-check-circle"></i>
+        <h3 id="popupTitle">সফল!</h3>
+        <p id="popupMsg">কাজ সম্পন্ন হয়েছে</p>
+        <button class="popup-btn" onclick="closePopup()">ঠিক আছে</button>
+      </div>
+    </div>
+
+    <div class="container">
+    <div class="warning-box"><i class="fas fa-exclamation-triangle"></i>সতর্কতা: কেউ যদি সঠিক দামের চেয়ে কম লিখেন তবে উনার একাউন্ট সারাজীবনের জন্য বন্ধ হয়ে যাবে</div>
+    <h2><i class="fas fa-cloud-upload-alt"></i> নতুন পণ্য যোগ করুন</h2>
+
+    <div class="form-group"><label>পণ্যের নাম</label><input type="text" id="pName" placeholder="পণ্যের নাম লিখুন"></div>
+
+    <div class="form-group">
+        <label>ক্যাটাগরি নির্বাচন করুন</label>
+        <select id="pCategory">
+            <option value="">ক্যাটাগরি নির্বাচন করুন</option>
+            <!-- Categories will load here -->
+        </select>
+    </div>
+
+    <div class="form-group"><label>বিস্তারিত বর্ণনা</label><textarea id="pDesc" placeholder="বিস্তারিত বর্ণনা লিখুন"></textarea></div>
+
+    <div class="form-group">
+        <label>দাম (৳)</label>
+        <div style="display:flex;gap:10px;">
+            <div style="flex:1;"><input type="number" id="pPrice" placeholder="বর্তমান দাম"></div>
+            <div style="flex:1;"><input type="number" id="oldPrice" placeholder="আগের দাম"></div>
+        </div>
+        <small style="display:block;margin-top:8px;color:#e67e22;font-weight:600;">💡 টিপস: আগের দামের জায়গায় পণ্যের মূল দামের চেয়ে একটু বেশি লিখুন।</small>
+    </div>
+
+    <label>পণ্যর ছবি (সর্বোচ্চ ২টি)</label>
+    <div class="img-grid">
+        <div class="img-box" id="box1"><i class="fas fa-camera"></i><span>প্রথম ছবি</span><img id="view1"><input type="file" id="img1" accept="image/*" onchange="previewImg(this, 'view1', 'box1')"></div>
+        <div class="img-box" id="box2"><i class="fas fa-camera"></i><span>দ্বিতীয় ছবি</span><img id="view2"><input type="file" id="img2" accept="image/*" onchange="previewImg(this, 'view2', 'box2')"></div>
+    </div>
+
+    <div class="form-group">
+        <label>কিওয়ার্ড (Add বাটনে ক্লিক করুন)</label>
+        <div class="kw-box">
+            <div style="display: flex; gap: 5px;"><input type="text" id="kwInput" placeholder="উদা: পাঞ্জাবি"><button class="add-btn" onclick="addKW()">Add</button></div>
+            <div id="kwList"></div>
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script type="module" src="upload.js"></script>
+    <button onclick="uploadProduct()" id="upBtn" class="up-btn">আপলোড শুরু করুন</button>
+    <a href="dashboard.html" class="back-link"><i class="fas fa-arrow-left"></i>ফিরে যান</a>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, getDoc, getDocs, collection, addDoc, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    const db = getFirestore(initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket" }));
+    const auth = getAuth();
+    const imgbbKey = "e1da51b6d309ac3a5a235b5088ebc334";
+    let keywords = [];
+    let userData = null;
+
+    // Custom Popup Function
+    function showPopup(type, title, msg, redirect=null) {
+        const popup = document.getElementById('popup');
+        const box = document.getElementById('popupBox');
+        document.getElementById('popupIcon').className = type === 'success'? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+        box.className = `popup-box ${type}`;
+        document.getElementById('popupTitle').innerText = title;
+        document.getElementById('popupMsg').innerText = msg;
+        popup.style.display = 'flex';
+        if(redirect) setTimeout(() => window.location.href = redirect, 2000);
+    }
+    window.closePopup = () => document.getElementById('popup').style.display = 'none';
+
+    // Load Categories
+    async function loadCategories() {
+        const catSelect = document.getElementById('pCategory');
+        try {
+            const querySnapshot = await getDocs(collection(db, "categories"));
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const option = document.createElement('option');
+                option.value = data.slug;
+                option.textContent = data.categoryName;
+                catSelect.appendChild(option);
+            });
+        } catch (error) { console.error("Error loading categories:", error); }
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        const userSnap = await getDoc(doc(db, "users", user.uid));
+        userData = userSnap.data();
+
+        if (!userData) return window.location.href = "https://seller.ghotimarket.com/locked";
+
+        // 1. active true কিনা চেক
+        if (userData.active !== true) {
+            return window.location.href = "https://seller.ghotimarket.com/locked";
+        }
+
+        // 2. profileUnlockedUntil চেক
+        const unlockTime = userData.profileUnlockedUntil || 0;
+        if (unlockTime < Date.now()) {
+            return window.location.href = "https://seller.ghotimarket.com/locked";
+        }
+
+        document.getElementById('lock-screen').style.display = 'none';
+        loadCategories();
+    } else window.location.href = "login.html";
+});
+
+    window.previewImg = (input, viewId, boxId) => {
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById(viewId).src = e.target.result;
+                document.getElementById(viewId).style.display = 'block';
+                document.getElementById(boxId).style.border = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const convertToWebP = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    let cropX = 0; let cropY = 0;
+                    let cropSize = Math.min(img.width, img.height);
+                    if (img.width!== img.height) {
+                        cropX = (img.width - cropSize) / 2;
+                        cropY = (img.height - cropSize) / 2;
+                    }
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+                    canvas.width = 1200; canvas.height = 1200;
+                    ctx.drawImage(img, cropX, cropY, cropSize, cropSize, 0, 0, 1200, 1200);
+                    const watermark = new Image();
+                    watermark.src = "/watermark.png";
+                    watermark.onload = () => {
+                        const watermarkWidth = canvas.width * 0.35;
+                        const watermarkHeight = watermark.height / watermark.width * watermarkWidth;
+                        ctx.globalAlpha = 0.45;
+                        ctx.drawImage(watermark, canvas.width - watermarkWidth - 25, canvas.height - watermarkHeight - 25, watermarkWidth, watermarkHeight);
+                        ctx.globalAlpha = 1;
+                        canvas.toBlob((blob) => {
+                            resolve(new File([blob], "image.webp", { type: "image/webp" }));
+                        }, "image/webp", 0.80);
+                    };
+                    watermark.onerror = () => reject("Watermark লোড করা যায়নি");
+                };
+                img.onerror = () => reject("ছবি লোড করা যায়নি");
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    };
+
+    window.addKW = () => {
+        const val = document.getElementById('kwInput').value.trim();
+        if (val && keywords.length < 50) { keywords.push(val.toLowerCase()); renderKeywords(); document.getElementById('kwInput').value = ""; }
+    };
+
+    function generateSlug(name) {
+        const base = name.toLowerCase().trim().replace(/[^a-z0-9\u0980-\u09FF\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
+        const numbers = () => Math.floor(Math.random() * 9 + 1).toString() + Math.floor(Math.random() * 9 + 1).toString();
+        const letters = () => String.fromCharCode(97 + Math.floor(Math.random() * 26)) + String.fromCharCode(97 + Math.floor(Math.random() * 26));
+        return `${base}-${numbers()}${letters()}`;
+    }
+
+    function renderKeywords() {
+        document.getElementById('kwList').innerHTML = keywords.map((k, i) => `<div class="keyword-tag">${k} <i class="fas fa-times" onclick="removeKW(${i})"></i></div>`).join('');
+    }
+
+    window.removeKW = (index) => { keywords.splice(index, 1); renderKeywords(); };
+
+    window.uploadProduct = async () => {
+        const btn = document.getElementById('upBtn');
+        const user = auth.currentUser;
+        const userRef = doc(db, "users", user.uid);
+
+        const name = document.getElementById('pName').value.trim();
+        const slug = generateSlug(name);
+        const price = parseInt(document.getElementById('pPrice').value);
+        const oldPrice = parseInt(document.getElementById('oldPrice').value) || price;
+        const desc = document.getElementById('pDesc').value.trim();
+        const catSelect = document.getElementById('pCategory');
+        const categorySlug = catSelect.value;
+        const categoryName = catSelect.options[catSelect.selectedIndex].text;
+        const f1 = document.getElementById('img1').files[0];
+
+        if (!categorySlug) return showPopup('error', 'ভুল!', 'দয়া করে একটি ক্যাটাগরি নির্বাচন করুন');
+        if (!name ||!price ||!f1 || keywords.length === 0) return showPopup('error', 'ভুল!', 'সব তথ্য সঠিকভাবে পূরণ করুন');
+
+        const today = new Date().toISOString().split('T')[0];
+
+        try {
+            await runTransaction(db, async (transaction) => {
+                const userDoc = await transaction.get(userRef);
+                const data = userDoc.data();
+
+                let currentCount = (data.lastUploadDate === today)? (data.todayUploads || 0) : 0;
+                if (currentCount >= 5) throw new Error("LIMIT_EXCEEDED");
+
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> আপলোড হচ্ছে...';
+
+                const files = [f1, document.getElementById('img2').files[0]].filter(f => f);
+                const imgUrls = [];
+                for (let file of files) {
+                    const webpFile = await convertToWebP(file);
+                    const formData = new FormData(); formData.append("image", webpFile);
+                    const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, { method: "POST", body: formData });
+                    const json = await res.json();
+                    if(json.success) imgUrls.push(json.data.url);
+                }
+
+                await addDoc(collection(db, "products"), {
+                    name, slug, description: desc, price, oldPrice, keywords, images: imgUrls,
+                    categoryName, categorySlug, sellerId: user.uid, shopName: data.shopName,
+                    whatsapp: data.whatsapp, active: true, createdAt: Date.now()
+                });
+
+                transaction.update(userRef, {
+                    todayUploads: currentCount + 1,
+                    lastUploadDate: today
+                });
+            });
+
+            showPopup('success', 'সফল!', 'পণ্যটি সফলভাবে যোগ করা হয়েছে!', 'dashboard.html');
+
+        } catch (err) {
+            if (err.message === "LIMIT_EXCEEDED") showPopup('error', 'সীমা শেষ', 'আজকের আপলোড সীমা ৫টি শেষ!');
+            else {
+                console.error(err);
+                showPopup('error', 'সমস্যা!', 'আপলোড সমস্যা হয়েছে। আবার চেষ্টা করুন।');
+            }
+            btn.disabled = false;
+            btn.innerHTML = 'আপলোড শুরু করুন';
+        }
+    };
+</script>
 </body>
 </html>
