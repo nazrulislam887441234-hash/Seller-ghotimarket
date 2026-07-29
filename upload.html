@@ -121,7 +121,7 @@
       margin-bottom: 15px; 
     }
     .img-box { 
-      background: var(--orange-light); 
+      background: var(--bg); 
       border: 2px dashed var(--border); 
       border-radius: 14px; 
       height: 110px; 
@@ -141,7 +141,7 @@
 
     /* Keywords */
     .kw-box { 
-      background: var(--orange-light); 
+      background: var(--bg); 
       padding: 15px; 
       border-radius: 14px; 
       border: 1px solid var(--border); 
@@ -192,22 +192,13 @@
       font-weight:600;
     }
     .back-link i{margin-right:5px;}
-.add-btn{
-    background:var(--orange);
-    color:#fff;
-    border:none;
-    padding:0 18px;
-    border-radius:10px;
-    font-weight:700;
-    cursor:pointer;
-}
 </style>
 </head>
 <body>
     <div id="lock-screen">
         <div style="text-align: center;">
-            <i class="fas fa-spinner fa-spin" style="font-size: 40px; color: var(--accent);"></i>
-            <p>সিকিউরিটি চেক করা হচ্ছে...</p>
+            <i class="fas fa-spinner fa-spin" style="font-size: 40px; color: var(--orange);"></i>
+            <p id="lock-text">সিকিউরিটি চেক করা হচ্ছে...</p>
         </div>
     </div>
 
@@ -221,28 +212,24 @@
         <label>ক্যাটাগরি নির্বাচন করুন</label>
         <select id="pCategory">
             <option value="">ক্যাটাগরি নির্বাচন করুন</option>
-            <!-- Categories will load here -->
         </select>
     </div>
 
     <div class="form-group"><label>বিস্তারিত বর্ণনা</label><textarea id="pDesc" placeholder="বিস্তারিত বর্ণনা লিখুন"></textarea></div>
-  <div class="form-group">
-    <label>দাম (৳)</label>
-
-    <div style="display:flex;gap:10px;">
-        <div style="flex:1;">
-            <input type="number" id="pPrice" placeholder="বর্তমান দাম লিখুন">
+    <div class="form-group">
+        <label>দাম (৳)</label>
+        <div style="display:flex;gap:10px;">
+            <div style="flex:1;">
+                <input type="number" id="pPrice" placeholder="বর্তমান দাম লিখুন">
+            </div>
+            <div style="flex:1;">
+                <input type="number" id="oldPrice" placeholder="আগের দাম লিখুন">
+            </div>
         </div>
-
-        <div style="flex:1;">
-            <input type="number" id="oldPrice" placeholder="আগের দাম লিখুন">
-        </div>
+        <small style="display:block;margin-top:8px;color:#e67e22;font-weight:600;">
+            💡 টিপস: আগের দামের জায়গায় পণ্যের মূল দামের চেয়ে একটু বেশি লিখুন।
+        </small>
     </div>
-
-    <small style="display:block;margin-top:8px;color:#e67e22;font-weight:600;">
-        💡 টিপস: আগের দামের জায়গায় পণ্যের মূল দামের চেয়ে একটু বেশি লিখুন।
-    </small>
-</div>
     
     <label>পণ্যর ছবি (সর্বোচ্চ ২টি)</label>
     <div class="img-grid">
@@ -251,40 +238,47 @@
     </div>
     
     <div class="form-group">
-        <label>কিওয়ার্ড আবশ্যক - Add বাটনে ক্লিক করুন)</label>
+        <label>কিওয়ার্ড আবশ্যক - Add বাটনে ক্লিক করুন</label>
         <div class="kw-box">
-            <div style="display: flex; gap: 5px;"><input type="text" id="kwInput" placeholder="উদা: পাঞ্জাবি"><button onclick="addKW()"
-style="background:var(--orange);color:#fff;border:none;padding:0 15px;border-radius:8px;font-weight:bold;cursor:pointer;">
-    Add
-</button></div>
+            <div style="display: flex; gap: 5px;"><input type="text" id="kwInput" placeholder="উদা: পাঞ্জাবি"><button type="button" onclick="addKW()" style="background:var(--orange);color:#fff;border:none;padding:0 15px;border-radius:8px;font-weight:bold;cursor:pointer;">Add</button></div>
             <div id="kwList"></div>
         </div>
     </div>
     <button onclick="uploadProduct()" id="upBtn" class="up-btn">আপলোড শুরু করুন</button>
-    <a href="dashboard.html" class="back-link">ফিরে যান</a>
+    <a href="dashboard.html" class="back-link"><i class="fas fa-arrow-left"></i>ফিরে যান</a>
 </div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, getDocs, collection, addDoc, runTransaction, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, getDoc, getDocs, collection, addDoc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    const db = getFirestore(initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket" }));
-    const auth = getAuth();
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+      authDomain: "ghotimarket.firebaseapp.com",
+      projectId: "ghotimarket",
+      storageBucket: "ghotimarket.firebasestorage.app",
+      messagingSenderId: "481257644093",
+      appId: "1:481257644093:web:0dfc3699d6b3c86afeca54"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
     const imgbbKey = "e1da51b6d309ac3a5a235b5088ebc334";
+    
     let keywords = [];
-    let userData = null;
+    let currentUserData = null;
 
-    // Load Categories from Firestore
     async function loadCategories() {
         const catSelect = document.getElementById('pCategory');
         try {
             const querySnapshot = await getDocs(collection(db, "categories"));
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
+            querySnapshot.forEach((docSnap) => {
+                const data = docSnap.data();
                 const option = document.createElement('option');
-                option.value = data.slug; // save slug in value
-                option.textContent = data.categoryName;
+                option.value = data.slug || data.categorySlug || ''; 
+                option.textContent = data.categoryName || data.name || '';
                 catSelect.appendChild(option);
             });
         } catch (error) {
@@ -294,14 +288,33 @@ style="background:var(--orange);color:#fff;border:none;padding:0 15px;border-rad
 
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            const userSnap = await getDoc(doc(db, "users", user.uid));
-            userData = userSnap.data();
-            if (!userData || userData.profileUnlockedUntil < Date.now()) window.location.href = "locked.html";
-            else {
+            try {
+                const userSnap = await getDoc(doc(db, "users", user.uid));
+                if (!userSnap.exists()) {
+                    alert("ইউজার ডাটা পাওয়া যায়নি!");
+                    window.location.href = "login.html";
+                    return;
+                }
+                
+                currentUserData = userSnap.data();
+                
+                // Requirement check: active:true এবং verified:true
+                if (currentUserData.active !== true || currentUserData.verified !== true) {
+                    document.getElementById('lock-text').innerText = "আপনার অ্যাকাউন্টটি ভেরিফাইড বা সক্রিয় নয়।";
+                    alert("আপনার অ্যাকাউন্টটি সক্রিয় (active) অথবা ভেরিফাইড (verified) নয়। প্রোডাক্ট আপলোড করার অনুমতি নেই।");
+                    window.location.href = "dashboard.html";
+                    return;
+                }
+
                 document.getElementById('lock-screen').style.display = 'none';
-                loadCategories(); // Fetch categories when authorized
+                loadCategories();
+            } catch (err) {
+                console.error("Auth check error:", err);
+                window.location.href = "login.html";
             }
-        } else window.location.href = "login.html";
+        } else {
+            window.location.href = "login.html";
+        }
     });
 
     window.previewImg = (input, viewId, boxId) => {
@@ -318,128 +331,97 @@ style="background:var(--orange);color:#fff;border:none;padding:0 15px;border-rad
     };
 
     const convertToWebP = (file) => {
-    return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    let cropX = 0;
+                    let cropY = 0;
+                    let cropSize = Math.min(img.width, img.height);
 
-        const reader = new FileReader();
+                    if (img.width !== img.height) {
+                        cropX = (img.width - cropSize) / 2;
+                        cropY = (img.height - cropSize) / 2;
+                    }
 
-        reader.onload = (event) => {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
 
-            const img = new Image();
+                    canvas.width = 1200;
+                    canvas.height = 1200;
 
-            img.onload = () => {
+                    ctx.drawImage(img, cropX, cropY, cropSize, cropSize, 0, 0, 1200, 1200);
 
-                let cropX = 0;
-                let cropY = 0;
-                let cropSize = Math.min(img.width, img.height);
+                    const watermark = new Image();
+                    watermark.crossOrigin = "anonymous";
+                    watermark.src = "/watermark.png";
 
-                // যদি ১:১ না হয় তাহলে মাঝখান থেকে Crop
-                if (img.width !== img.height) {
-                    cropX = (img.width - cropSize) / 2;
-                    cropY = (img.height - cropSize) / 2;
-                }
+                    watermark.onload = () => {
+                        const watermarkWidth = canvas.width * 0.35;
+                        const watermarkHeight = watermark.height / watermark.width * watermarkWidth;
 
-                const canvas = document.createElement("canvas");
-                const ctx = canvas.getContext("2d");
-
-                canvas.width = 1200;
-                canvas.height = 1200;
-
-                // ছবি আঁকা
-                ctx.drawImage(
-                    img,
-                    cropX,
-                    cropY,
-                    cropSize,
-                    cropSize,
-                    0,
-                    0,
-                    1200,
-                    1200
-                );
-
-                // Watermark লোড
-                const watermark = new Image();
-                watermark.src = "/watermark.png";
-
-                watermark.onload = () => {
-
-                    const watermarkWidth = canvas.width * 0.35;
-                    const watermarkHeight =
-                        watermark.height / watermark.width * watermarkWidth;
-
-                    // Watermark opacity
-                    ctx.globalAlpha = 0.45;
-
-                    // নিচে ডান পাশে বসবে
-                    ctx.drawImage(
-                        watermark,
-                        canvas.width - watermarkWidth - 25,
-                        canvas.height - watermarkHeight - 25,
-                        watermarkWidth,
-                        watermarkHeight
-                    );
-
-                    ctx.globalAlpha = 1;
-
-                    // WebP Convert
-                    canvas.toBlob((blob) => {
-
-                        resolve(
-                            new File(
-                                [blob],
-                                "image.webp",
-                                {
-                                    type: "image/webp"
-                                }
-                            )
+                        ctx.globalAlpha = 0.45;
+                        ctx.drawImage(
+                            watermark,
+                            canvas.width - watermarkWidth - 25,
+                            canvas.height - watermarkHeight - 25,
+                            watermarkWidth,
+                            watermarkHeight
                         );
+                        ctx.globalAlpha = 1;
 
-                    }, "image/webp", 0.80);
+                        canvas.toBlob((blob) => {
+                            if (!blob) {
+                                reject("Blob conversion failed");
+                                return;
+                            }
+                            resolve(new File([blob], "image.webp", { type: "image/webp" }));
+                        }, "image/webp", 0.80);
+                    };
 
+                    watermark.onerror = () => {
+                        // Watermark load fail হলেও যেন আপলোড না আটকে যায়
+                        canvas.toBlob((blob) => {
+                            resolve(new File([blob], "image.webp", { type: "image/webp" }));
+                        }, "image/webp", 0.80);
+                    };
                 };
-
-                watermark.onerror = () => {
-                    reject("Watermark লোড করা যায়নি");
-                };
-
+                img.onerror = () => reject("ছবি লোড করা যায়নি");
+                img.src = event.target.result;
             };
-
-            img.onerror = () => {
-                reject("ছবি লোড করা যায়নি");
-            };
-
-            img.src = event.target.result;
-        };
-
-        reader.readAsDataURL(file);
-
-    });
-};
+            reader.onerror = () => reject("ফাইল পড়া যায়নি");
+            reader.readAsDataURL(file);
+        });
+    };
 
     window.addKW = () => {
         const val = document.getElementById('kwInput').value.trim();
-        if (val && keywords.length < 50) { keywords.push(val.toLowerCase()); renderKeywords(); document.getElementById('kwInput').value = ""; }
+        if (val && keywords.length < 50) { 
+            keywords.push(val.toLowerCase()); 
+            renderKeywords(); 
+            document.getElementById('kwInput').value = ""; 
+        }
     };
 
-function generateSlug(name) {
-    const base = name
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9\u0980-\u09FF\s-]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/-+/g, "-");
+    function generateSlug(name) {
+        const base = name
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9\u0980-\u09FF\s-]/g, "")
+            .replace(/\s+/g, "-")
+            .replace(/-+/g, "-");
 
-    const numbers = () =>
-        Math.floor(Math.random() * 9 + 1).toString() +
-        Math.floor(Math.random() * 9 + 1).toString();
+        const numbers = () =>
+            Math.floor(Math.random() * 9 + 1).toString() +
+            Math.floor(Math.random() * 9 + 1).toString();
 
-    const letters = () =>
-        String.fromCharCode(97 + Math.floor(Math.random() * 26)) +
-        String.fromCharCode(97 + Math.floor(Math.random() * 26));
+        const letters = () =>
+            String.fromCharCode(97 + Math.floor(Math.random() * 26)) +
+            String.fromCharCode(97 + Math.floor(Math.random() * 26));
 
-    return `${base}-${numbers()}${letters()}`;
-}
-
+        return `${base}-${numbers()}${letters()}`;
+    }
 
     function renderKeywords() {
         document.getElementById('kwList').innerHTML = keywords.map((k, i) => `<div class="keyword-tag">${k} <i class="fas fa-times" onclick="removeKW(${i})"></i></div>`).join('');
@@ -450,74 +432,92 @@ function generateSlug(name) {
     window.uploadProduct = async () => {
         const btn = document.getElementById('upBtn');
         const user = auth.currentUser;
-        const userRef = doc(db, "users", user.uid);
-        
-        const name = document.getElementById('pName').value.trim();
-        const slug = generateSlug(name);       
-        const price = parseInt(document.getElementById('pPrice').value);
-        const oldPrice = parseInt(document.getElementById('oldPrice').value) || price; 
-        const desc = document.getElementById('pDesc').value.trim();
-        const catSelect = document.getElementById('pCategory');
-        const categorySlug = catSelect.value;
-        const categoryName = catSelect.options[catSelect.selectedIndex].text;
-        const f1 = document.getElementById('img1').files[0];
-
-        // ১. ক্যাটাগরি ভ্যালিডেশন
-        if (!categorySlug) {
-            alert("দয়া করে একটি ক্যাটাগরি নির্বাচন করুন");
+        if (!user) {
+            alert("লগইন করা নেই!");
+            window.location.href = "login.html";
             return;
         }
 
-        // আজকের তারিখ (YYYY-MM-DD ফরম্যাট)
+        const name = document.getElementById('pName').value.trim();
+        const desc = document.getElementById('pDesc').value.trim();
+        const priceVal = document.getElementById('pPrice').value;
+        const oldPriceVal = document.getElementById('oldPrice').value;
+        const catSelect = document.getElementById('pCategory');
+        const categorySlug = catSelect.value;
+        const categoryName = catSelect.options[catSelect.selectedIndex]?.text || '';
+        const f1 = document.getElementById('img1').files[0];
+        const f2 = document.getElementById('img2').files[0];
+
+        // Validation
+        if (!name || !priceVal || !categorySlug || !f1 || keywords.length === 0) {
+            alert("দয়া করে নাম, দাম, ক্যাটাগরি, অন্তত ১টি ছবি এবং অন্তত ১টি কিওয়ার্ড পূরণ করুন!");
+            return;
+        }
+
+        const price = parseInt(priceVal);
+        const oldPrice = oldPriceVal ? parseInt(oldPriceVal) : price;
+        const slug = generateSlug(name);
         const today = new Date().toISOString().split('T')[0];
 
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ছবি প্রসেস ও আপলোড হচ্ছে...';
+
         try {
+            // Image processing and ImgBB upload outside transaction
+            const files = [f1, f2].filter(f => f);
+            const imgUrls = [];
+            for (let file of files) {
+                const webpFile = await convertToWebP(file);
+                const formData = new FormData(); 
+                formData.append("image", webpFile);
+                const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, { method: "POST", body: formData });
+                const json = await res.json();
+                if (json.success) {
+                    imgUrls.push(json.data.url);
+                } else {
+                    throw new Error("IMAGE_UPLOAD_FAIL");
+                }
+            }
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> সেভ করা হচ্ছে...';
+
+            const userRef = doc(db, "users", user.uid);
+
+            // Transaction for upload limit & product creation safety
             await runTransaction(db, async (transaction) => {
                 const userDoc = await transaction.get(userRef);
-                const data = userDoc.data();
+                if (!userDoc.exists()) throw new Error("USER_NOT_FOUND");
                 
-                let currentCount = (data.lastUploadDate === today) ? (data.todayUploads || 0) : 0;
+                const uData = userDoc.data();
+                if (uData.active !== true || uData.verified !== true) {
+                    throw new Error("NOT_AUTHORIZED");
+                }
 
+                let currentCount = (uData.lastUploadDate === today) ? (uData.todayUploads || 0) : 0;
                 if (currentCount >= 5) {
                     throw new Error("LIMIT_EXCEEDED");
                 }
 
-                // ইনপুট ভ্যালিডেশন
-                if (!name || !price || !f1 || keywords.length === 0) throw new Error("INVALID_INPUT");
+                // Add product inside transaction/or after checking
+                const productRef = doc(collection(db, "products"));
+                transaction.set(productRef, {
+                    name,
+                    slug,
+                    description: desc,
+                    price,
+                    oldPrice,
+                    keywords,
+                    images: imgUrls,
+                    categoryName,
+                    categorySlug,
+                    sellerId: user.uid,
+                    shopName: uData.shopName || "",
+                    whatsapp: uData.whatsapp || "",
+                    active: true,
+                    createdAt: serverTimestamp()
+                });
 
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> আপলোড হচ্ছে...';
-
-                // ছবি আপলোড ও প্রোসেসিং
-                const files = [f1, document.getElementById('img2').files[0]].filter(f => f);
-                const imgUrls = [];
-                for (let file of files) {
-                    const webpFile = await convertToWebP(file);
-                    const formData = new FormData(); formData.append("image", webpFile);
-                    const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, { method: "POST", body: formData });
-                    const json = await res.json();
-                    if(json.success) imgUrls.push(json.data.url);
-                }
-
-                // প্রোডাক্ট সেভ (ক্যাটাগরি সহ)
-             await addDoc(collection(db, "products"), {
-    name,
-    slug,
-    description: desc,
-    price,
-    oldPrice,
-    keywords,
-    images: imgUrls,
-    categoryName,
-    categorySlug,
-    sellerId: user.uid,
-    shopName: data.shopName,
-    whatsapp: data.whatsapp,
-    active: true,
-    createdAt: Date.now()
-});
-
-                // ইউজার লিমিট আপডেট
+                // Update user uploads count
                 transaction.update(userRef, {
                     todayUploads: currentCount + 1,
                     lastUploadDate: today
@@ -528,15 +528,21 @@ function generateSlug(name) {
             window.location.href = "dashboard.html";
 
         } catch (err) {
-            if (err.message === "LIMIT_EXCEEDED") alert("আজকের আপলোড সীমা (৫টি) শেষ!");
-            else if (err.message === "INVALID_INPUT") alert("সব তথ্য সঠিকভাবে পূরণ করুন!");
-            else {
-                console.error(err);
-                alert("আপলোড সমস্যা হয়েছে।");
+            console.error("Upload Error:", err);
+            if (err.message === "LIMIT_EXCEEDED") {
+                alert("আজকের আপলোড সীমা (সর্বোচ্চ ৫টি) শেষ হয়ে গেছে!");
+            } else if (err.message === "NOT_AUTHORIZED" || err.message === "USER_NOT_FOUND") {
+                alert("আপনার অ্যাকাউন্ট ভেরিফাইড বা সক্রিয় নয়।");
+                window.location.href = "dashboard.html";
+                return;
+            } else if (err.message === "IMAGE_UPLOAD_FAIL") {
+                alert("ছবি আপলোড ব্যর্থ হয়েছে। দয়া করে আবার চেষ্টা করুন।");
+            } else {
+                alert("আপলোড করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।");
             }
             
             btn.disabled = false;
-            btn.innerText = "আপলোড শুরু করুন";
+            btn.innerHTML = 'আপলোড শুরু করুন';
         }
     };
 </script>
