@@ -403,11 +403,20 @@ window.requestStatusUpdate = (id, status) => {
   document.getElementById('confirmText').innerText = `Are you sure to change status to "${status}"?`;
   document.getElementById('confirmModal').classList.add('show');
   confirmCallback = async () => {
-    await updateDoc(doc(db, "orders", id), { 
-      orderStatus: status, 
-      deliveryStatus: status,
-      updatedAt: serverTimestamp()
-    });
+    const order = allOrders.find(o => o.id === id);
+    if (!order) return;
+    await Promise.all([
+      updateDoc(doc(db, "orders", id), { 
+        orderStatus: status, 
+        deliveryStatus: status,
+        updatedAt: serverTimestamp()
+      }),
+      updateDoc(doc(db, "order_tracking", order.orderTrackId), { 
+        orderStatus: status, 
+        deliveryStatus: status,
+        updatedAt: serverTimestamp()
+      })
+    ]);
     showToast('Status updated successfully!');
   };
 }
