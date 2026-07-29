@@ -16,9 +16,8 @@ const auth = getAuth();
 
 let keywords = [];
 let userData = null;
-let activeApiKeysMap = new Map(); // Store apiKeys mapped by document ID for internal use only
 
-// Load Active Upload APIs from Firestore api_keys collection
+// Load Active Upload APIs from Firestore api_keys collection (Name only, no caching of apiKeys)
 async function loadActiveUploadApis() {
     const apiSelector = document.getElementById('apiSelector');
     const loadingText = document.getElementById('api-loading-text');
@@ -26,7 +25,6 @@ async function loadActiveUploadApis() {
 
     try {
         apiSelector.innerHTML = '<option value="">Select Upload API</option>';
-        activeApiKeysMap.clear();
 
         // Query active keys sorted by name ascending
         const q = query(
@@ -45,12 +43,9 @@ async function loadActiveUploadApis() {
 
         querySnapshot.forEach((docSnap) => {
             const data = docSnap.data();
-            // Save API key in memory map, never expose in DOM
-            activeApiKeysMap.set(docSnap.id, data.apiKey);
-
             const option = document.createElement('option');
-            option.value = docSnap.id;
-            option.textContent = data.name;
+            option.value = docSnap.id; // Document ID as value
+            option.textContent = data.name; // Display only name
             apiSelector.appendChild(option);
         });
 
@@ -251,15 +246,20 @@ window.uploadProduct = async () => {
         return;
     }
 
-    const selectedApiKey = activeApiKeysMap.get(selectedApiId);
-    if (!selectedApiKey) {
-        alert("নির্বাচিত API Key পাওয়া যায়নি।");
-        return;
-    }
-
     const today = new Date().toISOString().split('T')[0];
+    let selectedApiKey = null;
 
     try {
+        // Fetch only the selected API document from Firestore at upload time
+        const apiDocRef = doc(db, "api_keys", selectedApiId);
+        const apiDocSnap = await getDoc(apiDocRef);
+
+        if (!apiDocSnap.exists() || apiDocSnap.data().status !== "active") {
+            throw new Error("INVALID_API_KEY");
+        }
+
+        selectedApiKey = apiDocSnap.data().apiKey;
+
         await runTransaction(db, async (transaction) => {
             const userDoc = await transaction.get(userRef);
             const data = userDoc.data();
@@ -273,7 +273,7 @@ window.uploadProduct = async () => {
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> আপলোড হচ্ছে...';
 
-            // Process and upload images using selected API Key internally
+            // Process and upload images using the fetched API Key internally
             const files = [f1, document.getElementById('img2').files[0]].filter(f => f);
             const imgUrls = [];
             
@@ -327,6 +327,8 @@ window.uploadProduct = async () => {
             alert("আজকের আপলোড সীমা (৫টি) শেষ!");
         } else if (err.message === "IMGBB_UPLOAD_FAILED") {
             alert("ছবি আপলোড ব্যর্থ হয়েছে। দয়া করে সঠিক API Key ব্যবহার করুন।");
+        } else if (err.message === "INVALID_API_KEY") {
+            alert("নির্বাচিত API Key নিষ্ক্রিয় বা পাওয়া যায়নি।");
         } else {
             console.error(err);
             alert("আপলোড সমস্যা হয়েছে।");
@@ -334,5 +336,8 @@ window.uploadProduct = async () => {
         
         btn.disabled = false;
         btn.innerHTML = "আপলোড শুরু করুন";
+    } finally {
+        // Immediately scrub the API key from memory reference
+        selectedApiKey = null;
     }
 };
