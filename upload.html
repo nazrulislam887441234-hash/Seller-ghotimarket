@@ -314,28 +314,27 @@
     }
 
     onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            const userSnap = await getDoc(doc(db, "users", user.uid));
-            userData = userSnap.data();
+    if (user) {
+        const userSnap = await getDoc(doc(db, "users", user.uid));
+        userData = userSnap.data();
 
-            // Check 1: Document exists?
-            if (!userData) return window.location.href = "https://seller.ghotimarket.com/locked";
+        if (!userData) return window.location.href = "https://seller.ghotimarket.com/locked";
 
-            // Check 2: active and verified?
-            if (userData.active!== true || userData.verified!== true) {
-                return window.location.href = "https://seller.ghotimarket.com/locked";
-            }
+        // 1. active true কিনা চেক
+        if (userData.active !== true) {
+            return window.location.href = "https://seller.ghotimarket.com/locked";
+        }
 
-            // Check 3: profileUnlockedUntil
-            const unlockTime = userData.profileUnlockedUntil || 0;
-            if (unlockTime < Date.now()) {
-                return window.location.href = "https://seller.ghotimarket.com/locked";
-            }
+        // 2. profileUnlockedUntil চেক
+        const unlockTime = userData.profileUnlockedUntil || 0;
+        if (unlockTime < Date.now()) {
+            return window.location.href = "https://seller.ghotimarket.com/locked";
+        }
 
-            document.getElementById('lock-screen').style.display = 'none';
-            loadCategories();
-        } else window.location.href = "login.html";
-    });
+        document.getElementById('lock-screen').style.display = 'none';
+        loadCategories();
+    } else window.location.href = "login.html";
+});
 
     window.previewImg = (input, viewId, boxId) => {
         const file = input.files[0];
