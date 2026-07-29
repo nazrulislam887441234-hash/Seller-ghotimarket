@@ -4,12 +4,12 @@ import { getFirestore, doc, getDoc, setDoc, updateDb, collection, getDocs, addDo
 
 // Firebase Configuration (Standard public config, rules handle security)
 const firebaseConfig = {
-    apiKey: "AIzaSyDummyKeyForGhotiMarket12345",
-    authDomain: "ghoti-market.firebaseapp.com",
-    projectId: "ghoti-market",
-    storageBucket: "ghoti-market.appspot.com",
-    messagingSenderId: "123456789012",
-    appId: "1:123456789012:web:abcdef123456"
+    apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+    authDomain: "ghotimarket.firebaseapp.com",
+    projectId: "ghotimarket",
+    storageBucket: "ghotimarket.appspot.com",
+    messagingSenderId: "9382019283",
+    appId: "1:9382019283:web:abc12345"
 };
 
 const app = initializeApp(firebaseConfig);
