@@ -276,7 +276,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, getDocs, collection, addDoc, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, getDocs, collection, addDoc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
     const db = getFirestore(initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket" }));
@@ -285,7 +285,6 @@
     let keywords = [];
     let userData = null;
 
-    // Custom Popup Function
     function showPopup(type, title, msg, redirect=null) {
         const popup = document.getElementById('popup');
         const box = document.getElementById('popupBox');
@@ -298,7 +297,6 @@
     }
     window.closePopup = () => document.getElementById('popup').style.display = 'none';
 
-    // Load Categories
     async function loadCategories() {
         const catSelect = document.getElementById('pCategory');
         try {
@@ -314,27 +312,17 @@
     }
 
     onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        const userSnap = await getDoc(doc(db, "users", user.uid));
-        userData = userSnap.data();
-
-        if (!userData) return window.location.href = "https://seller.ghotimarket.com/locked";
-
-        // 1. active true কিনা চেক
-        if (userData.active !== true) {
-            return window.location.href = "https://seller.ghotimarket.com/locked";
-        }
-
-        // 2. profileUnlockedUntil চেক
-        const unlockTime = userData.profileUnlockedUntil || 0;
-        if (unlockTime < Date.now()) {
-            return window.location.href = "https://seller.ghotimarket.com/locked";
-        }
-
-        document.getElementById('lock-screen').style.display = 'none';
-        loadCategories();
-    } else window.location.href = "login.html";
-});
+        if (user) {
+            const userSnap = await getDoc(doc(db, "users", user.uid));
+            userData = userSnap.data();
+            if (!userData) return window.location.href = "https://seller.ghotimarket.com/locked";
+            if (userData.active!== true) return window.location.href = "https://seller.ghotimarket.com/locked";
+            const unlockTime = userData.profileUnlockedUntil || 0;
+            if (unlockTime < Date.now()) return window.location.href = "https://seller.ghotimarket.com/locked";
+            document.getElementById('lock-screen').style.display = 'none';
+            loadCategories();
+        } else window.location.href = "login.html";
+    });
 
     window.previewImg = (input, viewId, boxId) => {
         const file = input.files[0];
@@ -390,20 +378,18 @@
         const val = document.getElementById('kwInput').value.trim();
         if (val && keywords.length < 50) { keywords.push(val.toLowerCase()); renderKeywords(); document.getElementById('kwInput').value = ""; }
     };
-
     function generateSlug(name) {
         const base = name.toLowerCase().trim().replace(/[^a-z0-9\u0980-\u09FF\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
         const numbers = () => Math.floor(Math.random() * 9 + 1).toString() + Math.floor(Math.random() * 9 + 1).toString();
         const letters = () => String.fromCharCode(97 + Math.floor(Math.random() * 26)) + String.fromCharCode(97 + Math.floor(Math.random() * 26));
         return `${base}-${numbers()}${letters()}`;
     }
-
     function renderKeywords() {
         document.getElementById('kwList').innerHTML = keywords.map((k, i) => `<div class="keyword-tag">${k} <i class="fas fa-times" onclick="removeKW(${i})"></i></div>`).join('');
     }
-
     window.removeKW = (index) => { keywords.splice(index, 1); renderKeywords(); };
 
+    // ====== এখানেই ফিক্স ======
     window.uploadProduct = async () => {
         const btn = document.getElementById('upBtn');
         const user = auth.currentUser;
@@ -423,44 +409,59 @@
         if (!name ||!price ||!f1 || keywords.length === 0) return showPopup('error', 'ভুল!', 'সব তথ্য সঠিকভাবে পূরণ করুন');
 
         const today = new Date().toISOString().split('T')[0];
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> চেক করা হচ্ছে...';
 
         try {
+            // 1. প্রথমে Limit চেক করুন Transaction দিয়ে
             await runTransaction(db, async (transaction) => {
                 const userDoc = await transaction.get(userRef);
                 const data = userDoc.data();
-
                 let currentCount = (data.lastUploadDate === today)? (data.todayUploads || 0) : 0;
                 if (currentCount >= 5) throw new Error("LIMIT_EXCEEDED");
 
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> আপলোড হচ্ছে...';
-
-                const files = [f1, document.getElementById('img2').files[0]].filter(f => f);
-                const imgUrls = [];
-                for (let file of files) {
-                    const webpFile = await convertToWebP(file);
-                    const formData = new FormData(); formData.append("image", webpFile);
-                    const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, { method: "POST", body: formData });
-                    const json = await res.json();
-                    if(json.success) imgUrls.push(json.data.url);
-                }
-
-                await addDoc(collection(db, "products"), {
-                    name, slug, description: desc, price, oldPrice, keywords, images: imgUrls,
-                    categoryName, categorySlug, sellerId: user.uid, shopName: data.shopName,
-                    whatsapp: data.whatsapp, active: true, createdAt: Date.now()
-                });
-
+                // Limit এর মধ্যে থাকলে কাউন্ট +1 করে দিন
                 transaction.update(userRef, {
                     todayUploads: currentCount + 1,
                     lastUploadDate: today
                 });
             });
 
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ছবি আপলোড হচ্ছে...';
+
+            // 2. তারপর ছবি আপলোড করুন - Transaction এর বাইরে
+            const files = [f1, document.getElementById('img2').files[0]].filter(f => f);
+            const imgUrls = [];
+            for (let file of files) {
+                const webpFile = await convertToWebP(file);
+                const formData = new FormData(); formData.append("image", webpFile);
+                const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, { method: "POST", body: formData });
+                const json = await res.json();
+                if(json.success) imgUrls.push(json.data.url);
+                else throw new Error("IMAGE_UPLOAD_FAILED");
+            }
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> প্রোডাক্ট সেভ হচ্ছে...';
+
+            // 3. তারপর প্রোডাক্ট সেভ করুন
+            await addDoc(collection(db, "products"), {
+                name, slug, description: desc, price, oldPrice, keywords, images: imgUrls,
+                categoryName, categorySlug, sellerId: user.uid, shopName: userData.shopName,
+                whatsapp: userData.whatsapp, active: true, createdAt: serverTimestamp()
+            });
+
             showPopup('success', 'সফল!', 'পণ্যটি সফলভাবে যোগ করা হয়েছে!', 'dashboard.html');
 
         } catch (err) {
+            // যদি কোনো এরর হয় তাহলে কাউন্ট -1 করে দেন
+            if(err.message!== "LIMIT_EXCEEDED"){
+                await updateDoc(userRef, {
+                    todayUploads: (userData.todayUploads || 1) - 1
+                }).catch(()=>{});
+            }
+
             if (err.message === "LIMIT_EXCEEDED") showPopup('error', 'সীমা শেষ', 'আজকের আপলোড সীমা ৫টি শেষ!');
+            else if (err.message === "IMAGE_UPLOAD_FAILED") showPopup('error', 'সমস্যা!', 'ছবি আপলোড হতে সমস্যা হয়েছে।');
             else {
                 console.error(err);
                 showPopup('error', 'সমস্যা!', 'আপলোড সমস্যা হয়েছে। আবার চেষ্টা করুন।');
