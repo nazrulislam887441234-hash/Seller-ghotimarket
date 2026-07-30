@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seller Signup - ধাপ ২ | GHOTI MARKET</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shops.css">
+</head>
+<body>
+<header><img src="https://ghotimarket.com/logo.png" alt="GHOTI MARKET"></header>
+<div class="container">
+  <div class="progress"><div class="step done">১</div><div class="step active">২</div></div>
+  <h2>শপের তথ্য</h2>
+  <form id="shopForm">
+    <div class="input-group"><i class="fas fa-store"></i><input type="text" id="shopName" placeholder="শপের নাম" required></div>
+    <div class="input-group"><i class="fas fa-at"></i><input type="text" id="username" placeholder="username" required><p id="usernameMsg"></p></div>
+
+   <label>শপ লোগো 1:1</label>
+    <div class="upload-box" onclick="document.getElementById('shopLogo').click()">
+      <i class="fas fa-image"></i>
+      <p>1:1 লোগো সিলেক্ট করুন</p>
+      <input type="file" id="shopLogo" accept="image/*" required>
+      <img id="logoPreview" class="logo-preview">
+    </div>
+
+    <label>শপ ব্যানার 16:9</label>
+    <div class="upload-box" onclick="document.getElementById('shopBanner').click()">
+      <i class="fas fa-panorama"></i>
+      <p>16:9 ব্যানার সিলেক্ট করুন</p>
+      <input type="file" id="shopBanner" accept="image/*" required>
+      <img id="bannerPreview" class="banner-preview">
+    </div>
+
+    <button type="submit" id="submitBtn">অ্যাকাউন্ট তৈরি করুন <i class="fas fa-check"></i></button>
+  </form>
+</div>
+<div id="customPopup"></div>
+<script type="module" src="shops.js"></script>
+</body>
+</html>
