@@ -3,29 +3,150 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Email Verification | GHOTI MARKET</title>
+<title>আবেদন সফল | GHOTI MARKET</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="verification.css">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#ff1744;--success:#00a651;--warning:#ff9800;--text:#212121;--muted:#757575;--card:#ffffff;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Hind Siliguri',sans-serif;}
+body{background:linear-gradient(135deg,#00a6511a,#ff17441a);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+
+.container{
+  max-width:480px;
+  width:100%;
+  background:var(--card);
+  border-radius:24px;
+  padding:40px 30px;
+  text-align:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.1);
+  border:1px solid rgba(0,0,0,.05);
+  animation:fadeIn .6s ease;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.icon-wrapper{
+  width:100px;height:100px;
+  background:linear-gradient(135deg,#00a651,#00c853);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 25px;
+  box-shadow:0 8px 24px rgba(0,166,81,.3);
+  animation:scaleUp .5s .2s both;
+}
+@keyframes scaleUp{from{transform:scale(0)}to{transform:scale(1)}}
+.icon-wrapper i{font-size:50px;color:#fff;}
+
+h2{font-size:26px;font-weight:700;color:var(--text);margin-bottom:12px;}
+.subtitle{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:25px;}
+
+.info-box{
+  background:#f8f9fa;
+  border-left:4px solid var(--primary);
+  border-radius:12px;
+  padding:18px;
+  text-align:left;
+  margin-bottom:25px;
+}
+.info-box h3{font-size:15px;font-weight:700;margin-bottom:12px;color:var(--text);}
+.info-box ul{list-style:none;padding:0;}
+.info-box li{
+  font-size:14px;
+  color:#444;
+  margin-bottom:12px;
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  line-height:1.6;
+}
+.info-box li:last-child{margin-bottom:0;}
+.info-box li i{color:var(--primary);margin-top:4px;font-size:14px;flex-shrink:0;}
+.info-box li span{flex:1;} /* লেখা ভাঙবে না */
+
+/* বাধ্যতামূলক বক্স */
+.must-do{
+  background:#fff3cd;
+  border:1px solid #ffc107;
+  border-radius:10px;
+  padding:12px;
+}
+.must-do i{color:var(--warning) !important;}
+
+.timeline{
+  background:#e8f5e9;
+  border-radius:12px;
+  padding:16px;
+  margin-bottom:25px;
+}
+.timeline i{color:var(--success);margin-right:6px;}
+.timeline p{font-size:14px;font-weight:600;color:#1b5e20;}
+
+.btn-group{display:flex;flex-direction:column;gap:12px;}
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px 20px;border-radius:12px;font-weight:700;font-size:15px;
+  text-decoration:none;transition:.3s;
+}
+.btn-primary{background:linear-gradient(135deg,var(--primary),#d50000);color:#fff;box-shadow:0 6px 16px rgba(255,23,68,.3);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,23,68,.4);}
+.btn-outline{border:2px solid #ddd;color:var(--text);background:#fff;}
+.btn-outline:hover{background:#f5f5f5;}
+
+footer{margin-top:25px;font-size:12px;color:var(--muted);}
+footer a{color:var(--primary);text-decoration:none;font-weight:600;}
+
+@media(max-width:480px){
+  .container{padding:30px 20px;}
+  h2{font-size:22px;}
+}
+</style>
 </head>
 <body>
 
 <div class="container">
-  <div class="icon-box"><i class="fas fa-envelope-circle-check"></i></div>
-  <h2>ইমেইল ভেরিফাই করুন</h2>
-  <p class="subtitle">আপনার ইমেইলে একটি ভেরিফিকেশন লিংক পাঠানো হয়েছে। দয়া করে লিংকে ক্লিক করে আপনার অ্যাকাউন্ট Active করুন।</p>
+  <div class="icon-wrapper">
+    <i class="fas fa-check-circle"></i>
+  </div>
   
-<div class="email-box" id="userEmail">ইমেইল লোড হচ্ছে...</div>
+  <h2>আপনার আবেদন সফলভাবে জমা হয়েছে!</h2>
+  <p class="subtitle">GHOTI MARKET পরিবারে আপনাকে স্বাগতম। আমরা এখন আপনার তথ্য যাচাই করছি।</p>
 
-  <div class="btn-group">
-    <button class="btn btn-primary" id="checkBtn"><i class="fas fa-sync"></i> আমি ভেরিফাই করেছি</button>
-    <button class="btn btn-outline" id="resendBtn"><i class="fas fa-paper-plane"></i> আবার মেইল পাঠান</button>
+  <div class="info-box">
+    <h3><i class="fas fa-clipboard-list"></i> পরবর্তী ধাপ সমূহ:</h3>
+    <ul>
+      <li><i class="fas fa-check"></i> <span>আমাদের Admin টিম ২৪ ঘন্টার মধ্যে আপনার NID এবং তথ্য যাচাই করবে</span></li>
+      <li><i class="fas fa-video"></i> <span>যাচাই শেষে আপনার রেজিস্টার্ড ইমেইল অথবা হোয়াটসঅ্যাপে ভিডিও কল ভেরিফিকেশনের জন্য মেসেজ পাবেন</span></li>
+      <li><i class="fas fa-user-check"></i> <span>ভিডিও কলে ১০ সেকেন্ডের সেলফি ভেরিফিকেশন সম্পন্ন হলেই আপনার শপ Active হবে</span></li>
+      <li><i class="fas fa-bell"></i> <span>Active হওয়ার সাথে সাথেই কনফার্মেশন মেইল পেয়ে যাবেন</span></li>
+      <li><i class="fas fa-link"></i> <span>আপনার ইমেইলে ভেরিফিকেশন লিংক পাঠানো হয়েছে। <b>Inbox এবং Spam ফোল্ডার</b> চেক করে লিংকে ক্লিক করে ভেরিফাই করুন।</span></li>
+      
+      <li class="must-do">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>
+          <b style="color:#d32f2f">বাধ্যতামূলক ধাপ:</b><br>
+          আপনার রেজিস্ট্রেশন করা ইমেইল থেকে <b>support@ghotimarket.com</b> এ "My account check" লিখে মেইল পাঠান।<br>
+          <b>না পাঠালে অ্যাকাউন্ট Approve হবে না।</b>
+        </span>
+      </li> 
+    </ul>
   </div>
 
-  <p class="info-text"><i class="fas fa-info-circle"></i> মেইল না পেলে Spam/Junk ফোল্ডার চেক করুন</p>
+  <div class="timeline">
+    <p><i class="fas fa-clock"></i> আনুমানিক সময়: ২৪ ঘন্টার মধ্যে</p>
+  </div>
+
+  <div class="btn-group">
+    <a href="https://ghotimarket.com/contact" class="btn btn-primary">
+      <i class="fas fa-headset"></i> সাপোর্টের সাথে কথা বলুন
+    </a>
+    <a href="https://ghotimarket.com" class="btn btn-outline">
+      <i class="fas fa-home"></i> হোমপেজে ফিরে যান
+    </a>
+  </div>
+
+  <footer>
+    কোনো প্রশ্ন থাকলে আমাদের <a href="https://wa.me/8801727003670">WhatsApp</a> এ নক দিন
+  </footer>
 </div>
 
-<div id="customPopup"></div>
-
-<script type="module" src="verification.js"></script>
 </body>
 </html>
