@@ -31,7 +31,7 @@ function getFirebaseErrorMessage(errorCode) {
   }
 }
 
-// ===== Custom Popup Function =====
+// ===== Custom Popup Function (Null Safe) =====
 function showPopup(msg, type = 'error') {
   const popupContainer = document.getElementById('customPopup');
   if (!popupContainer) return;
@@ -40,10 +40,17 @@ function showPopup(msg, type = 'error') {
     <div class="popup-box">
       <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
       <p>${msg}</p>
-      <button onclick="document.getElementById('customPopup').style.display='none'">ঠিক আছে</button>
+      <button id="popupCloseBtn" type="button">ঠিক আছে</button>
     </div>
   `;
   popupContainer.style.display = 'flex';
+
+  const closeBtn = document.getElementById('popupCloseBtn');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      popupContainer.style.display = 'none';
+    });
+  }
 }
 
 // ===== Canvas & Image Processing =====
@@ -112,103 +119,125 @@ async function checkUsername(username) {
   return snap.empty;
 }
 
-// ===== Input Event Listeners =====
-const shopNameEl = document.getElementById('shopName');
-if (shopNameEl) {
-  shopNameEl.addEventListener('input', e => {
-    const usernameEl = document.getElementById('username');
-    if (usernameEl) {
-      usernameEl.value = e.target.value.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-    }
-  });
-}
+// ===== DOMContentLoaded Event Listener =====
+document.addEventListener("DOMContentLoaded", () => {
+  // DOM Elements Declaration
+  const shopForm = document.getElementById("shopForm");
+  const submitBtn = document.getElementById("submitBtn");
+  const shopName = document.getElementById("shopName");
+  const username = document.getElementById("username");
+  const usernameMsg = document.getElementById("usernameMsg");
+  const shopLogo = document.getElementById("shopLogo");
+  const shopBanner = document.getElementById("shopBanner");
 
-const shopLogoEl = document.getElementById('shopLogo');
-if (shopLogoEl) {
-  shopLogoEl.addEventListener('change', e => { if (e.target.files[0]) handleImage(e.target.files[0], 1, 'logoPreview'); });
-}
+  // Shop Name Input Event (Auto generate username if elements exist)
+  if (shopName) {
+    shopName.addEventListener('input', e => {
+      if (username) {
+        username.value = e.target.value.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+      }
+    });
+  }
 
-const shopBannerEl = document.getElementById('shopBanner');
-if (shopBannerEl) {
-  shopBannerEl.addEventListener('change', e => { if (e.target.files[0]) handleImage(e.target.files[0], 16 / 9, 'bannerPreview'); });
-}
+  // Shop Logo Change Event
+  if (shopLogo) {
+    shopLogo.addEventListener('change', e => {
+      if (e.target.files && e.target.files[0]) {
+        handleImage(e.target.files[0], 1, 'logoPreview');
+      }
+    });
+  }
 
-// ===== Form Submission Handler (Direct Account Creation & Redirect) =====
-const shopFormEl = document.getElementById('shopForm');
-if (shopFormEl) {
-  shopFormEl.addEventListener('submit', async e => {
-    e.preventDefault();
-    const btn = document.getElementById('submitBtn');
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> তৈরি হচ্ছে...';
-    btn.disabled = true;
+  // Shop Banner Change Event
+  if (shopBanner) {
+    shopBanner.addEventListener('change', e => {
+      if (e.target.files && e.target.files[0]) {
+        handleImage(e.target.files[0], 16 / 9, 'bannerPreview');
+      }
+    });
+  }
 
-    try {
-      const step1 = JSON.parse(localStorage.getItem('seller_signup_step1'));
-      if (!step1) throw new Error("আগের ধাপ পূরণ করুন");
-
-      const shopName = document.getElementById('shopName').value;
-      const username = document.getElementById('username').value;
-      const shopLogo = document.getElementById('shopLogo').files[0];
-      const shopBanner = document.getElementById('shopBanner').files[0];
-
-      if (!shopLogo || !shopBanner) throw new Error("লোগো এবং ব্যানার সিলেক্ট করুন");
-
-      const isAvailable = await checkUsername(username);
-      if (!isAvailable) {
-        const msgEl = document.getElementById('usernameMsg');
-        if (msgEl) {
-          msgEl.innerText = `এই ইউজার নেইম অন্য কেউ ব্যবহার করেছে। সাজেশন: ${username}123, ${username}_24`;
-          msgEl.style.color = 'red';
-        }
-        throw new Error("Username নেওয়া আছে");
+  // Form Submission Handler
+  if (shopForm) {
+    shopForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      
+      if (submitBtn) {
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> তৈরি হচ্ছে...';
+        submitBtn.disabled = true;
       }
 
-      // Process and upload logo and banner concurrently
-      const [shopLogoUrl, shopBannerUrl] = await Promise.all([
-        handleImage(shopLogo, 1, 'logoPreview'), 
-        handleImage(shopBanner, 16 / 9, 'bannerPreview')
-      ]);
+      try {
+        const step1Data = localStorage.getItem('seller_signup_step1');
+        if (!step1Data) throw new Error("আগের ধাপ পূরণ করুন");
+        const step1 = JSON.parse(step1Data);
 
-      // Create Firebase Auth user
-      const userCredential = await createUserWithEmailAndPassword(auth, step1.email, step1.password);
-      const uid = userCredential.user.uid;
+        const shopNameVal = shopName ? shopName.value : "";
+        const usernameVal = username ? username.value : "";
+        const logoFile = shopLogo && shopLogo.files ? shopLogo.files[0] : null;
+        const bannerFile = shopBanner && shopBanner.files ? shopBanner.files[0] : null;
 
-      // Save user details to Firestore
-      await setDoc(doc(db, "users", uid), {
-        fullName: step1.fullName,
-        email: step1.email,
-        whatsapp: step1.whatsapp,
-        nidFront: step1.nidFrontUrl,
-        nidBack: step1.nidBackUrl,
-        shopName,
-        username,
-        usernameLower: username.toLowerCase(),
-        shopLogo: shopLogoUrl,
-        shopBanner: shopBannerUrl,
-        active: false,
-        verified: false,
-        createdAt: serverTimestamp(),
-        usernameCreatedAt: serverTimestamp(),
-        todayUploads: 0,
-        lastUploadDate: 0,
-        profileUnlockedUntil: 0
-      });
+        if (!logoFile || !bannerFile) throw new Error("লোগো এবং ব্যানার সিলেক্ট করুন");
 
-      // Clear local storage signup data
-      localStorage.removeItem('seller_signup_step1');
+        const isAvailable = await checkUsername(usernameVal);
+        if (!isAvailable) {
+          if (usernameMsg) {
+            usernameMsg.innerText = `এই ইউজার নেইম অন্য কেউ ব্যবহার করেছে। সাজেশন: ${usernameVal}123, ${usernameVal}_24`;
+            usernameMsg.style.color = 'red';
+          }
+          throw new Error("Username নেওয়া আছে");
+        }
 
-      // Show success message and redirect after 1.2 seconds
-      showPopup("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে।", "success");
-      
-      setTimeout(() => {
-        window.location.href = "https://seller.ghotimarket.com/notice";
-      }, 1200);
+        // Process and upload logo and banner concurrently
+        const [shopLogoUrl, shopBannerUrl] = await Promise.all([
+          handleImage(logoFile, 1, 'logoPreview'), 
+          handleImage(bannerFile, 16 / 9, 'bannerPreview')
+        ]);
 
-    } catch (err) {
-      const friendlyMsg = err.code ? getFirebaseErrorMessage(err.code) : err.message;
-      showPopup(friendlyMsg);
-      btn.innerHTML = 'অ্যাকাউন্ট তৈরি করুন <i class="fas fa-check"></i>';
-      btn.disabled = false;
-    }
-  });
-}
+        // Create Firebase Auth user
+        const userCredential = await createUserWithEmailAndPassword(auth, step1.email, step1.password);
+        const uid = userCredential.user.uid;
+
+        // Save user details to Firestore
+        await setDoc(doc(db, "users", uid), {
+          fullName: step1.fullName,
+          email: step1.email,
+          whatsapp: step1.whatsapp,
+          nidFront: step1.nidFrontUrl,
+          nidBack: step1.nidBackUrl,
+          shopName: shopNameVal,
+          username: usernameVal,
+          usernameLower: usernameVal.toLowerCase(),
+          shopLogo: shopLogoUrl,
+          shopBanner: shopBannerUrl,
+          active: false,
+          verified: false,
+          createdAt: serverTimestamp(),
+          usernameCreatedAt: serverTimestamp(),
+          todayUploads: 0,
+          lastUploadDate: 0,
+          profileUnlockedUntil: 0
+        });
+
+        // Clear local storage signup data
+        localStorage.removeItem('seller_signup_step1');
+
+        // Show success message and redirect after 1.2 seconds
+        showPopup("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে।", "success");
+        
+        setTimeout(() => {
+          window.location.href = "https://seller.ghotimarket.com/notice";
+        }, 1200);
+
+      } catch (err) {
+        const friendlyMsg = err.code ? getFirebaseErrorMessage(err.code) : err.message;
+        showPopup(friendlyMsg);
+        
+        if (submitBtn) {
+          submitBtn.innerHTML = 'অ্যাকাউন্ট তৈরি করুন <i class="fas fa-check"></i>';
+          submitBtn.disabled = false;
+        }
+      }
+    });
+  }
+});
