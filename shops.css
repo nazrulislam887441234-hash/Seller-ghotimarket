@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap');
+
+:root{
+  --primary:#ff1744;
+  --primary-dark:#d50000;
+  --bg:#f5f5f5;
+  --card:#ffffffcc;
+  --text:#212121;
+  --text-sub:#757575;
+  --border:#e0e0e0;
+  --success:#00a651;
+  --shadow:0 8px 32px rgba(0,0,0,.1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Hind Siliguri',sans-serif;}
+body{background:linear-gradient(135deg,#ff17441a,#2563eb1a);min-height:100vh;padding:20px;}
+
+header{background:var(--card);backdrop-filter:blur(10px);padding:15px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.08);border-radius:16px;max-width:500px;margin:0 auto 20px;}
+header img{height:42px;}
+
+.container{max-width:500px;margin:0 auto;background:var(--card);backdrop-filter:blur(15px);padding:30px;border-radius:20px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.3);}
+
+.progress{display:flex;justify-content:space-between;margin-bottom:25px;position:relative;}
+.progress::before{content:'';position:absolute;top:17px;left:10%;right:10%;height:2px;background:#ddd;z-index:0;}
+.step{width:36px;height:36px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;font-weight:700;position:relative;z-index:1;border:3px solid #fff;}
+.step.active{background:var(--primary);color:#fff;box-shadow:0 0 0 4px #ff174433;}
+.step.done{background:var(--success);color:#fff;}
+
+h2{font-size:22px;font-weight:700;margin-bottom:20px;text-align:center;}
+
+.input-group{position:relative;margin-bottom:18px;}
+.input-group i{position:absolute;left:14px;top:15px;color:var(--text-sub);font-size:16px;}
+.input-group input,.input-group textarea{
+  width:100%;padding:14px 14px 14px 42px;border:1.5px solid var(--border);border-radius:12px;background:#fff;font-size:15px;transition:.2s;
+}
+.input-group input:focus,.input-group textarea:focus{
+  border-color:var(--primary);outline:none;box-shadow:0 0 0 3px #ff17441a;
+}
+label{font-size:14px;font-weight:600;margin:12px 0 8px;display:block;color:var(--text);}
+
+/* ===== সুন্দর File Upload with Preview ===== */
+.upload-box{
+  border:2px dashed var(--border);
+  border-radius:14px;
+  padding:20px;
+  text-align:center;
+  background:#fafafa;
+  cursor:pointer;
+  transition:.3s;
+  margin-bottom:15px;
+}
+.upload-box{border:2px dashed var(--border);border-radius:14px;padding:20px;text-align:center;background:#fafafa;cursor:pointer;transition:.3s;margin-bottom:15px;position:relative;}
+.upload-box:hover{border-color:var(--primary);background:#ff17440a;}
+.upload-box i{font-size:28px;color:var(--primary);margin-bottom:8px;}
+.upload-box p{font-size:13px;color:#757575;}
+.upload-box input{display:none;}
+
+/* লোগো প্রিভিউ - গোল 1:1 */
+.logo-preview{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover; /* লোগো crop হবেই */
+  margin:10px auto;
+  border:3px solid var(--primary);
+  display:none;
+  background:#fff;
+}
+
+/* ব্যানার প্রিভিউ - 16:9 ফ্রেম */
+.banner-preview{
+  width:100%;
+  aspect-ratio: 16/9; /* ফ্রেম সবসময় 16:9 থাকবে */
+  border-radius:12px;
+  object-fit:contain; /* পুরা ছবি দেখাবে, crop হবে না */
+  margin-top:10px;
+  border:1px solid var(--border);
+  display:none;
+  background:#000; /* ফাঁকা অংশ কালো */
+}
+button{
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;border:none;padding:16px;width:100%;border-radius:12px;
+  font-weight:800;cursor:pointer;font-size:16px;margin-top:10px;
+  box-shadow:0 6px 18px rgba(255,23,68,.3);transition:.25s;
+}
+button:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(255,23,68,.4);}
+button:disabled{opacity:.6;cursor:not-allowed;}
+button.fa-spinner{margin-right:8px;}
+
+#usernameMsg{font-size:12px;margin-top:6px;font-weight:600;}
+
+/* ===== Custom Popup ===== */
+#customPopup{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;z-index:999;animation:fadeIn.2s;}
+.popup-box{background:#fff;padding:28px;border-radius:18px;text-align:center;max-width:340px;animation:pop.25s;}
+.popup-box i{font-size:50px;color:var(--primary);margin-bottom:12px;}
+.popup-box h3{font-size:18px;margin-bottom:8px;}
+.popup-box p{color:var(--text-sub);font-size:14px;margin-bottom:16px;}
+.popup-box button{background:var(--primary);padding:12px;border-radius:10px;width:100%;}
+
+@keyframes pop{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+@media(max-width:600px){.container{padding:20px;}}
