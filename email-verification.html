@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Verification | GHOTI MARKET</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="verification.css">
+</head>
+<body>
+
+<div class="container">
+  <div class="icon-box"><i class="fas fa-envelope-circle-check"></i></div>
+  <h2>ইমেইল ভেরিফাই করুন</h2>
+  <p class="subtitle">আপনার ইমেইলে একটি ভেরিফিকেশন লিংক পাঠানো হয়েছে। দয়া করে লিংকে ক্লিক করে আপনার অ্যাকাউন্ট Active করুন।</p>
+  
+<div class="email-box" id="userEmail">ইমেইল লোড হচ্ছে...</div>
+
+  <div class="btn-group">
+    <button class="btn btn-primary" id="checkBtn"><i class="fas fa-sync"></i> আমি ভেরিফাই করেছি</button>
+    <button class="btn btn-outline" id="resendBtn"><i class="fas fa-paper-plane"></i> আবার মেইল পাঠান</button>
+  </div>
+
+  <p class="info-text"><i class="fas fa-info-circle"></i> মেইল না পেলে Spam/Junk ফোল্ডার চেক করুন</p>
+</div>
+
+<div id="customPopup"></div>
+
+<script type="module" src="verification.js"></script>
+</body>
+</html>
