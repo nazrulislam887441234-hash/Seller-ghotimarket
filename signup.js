@@ -13,11 +13,25 @@ async function handleImage(file, previewId){
     const img = new Image();
     img.src = URL.createObjectURL(file);
     img.onload = async ()=>{
-      // 1. Preview দেখাও - resize করে
-      const canvas = document.createElement('canvas');
-      canvas.width = 1200; canvas.height = 800; // NID এর জন্য 4:3
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 1200, 800);
+// 1. Preview দেখাও - Aspect Ratio ঠিক রেখে
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+
+const maxWidth = 1200;
+
+let width = img.width;
+let height = img.height;
+
+if (width > maxWidth) {
+    const scale = maxWidth / width;
+    width = maxWidth;
+    height = height * scale;
+}
+
+canvas.width = width;
+canvas.height = height;
+
+ctx.drawImage(img, 0, 0, width, height);
 
       document.getElementById(previewId).src = canvas.toDataURL('image/webp', 0.85);
       document.getElementById(previewId).style.display = 'block';
