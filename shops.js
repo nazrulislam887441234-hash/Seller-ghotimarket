@@ -230,14 +230,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 1200);
 
       } catch (err) {
-        const friendlyMsg = err.code ? getFirebaseErrorMessage(err.code) : err.message;
-        showPopup(friendlyMsg);
-        
-        if (submitBtn) {
-          submitBtn.innerHTML = 'অ্যাকাউন্ট তৈরি করুন <i class="fas fa-check"></i>';
-          submitBtn.disabled = false;
-        }
-      }
+    console.error(err);
+    console.error(err.stack);
+
+    const friendlyMsg = err.code ? getFirebaseErrorMessage(err.code) : err.message;
+    showPopup(friendlyMsg);
+
+    if (submitBtn) {
+        submitBtn.innerHTML = 'অ্যাকাউন্ট তৈরি করুন <i class="fas fa-check"></i>';
+        submitBtn.disabled = false;
+    }
+}
     });
   }
 });
