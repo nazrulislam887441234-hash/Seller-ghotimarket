@@ -1,63 +1,36 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const app = initializeApp({apiKey:"AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",authDomain:"ghotimarket.firebaseapp.com",projectId:"ghotimarket"});
 const db = getFirestore(app); const auth = getAuth(app);
 const IMGBB_KEY = "e1da51b6d309ac3a5a235b5088ebc334";
 
-// ===== SMART CROP FUNCTION =====
-function processCanvas(img, targetRatio){
+function processCanvas(img, targetRatio){ /* আগের টাই */ 
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   const currentRatio = img.width / img.height;
   const tolerance = 0.05;
-
   if(Math.abs(currentRatio - targetRatio) < tolerance){
-    // Ratio ঠিক আছে, শুধু resize
     if(targetRatio === 1){ canvas.width = canvas.height = 1200; }
     else{ canvas.width = 1600; canvas.height = 900; }
     ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
   }else{
-    // Ratio ঠিক নাই, crop করো
-    if(targetRatio === 1){ // 1:1 Logo
-      canvas.width = canvas.height = 1200;
-      const size = Math.min(img.width, img.height);
-      const sx = (img.width - size) / 2;
-      const sy = (img.height - size) / 2;
-      ctx.drawImage(img, sx, sy, size, size, 0, 0, 1200, 1200);
-    }else{ // 16:9 Banner
-      canvas.width = 1600; canvas.height = 900;
-      const targetH = img.width / (16/9);
-      let sx=0, sy=0, sWidth=img.width, sHeight=img.height;
-      if(img.height > targetH){
-        sy = (img.height - targetH) / 2;
-        sHeight = targetH;
-      }else{
-        const targetW = img.height * (16/9);
-        sx = (img.width - targetW) / 2;
-        sWidth = targetW;
-      }
-      ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, 1600, 900);
-    }
+    if(targetRatio === 1){ canvas.width = canvas.height = 1200; const size = Math.min(img.width, img.height); const sx = (img.width - size) / 2; const sy = (img.height - size) / 2; ctx.drawImage(img, sx, sy, size, size, 0, 0, 1200, 1200); }
+    else{ canvas.width = 1600; canvas.height = 900; const targetH = img.width / (16/9); let sx=0, sy=0, sWidth=img.width, sHeight=img.height; if(img.height > targetH){ sy = (img.height - targetH) / 2; sHeight = targetH; }else{ const targetW = img.height * (16/9); sx = (img.width - targetW) / 2; sWidth = targetW; } ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, 1600, 900); }
   }
   return canvas;
 }
 
-// ===== PREVIEW + UPLOAD =====
 async function handleImage(file, targetRatio, previewId){
   return new Promise((resolve, reject)=>{
     const img = new Image();
     img.src = URL.createObjectURL(file);
     img.onload = async ()=>{
       const canvas = processCanvas(img, targetRatio);
-      
-      // 1. Preview দেখাও - crop করা canvas
       document.getElementById(previewId).src = canvas.toDataURL('image/webp', 0.85);
       document.getElementById(previewId).style.display = 'block';
-
-      // 2. Upload এর জন্য blob বানাও
       canvas.toBlob(async (blob)=>{
         const fd = new FormData(); fd.append("image", blob);
         const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`,{method:"POST",body:fd});
@@ -83,13 +56,10 @@ function showPopup(msg,type='error'){
 document.getElementById('shopName').addEventListener('input',e=>{
   document.getElementById('username').value = e.target.value.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
 })
+document.getElementById('shopLogo').addEventListener('change', e=>{ if(e.target.files[0]) handleImage(e.target.files[0], 1, 'logoPreview'); })
+document.getElementById('shopBanner').addEventListener('change', e=>{ if(e.target.files[0]) handleImage(e.target.files[0], 16/9, 'bannerPreview'); })
 
-document.getElementById('shopLogo').addEventListener('change', e=>{
-  if(e.target.files[0]) handleImage(e.target.files[0], 1, 'logoPreview');
-})
-document.getElementById('shopBanner').addEventListener('change', e=>{
-  if(e.target.files[0]) handleImage(e.target.files[0], 16/9, 'bannerPreview');
-})
+let currentUser = null; // গ্লোবাল রাখলাম
 
 document.getElementById('shopForm').addEventListener('submit', async e=>{
   e.preventDefault();
@@ -114,33 +84,32 @@ document.getElementById('shopForm').addEventListener('submit', async e=>{
       throw new Error("Username নেওয়া আছে");
     }
 
-    // Submit এর সময় আবার upload করবে
     const [shopLogoUrl, shopBannerUrl] = await Promise.all([
       handleImage(shopLogo,1,'logoPreview'), 
       handleImage(shopBanner,16/9,'bannerPreview')
     ]);
 
     const userCredential = await createUserWithEmailAndPassword(auth, step1.email, step1.password);
-    const uid = userCredential.user.uid;
+    currentUser = userCredential.user;
+    const uid = currentUser.uid;
 
     await setDoc(doc(db,"users",uid),{
-      fullName: step1.fullName,
-      email: step1.email,
-      whatsapp: step1.whatsapp,
-      nidFront: step1.nidFrontUrl,
-      nidBack: step1.nidBackUrl,
+      fullName: step1.fullName, email: step1.email, whatsapp: step1.whatsapp,
+      nidFront: step1.nidFrontUrl, nidBack: step1.nidBackUrl,
       shopName, username, usernameLower: username.toLowerCase(),
       shopLogo: shopLogoUrl, shopBanner: shopBannerUrl,
       active: false, verified: false, createdAt: serverTimestamp(),
       usernameCreatedAt: serverTimestamp(), todayUploads:0, lastUploadDate:0, profileUnlockedUntil:0
     });
 
-    await sendEmailVerification(userCredential.user);
+    await sendEmailVerification(currentUser);
+    localStorage.removeItem('seller_signup_step1');
 
-    // localStorage.clear(); // <-- এটা ভুল। এটা করবা না
-    localStorage.removeItem('seller_signup_step1'); // শুধু এটা ডিলিট করো
-
-    window.location.href = 'email-verification.html';
+    // ফর্ম লুকাও, ভেরিফিকেশন বক্স দেখাও
+    document.getElementById('shopForm').style.display = 'none';
+    document.getElementById('verificationBox').style.display = 'block';
+    document.getElementById('userEmail').innerText = step1.email;
+    showPopup("অ্যাকাউন্ট তৈরি হয়েছে! ইমেইল চেক করুন","success");
 
   }catch(err){
     showPopup(err.message);
@@ -148,3 +117,28 @@ document.getElementById('shopForm').addEventListener('submit', async e=>{
     btn.disabled=false;
   }
 });
+
+// ===== ভেরিফিকেশন চেক বাটন =====
+document.getElementById('checkBtn').onclick = async ()=>{
+  if(!currentUser) return showPopup("Session শেষ। রিফ্রেশ করুন");
+  document.getElementById('checkBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> চেক করা হচ্ছে...';
+  document.getElementById('checkBtn').disabled = true;
+  await currentUser.reload();
+  if(currentUser.emailVerified){ 
+    await setDoc(doc(db,"users",currentUser.uid), {verified: true}, {merge: true}); // DB তে true করে দাও
+    localStorage.removeItem('pending_email');
+    window.location.href='notice.html'; 
+  }else{ 
+    showPopup("ইমেইলটা এখনো ভেরিফাই হয়নি। মেইলের লিংকে ক্লিক করুন"); 
+    document.getElementById('checkBtn').innerHTML = '<i class="fas fa-sync"></i> আমি ভেরিফাই করেছি';
+    document.getElementById('checkBtn').disabled = false;
+  }
+}
+
+document.getElementById('resendBtn').onclick = async ()=>{ 
+  if(!currentUser) return showPopup("Session শেষ। রিফ্রেশ করুন");
+  document.getElementById('resendBtn').disabled = true;
+  await sendEmailVerification(currentUser); 
+  showPopup("আবার মেইল পাঠানো হয়েছে। Spam ফোল্ডার চেক করুন","success"); 
+  setTimeout(()=>{document.getElementById('resendBtn').disabled = false;}, 60000);
+}
