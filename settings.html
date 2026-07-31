@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">  
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">  
     <style>  
-        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f8f9fa; --danger: #e74c3c; }  
+        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f8f9fa; --danger: #e74c3c; --success: #2ecc71; }  
         body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; padding: 20px; }  
         .profile-container {  
         max-width: 450px;  
@@ -88,6 +88,57 @@
         font-weight: 600;
     }
 
+    /* Keyword Management UI Styles */
+    .keyword-input-wrapper {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+    .keyword-input-wrapper input {
+        padding-left: 15px;
+    }
+    .keyword-add-btn {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 0 20px;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+    .keyword-add-btn:hover { background: var(--accent); }
+    
+    .keywords-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        min-height: 40px;
+        padding: 10px;
+        background: #f1f4f6;
+        border-radius: 12px;
+        border: 1px dashed #cbd5e1;
+    }
+    .keyword-chip {
+        background: white;
+        color: var(--primary);
+        border: 1px solid #cbd5e1;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .keyword-chip i {
+        cursor: pointer;
+        color: var(--danger);
+        font-size: 12px;
+        transition: transform 0.2s;
+    }
+    .keyword-chip i:hover { transform: scale(1.2); }
+
     .btn-update {  
         background: linear-gradient(135deg, var(--accent), #2980b9);  
         color: white;  
@@ -158,6 +209,17 @@
             <span id="charCounter" class="char-counter">০/২০০</span>  
         </div>  
 
+        <div class="input-group">  
+            <label>শপ সার্চ কিওয়ার্ড (Shop Keywords)</label>  
+            <div class="keyword-input-wrapper">
+                <input type="text" id="keywordInput" placeholder="নতুন কিওয়ার্ড লিখুন..." onkeypress="handleKeywordKeypress(event)">
+                <button type="button" class="keyword-add-btn" onclick="addKeyword()">যোগ</button>
+            </div>
+            <div id="keywordsList" class="keywords-container">
+                <!-- Keywords will render here dynamically -->
+            </div>
+        </div>  
+
         <button class="btn-update" onclick="updateProfile()" id="upBtn">  
             তথ্য আপডেট করুন  
         </button>  
@@ -180,6 +242,8 @@
     });  
     const auth = getAuth(app);  
     const db = getFirestore(app);  
+
+    let currentKeywords = [];
 
     function showPopup(msg, type='success'){  
         const popup = document.getElementById('customPopup');  
@@ -211,6 +275,47 @@
         }
     }
 
+    window.renderKeywords = () => {
+        const container = document.getElementById('keywordsList');
+        if (currentKeywords.length === 0) {
+            container.innerHTML = `<span style="color: #999; font-size: 13px; width: 100%; text-align: center; padding: 5px;">কোনো কিওয়ার্ড যোগ করা হয়নি</span>`;
+            return;
+        }
+        let html = '';
+        currentKeywords.forEach((kw, index) => {
+            html += `<div class="keyword-chip">
+                <span>${kw}</span>
+                <i class="fas fa-times" onclick="removeKeyword(${index})" title="মুছে ফেলুন"></i>
+            </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    window.addKeyword = () => {
+        const input = document.getElementById('keywordInput');
+        const val = input.value.trim();
+        if(!val) return;
+        if(currentKeywords.includes(val)) {
+            showPopup("এই কিওয়ার্ডটি ইতিমধ্যে যোগ করা হয়েছে!", 'error');
+            return;
+        }
+        currentKeywords.push(val);
+        input.value = '';
+        renderKeywords();
+    }
+
+    window.handleKeywordKeypress = (e) => {
+        if(e.key === 'Enter') {
+            e.preventDefault();
+            addKeyword();
+        }
+    }
+
+    window.removeKeyword = (index) => {
+        currentKeywords.splice(index, 1);
+        renderKeywords();
+    }
+
     onAuthStateChanged(auth, async user => {  
         if(user) {  
             document.getElementById('uidText').innerText = user.uid.substring(0,8)+'...';  
@@ -221,7 +326,9 @@
                 document.getElementById('shopName').value = data.shopName || "";  
                 document.getElementById('whatsapp').value = data.whatsapp || "";  
                 document.getElementById('shopDescription').value = data.shopDescription || "";
+                currentKeywords = Array.isArray(data.shopKeywords) ? [...data.shopKeywords] : [];
                 handleDescInput();
+                renderKeywords();
             }  
         } else {  
             window.location.href = "login.html";  
@@ -254,7 +361,8 @@
             await updateDoc(doc(db, "users", auth.currentUser.uid), {  
                 shopName: sName,  
                 whatsapp: wa,
-                shopDescription: sDesc
+                shopDescription: sDesc,
+                shopKeywords: currentKeywords
             });  
             showPopup("আপনার প্রোফাইল সফলভাবে আপডেট হয়েছে!", 'success');  
             document.getElementById('displayShopName').innerText = sName;  
