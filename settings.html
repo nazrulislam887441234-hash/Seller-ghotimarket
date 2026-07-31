@@ -1,213 +1,271 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile | Ghoti Market</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f8f9fa; --danger: #e74c3c; }
-        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
+<!DOCTYPE html>  
+<html lang="bn">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Edit Profile | Ghoti Market</title>  
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">  
+    <style>  
+        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f8f9fa; --danger: #e74c3c; }  
+        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; padding: 20px; }  
+        .profile-container {  
+        max-width: 450px;  
+        margin: 0 auto;  
+        background: white;  
+        border-radius: 25px;  
+        overflow: hidden;  
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);  
+    }  
 
-        .profile-container {
-            max-width: 450px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 25px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    .profile-header {  
+        background: linear-gradient(135deg, var(--primary), #1a252f);  
+        color: white;  
+        padding: 40px 20px;  
+        text-align: center;  
+    }  
+
+    .avatar-box {  
+        width: 90px;  
+        height: 90px;  
+        background: white;  
+        color: var(--accent);  
+        border-radius: 50%;  
+        display: flex;  
+        align-items: center;  
+        justify-content: center;  
+        font-size: 50px;  
+        margin: 0 auto 15px;  
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);  
+    }  
+
+    .profile-header h2 { margin: 0; font-size: 22px; font-weight: 700; }  
+    .uid-badge {   
+        display: inline-block;   
+        background: rgba(255,255,255,0.15);   
+        padding: 5px 15px;   
+        border-radius: 20px;   
+        font-size: 12px;   
+        margin-top: 10px;  
+        letter-spacing: 0.5px;  
+    }  
+
+    .form-body { padding: 30px 25px; }  
+    .input-group { margin-bottom: 20px; text-align: left; }  
+    .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; font-size: 14px; }  
+      
+    .input-box { position: relative; }  
+    .input-box i { position: absolute; left: 15px; top: 14px; color: #aaa; }  
+      
+    input, textarea {  
+        width: 100%;  
+        padding: 14px 15px 14px 45px;  
+        border: 1.5px solid #ddd;  
+        border-radius: 12px;  
+        box-sizing: border-box;  
+        outline: none;  
+        transition: 0.3s;  
+        font-size: 15px;  
+        font-family: 'Hind Siliguri', sans-serif;
+    }  
+    textarea {
+        resize: none;
+        height: 100px;
+        padding-top: 14px;
+    }
+    input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(52,152,219,0.1); }  
+    input.error-border, textarea.error-border { border-color: var(--danger) !important; box-shadow: 0 0 10px rgba(231,76,60,0.1) !important; }
+
+    .char-counter {
+        display: block;
+        text-align: right;
+        font-size: 12px;
+        color: #777;
+        margin-top: 5px;
+    }
+    .char-counter.error-text {
+        color: var(--danger);
+        font-weight: 600;
+    }
+
+    .btn-update {  
+        background: linear-gradient(135deg, var(--accent), #2980b9);  
+        color: white;  
+        border: none;  
+        width: 100%;  
+        padding: 15px;  
+        border-radius: 12px;  
+        font-size: 16px;  
+        font-weight: 700;  
+        cursor: pointer;  
+        margin-top: 10px;  
+        transition: 0.3s;  
+        box-shadow: 0 5px 15px rgba(52,152,219,.3);  
+    }  
+    .btn-update:hover { transform: translateY(-2px); }  
+    .btn-update:active { transform: scale(0.97); }  
+    .btn-update:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }  
+
+    .btn-back {  
+        display: block;  
+        text-align: center;  
+        margin-top: 20px;  
+        color: #777;  
+        text-decoration: none;  
+        font-size: 14px;  
+        font-weight: 600;  
+    }  
+    .btn-back:hover { color: var(--primary); }  
+
+    /* Custom Popup */  
+    #customPopup{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:999;}  
+    .popup-box{background:#fff;padding:25px;border-radius:16px;text-align:center;max-width:320px;}  
+    .popup-box i{font-size:40px;color:var(--accent);margin-bottom:10px;}  
+    .popup-box.error i{color:var(--danger);}  
+</style>
+</head>  
+<body>  
+<div class="profile-container">  
+    <div class="profile-header">  
+        <div class="avatar-box"><i class="fas fa-store"></i></div>  
+        <h2 id="displayShopName">লোড হচ্ছে...</h2>  
+        <div class="uid-badge">UID: <span id="uidText">...</span></div>  
+    </div>  
+
+    <div class="form-body">  
+        <div class="input-group">  
+            <label>দোকানের নাম</label>  
+            <div class="input-box">  
+                <i class="fas fa-shopping-bag"></i>  
+                <input type="text" id="shopName" placeholder="দোকানের নাম">  
+            </div>  
+        </div>  
+
+        <div class="input-group">  
+            <label>WhatsApp নাম্বার</label>  
+            <div class="input-box">  
+                <i class="fab fa-whatsapp"></i>  
+                <input type="tel" id="whatsapp" placeholder="01XXXXXXXXX">  
+            </div>  
+        </div>  
+
+        <div class="input-group">  
+            <label>শপের বর্ণনা (Shop Description)</label>  
+            <div class="input-box">  
+                <i class="fas fa-align-left" style="top: 15px;"></i>  
+                <textarea id="shopDescription" placeholder="আপনার শপ সম্পর্কে সংক্ষেপে লিখুন..." oninput="handleDescInput()"></textarea>  
+            </div>  
+            <span id="charCounter" class="char-counter">০/২০০</span>  
+        </div>  
+
+        <button class="btn-update" onclick="updateProfile()" id="upBtn">  
+            তথ্য আপডেট করুন  
+        </button>  
+
+        <a href="dashboard.html" class="btn-back"><i class="fas fa-arrow-left"></i> ড্যাশবোর্ডে ফিরুন</a>  
+    </div>  
+</div>  
+
+<div id="customPopup"></div>  
+
+<script type="module">  
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";  
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";  
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";  
+
+    const app = initializeApp({   
+        apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",   
+        projectId: "ghotimarket",  
+        authDomain: "ghotimarket.firebaseapp.com"  
+    });  
+    const auth = getAuth(app);  
+    const db = getFirestore(app);  
+
+    function showPopup(msg, type='success'){  
+        const popup = document.getElementById('customPopup');  
+        popup.innerHTML = `<div class="popup-box ${type==='error'?'error':''}"><i class="fas fa-${type==='success'?'check-circle':'exclamation-circle'}"></i><p>${msg}</p><button onclick="this.parentElement.parentElement.style.display='none'" style="background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:8px;margin-top:10px;cursor:pointer;">ঠিক আছে</button></div>`;  
+        popup.style.display='flex';  
+    }  
+
+    function convertToBengaliNumber(num) {
+        const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+        return num.toString().replace(/\d/g, d => bengaliDigits[d]);
+    }
+
+    window.handleDescInput = () => {
+        const descField = document.getElementById('shopDescription');
+        const counter = document.getElementById('charCounter');
+        const updateBtn = document.getElementById('upBtn');
+        const length = descField.value.length;
+
+        counter.innerText = `${convertToBengaliNumber(length)}/২০০`;
+
+        if (length > 200) {
+            descField.classList.add('error-border');
+            counter.classList.add('error-text');
+            updateBtn.disabled = true;
+        } else {
+            descField.classList.remove('error-border');
+            counter.classList.remove('error-text');
+            updateBtn.disabled = false;
+        }
+    }
+
+    onAuthStateChanged(auth, async user => {  
+        if(user) {  
+            document.getElementById('uidText').innerText = user.uid.substring(0,8)+'...';  
+            const snap = await getDoc(doc(db, "users", user.uid));  
+            if(snap.exists()) {  
+                const data = snap.data();  
+                document.getElementById('displayShopName').innerText = data.shopName || 'আমার শপ';  
+                document.getElementById('shopName').value = data.shopName || "";  
+                document.getElementById('whatsapp').value = data.whatsapp || "";  
+                document.getElementById('shopDescription').value = data.shopDescription || "";
+                handleDescInput();
+            }  
+        } else {  
+            window.location.href = "login.html";  
+        }  
+    });  
+
+    window.updateProfile = async () => {  
+        const btn = document.getElementById('upBtn');  
+        const sName = document.getElementById('shopName').value.trim();  
+        const wa = document.getElementById('whatsapp').value.trim();  
+        const sDesc = document.getElementById('shopDescription').value.trim();  
+
+        if(!sName || !wa) {  
+            showPopup("সবগুলো ঘর পূরণ করুন!", 'error');  
+            return;  
+        }  
+        if(!/^01[3-9]\d{8}$/.test(wa)){  
+            showPopup("সঠিক Whatsapp নাম্বার দিন!", 'error');  
+            return;  
+        }  
+        if(sDesc.length > 200){
+            showPopup("শপের বর্ণনা সর্বোচ্চ ২০০ অক্ষরের মধ্যে হতে হবে!", 'error');
+            return;
         }
 
-        .profile-header {
-            background: linear-gradient(135deg, var(--primary), #1a252f);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-        }
+        btn.disabled = true;  
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> আপডেট হচ্ছে...';  
 
-        .avatar-box {
-            width: 90px;
-            height: 90px;
-            background: white;
-            color: var(--accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 50px;
-            margin: 0 auto 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .profile-header h2 { margin: 0; font-size: 22px; font-weight: 700; }
-        .uid-badge { 
-            display: inline-block; 
-            background: rgba(255,255,255,0.15); 
-            padding: 5px 15px; 
-            border-radius: 20px; 
-            font-size: 12px; 
-            margin-top: 10px;
-            letter-spacing: 0.5px;
-        }
-
-        .form-body { padding: 30px 25px; }
-        .input-group { margin-bottom: 20px; text-align: left; }
-        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; font-size: 14px; }
-        
-        .input-box { position: relative; }
-        .input-box i { position: absolute; left: 15px; top: 14px; color: #aaa; }
-        
-        input {
-            width: 100%;
-            padding: 14px 15px 14px 45px;
-            border: 1.5px solid #ddd;
-            border-radius: 12px;
-            box-sizing: border-box;
-            outline: none;
-            transition: 0.3s;
-            font-size: 15px;
-        }
-        input:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(52,152,219,0.1); }
-
-        .btn-update {
-            background: linear-gradient(135deg, var(--accent), #2980b9);
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(52,152,219,.3);
-        }
-        .btn-update:hover { transform: translateY(-2px); }
-        .btn-update:active { transform: scale(0.97); }
-        .btn-update:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        .btn-back {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            color: #777;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .btn-back:hover { color: var(--primary); }
-
-        /* Custom Popup */
-        #customPopup{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:999;}
-        .popup-box{background:#fff;padding:25px;border-radius:16px;text-align:center;max-width:320px;}
-        .popup-box i{font-size:40px;color:var(--accent);margin-bottom:10px;}
-        .popup-box.error i{color:var(--danger);}
-    </style>
-</head>
-<body>
-
-    <div class="profile-container">
-        <div class="profile-header">
-            <div class="avatar-box"><i class="fas fa-store"></i></div>
-            <h2 id="displayShopName">লোড হচ্ছে...</h2>
-            <div class="uid-badge">UID: <span id="uidText">...</span></div>
-        </div>
-
-        <div class="form-body">
-            <div class="input-group">
-                <label>দোকানের নাম</label>
-                <div class="input-box">
-                    <i class="fas fa-shopping-bag"></i>
-                    <input type="text" id="shopName" placeholder="দোকানের নাম">
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label>WhatsApp নাম্বার</label>
-                <div class="input-box">
-                    <i class="fab fa-whatsapp"></i>
-                    <input type="tel" id="whatsapp" placeholder="01XXXXXXXXX">
-                </div>
-            </div>
-
-            <button class="btn-update" onclick="updateProfile()" id="upBtn">
-                তথ্য আপডেট করুন
-            </button>
-
-            <a href="dashboard.html" class="btn-back"><i class="fas fa-arrow-left"></i> ড্যাশবোর্ডে ফিরুন</a>
-        </div>
-    </div>
-
-    <div id="customPopup"></div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        const app = initializeApp({ 
-            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
-            projectId: "ghotimarket",
-            authDomain: "ghotimarket.firebaseapp.com"
-        });
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        function showPopup(msg, type='success'){
-            const popup = document.getElementById('customPopup');
-            popup.innerHTML = `<div class="popup-box ${type==='error'?'error':''}"><i class="fas fa-${type==='success'?'check-circle':'exclamation-circle'}"></i><p>${msg}</p><button onclick="this.parentElement.parentElement.style.display='none'" style="background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:8px;margin-top:10px;cursor:pointer;">ঠিক আছে</button></div>`;
-            popup.style.display='flex';
-        }
-
-        onAuthStateChanged(auth, async user => {
-            if(user) {
-                document.getElementById('uidText').innerText = user.uid.substring(0,8)+'...';
-                const snap = await getDoc(doc(db, "users", user.uid));
-                if(snap.exists()) {
-                    const data = snap.data();
-                    document.getElementById('displayShopName').innerText = data.shopName || 'আমার শপ';
-                    document.getElementById('shopName').value = data.shopName || "";
-                    document.getElementById('whatsapp').value = data.whatsapp || "";
-                }
-            } else {
-                window.location.href = "login.html";
-            }
-        });
-
-        window.updateProfile = async () => {
-            const btn = document.getElementById('upBtn');
-            const sName = document.getElementById('shopName').value.trim();
-            const wa = document.getElementById('whatsapp').value.trim();
-
-            if(!sName || !wa) {
-                showPopup("সবগুলো ঘর পূরণ করুন!", 'error');
-                return;
-            }
-            if(!/^01[3-9]\d{8}$/.test(wa)){
-                showPopup("সঠিক Whatsapp নাম্বার দিন!", 'error');
-                return;
-            }
-
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> আপডেট হচ্ছে...';
-
-            try {
-                await updateDoc(doc(db, "users", auth.currentUser.uid), {
-                    shopName: sName,
-                    whatsapp: wa
-                });
-                showPopup("আপনার প্রোফাইল সফলভাবে আপডেট হয়েছে!", 'success');
-                document.getElementById('displayShopName').innerText = sName;
-                btn.innerHTML = 'তথ্য আপডেট করুন';
-                btn.disabled = false;
-            } catch (err) {
-                showPopup("আপডেট করতে সমস্যা হয়েছে: "+err.message, 'error');
-                btn.disabled = false;
-                btn.innerHTML = 'তথ্য আপডেট করুন';
-            }
-        }
-    </script>
-</body>
+        try {  
+            await updateDoc(doc(db, "users", auth.currentUser.uid), {  
+                shopName: sName,  
+                whatsapp: wa,
+                shopDescription: sDesc
+            });  
+            showPopup("আপনার প্রোফাইল সফলভাবে আপডেট হয়েছে!", 'success');  
+            document.getElementById('displayShopName').innerText = sName;  
+            btn.innerHTML = 'তথ্য আপডেট করুন';  
+            btn.disabled = false;  
+        } catch (err) {  
+            showPopup("আপডেট করতে সমস্যা হয়েছে: "+err.message, 'error');  
+            btn.disabled = false;  
+            btn.innerHTML = 'তথ্য আপডেট করুন';  
+        }  
+    }  
+</script>
+</body>  
 </html>
