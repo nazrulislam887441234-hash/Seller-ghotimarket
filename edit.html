@@ -114,6 +114,21 @@ input:checked +.slider:before{transform:translateX(22px);}
       <div class="discount-badge" id="discountText" style="display:none;"></div>
     </div>
 
+    <!-- Affiliate Section -->
+    <div class="card">
+      <div class="form-group">
+        <label>Affiliate Program</label>
+        <select id="affiliate" onchange="toggleAffiliate()">
+            <option value="off">Affiliate OFF</option>
+            <option value="on">Affiliate ON</option>
+        </select>
+      </div>
+      <div class="form-group" id="affiliateDiscountGroup" style="display: none; margin-bottom: 0;">
+        <label>Affiliate Discount (৳)</label>
+        <input type="number" id="affiliateDiscount" placeholder="যেমন ১০">
+      </div>
+    </div>
+
     <!-- 3. Category -->
     <div class="card">
       <div class="form-group">
@@ -245,6 +260,17 @@ let categories = []; // ক্যাটাগরি লিস্ট
 
 if(!productId) window.location.href = "dashboard.html";
 
+window.toggleAffiliate = () => {
+    const affiliateStatus = document.getElementById('affiliate').value;
+    const discountGroup = document.getElementById('affiliateDiscountGroup');
+    if (affiliateStatus === 'on') {
+        discountGroup.style.display = 'block';
+    } else {
+        discountGroup.style.display = 'none';
+        document.getElementById('affiliateDiscount').value = '';
+    }
+};
+
 // 3. Login Check
 onAuthStateChanged(auth, user => {
   if(user){ loadProduct(); }
@@ -267,6 +293,22 @@ async function loadProduct(){
     document.getElementById('pDesc').value = productData.description || '';
     document.getElementById('pSlug').value = productData.slug || '';
     document.getElementById('pStatus').checked = productData.active!== false;
+    
+    // Affiliate Data Load
+    const affiliateSelect = document.getElementById('affiliate');
+    const affiliateDiscountInput = document.getElementById('affiliateDiscount');
+    const discountGroup = document.getElementById('affiliateDiscountGroup');
+    
+    if (productData.affiliate === 'on') {
+        affiliateSelect.value = 'on';
+        discountGroup.style.display = 'block';
+        affiliateDiscountInput.value = productData.discount !== undefined ? productData.discount : '';
+    } else {
+        affiliateSelect.value = 'off';
+        discountGroup.style.display = 'none';
+        affiliateDiscountInput.value = '';
+    }
+
     keywords = productData.keywords || [];
     oldImages = productData.images || [];
 
@@ -412,6 +454,30 @@ document.getElementById('editForm').onsubmit = async (e) => {
     const categorySlug = document.getElementById('pCategory').value;
     if(!name ||!price ||!categorySlug || keywords.length === 0) throw new Error("সব * চিহ্নিত ঘর পূরণ করুন");
 
+    const affiliateStatus = document.getElementById('affiliate').value;
+    const affiliateDiscountInput = document.getElementById('affiliateDiscount').value;
+
+    if (affiliateStatus === 'on') {
+        if (!affiliateDiscountInput) {
+            throw new Error("অ্যাফিলিয়েট ডিসকাউন্ট অবশ্যই লিখতে হবে");
+        }
+        const discountVal = Number(affiliateDiscountInput);
+        if (discountVal < 1) {
+            throw new Error("ডিসকাউন্ট ১ টাকার কম হতে পারবে না");
+        }
+        if (discountVal >= price) {
+            throw new Error("ডিসকাউন্ট প্রাইসের সমান বা বেশি হতে পারবে না");
+        }
+    }
+
+    const affiliateData = affiliateStatus === 'on' ? {
+        affiliate: "on",
+        discount: Number(affiliateDiscountInput)
+    } : {
+        affiliate: "off",
+        discount: 0
+    };
+
     // Image Upload Logic
     let finalImages = [...oldImages];
     for(let i=0; i<2; i++){
@@ -434,7 +500,8 @@ document.getElementById('editForm').onsubmit = async (e) => {
       images: finalImages,
       categorySlug: categorySlug,
       categoryName: categoryName,
-      updatedAt: Date.now() // শুধু updatedAt যোগ
+      updatedAt: Date.now(), // শুধু updatedAt যোগ
+      ...affiliateData
       // sellerId, shopName, whatsapp আগের টাই থাকবে
     });
 
