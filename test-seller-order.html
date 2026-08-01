@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Seller Dashboard | GHOTI MARKET</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+:root{
+  --primary:#FF6A00;
+  --primary-dark:#E55A00;
+  --bg:#FFF8F3;
+  --card:#FFFFFF;
+  --text:#1e293b;
+  --text-sub:#64748b;
+  --border:#FFE3D1;
+  --shadow:0 8px 30px rgba(255,106,0,0.08);
+  --radius:18px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Hind Siliguri','Inter',sans-serif;}
+body{background:var(--bg);color:var(--text);}
+
+header{
+  background:var(--card);display:flex;justify-content:space-between;align-items:center;
+  padding:12px 20px;box-shadow:var(--shadow);position:sticky;top:0;z-index:100;
+}
+.header-left{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800;color:var(--primary);}
+.header-left img{width:40px;height:40px;}
+.header-right{display:flex;align-items:center;gap:15px;}
+.seller-info{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;}
+#newOrderBadge{display:none;background:#EF4444;color:#fff;padding:5px 12px;border-radius:50px;font-size:12px;font-weight:700;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.btn-logout{background:var(--primary);color:#fff;border:none;padding:10px 16px;border-radius:10px;cursor:pointer;font-weight:700;}
+.btn-logout:hover{background:var(--primary-dark);}
+
+.container{max-width:1300px;margin:0 auto;padding:20px 15px;}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:25px;}
+.stat-card{background:var(--card);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow);}
+.stat-card h4{font-size:13px;color:var(--text-sub);font-weight:600;}
+.stat-card h2{font-size:28px;color:var(--primary);margin-top:8px;font-weight:800;}
+
+.toolbar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.search-box{flex:1;min-width:250px;position:relative;}
+.search-box i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--text-sub);}
+.search-box input{width:100%;padding:14px 14px 14px 45px;border:1.5px solid var(--border);border-radius:12px;font-size:14px;}
+.toolbar select{padding:14px;border:1.5px solid var(--border);border-radius:12px;font-size:14px;background:#fff;min-width:160px;}
+.search-box input:focus,.toolbar select:focus{outline:none;border-color:var(--primary);}
+
+.order-card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:15px;box-shadow:var(--shadow);transition:0.3s;}
+.order-card:hover{transform:translateY(-4px);}
+.order-card.new{animation:newOrderAnim 0.6s ease 2;}
+@keyframes newOrderAnim{0%{box-shadow:0 0 0 0 rgba(255,106,0,0.4)}100%{box-shadow:0 0 0 20px rgba(255,106,0,0)}}
+.order-top{display:flex;gap:15px;}
+.order-top img{width:90px;height:90px;border-radius:14px;object-fit:cover;flex-shrink:0;}
+.order-info{flex:1;}
+.order-info h3{font-size:15px;margin-bottom:5px;}
+.meta{font-size:12px;color:var(--text-sub);margin-bottom:3px;}
+.meta b{color:var(--text);}
+.status-badge{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;display:inline-block;margin-top:5px;}
+.status-Pending{background:#FEF3C7;color:#92400E;}
+.status-Processing{background:#DBEAFE;color:#1E40AF;}
+.status-Shipped{background:#FEE2E2;color:#991B1B;}
+.status-Delivered{background:#D1FAE5;color:#065F46;}
+.status-Cancelled{background:#F3F4F6;color:#374151;}
+.price{font-size:16px;font-weight:800;color:var(--primary);margin-top:8px;}
+.order-actions{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap;}
+.btn{padding:10px 16px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-outline{border:1.5px solid var(--primary);background:#fff;color:var(--primary);}
+
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;justify-content:center;align-items:center;padding:20px;}
+.modal.show{display:flex;animation:fade .3s;}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal-content{background:#fff;border-radius:20px;width:100%;max-width:650px;max-height:90vh;overflow-y:auto;padding:25px;position:relative;}
+.close-btn{position:absolute;right:20px;top:15px;font-size:28px;cursor:pointer;color:#999;}
+.confirm-box{background:#fff;border-radius:20px;padding:30px;text-align:center;max-width:400px;}
+.confirm-box i{font-size:50px;color:var(--primary);margin-bottom:10px;}
+.confirm-btns{display:flex;gap:10px;margin-top:20px;}
+.btn-cancel{flex:1;padding:12px;border:none;border-radius:10px;background:#f1f5f9;font-weight:700;cursor:pointer;}
+.btn-confirm{flex:1;padding:12px;border:none;border-radius:10px;background:var(--primary);color:#fff;font-weight:700;cursor:pointer;}
+
+#toast{position:fixed;bottom:20px;right:20px;background:#22c55e;color:#fff;padding:14px 20px;border-radius:12px;display:none;z-index:10000;font-weight:600;}
+#emptyState{display:none;text-align:center;padding:60px 20px;color:var(--text-sub);}
+#emptyState i{font-size:70px;margin-bottom:15px;color:#cbd5e1;}
+
+.skeleton{background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:load 1.5s infinite;border-radius:var(--radius);}
+@keyframes load{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.stat-card.skeleton{height:90px;}
+.order-card.skeleton{height:200px;}
+
+@media(max-width:768px){
+  .header-right .seller-info span{display:none;}
+  .btn-logout span{display:none;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <img src="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png" alt="Logo">
+    <span>GHOTI SELLER</span>
+  </div>
+  <div class="header-right">
+    <div id="newOrderBadge">New Order!</div>
+    <div class="seller-info">
+      <i class="fas fa-user-circle"></i>
+      <span id="sellerName">Loading...</span>
+    </div>
+    <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </div>
+</header>
+
+<main class="container">
+  <div class="stats-grid" id="statsGrid">
+    <div class="stat-card skeleton"></div>
+    <div class="stat-card skeleton"></div>
+    <div class="stat-card skeleton"></div>
+    <div class="stat-card skeleton"></div>
+    <div class="stat-card skeleton"></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Search by Track ID, Name, Phone, Product...">
+    </div>
+    <select id="statusFilter">
+      <option value="">All Status</option>
+      <option>Pending</option>
+      <option>Confirmed</option>
+      <option>Packaging</option>
+      <option>Processing</option>
+      <option>Shipped</option>
+      <option>Delivered</option>
+      <option>Cancelled</option>
+    </select>
+    <select id="sortFilter">
+      <option value="desc">Newest First</option>
+      <option value="asc">Oldest First</option>
+    </select>
+  </div>
+
+  <div id="loadingSkeleton">
+    <div class="order-card skeleton"></div>
+    <div class="order-card skeleton"></div>
+    <div class="order-card skeleton"></div>
+  </div>
+
+  <div id="ordersList"></div>
+
+  <div id="emptyState">
+    <i class="fas fa-box-open"></i>
+    <h3>No Orders Found</h3>
+    <p>New orders will appear here automatically</p>
+  </div>
+</main>
+
+<div id="detailsModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div id="confirmModal" class="modal">
+  <div class="confirm-box">
+    <i class="fas fa-question-circle"></i>
+    <h3>Confirm Status Update</h3>
+    <p id="confirmText"></p>
+    <div class="confirm-btns">
+      <button class="btn-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="btn-confirm" id="confirmUpdateBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<audio id="notifSound" src="https://cdn.freesound.org/previews/270/270404_5123851-lq.mp3" preload="auto"></audio>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  onSnapshot,
+  doc,
+  getDoc,
+  updateDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+// ========== PASTE YOUR FIREBASE CONFIG HERE ==========
+const firebaseConfig = {
+  apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+  authDomain: "ghotimarket.firebaseapp.com",
+  projectId: "ghotimarket",
+  storageBucket: "ghotimarket.firebasestorage.app",
+  messagingSenderId: "481257644093",
+  appId: "1:481257644093:web:0dfc3699d6b3c86afeca54"
+};
+// =====================================================
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let allOrders = [];
+let confirmCallback = null;
+let isFirstLoad = true;
+
+// Auth Check
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  const userRef = doc(db, "users", user.uid);
+  const userSnap = await getDoc(userRef);
+
+  if (!userSnap.exists()) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  const userData = userSnap.data();
+
+  if (
+      !userData.profileUnlockedUntil ||
+      userData.profileUnlockedUntil < Date.now()
+  ) {
+      window.location.href = "locked.html";
+      return;
+  }
+
+  currentUser = user;
+  document.getElementById("sellerName").innerText =
+      userData.shopName || user.displayName || user.email;
+
+  loadOrders();
+});
+
+// Logout
+document.getElementById('logoutBtn').onclick = async () => {
+  await signOut(auth);
+  window.location.href = "index.html";
+};
+
+// Load Orders Realtime
+function loadOrders() {
+  const q = query(collection(db, "orders"), where("sellerId", "==", currentUser.uid));
+  
+  onSnapshot(q, (snapshot) => {
+    const changes = snapshot.docChanges();
+    
+    if (!isFirstLoad) {
+      const newOrders = changes.filter(c => c.type === 'added');
+      if (newOrders.length > 0) {
+        document.getElementById('notifSound').play().catch(()=>{});
+        document.getElementById('newOrderBadge').style.display = 'block';
+        setTimeout(() => document.getElementById('newOrderBadge').style.display = 'none', 5000);
+      }
+    }
+    isFirstLoad = false;
+
+    allOrders = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    
+    document.getElementById('loadingSkeleton').style.display = 'none';
+    renderStats();
+    renderOrders();
+  });
+}
+
+// Render Stats
+function renderStats() {
+  const stats = {
+    total: allOrders.length,
+    new: allOrders.filter(o => o.orderStatus === 'Pending').length,
+    processing: allOrders.filter(o => ['Confirmed','Packaging','Processing','Shipped'].includes(o.orderStatus)).length,
+    delivered: allOrders.filter(o => o.orderStatus === 'Delivered').length,
+    cancelled: allOrders.filter(o => o.orderStatus === 'Cancelled').length,
+  };
+
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><h4>Total Orders</h4><h2>${stats.total}</h2></div>
+    <div class="stat-card"><h4>New Orders</h4><h2>${stats.new}</h2></div>
+    <div class="stat-card"><h4>Processing</h4><h2>${stats.processing}</h2></div>
+    <div class="stat-card"><h4>Delivered</h4><h2>${stats.delivered}</h2></div>
+    <div class="stat-card"><h4>Cancelled</h4><h2>${stats.cancelled}</h2></div>
+  `;
+}
+
+// Render Orders
+function renderOrders() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const status = document.getElementById('statusFilter').value;
+  const sort = document.getElementById('sortFilter').value;
+
+  let filtered = allOrders.filter(o => {
+    const matchSearch = 
+      o.orderTrackId?.toLowerCase().includes(search) ||
+      o.customerName?.toLowerCase().includes(search) ||
+      o.customerPhone?.includes(search) ||
+      o.productName?.toLowerCase().includes(search);
+    const matchStatus = status ? o.orderStatus === status : true;
+    return matchSearch && matchStatus;
+  });
+
+  filtered.sort((a, b) => {
+    const timeA = a.createdAt?.seconds || 0;
+    const timeB = b.createdAt?.seconds || 0;
+    return sort === 'desc' ? timeB - timeA : timeA - timeB;
+  });
+
+  if (filtered.length === 0) {
+    document.getElementById('emptyState').style.display = 'block';
+    document.getElementById('ordersList').innerHTML = '';
+    return;
+  }
+  document.getElementById('emptyState').style.display = 'none';
+
+  document.getElementById('ordersList').innerHTML = filtered.map(o => {
+    const date = o.createdAt?.toDate().toLocaleString('bn-BD') || 'N/A';
+    
+    let affiliateHtml = '';
+    if (o.affiliateApplied === true) {
+      affiliateHtml = `
+        <div style="background:#FFF4EC; border:1px solid var(--border); padding:10px; border-radius:10px; margin-top:8px; font-size:13px;">
+          <b>Affiliate Order</b><br>
+          <b>Promo Code:</b> ${o.affiliatePromoCode || 'N/A'}<br>
+          <b>Affiliate ID:</b> ${o.affiliateUserId || 'N/A'}<br>
+          <b>Discount:</b> ৳${o.affiliateDiscount || 0}<br>
+          <b>Customer Paid:</b> ৳${o.grandTotal || 0}
+        </div>
+      `;
+    }
+
+    return `
+    <div class="order-card">
+      <div class="order-top">
+        <img src="${o.productImage}" alt="">
+        <div class="order-info">
+          <h3>${o.productName}</h3>
+          <div class="meta"><b>Track ID:</b> ${o.orderTrackId}</div>
+          <div class="meta"><b>Customer:</b> ${o.customerName} - ${o.customerPhone}</div>
+          <div class="meta"><b>Qty:</b> ${o.quantity} pcs</div>
+          <div class="meta"><b>Date:</b> ${date}</div>
+          <span class="status-badge status-${o.orderStatus}">${o.orderStatus}</span>
+          ${affiliateHtml}
+          <div class="price">Total: ৳${o.grandTotal}</div>
+        </div>
+      </div>
+      <div class="order-actions">
+        <button class="btn btn-primary" onclick="viewDetails('${o.id}')"><i class="fas fa-eye"></i> View Details</button>
+        <select onchange="requestStatusUpdate('${o.id}', this.value)">
+          <option>Update Status</option>
+          <option>Confirmed</option>
+          <option>Packaging</option>
+          <option>Processing</option>
+          <option>Shipped</option>
+          <option>Delivered</option>
+          <option>Cancelled</option>
+        </select>
+      </div>
+    </div>
+  `}).join('');
+}
+
+// View Details Modal
+window.viewDetails = (id) => {
+  const o = allOrders.find(x => x.id === id);
+  const date = o.createdAt?.toDate().toLocaleString('bn-BD') || 'N/A';
+  
+  let affiliateSectionHtml = '';
+  if (o.affiliateApplied === true) {
+    const originalSub = o.originalSubtotal !== undefined ? o.originalSubtotal : o.subtotal;
+    const discountedSub = o.discountedSubtotal !== undefined ? o.discountedSubtotal : (originalSub - (o.affiliateDiscount || 0));
+    
+    affiliateSectionHtml = `
+      <div style="background:#FFF4EC;padding:15px;border-radius:12px;margin:15px 0; border:1px solid var(--border);">
+        <h3 style="color:var(--primary);margin-bottom:8px;"><i class="fas fa-tag"></i> Affiliate Discount Details</h3>
+        <p><b>Promo Code:</b> ${o.affiliatePromoCode || 'N/A'}</p>
+        <p><b>Affiliate User ID:</b> ${o.affiliateUserId || 'N/A'}</p>
+        <p><b>Discount Amount:</b> -৳${o.affiliateDiscount || 0}</p>
+        <p><b>Original Subtotal:</b> ৳${originalSub}</p>
+        <p><b>After Discount Amount:</b> ৳${discountedSub}</p>
+        <p><b>Delivery Charge:</b> ৳${o.deliveryCharge || 0}</p>
+        <p style="margin-top:5px;"><b>Final Customer Payment:</b> ৳${o.grandTotal || 0}</p>
+      </div>
+    `;
+  }
+
+  document.getElementById('modalBody').innerHTML = `
+    <img src="${o.productImage}" style="width:100%;border-radius:15px;margin-bottom:15px;">
+    <h2>${o.productName}</h2>
+    <p><b>Track ID:</b> ${o.orderTrackId}</p>
+    
+    <div style="background:#FFF4EC;padding:15px;border-radius:12px;margin:15px 0;">
+      <h3><i class="fas fa-user"></i> Customer Information</h3>
+      <p>Name: ${o.customerName}<br>Phone: ${o.customerPhone}</p>
+    </div>
+
+    <div style="background:#FFF4EC;padding:15px;border-radius:12px;margin:15px 0;">
+      <h3><i class="fas fa-location-dot"></i> Shipping Address</h3>
+      <p>${o.division}, ${o.district}, ${o.upazila}</p>
+    </div>
+
+    ${affiliateSectionHtml}
+
+    <div style="background:#FFF4EC;padding:15px;border-radius:12px;margin:15px 0;">
+      <h3><i class="fas fa-receipt"></i> Order Information</h3>
+      <p>Quantity: ${o.quantity}<br>Subtotal: ৳${o.subtotal}<br>Delivery: ৳${o.deliveryCharge}<br><b>Grand Total: ৳${o.grandTotal}</b></p>
+      <p>Payment: ${o.paymentMethod} - ${o.paymentStatus}</p>
+      <p>Delivery: ${o.deliveryStatus}</p>
+      <p>Status: ${o.orderStatus}</p>
+      <p>Date: ${date}</p>
+      <p>Note: ${o.orderNote || 'None'}</p>
+    </div>
+  `;
+  document.getElementById('detailsModal').classList.add('show');
+}
+window.closeModal = () => document.getElementById('detailsModal').classList.remove('show');
+
+// Update Status
+window.requestStatusUpdate = (id, status) => {
+  if (status === 'Update Status') return;
+
+  document.getElementById('confirmText').innerText =
+    `Are you sure to change status to "${status}"?`;
+
+  document.getElementById('confirmModal').classList.add('show');
+
+  confirmCallback = async () => {
+    const order = allOrders.find(o => o.id === id);
+    if (!order) return;
+
+    try {
+      await Promise.all([
+        updateDoc(doc(db, "orders", id), {
+          orderStatus: status,
+          deliveryStatus: status,
+          updatedAt: serverTimestamp()
+        }),
+
+        updateDoc(doc(db, "order_tracking", order.orderTrackId), {
+          orderStatus: status,
+          deliveryStatus: status,
+          updatedAt: serverTimestamp()
+        })
+      ]);
+
+      showToast("Status updated successfully!");
+
+    } catch (e) {
+      console.error(e);
+      alert(e.message);
+    }
+  };
+};
+
+window.closeConfirm = () => document.getElementById('confirmModal').classList.remove('show');
+document.getElementById('confirmUpdateBtn').onclick = () => { confirmCallback(); closeConfirm(); };
+
+// Toast
+function showToast(msg){
+  const toast = document.getElementById('toast');
+  toast.innerText = msg;
+  toast.style.display = 'block';
+  setTimeout(()=>toast.style.display='none', 3000);
+}
+
+// Event Listeners
+document.getElementById('searchInput').oninput = renderOrders;
+document.getElementById('statusFilter').onchange = renderOrders;
+document.getElementById('sortFilter').onchange = renderOrders;
+</script>
+</body>
+</html>
