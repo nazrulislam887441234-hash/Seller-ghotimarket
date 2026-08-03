@@ -3,155 +3,1415 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup | Ghoti Market</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Seller account Create | Ghoti market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    
     <style>
-        :root { --primary: #1a2a3a; --success: #2ecc71; --accent: #3498db; --bg: #f1f2f6; }
-        body { font-family: 'Hind Siliguri', sans-serif; background: linear-gradient(135deg, #1a2a3a, #2c3e50); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
-        .signup-card { background: white; padding: 30px; border-radius: 25px; width: 100%; max-width: 450px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-        h2 { margin: 0 0 10px; font-size: 24px; text-align: center; color: var(--primary); }
-        .input-group { position: relative; margin-bottom: 15px; }
-        .input-group i { position: absolute; left: 15px; top: 15px; color: #aaa; }
-        input { width: 100%; padding: 14px 15px 14px 45px; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; outline: none; font-size: 15px; background: #fdfdfd; }
-        .nid-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        .nid-box { border: 2px dashed #ddd; border-radius: 12px; height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: pointer; background: #fafafa; }
-        .nid-box i { font-size: 20px; color: #aaa; }
-        .nid-box span { font-size: 10px; color: #888; margin-top: 5px; }
-        .nid-box input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
-        .nid-box img { width: 100%; height: 100%; object-fit: cover; display: none; }
-        .policy-box { background: #fff5f5; border: 1px solid #fed7d7; padding: 12px; border-radius: 10px; margin: 15px 0; }
-        .policy-box p { font-size: 12px; color: #c53030; margin: 0; line-height: 1.5; }
-        .checkbox-group { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px; cursor: pointer; }
-        .checkbox-group label { font-size: 13px; color: #4a5568; cursor: pointer; }
-        .btn-continue { background: var(--success); color: white; border: none; width: 100%; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; }
-        .btn-continue:disabled { background: #ccc; cursor: not-allowed; }
-        .verify-overlay { display: none; margin-top: 15px; text-align: center; background: #ebf8ff; padding: 15px; border-radius: 12px; border: 1px solid #bee3f8; }
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --glass-bg: rgba(15, 23, 42, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+            --error-color: #ef4444;
+            --success-color: #10b981;
+            --input-bg: rgba(255, 255, 255, 0.04);
+            --input-border: rgba(255, 255, 255, 0.12);
+        }
+
+        .light-theme {
+            --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --input-bg: rgba(0, 0, 0, 0.02);
+            --input-border: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .ambient-glow {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .glow-orb {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: rgba(99, 102, 241, 0.15);
+            filter: blur(80px);
+            border-radius: 50%;
+            top: -100px;
+            left: -100px;
+        }
+
+        .glow-orb-2 {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: rgba(168, 85, 247, 0.12);
+            filter: blur(80px);
+            border-radius: 50%;
+            bottom: -100px;
+            right: -100px;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 800px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .header-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .header-flex h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .header-flex p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .login-btn {
+            background: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--text-primary);
+            padding: 0.6rem 1.15rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .login-btn:hover {
+            background: var(--accent-color);
+            color: #ffffff;
+        }
+
+        .theme-btn {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-primary);
+            padding: 0.65rem;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.05);
+            background: var(--glass-border);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        label span {
+            color: var(--error-color);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper .material-icons-round {
+            position: absolute;
+            left: 1rem;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        textarea {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-primary);
+            padding: 0.85rem 1rem 0.85rem 2.75rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="tel"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+        }
+
+        textarea {
+            padding-left: 1rem;
+            resize: none;
+            height: 90px;
+        }
+
+        .char-counter {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-align: right;
+            margin-top: 0.25rem;
+        }
+
+        .password-strength {
+            margin-top: 0.35rem;
+            font-size: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .strength-bar {
+            height: 4px;
+            width: 100%;
+            background: var(--input-border);
+            border-radius: 2px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s, background 0.3s;
+        }
+
+        .strength-text {
+            color: var(--text-secondary);
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 1.5rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            grid-column: span 2;
+        }
+
+        .section-title .material-icons-round {
+            color: var(--accent-color);
+        }
+
+        .upload-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            grid-column: span 2;
+        }
+
+        .upload-card {
+            position: relative;
+            border: 2px dashed var(--input-border);
+            border-radius: 16px;
+            background: var(--input-bg);
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            height: 140px;
+            overflow: hidden;
+        }
+
+        .upload-card:hover {
+            border-color: var(--accent-color);
+            background: rgba(99, 102, 241, 0.03);
+        }
+
+        .upload-card input {
+            display: none;
+        }
+
+        .upload-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35rem;
+            transition: opacity 0.2s;
+        }
+
+        .upload-content .material-icons-round {
+            font-size: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .upload-content span {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .upload-content small {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .preview-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 14px;
+            display: none;
+        }
+
+        #shopLogoCard {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #shopLogoPreview {
+            border-radius: 50% !important;
+            object-fit: cover !important;
+            width: 100px !important;
+            height: 100px !important;
+            position: static !important;
+            inset: auto !important;
+            margin: 0 auto;
+            display: none;
+        }
+
+        .terms-group {
+            grid-column: span 2;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 0.5rem;
+        }
+
+        .terms-checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .terms-checkbox-label input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-color);
+            cursor: pointer;
+        }
+
+        .terms-links-row {
+            display: flex;
+            gap: 1rem;
+            padding-left: 1.7rem;
+        }
+
+        .terms-link-btn {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .terms-link-btn:hover {
+            color: var(--accent-hover);
+        }
+
+        .submit-container {
+            grid-column: span 2;
+            margin-top: 1rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-color), #8b5cf6);
+            color: #ffffff;
+            border: none;
+            padding: 1rem;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(99, 102, 241, 0.4);
+        }
+
+        .submit-btn:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Loading Overlay */
+        #loadingOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(9, 13, 22, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #loadingOverlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #loadingText {
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.025em;
+        }
+
+        /* Modal Box */
+        #errorModal {
+            position: fixed;
+            inset: 0;
+            background: rgba(9, 13, 22, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #errorModal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            text-align: left;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            color: var(--error-color);
+        }
+
+        .modal-header .material-icons-round {
+            font-size: 1.75rem;
+        }
+
+        .modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            word-break: break-word;
+            background: var(--input-bg);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--input-border);
+            line-height: 1.6;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        .modal-close-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.65rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Full Screen Overlay Modal for Terms & Privacy */
+        #infoModal {
+            position: fixed;
+            inset: 0;
+            background: rgba(9, 13, 22, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #infoModal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .policy-modal-container {
+            width: 100%;
+            height: 100%;
+            background: var(--glass-bg);
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.98);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #infoModal.active .policy-modal-container {
+            transform: scale(1);
+        }
+
+        .policy-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            background: var(--glass-bg);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .policy-modal-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .policy-close-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .policy-close-btn:hover {
+            background: var(--accent-color);
+            color: #ffffff;
+            border-color: var(--accent-color);
+            transform: scale(1.05);
+        }
+
+        .policy-iframe-wrapper {
+            flex: 1;
+            width: 100%;
+            height: calc(100% - 73px);
+            background: #ffffff;
+        }
+
+        .policy-iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Toast Notifications */
+        #toastContainer {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            pointer-events: none;
+        }
+
+        .toast {
+            pointer-events: auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 0.85rem 1.25rem;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            max-width: 350px;
+        }
+
+        .toast.success { border-left: 4px solid var(--success-color); }
+        .toast.error { border-left: 4px solid var(--error-color); }
+
+        .toast .material-icons-round {
+            font-size: 1.2rem;
+        }
+        .toast.success .material-icons-round { color: var(--success-color); }
+        .toast.error .material-icons-round { color: var(--error-color); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        .toast.hiding {
+            animation: slideOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full-width { grid-column: span 1; }
+            .upload-grid { grid-column: span 1; grid-template-columns: 1fr; }
+            .section-title { grid-column: span 1; }
+            .terms-group { grid-column: span 1; }
+            .submit-container { grid-column: span 1; }
+            .container { padding: 1.5rem; }
+            .header-flex { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .header-actions { width: 100%; justify-content: space-between; }
+        }
     </style>
 </head>
 <body>
 
-<div class="signup-card">
-    <h2>রেজিস্ট্রেশন করুন</h2>
-    
-    <div id="form-fields">
-        <div class="input-group"><i class="fas fa-user"></i><input type="text" id="name" placeholder="আপনার পুরো নাম"></div>
-        <div class="input-group"><i class="fas fa-store"></i><input type="text" id="shopName" placeholder="আপনার শপের নাম"></div>
-        <div class="input-group"><i class="fas fa-phone-alt"></i><input type="number" id="whatsapp" placeholder="অর্ডার পাওয়ার হোয়াটসঅ্যাপ নাম্বার"></div>
-        <div class="input-group"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="আপনার ইমেইল"></div>
-        <div class="input-group"><i class="fas fa-lock"></i><input type="password" id="pass" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ ডিজিট)"></div>
-
-        <p style="font-size: 13px; margin: 10px 0 5px; font-weight: bold;">NID কার্ড আপলোড করুন</p>
-        <div class="nid-grid">
-            <div class="nid-box" id="boxFront"><i class="fas fa-id-card"></i><span>সামনের অংশ</span><img id="viewFront"><input type="file" id="nidFront" accept="image/*" onchange="previewNID(this, 'viewFront', 'boxFront')"></div>
-            <div class="nid-box" id="boxBack"><i class="fas fa-id-card"></i><span>পেছনের অংশ</span><img id="viewBack"><input type="file" id="nidBack" accept="image/*" onchange="previewNID(this, 'viewBack', 'boxBack')"></div>
-        </div>
-
-        <div class="policy-box"><p><strong>৫. পেমেন্ট নীতি:</strong> ঘটি মার্কেট শুধুমাত্র COD সাপোর্ট করে। অগ্রিম লেনদেনে প্রতারিত হলে কর্তৃপক্ষ দায়ী থাকবে না।</p></div>
-
-        <div class="checkbox-group">
-            <input type="checkbox" id="policyCheck" onchange="document.getElementById('regBtn').disabled = !this.checked">
-            <label for="policyCheck">আমি পেমেন্ট নীতি মেনে নিচ্ছি।</label>
-        </div>
-        <button onclick="register()" id="regBtn" class="btn-continue" disabled>অ্যাকাউন্ট তৈরি করুন</button>
+    <div class="ambient-glow">
+        <div class="glow-orb"></div>
+        <div class="glow-orb-2"></div>
     </div>
 
-    <div id="verify-section" class="verify-overlay">
-        <p style="color: #2b6cb0; font-size: 14px; margin-bottom: 10px;"><strong>আপনার ইমেইলে একটি ভেরিফিকেশন লিংক পাঠানো হয়েছে।</strong> স্প্যাম ফোল্ডার বা ইনবক্স চেক করে লিংকে ক্লিক করুন।</p>
-        <button onclick="checkEmailVerified()" class="btn-continue" style="background: var(--accent);">ভেরিফিকেশন করেছি (ক্লিক করুন)</button>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+        <p id="loadingText">প্রক্রিয়াধীন...</p>
     </div>
-</div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <!-- Error/Action Modal -->
+    <div id="errorModal">
+        <div class="modal-content">
+            <div class="modal-header" id="modalHeaderContainer">
+                <span class="material-icons-round" id="modalIcon">error</span>
+                <h3 id="modalTitle">অপারেশন ব্যর্থ হয়েছে</h3>
+            </div>
+            <div class="modal-body" id="modalMessage"></div>
+            <div class="modal-footer" id="modalFooterContainer">
+                <button class="modal-close-btn" onclick="closeErrorModal()">বন্ধ করুন</button>
+            </div>
+        </div>
+    </div>
 
-const firebaseConfig = { apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket", authDomain: "ghotimarket.firebaseapp.com" };
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const imgbbKey = "e1da51b6d309ac3a5a235b5088ebc334";
+    <!-- Info / Policy Modal (Full Screen Overlay with iframe) -->
+    <div id="infoModal">
+        <div class="policy-modal-container">
+            <div class="policy-modal-header">
+                <div class="policy-modal-title" id="infoModalTitle">শিরোনাম</div>
+                <button type="button" class="policy-close-btn" onclick="closeInfoModal()" title="বন্ধ করুন">
+                    <span class="material-icons-round">close</span>
+                </button>
+            </div>
+            <div class="policy-iframe-wrapper" id="policyIframeContainer"></div>
+        </div>
+    </div>
 
-window.previewNID = (input, viewId, boxId) => {
-    const file = input.files[0];
-    if (file && file.size <= 2 * 1024 * 1024) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            document.getElementById(viewId).src = e.target.result;
-            document.getElementById(viewId).style.display = 'block';
-            document.getElementById(boxId).style.border = 'none';
-        };
-        reader.readAsDataURL(file);
-    } else { alert("ছবির সাইজ ২ এমবি-র বেশি!"); input.value = ""; }
-};
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
 
-window.register = async () => {
-    const n = document.getElementById('name').value.trim();
-    const s = document.getElementById('shopName').value.trim();
-    const w = document.getElementById('whatsapp').value.trim();
-    const e = document.getElementById('email').value.trim();
-    const p = document.getElementById('pass').value.trim();
-    const f1 = document.getElementById('nidFront').files[0];
-    const f2 = document.getElementById('nidBack').files[0];
+    <main class="container">
+        <div class="header-flex">
+            <div>
+                <h1>বিক্রেতা নিবন্ধন</h1>
+                <p>আপনার সেলার অ্যাকাউন্ট রেজিস্টার করতে শপের বিবরণ পূরণ করুন।</p>
+            </div>
+            <div class="header-actions">
+                <a href="https://seller.ghotimarket.com/login" class="login-btn">
+                    <span class="material-icons-round">login</span>
+                   সেলার লগিন
+                </a>
+                <button type="button" id="themeToggleBtn" class="theme-btn" title="থিম পরিবর্তন করুন">
+                    <span id="themeIcon" class="material-icons-round">light_mode</span>
+                </button>
+            </div>
+        </div>
 
-    if(!n || !s || !w || !e || !p || !f1 || !f2) return alert("সবগুলো তথ্য দিন!");
-    
-    if(!confirm("আপনি কি নিশ্চিত যে আপনার ইমেইলটি সঠিক? এখন আপনার ইমেইলে একটি ভেরিফিকেশন লিংক পাঠানো হবে।")) return;
+        <form id="registrationForm">
+            <div class="form-grid">
+                
+                <div class="form-group">
+                    <label for="fullName">আপনার পুরো নাম <span>*</span></label>
+                    <div class="input-wrapper">
+                        <span class="material-icons-round">person</span>
+                        <input type="text" id="fullName" required placeholder="আপনার পুরো নাম লিখুন">
+                    </div>
+                </div>
 
-    const btn = document.getElementById('regBtn');
-    btn.disabled = true; btn.innerText = "ইমেইল পাঠানো হচ্ছে...";
+                <div class="form-group">
+                    <label for="email">ইমেইল এড্রেস বা জিমেইল <span>*</span></label>
+                    <div class="input-wrapper">
+                        <span class="material-icons-round">email</span>
+                        <input type="email" id="email" required placeholder="XXXXXXXXXXXX@gamil.com">
+                    </div>
+                </div>
 
-    try {
-        const userCredential = await createUserWithEmailAndPassword(auth, e, p);
-        const user = userCredential.user;
+                <div class="form-group">
+                    <label for="password">পাসওয়ার্ড <span>*</span></label>
+                    <div class="input-wrapper">
+                        <span class="material-icons-round">lock</span>
+                        <input type="password" id="password" required placeholder="মিনিমাম ৮ অক্ষরের শক্তিশালী পাসওয়ার্ড">
+                    </div>
+                    <div class="password-strength">
+                        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+                        <span class="strength-text" id="strengthText">পাসওয়ার্ডের শক্তি পরীক্ষা করুন</span>
+                    </div>
+                </div>
 
-        // ভেরিফিকেশন মেইল পাঠানো
-        await sendEmailVerification(user);
-        
-        // নজরুল ভাই, এখানে অ্যালার্ট যোগ করা হয়েছে
-        alert("আপনার ইমেইলে একটি ভেরিফিকেশন মেইল পাঠানো হয়েছে। ইনবক্স চেক করুন, না পেলে অবশ্যই 'স্প্যাম (Spam)' ফোল্ডার চেক করুন।");
+                <div class="form-group">
+                    <label for="confirmPassword">উপরের মতো সেইম পাসওয়ার্ড লিখুন <span>*</span></label>
+                    <div class="input-wrapper">
+                        <span class="material-icons-round">lock_reset</span>
+                        <input type="password" id="confirmPassword" required placeholder="উপরের মতো সেইম পাসওয়ার্ড লিখুন">
+                    </div>
+                </div>
 
-        const upload = async (file) => {
-            const fd = new FormData(); fd.append("image", file);
-            const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, { method: "POST", body: fd });
-            const json = await res.json(); 
-            return json.data.url;
-        };
+                <div class="form-group">
+                    <label for="whatsapp"> আপনার হোয়াটসঅ্যাপ নম্বর <span>*</span></label>
+                    <div class="input-wrapper">
+                        <span class="material-icons-round">phone</span>
+                        <input type="tel" id="whatsapp" required placeholder="01XXXXXXXXX">
+                    </div>
+                </div>
 
-        const frontUrl = await upload(f1);
-        const backUrl = await upload(f2);
+                <div class="form-group">
+                    <label for="shopName">আপনার শপের নাম<span>*</span></label>
+                    <div class="input-wrapper">
+                        <span class="material-icons-round">storefront</span>
+                        <input type="text" id="shopName" required placeholder="আপনার শপের নাম লিখুন">
+                    </div>
+                </div>
 
-        await setDoc(doc(db, "users", user.uid), {
-            fullName: n, shopName: s, whatsapp: w, email: e, 
-            nidFront: frontUrl, nidBack: backUrl,
-            verified: false, active: false, createdAt: Date.now()
+                <div class="form-group full-width">
+                    <label for="shopDescription">শপের ডেসক্রিপশন/Bio<span>*</span></label>
+                    <textarea id="shopDescription" required placeholder="শপের ডেসক্রিপশন/বায়ু লিখুন। কোন লিংক ব্যবহার করবেন না।লিংক ব্যবহার করলে একাউন্ট বাতিল হতে পারে।"></textarea>
+                    <div class="char-counter" id="charCount">০ / ২০০ অক্ষর</div>
+                </div>
+
+                <div class="section-title">
+                    <span class="material-icons-round">perm_media</span>
+                    প্রয়োজনীয় লগো ব্যানার+ডকুমেন্টস
+                </div>
+
+                <div class="upload-grid">
+                    
+                    <div class="upload-card" id="shopLogoCard" onclick="document.getElementById('shopLogoInput').click()">
+                        <input type="file" id="shopLogoInput" accept="image/*" required>
+                        <div class="upload-content" id="shopLogoContent">
+                            <span class="material-icons-round">add_photo_alternate</span>
+                            <span>শপের লগো</span>
+                            <small>শপের লগো সিলেক্ট করুন।</small>
+                        </div>
+                        <img id="shopLogoPreview" class="preview-img" alt="Shop Logo Preview">
+                    </div>
+
+                    <div class="upload-card" onclick="document.getElementById('shopBannerInput').click()">
+                        <input type="file" id="shopBannerInput" accept="image/*" required>
+                        <div class="upload-content" id="shopBannerContent">
+                            <span class="material-icons-round">image</span>
+                            <span>দোকানের ব্যানার</span>
+                            <small>শপের ব্যানার সিলেক্ট করুন। (সাইজ ১৬:৯/1280×720</small>
+                        </div>
+                        <img id="shopBannerPreview" class="preview-img" alt="Shop Banner Preview">
+                    </div>
+
+                    <div class="upload-card" onclick="document.getElementById('nidFrontInput').click()">
+                        <input type="file" id="nidFrontInput" accept="image/*" required>
+                        <div class="upload-content" id="nidFrontContent">
+                            <span class="material-icons-round">badge</span>
+                            <span>এনআইডি কার্ডের ছবি সামনের দিক।</span>
+                            <small>সামনের দিক ক্লিয়ার ছবি তুলুন।</small>
+                        </div>
+                        <img id="nidFrontPreview" class="preview-img" alt="NID Front Preview">
+                    </div>
+
+                    <div class="upload-card" onclick="document.getElementById('nidBackInput').click()">
+                        <input type="file" id="nidBackInput" accept="image/*" required>
+                        <div class="upload-content" id="nidBackContent">
+                            <span class="material-icons-round">badge</span>
+                            <span>এনআইডি কার্ডের ছবি পেছনের দিক</span>
+                            <small>পেছনের দিক ক্লিয়ার ছবি তুলুন।</small>
+                        </div>
+                        <img id="nidBackPreview" class="preview-img" alt="NID Back Preview">
+                    </div>
+
+                </div>
+
+                <div class="terms-group">
+                    <label class="terms-checkbox-label">
+                        <input type="checkbox" id="termsCheckbox">
+                        আমি Terms & Conditions এবং Privacy Policy পড়েছি এবং সম্মত আছি।
+                    </label>
+                    <div class="terms-links-row">
+                        <button type="button" class="terms-link-btn" id="termsBtn">Terms & Conditions</button>
+                        <button type="button" class="terms-link-btn" id="privacyBtn">Privacy Policy</button>
+                    </div>
+                </div>
+
+                <div class="submit-container">
+                    <button type="submit" id="submitBtn" class="submit-btn" disabled>
+                        <span class="material-icons-round">verified_user</span>
+                        অ্যাকাউন্ট তৈরি করুন
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, query, collection, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+        // Security: Disable Right Click & Inspect Shortcuts
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'u')) {
+                e.preventDefault();
+            }
         });
 
-        document.getElementById('form-fields').style.display = 'none';
-        document.getElementById('verify-section').style.display = 'block';
+        // Anti Spam: Page Open Timestamp
+        const pageOpenTime = Date.now();
 
-    } catch (err) { 
-        alert("সমস্যা: " + err.message); 
-        btn.disabled = false; btn.innerText = "আবার চেষ্টা করুন"; 
-    }
-};
-
-window.checkEmailVerified = async () => {
-    const user = auth.currentUser;
-    if (user) {
-        // ফায়ারবেস থেকে ফ্রেশ ডাটা লোড করা
-        await user.reload(); 
-        
-        if (user.emailVerified) {
-            alert("আপনার ইমেইল সফলভাবে ভেরিফাই হয়েছে!");
-            // লোকেশন ডিরেকশন নিশ্চিত করা
-            window.location.assign("verification-notice.html");
-        } else {
-            alert("আপনি এখনো ইমেইল ভেরিফাই করেননি! আপনার ইমেইল বা স্প্যাম ফোল্ডার চেক করে লিংকে ক্লিক করুন।");
+        // Browser Lock Verification Check
+        if (localStorage.getItem('merchant_signup') === 'true') {
+            document.body.innerHTML = `
+                <div class="container" style="text-align: center; max-width: 500px;">
+                    <span class="material-icons-round" style="font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem;">lock</span>
+                    <h2 style="margin-bottom: 1rem;">নিবন্ধিত অ্যাকাউন্ট</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">আপনি ইতোমধ্যে এই ব্রাউজার থেকে নিবন্ধন করেছেন।</p>
+                    <a href="https://seller.ghotimarket.com/login" class="login-btn" style="display: inline-flex; justify-content: center;">
+                        <span class="material-icons-round">login</span>
+                        বিক্রেতা লগইন
+                    </a>
+                </div>
+            `;
+            throw new Error("Browser locked due to existing signup.");
         }
-    }
-};
-</script>
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+            authDomain: "ghotimarket.firebaseapp.com",
+            databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+            projectId: "ghotimarket",
+            storageBucket: "ghotimarket.firebasestorage.app",
+            messagingSenderId: "481257644093",
+            appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+            measurementId: "G-4SR8V2EKC1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const IMGBB_API_KEY = "e1da51b6d309ac3a5a235b5088ebc334";
+
+        let selectedFiles = {
+            shopLogo: null,
+            shopBanner: null,
+            nidFront: null,
+            nidBack: null
+        };
+
+        // Theme Toggle
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            themeIcon.textContent = document.body.classList.contains('light-theme') ? 'dark_mode' : 'light_mode';
+        });
+
+        // Toast Notifications
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const iconName = type === 'success' ? 'check_circle' : 'error';
+            toast.innerHTML = `<span class="material-icons-round">${iconName}</span><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Loading Overlay
+        function setLoading(isLoading, text = "প্রক্রিয়াধীন...") {
+            const overlay = document.getElementById('loadingOverlay');
+            document.getElementById('loadingText').textContent = text;
+            const submitBtn = document.getElementById('submitBtn');
+            if (isLoading) {
+                overlay.classList.add('active');
+                if(submitBtn) submitBtn.disabled = true;
+            } else {
+                overlay.classList.remove('active');
+                checkFormValidity();
+            }
+        }
+
+        // Error Modal Handlers
+        window.closeErrorModal = function() {
+            document.getElementById('errorModal').classList.remove('active');
+        }
+
+        function showDetailedError(title, code, message) {
+            console.error(`[${code}]: ${message}`);
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = `ত্রুটি কোড (${code}): ${message}`;
+            document.getElementById('errorModal').classList.add('active');
+        }
+
+        // Info / Policy Modals with iframe preview
+        const termsBtn = document.getElementById('termsBtn');
+        const privacyBtn = document.getElementById('privacyBtn');
+        const infoModal = document.getElementById('infoModal');
+        const policyIframeContainer = document.getElementById('policyIframeContainer');
+
+        termsBtn.addEventListener('click', () => {
+            document.getElementById('infoModalTitle').textContent = 'Terms & Conditions';
+            policyIframeContainer.innerHTML = `<iframe src="https://ghotimarket.com/termsandcondition" title="Terms & Conditions"></iframe>`;
+            infoModal.classList.add('active');
+        });
+
+        privacyBtn.addEventListener('click', () => {
+            document.getElementById('infoModalTitle').textContent = 'Privacy Policy';
+            policyIframeContainer.innerHTML = `<iframe src="https://ghotimarket.com/privacy-policy" title="Privacy Policy"></iframe>`;
+            infoModal.classList.add('active');
+        });
+
+        window.closeInfoModal = function() {
+            infoModal.classList.remove('active');
+            // Unload iframe to free resources
+            setTimeout(() => {
+                policyIframeContainer.innerHTML = '';
+            }, 300);
+        }
+
+        // Close modal on ESC key or outside click
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeErrorModal();
+                closeInfoModal();
+            }
+        });
+
+        infoModal.addEventListener('click', (e) => {
+            if (e.target === infoModal) {
+                closeInfoModal();
+            }
+        });
+
+        // Bangla Digit Converter
+        function toBanglaDigits(num) {
+            const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+            return num.toString().split('').map(d => bnDigits[d] !== undefined ? bnDigits[d] : d).join('');
+        }
+
+        // Live Character Counter
+        const descInput = document.getElementById('shopDescription');
+        const charCount = document.getElementById('charCount');
+        descInput.addEventListener('input', () => {
+            const len = descInput.value.length;
+            charCount.textContent = `${toBanglaDigits(len)} / ২০০ অক্ষর`;
+            charCount.style.color = len > 200 ? 'var(--error-color)' : 'var(--text-secondary)';
+            checkFormValidity();
+        });
+
+        // Live Password Strength Meter
+        const passwordInput = document.getElementById('password');
+        const strengthFill = document.getElementById('strengthFill');
+        const strengthText = document.getElementById('strengthText');
+
+        passwordInput.addEventListener('input', () => {
+            const val = passwordInput.value;
+            let score = 0;
+            if (val.length >= 8) score++;
+            if (/[A-Z]/.test(val)) score++;
+            if (/[a-z]/.test(val)) score++;
+            if (/[0-9]/.test(val)) score++;
+            if (/[^A-Za-z0-9]/.test(val)) score++;
+
+            const percentage = (score / 5) * 100;
+            strengthFill.style.width = percentage + '%';
+
+            if (score <= 2) {
+                strengthFill.style.background = 'var(--error-color)';
+                strengthText.textContent = 'দুর্বল পাসওয়ার্ড';
+            } else if (score <= 4) {
+                strengthFill.style.background = '#f59e0b';
+                strengthText.textContent = 'মাঝারি পাসওয়ার্ড';
+            } else {
+                strengthFill.style.background = 'var(--success-color)';
+                strengthText.textContent = 'শক্তিশালী পাসওয়ার্ড';
+            }
+            checkFormValidity();
+        });
+
+        // Phone Validation (Bangladesh)
+        const whatsappInput = document.getElementById('whatsapp');
+        whatsappInput.addEventListener('input', () => {
+            checkFormValidity();
+        });
+
+        function validatePhone(phone) {
+            const regex = /^(\+8801|01)[3-9]\d{8}$/;
+            return regex.test(phone);
+        }
+
+        // Terms Checkbox Validation Logic
+        const termsCheckbox = document.getElementById('termsCheckbox');
+        const submitBtn = document.getElementById('submitBtn');
+
+        function checkFormValidity() {
+            const isTermsChecked = termsCheckbox.checked;
+            const isDescValid = descInput.value.length <= 200 && descInput.value.length > 0;
+            const isPassValid = passwordInput.value.length >= 8;
+            const isPhoneValid = validatePhone(whatsappInput.value.trim());
+
+            if (isTermsChecked && isDescValid && isPassValid && isPhoneValid) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+
+        termsCheckbox.addEventListener('change', checkFormValidity);
+        document.querySelectorAll('input').forEach(el => el.addEventListener('input', checkFormValidity));
+
+        // Image Processing
+        function processImage(file, targetAspect = null, exactOriginal = false) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (exactOriginal) {
+                            canvas.width = width;
+                            canvas.height = height;
+                            ctx.drawImage(img, 0, 0, width, height);
+                        } else if (targetAspect) {
+                            let sourceAspect = width / height;
+                            if (Math.abs(sourceAspect - targetAspect) < 0.01) {
+                                canvas.width = width;
+                                canvas.height = height;
+                                ctx.drawImage(img, 0, 0, width, height);
+                            } else {
+                                let cropWidth = width;
+                                let cropHeight = height;
+                                let startX = 0;
+                                let startY = 0;
+
+                                if (sourceAspect > targetAspect) {
+                                    cropWidth = height * targetAspect;
+                                    startX = (width - cropWidth) / 2;
+                                } else {
+                                    cropHeight = width / targetAspect;
+                                    startY = (height - cropHeight) / 2;
+                                }
+
+                                canvas.width = cropWidth;
+                                canvas.height = cropHeight;
+                                ctx.drawImage(img, startX, startY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
+                            }
+                        } else {
+                            canvas.width = width;
+                            canvas.height = height;
+                            ctx.drawImage(img, 0, 0, width, height);
+                        }
+
+                        canvas.toBlob((blob) => {
+                            if (!blob) {
+                                reject(new Error("ইমেজ কম্প্রেশন ব্যর্থ হয়েছে।"));
+                                return;
+                            }
+                            resolve(blob);
+                        }, 'image/webp', 0.90);
+                    };
+                    img.onerror = () => reject(new Error("ইমেজ ফাইল লোড করতে ব্যর্থ হয়েছে।"));
+                    img.src = e.target.result;
+                };
+                reader.onerror = () => reject(new Error("ফাইল রিডার স্ট্রিম পড়তে ব্যর্থ হয়েছে।"));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function handleImageSelection(inputElem, previewId, contentId, targetAspect, exactOriginal, stateKey) {
+            const file = inputElem.files[0];
+            if (!file) return;
+            try {
+                setLoading(true, "ইমেজ কম্প্রেস এবং ফরম্যাট করা হচ্ছে...");
+                const processedBlob = await processImage(file, targetAspect, exactOriginal);
+                selectedFiles[stateKey] = processedBlob;
+
+                const previewUrl = URL.createObjectURL(processedBlob);
+                const previewImg = document.getElementById(previewId);
+                const contentDiv = document.getElementById(contentId);
+
+                previewImg.src = previewUrl;
+                previewImg.style.display = 'block';
+                contentDiv.style.display = 'none';
+                setLoading(false);
+                showToast("অ্যাসেট সফলভাবে প্রসেস করা হয়েছে", "success");
+            } catch (err) {
+                setLoading(false);
+                showToast(err.message, "error");
+            }
+        }
+
+        document.getElementById('shopLogoInput').addEventListener('change', (e) => {
+            handleImageSelection(e.target, 'shopLogoPreview', 'shopLogoContent', 1, false, 'shopLogo');
+        });
+        document.getElementById('shopBannerInput').addEventListener('change', (e) => {
+            handleImageSelection(e.target, 'shopBannerPreview', 'shopBannerContent', 16/9, false, 'shopBanner');
+        });
+        document.getElementById('nidFrontInput').addEventListener('change', (e) => {
+            handleImageSelection(e.target, 'nidFrontPreview', 'nidFrontContent', null, true, 'nidFront');
+        });
+        document.getElementById('nidBackInput').addEventListener('change', (e) => {
+            handleImageSelection(e.target, 'nidBackPreview', 'nidBackContent', null, true, 'nidBack');
+        });
+
+        // ImgBB Upload Helper with Bangla Error handling
+        async function uploadToImgBB(blob) {
+            const formData = new FormData();
+            formData.append('image', blob);
+            const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                method: 'POST',
+                body: formData
+            });
+            if (!response.ok) {
+                throw new Error(`নেটওয়ার্ক রেসপন্স স্ট্যাটাস: ${response.status}`);
+            }
+            const data = await response.json();
+            if (!data.success) {
+                throw new Error(data.error?.message || "ImgBB আপলোড প্রত্যাখ্যাত হয়েছে।");
+            }
+            return data.data.url;
+        }
+
+        // Firebase Error Translator to Bangla
+        function translateFirebaseError(code) {
+            switch(code) {
+                case 'auth/email-already-in-use':
+                    return 'এই ইমেইল দিয়ে ইতোমধ্যে একটি অ্যাকাউন্ট রেজিস্টার করা হয়েছে।';
+                case 'auth/invalid-email':
+                    return 'ইমেইল ঠিকানাটি সঠিক নয়।';
+                case 'auth/weak-password':
+                    return 'পাসওয়ার্ডটি অত্যন্ত দুর্বল। আরও শক্তিশালী পাসওয়ার্ড ব্যবহার করুন।';
+                case 'auth/network-request-failed':
+                    return 'ইন্টারনেট সংযোগ বিচ্ছিন্ন রয়েছে। আপনার কানেকশন চেক করুন।';
+                default:
+                    return 'অ্যাকাউন্ট তৈরি করার সময় একটি অজানা সমস্যা হয়েছে।';
+            }
+        }
+
+        // Form Submit Workflow
+        const form = document.getElementById('registrationForm');
+        let isSubmitting = false;
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (isSubmitting) return;
+
+            // Anti Spam checks (60 seconds block rule)
+            const elapsed = Date.now() - pageOpenTime;
+            if (elapsed < 60000) {
+                showDetailedError("নিরাপত্তা সতর্কতা", "WAIT_60_SECONDS", "বট প্রতিরোধের জন্য পেজ খোলার পর কমপক্ষে ১ মিনিট অপেক্ষা করে তারপর আবেদন জমা দিন।");
+                return;
+            }
+
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const shopName = document.getElementById('shopName').value.trim();
+            const shopDescription = document.getElementById('shopDescription').value.trim();
+
+            if (password !== confirmPassword) {
+                showToast("পাসওয়ার্ড দুটি মিলছে না।", "error");
+                return;
+            }
+
+            if (!validatePhone(whatsapp)) {
+                showToast("সঠিক বাংলাদেশি ফোন নম্বর প্রদান করুন (+8801XXXXXXXXX বা 01XXXXXXXXX)।", "error");
+                return;
+            }
+
+            if (!selectedFiles.shopLogo || !selectedFiles.shopBanner || !selectedFiles.nidFront || !selectedFiles.nidBack) {
+                showToast("সমস্ত ৪টি প্রয়োজনীয় ছবি আপলোড করা বাধ্যতামূলক।", "error");
+                return;
+            }
+
+            isSubmitting = true;
+
+            try {
+                // Check duplicate shop name in Firestore beforehand
+                setLoading(true, "দোকানের নাম যাচাই করা হচ্ছে...");
+                const shopQuery = query(collection(db, "users"), where("shopName", "==", shopName));
+                const shopSnap = await getDocs(shopQuery);
+                if (!shopSnap.empty) {
+                    setLoading(false);
+                    isSubmitting = false;
+                    showDetailedError("নামের দ্বন্দ্ব", "DUPLICATE_SHOP", "এই নামের দোকান ইতোমধ্যে নিবন্ধিত রয়েছে। অন্য নাম ব্যবহার করুন।");
+                    return;
+                }
+
+                // Step 1: Creating Account
+                setLoading(true, "ধাপ ১/৪: অ্যাকাউন্ট তৈরি করা হচ্ছে...");
+                let userCredential;
+                try {
+                    userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                } catch (authErr) {
+                    setLoading(false);
+                    isSubmitting = false;
+                    showDetailedError("অথেন্টিকেশন ত্রুটি", authErr.code, translateFirebaseError(authErr.code));
+                    return;
+                }
+
+                const currentUser = userCredential.user;
+
+                // Step 2: Sending Verification Email
+                setLoading(true, "ধাপ ২/৪: ইমেইল ভেরিফিকেশন পাঠানো হচ্ছে...");
+                try {
+                    await sendEmailVerification(currentUser);
+                } catch (mailErr) {
+                    setLoading(false);
+                    isSubmitting = false;
+                    showDetailedError("ইমেইল ত্রুটি", mailErr.code, "ভেরিফিকেশন ইমেইল পাঠানো সম্ভব হয়নি। মেইল অ্যাড্রেস যাচাই করুন।");
+                    return;
+                }
+
+                // Step 3: Uploading Images
+                setLoading(true, "ধাপ ৩/৪: সার্ভারে ছবি আপলোড করা হচ্ছে...");
+                let shopLogoUrl, shopBannerUrl, nidFrontUrl, nidBackUrl;
+                try {
+                    [shopLogoUrl, shopBannerUrl, nidFrontUrl, nidBackUrl] = await Promise.all([
+                        uploadToImgBB(selectedFiles.shopLogo),
+                        uploadToImgBB(selectedFiles.shopBanner),
+                        uploadToImgBB(selectedFiles.nidFront),
+                        uploadToImgBB(selectedFiles.nidBack)
+                    ]);
+                } catch (imgErr) {
+                    setLoading(false);
+                    isSubmitting = false;
+                    showDetailedError("মিডিয়া আপলোড ত্রুটি", "IMGBB_ERROR", "ছবি আপলোড ব্যর্থ হয়েছে: " + imgErr.message);
+                    return;
+                }
+
+                // Step 4: Saving Merchant Profile to Firestore
+                setLoading(true, "ধাপ ৪/৪: ডাটাবেজে তথ্য সংরক্ষণ করা হচ্ছে...");
+                const userDocData = {
+                    active: false,
+                    verified: false,
+                    createdAt: serverTimestamp(),
+                    email: currentUser.email,
+                    fullName: fullName,
+                    whatsapp: whatsapp,
+                    shopName: shopName,
+                    shopDescription: shopDescription,
+                    shopLogo: shopLogoUrl,
+                    shopBanner: shopBannerUrl,
+                    nidFront: nidFrontUrl,
+                    nidBack: nidBackUrl
+                };
+
+                await setDoc(doc(db, "users", currentUser.uid), userDocData);
+
+                // Store Browser Lock Credentials
+                localStorage.setItem('merchant_signup', 'true');
+                localStorage.setItem('merchant_email', email);
+                localStorage.setItem('merchant_uid', currentUser.uid);
+                localStorage.setItem('merchant_time', Date.now().toString());
+
+                setLoading(false);
+                showToast("নিবন্ধন সফলভাবে সম্পন্ন হয়েছে!", "success");
+                
+                setTimeout(() => {
+                    window.location.href = 'https://seller.ghotimarket.com/verification-notice';
+                }, 1500);
+
+            } catch (err) {
+                setLoading(false);
+                isSubmitting = false;
+                showDetailedError("সিস্টেম ত্রুটি", err.code || "UNKNOWN", err.message);
+            }
+        });
+    </script>
 </body>
 </html>
