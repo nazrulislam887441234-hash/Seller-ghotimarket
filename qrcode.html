@@ -2,171 +2,291 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>GHOTI MARKET - My QR Card</title>
 
-<!-- Google Font -->
+<!-- Google Font: Hind Siliguri -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
-<!-- Font Awesome -->
+
+<!-- Font Awesome 6.5.1 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <!-- QRCode.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<!-- html2canvas -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
   :root {
-    --orange: #FF6A00;
-    --orange-light: #FFF4EC;
-    --white: #FFFFFF;
-    --text: #1A1A1A;
-    --text-light: #666666;
-    --shadow: rgba(255, 106, 0, 0.15);
+    --primary: #f85606;
+    --primary-dark: #d84300;
+    --primary-light: #fff0eb;
+    --bg: #f4f4f5;
+    --card-bg: #ffffff;
+    --text-dark: #1f2937;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(248, 86, 6, 0.08);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-full: 9999px;
   }
 
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
     font-family: 'Hind Siliguri', sans-serif;
-    background: linear-gradient(135deg, #FFF4EC 0%, #FFFFFF 100%);
+    background-color: var(--bg);
+    color: var(--text-dark);
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 20px;
-    overflow-x: hidden;
+    padding-bottom: 40px;
   }
 
-  .container {
-    width: 95%;
-    max-width: 360px;
-    animation: fadeIn 0.8s ease-out;
+  /* Header Design */
+  .app-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+  .header-container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
-  .card {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    border-radius: 30px;
-    padding: 30px 25px;
-    box-shadow: 0 20px 60px var(--shadow);
-    border: 1px solid rgba(255, 106, 0, 0.1);
-    animation: float 3s ease-in-out infinite;
-    text-align: center;
-  }
-
-  .logo {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    margin: 0 auto 15px;
-    border: 3px solid var(--orange);
-    object-fit: cover;
-    background: var(--orange-light);
+  .back-btn {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text-dark);
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-full);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 40px;
-    color: var(--orange);
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .back-btn:active {
+    background: var(--primary-light);
+    color: var(--primary);
+    transform: scale(0.95);
+  }
+
+  .header-title-box {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.2;
+  }
+
+  .header-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .header-action-btn {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .header-action-btn:active {
+    background: var(--primary);
+    color: #ffffff;
+    transform: scale(0.95);
+  }
+
+  /* Main Wrapper */
+  .main-wrapper {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Live Preview Card */
+  .preview-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: 28px 20px 24px 20px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+    text-align: center;
+    position: relative;
     overflow: hidden;
   }
 
-  .logo img {
+  .preview-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+  }
+
+  .logo-container {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-full);
+    margin: 0 auto 12px auto;
+    border: 3px solid var(--primary);
+    background-color: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .logo-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
+  .logo-placeholder-icon {
+    font-size: 36px;
+    color: var(--primary);
+  }
+
   .shop-name {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
-    color: var(--text);
-    margin-bottom: 5px;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+    word-break: break-word;
   }
 
-  .username {
-    font-size: 15px;
-    color: var(--orange);
-    font-weight: 600;
-    margin-bottom: 20px;
-  }
-
-  .uid {
-    font-size: 13px;
-    color: var(--text-light);
-    margin-bottom: 20px;
-    font-family: monospace;
-  }
-
-  .qr-wrapper {
-    background: var(--white);
-    padding: 15px;
-    border-radius: 20px;
-    display: inline-block;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-    margin-bottom: 15px;
-    animation: scaleIn 0.6s ease-out 0.3s both;
-  }
-
-  @keyframes scaleIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-
-  #qrcode canvas, #qrcode img {
-    border-radius: 12px;
-    display: block;
-    margin: 0 auto;
-  }
-
-  .scan-text {
+  .shop-username {
     font-size: 14px;
+    color: var(--primary);
     font-weight: 600;
-    color: var(--text);
-    margin-bottom: 5px;
-  }
-
-  .shop-link {
-    font-size: 12px;
-    color: var(--text-light);
+    margin-bottom: 16px;
     word-break: break-all;
-    margin-bottom: 25px;
   }
 
-  .powered {
+  .qr-box-outer {
+    background: var(--bg);
+    padding: 16px;
+    border-radius: var(--radius-md);
+    display: inline-block;
+    border: 1px dashed var(--border);
+    margin-bottom: 16px;
+  }
+
+  .qr-box-inner {
+    background: #ffffff;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+  }
+
+  #qrcode canvas, #qrcode img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .scan-instruction {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+  }
+
+  .shop-url-text {
     font-size: 12px;
-    color: var(--text-light);
+    color: var(--text-muted);
+    word-break: break-all;
     margin-bottom: 20px;
   }
 
-  .powered i {
-    color: var(--orange);
+  .brand-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
   }
 
-  .download-btn {
+  .brand-footer i {
+    color: var(--primary);
+  }
+
+  /* Action Buttons Grid */
+  .action-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .btn-primary {
     width: 100%;
-    background: linear-gradient(135deg, var(--orange) 0%, #FF8533 100%);
-    color: var(--white);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #ffffff;
     border: none;
-    padding: 16px;
-    border-radius: 16px;
+    padding: 14px 20px;
+    border-radius: var(--radius-md);
     font-size: 16px;
     font-weight: 600;
     font-family: 'Hind Siliguri', sans-serif;
@@ -175,64 +295,346 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s, opacity 0.2s;
+    box-shadow: 0 4px 14px rgba(248, 86, 6, 0.3);
+    transition: all 0.2s ease;
   }
 
-  .download-btn:active {
-    transform: scale(0.97);
+  .btn-primary:active {
+    transform: scale(0.98);
+    opacity: 0.9;
   }
 
-  .download-btn:disabled {
-    opacity: 0.7;
+  .btn-primary:disabled {
+    background: var(--text-muted);
+    box-shadow: none;
     cursor: not-allowed;
+    opacity: 0.7;
   }
 
-  .ripple {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.4);
-    transform: scale(0);
-    animation: ripple 0.6s linear;
+  .btn-secondary {
+    width: 100%;
+    background: #ffffff;
+    color: var(--text-dark);
+    border: 1px solid var(--border);
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Hind Siliguri', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
   }
 
-  @keyframes ripple {
-    to { transform: scale(4); opacity: 0; }
+  .btn-secondary:active {
+    background: var(--bg);
+    transform: scale(0.98);
   }
 
-  .error {
-    background: #FFE5E5;
-    color: #D32F2F;
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
+  /* Skeleton Loading State */
+  .skeleton {
+    background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+    border-radius: 6px;
+  }
+
+  @keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .skeleton-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-full);
+    margin: 0 auto 12px auto;
+  }
+
+  .skeleton-title {
+    width: 60%;
+    height: 24px;
+    margin: 0 auto 8px auto;
+  }
+
+  .skeleton-subtitle {
+    width: 40%;
+    height: 16px;
+    margin: 0 auto 20px auto;
+  }
+
+  .skeleton-qr {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 16px auto;
+    border-radius: var(--radius-md);
+  }
+
+  /* Custom Toast System */
+  #toast-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 90%;
+    max-width: 360px;
+    pointer-events: none;
+  }
+
+  .toast {
+    background: #ffffff;
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-left: 4px solid var(--primary);
+    animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    pointer-events: auto;
+  }
+
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .toast.success { border-left-color: var(--success); }
+  .toast.error { border-left-color: var(--danger); }
+  .toast.info { border-left-color: var(--primary); }
+
+  .toast-icon {
+    font-size: 18px;
+  }
+
+  .toast.success .toast-icon { color: var(--success); }
+  .toast.error .toast-icon { color: var(--danger); }
+  .toast.info .toast-icon { color: var(--primary); }
+
+  .toast-message {
+    font-size: 14px;
     font-weight: 500;
+    color: var(--text-dark);
   }
 
-  .loader {
-    text-align: center;
-    color: var(--text-light);
-    padding: 40px 0;
-    font-size: 16px;
+  /* Modal System */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
   }
+
+  .modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal-content {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 380px;
+    padding: 24px;
+    box-shadow: var(--shadow-lg);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    text-align: center;
+  }
+
+  .modal-overlay.active .modal-content {
+    transform: scale(1);
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+
+  .modal-body {
+    margin-bottom: 20px;
+  }
+
+  .preview-modal-img {
+    width: 100%;
+    max-height: 320px;
+    object-fit: contain;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    margin-top: 12px;
+  }
+
+  .share-options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .share-item-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--bg);
+    cursor: pointer;
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark);
+    transition: all 0.2s ease;
+  }
+
+  .share-item-btn i {
+    font-size: 24px;
+  }
+
+  .share-item-btn.whatsapp i { color: #25D366; }
+  .share-item-btn.facebook i { color: #1877F2; }
+  .share-item-btn.copy i { color: var(--primary); }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="card" id="qrCard">
-    <div id="content">
-      <div class="loader"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
+<!-- Custom Toast Container -->
+<div id="toast-container"></div>
+
+<!-- App Sticky Header -->
+<header class="app-header">
+  <div class="header-container">
+    <div class="header-left">
+      <button class="back-btn" id="backBtn" aria-label="Go Back">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+      <div class="header-title-box">
+        <h1 class="header-title">আমার QR Code</h1>
+        <span class="header-subtitle">আপনার শপ শেয়ার করুন</span>
+      </div>
+    </div>
+    <button class="header-action-btn" id="headerShareBtn" aria-label="Share">
+      <i class="fa-solid fa-share-nodes"></i>
+    </button>
+  </div>
+</header>
+
+<!-- Main Container -->
+<main class="main-wrapper">
+
+  <!-- Live Card UI -->
+  <div class="preview-card" id="liveCard">
+    <div id="cardContent">
+      <!-- Skeleton Loading Initial State -->
+      <div class="skeleton skeleton-logo"></div>
+      <div class="skeleton skeleton-title"></div>
+      <div class="skeleton skeleton-subtitle"></div>
+      <div class="skeleton skeleton-qr"></div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-grid">
+    <button class="btn-primary" id="downloadBtn" disabled>
+      <i class="fa-solid fa-download"></i>
+      <span id="downloadBtnText">QR Card Download করুন</span>
+    </button>
+    
+    <button class="btn-secondary" id="copyLinkBtn">
+      <i class="fa-solid fa-link"></i>
+      <span>শপের লিংক কপি করুন</span>
+    </button>
+  </div>
+
+</main>
+
+<!-- Custom WebView Download Fallback Modal -->
+<div class="modal-overlay" id="webviewModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title">QR Card প্রস্তুত হয়েছে</h3>
+      <button class="modal-close" id="closeWebviewModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5;">
+        আপনার ব্রাউজার বা WebView সরাসরি ফাইল ডাউনলোড সাপোর্ট করছে না। নিচের ছবিটি চেপে ধরে <strong>Save Image</strong> বা <strong>Download Image</strong> সিলেক্ট করুন।
+      </p>
+      <img src="" id="modalPreviewImg" class="preview-modal-img" alt="QR Card Preview">
+    </div>
+    <button class="btn-secondary" id="modalCloseBtn">বন্ধ করুন</button>
+  </div>
+</div>
+
+<!-- Custom Share Modal (Fallback) -->
+<div class="modal-overlay" id="shareModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title">শপ শেয়ার করুন</h3>
+      <button class="modal-close" id="closeShareModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="share-options-grid">
+        <button class="share-item-btn whatsapp" id="shareWhatsapp">
+          <i class="fa-brands fa-whatsapp"></i>
+          <span>WhatsApp</span>
+        </button>
+        <button class="share-item-btn facebook" id="shareFacebook">
+          <i class="fa-brands fa-facebook"></i>
+          <span>Facebook</span>
+        </button>
+        <button class="share-item-btn copy" id="shareCopy">
+          <i class="fa-solid fa-copy"></i>
+          <span>Copy Link</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- Firebase Module Script -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
   import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+  // Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
     authDomain: "ghotimarket.firebaseapp.com",
@@ -243,25 +645,56 @@
     appId: "1:481257644093:web:0dfc3699d6b3c86afeca54"
   };
 
+  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  const contentDiv = document.getElementById('content');
+  // Global State Data
+  let currentUserData = {
+    shopName: "My Shop",
+    shopLogo: "",
+    username: "",
+    uid: "",
+    qrLink: "",
+    fileName: "ghoti-market-qr-card.png"
+  };
 
-  // Helper function to wait for all images inside an element to load
-  async function waitForImages(element) {
-    const images = element.querySelectorAll('img');
-    const promises = Array.from(images).map(img => {
-      if (img.complete) return Promise.resolve();
-      return new Promise((resolve) => {
-        img.onload = resolve;
-        img.onerror = resolve;
-      });
-    });
-    await Promise.all(promises);
+  // Toast Notification Helper
+  function showToast(type, message) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    let iconClass = 'fa-info-circle';
+    if(type === 'success') iconClass = 'fa-check-circle';
+    if(type === 'error') iconClass = 'fa-exclamation-circle';
+
+    toast.innerHTML = `
+      <i class="fa-solid ${iconClass} toast-icon"></i>
+      <span class="toast-message">${message}</span>
+    `;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(-10px)';
+      toast.style.transition = 'all 0.3s ease';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
   }
 
+  // Header Back Button Logic
+  document.getElementById('backBtn').addEventListener('click', () => {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = "dashboard.html";
+    }
+  });
+
+  // Load User Data from Firestore
   onAuthStateChanged(auth, async (user) => {
     if (!user) {
       window.location.href = 'login.html';
@@ -272,117 +705,410 @@
       const userRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
 
-      if (!userSnap.exists()) throw new Error("User data not found");
+      if (!userSnap.exists()) {
+        throw new Error("ইউজার ডেটা পাওয়া যায়নি!");
+      }
 
       const data = userSnap.data();
-      const shopName = data.shopName || "My Shop";
-      const shopLogo = data.shopLogo || "";
-      const username = data.username || "";
-      const uid = user.uid;
+      currentUserData.shopName = data.shopName || "GHOTI MARKET Store";
+      currentUserData.shopLogo = data.shopLogo || "";
+      currentUserData.username = data.username || "";
+      currentUserData.uid = user.uid;
 
-      const qrLink = username 
-        ? `https://ghotimarket.com/seller?@${username}` 
-        : `https://ghotimarket.com/seller?uid=${uid}`;
-      
-      const fileName = username ? `@${username}-qr.png` : `${uid}-qr.png`;
+      // Determine QR Link & File Name
+      if (currentUserData.username) {
+        currentUserData.qrLink = `https://ghotimarket.com/seller?@${currentUserData.username}`;
+        currentUserData.fileName = `@${currentUserData.username}-qr-card.png`;
+      } else {
+        currentUserData.qrLink = `https://ghotimarket.com/seller?uid=${currentUserData.uid}`;
+        currentUserData.fileName = `ghoti-market-qr-card.png`;
+      }
 
-      contentDiv.innerHTML = `
-        <div class="logo">
-          ${shopLogo ? `<img src="${shopLogo}" alt="Logo" crossorigin="anonymous">` : `<i class="fa-solid fa-store"></i>`}
+      // Render Live Card Content
+      const displayUsername = currentUserData.username 
+        ? `@${currentUserData.username}` 
+        : `UID: ${currentUserData.uid.substring(0, 8)}...`;
+
+      const cardContent = document.getElementById('cardContent');
+      cardContent.innerHTML = `
+        <div class="logo-container">
+          ${currentUserData.shopLogo 
+            ? `<img src="${currentUserData.shopLogo}" alt="Logo" crossorigin="anonymous" id="liveLogoImg">` 
+            : `<i class="fa-solid fa-store logo-placeholder-icon"></i>`}
         </div>
-        <h1 class="shop-name">${shopName}</h1>
-        ${username ? `<p class="username">@${username}</p>` : `<p class="uid">UID: ${uid.substring(0,8)}...</p>`}
+        <h2 class="shop-name">${currentUserData.shopName}</h2>
+        <p class="shop-username">${displayUsername}</p>
         
-        <div class="qr-wrapper">
-          <div id="qrcode"></div>
+        <div class="qr-box-outer">
+          <div class="qr-box-inner">
+            <div id="qrcode"></div>
+          </div>
         </div>
 
-        <p class="scan-text">Scan to Visit Shop</p>
-        <p class="shop-link">${qrLink}</p>
+        <p class="scan-instruction">শপে ভিজিট করতে স্ক্যান করুন</p>
+        <p class="shop-url-text">${currentUserData.qrLink}</p>
 
-        <div class="powered">
+        <div class="brand-footer">
           <i class="fa-solid fa-bag-shopping"></i>
-          Powered by GHOTI MARKET
+          <span>Powered by GHOTI MARKET</span>
         </div>
-
-        <button class="download-btn" id="downloadBtn">
-          <i class="fa-solid fa-download"></i>
-          Download QR Card
-        </button>
       `;
 
-      // Generate QR Code
-      const qrcodeContainer = document.getElementById("qrcode");
-      new QRCode(qrcodeContainer, {
-        text: qrLink,
-        width: 200,
-        height: 200,
-        colorDark: "#1A1A1A",
-        colorLight: "#FFFFFF",
+      // Generate QRCode in Live UI
+      const qrContainer = document.getElementById('qrcode');
+      new QRCode(qrContainer, {
+        text: currentUserData.qrLink,
+        width: 180,
+        height: 180,
+        colorDark: "#1f2937",
+        colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.H
       });
 
-      // Ensure everything inside the card is fully rendered/loaded before enabling actions
-      await waitForImages(contentDiv);
-      // Brief pause to let canvas finish drawing
-      await new Promise(resolve => setTimeout(resolve, 100));
-
-      // Download Button Event Listener
-      const downloadBtn = document.getElementById('downloadBtn');
-      downloadBtn.addEventListener('click', async function(e) {
-        try {
-          // Ripple effect
-          const ripple = document.createElement('span');
-          ripple.className = 'ripple';
-          const rect = this.getBoundingClientRect();
-          ripple.style.left = (e.clientX - rect.left) + 'px';
-          ripple.style.top = (e.clientY - rect.top) + 'px';
-          this.appendChild(ripple);
-          setTimeout(() => ripple.remove(), 600);
-
-          downloadBtn.disabled = true;
-          const originalText = downloadBtn.innerHTML;
-          downloadBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Preparing...`;
-
-          const cardElement = document.getElementById('qrCard');
-
-          const canvas = await html2canvas(cardElement, {
-            scale: 3,
-            useCORS: true,
-            backgroundColor: "#ffffff",
-            logging: false,
-            windowWidth: cardElement.scrollWidth,
-            windowHeight: cardElement.scrollHeight
-          });
-
-          const link = document.createElement('a');
-          link.download = fileName;
-          link.href = canvas.toDataURL('image/png');
-          link.click();
-
-          downloadBtn.innerHTML = originalText;
-          downloadBtn.disabled = false;
-        } catch (err) {
-          console.error("Download failed:", err);
-          downloadBtn.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> Failed`;
-          setTimeout(() => {
-            downloadBtn.innerHTML = `<i class="fa-solid fa-download"></i> Download QR Card`;
-            downloadBtn.disabled = false;
-          }, 2000);
-        }
-      });
+      // Enable Action Buttons
+      document.getElementById('downloadBtn').disabled = false;
 
     } catch (error) {
-      contentDiv.innerHTML = `
-        <div class="error">
-          <i class="fa-solid fa-circle-exclamation"></i><br>
-          ডেটা লোড করতে সমস্যা হয়েছে।<br>
-          পরে আবার চেষ্টা করুন।
+      console.error("Firestore Error:", error);
+      showToast("error", "ডেটা লোড করতে সমস্যা হয়েছে!");
+      document.getElementById('cardContent').innerHTML = `
+        <div style="padding: 20px; color: var(--danger);">
+          <i class="fa-solid fa-triangle-exclamation" style="font-size: 32px; margin-bottom: 10px;"></i>
+          <p>ডেটা লোড করতে ব্যর্থ হয়েছে। অনুগ্রহ করে পেজটি রিফ্রেশ করুন।</p>
         </div>
       `;
-      console.error(error);
     }
   });
+
+  // Helper Image Loader with CORS handle & fallback
+  function loadImage(url) {
+    return new Promise((resolve) => {
+      if (!url) {
+        resolve(null);
+        return;
+      }
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => resolve(img);
+      img.onerror = () => resolve(null); // Fallback on CORS / loading error
+      img.src = url;
+    });
+  }
+
+  // Wait for QR Canvas / Image readiness
+  async function waitForQrReady() {
+    return new Promise((resolve) => {
+      let attempts = 0;
+      const checkInterval = setInterval(() => {
+        attempts++;
+        const canvas = document.querySelector("#qrcode canvas");
+        const img = document.querySelector("#qrcode img");
+
+        if (canvas || (img && img.complete && img.src)) {
+          clearInterval(checkInterval);
+          resolve({ canvas, img });
+        } else if (attempts > 30) { // Timeout 3 seconds
+          clearInterval(checkInterval);
+          resolve(null);
+        }
+      }, 100);
+    });
+  }
+
+  // Dedicated High-Resolution Export Renderer (Custom Canvas Engine)
+  async function generateExportCardCanvas() {
+    const qrElement = await waitForQrReady();
+    if (!qrElement) throw new Error("QR Code প্রস্তুত হতে পারেনি!");
+
+    // Get QR image/canvas src
+    let qrDataUrl = "";
+    if (qrElement.canvas) {
+      qrDataUrl = qrElement.canvas.toDataURL("image/png");
+    } else if (qrElement.img) {
+      qrDataUrl = qrElement.img.src;
+    }
+
+    const qrImg = await loadImage(qrDataUrl);
+    const logoImg = currentUserData.shopLogo ? await loadImage(currentUserData.shopLogo) : null;
+
+    // High Resolution Canvas Setup (1080 x 1350 px)
+    const exportCanvas = document.createElement("canvas");
+    exportCanvas.width = 1080;
+    exportCanvas.height = 1350;
+    const ctx = exportCanvas.getContext("2d");
+
+    // 1. Background Fill (#f4f4f5)
+    ctx.fillStyle = "#f4f4f5";
+    ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+
+    // 2. Main White Rounded Card Area
+    const cardX = 90;
+    const cardY = 90;
+    const cardWidth = 900;
+    const cardHeight = 1170;
+    const cardRadius = 40;
+
+    // Draw Shadow
+    ctx.save();
+    ctx.shadowColor = "rgba(0, 0, 0, 0.08)";
+    ctx.shadowBlur = 30;
+    ctx.shadowOffsetY = 15;
+
+    // Draw White Card Path
+    ctx.beginPath();
+    ctx.roundRect(cardX, cardY, cardWidth, cardHeight, cardRadius);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.restore();
+
+    // 3. Top Accent Line (#f85606)
+    ctx.save();
+    ctx.beginPath();
+    ctx.roundRect(cardX, cardY, cardWidth, 16, [cardRadius, cardRadius, 0, 0]);
+    ctx.fillStyle = "#f85606";
+    ctx.fill();
+    ctx.restore();
+
+    // 4. Shop Logo Rendering
+    const logoSize = 180;
+    const logoX = 540; // Center X
+    const logoY = 240; // Center Y
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(logoX, logoY, logoSize / 2, 0, Math.PI * 2);
+    ctx.clip();
+
+    if (logoImg) {
+      ctx.drawImage(logoImg, logoX - logoSize / 2, logoY - logoSize / 2, logoSize, logoSize);
+    } else {
+      // Fallback Store Background
+      ctx.fillStyle = "#fff0eb";
+      ctx.fillRect(logoX - logoSize / 2, logoY - logoSize / 2, logoSize, logoSize);
+      ctx.fillStyle = "#f85606";
+      ctx.font = "bold 80px 'Font Awesome 6 Free'";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("\uf54e", logoX, logoY); // fa-store
+    }
+    ctx.restore();
+
+    // Logo Border Outer Ring
+    ctx.beginPath();
+    ctx.arc(logoX, logoY, logoSize / 2, 0, Math.PI * 2);
+    ctx.lineWidth = 8;
+    ctx.strokeStyle = "#f85606";
+    ctx.stroke();
+
+    // 5. Shop Name Text
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#1f2937";
+    ctx.font = "bold 52px 'Hind Siliguri', sans-serif";
+    ctx.fillText(currentUserData.shopName, 540, 390);
+
+    // 6. Username / UID Text
+    const displayUsername = currentUserData.username 
+      ? `@${currentUserData.username}` 
+      : `UID: ${currentUserData.uid.substring(0, 10)}`;
+
+    ctx.fillStyle = "#f85606";
+    ctx.font = "600 36px 'Hind Siliguri', sans-serif";
+    ctx.fillText(displayUsername, 540, 445);
+
+    // 7. QR Code Wrapper Outer Box
+    const qrBoxSize = 500;
+    const qrBoxX = 540 - qrBoxSize / 2;
+    const qrBoxY = 480;
+
+    ctx.fillStyle = "#f4f4f5";
+    ctx.beginPath();
+    ctx.roundRect(qrBoxX, qrBoxY, qrBoxSize, qrBoxSize, 24);
+    ctx.fill();
+
+    // Inner White QR Box
+    const qrInnerSize = 440;
+    const qrInnerX = 540 - qrInnerSize / 2;
+    const qrInnerY = 510;
+
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath();
+    ctx.roundRect(qrInnerX, qrInnerY, qrInnerSize, qrInnerSize, 16);
+    ctx.fill();
+
+    // Draw QR Image
+    if (qrImg) {
+      const qrSize = 380;
+      ctx.drawImage(qrImg, 540 - qrSize / 2, 540 - qrSize / 2 + 30, qrSize, qrSize);
+    }
+
+    // 8. Scan Text & URL
+    ctx.fillStyle = "#1f2937";
+    ctx.font = "600 36px 'Hind Siliguri', sans-serif";
+    ctx.fillText("শপে ভিজিট করতে স্ক্যান করুন", 540, 1040);
+
+    ctx.fillStyle = "#6b7280";
+    ctx.font = "400 26px 'Hind Siliguri', sans-serif";
+    ctx.fillText(currentUserData.qrLink, 540, 1085);
+
+    // 9. GHOTI MARKET Branding Footer
+    ctx.strokeStyle = "#e5e7eb";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(180, 1140);
+    ctx.lineTo(900, 1140);
+    ctx.stroke();
+
+    ctx.fillStyle = "#f85606";
+    ctx.font = "bold 32px 'Hind Siliguri', sans-serif";
+    ctx.fillText("🛍 Powered by GHOTI MARKET", 540, 1200);
+
+    return exportCanvas;
+  }
+
+  // Handle Download Logic
+  document.getElementById('downloadBtn').addEventListener('click', async () => {
+    const downloadBtn = document.getElementById('downloadBtn');
+    const downloadBtnText = document.getElementById('downloadBtnText');
+
+    try {
+      downloadBtn.disabled = true;
+      downloadBtnText.innerText = "প্রস্তুত হচ্ছে...";
+
+      // Ensure canvas fonts ready
+      if (document.fonts) await document.fonts.ready;
+
+      const exportCanvas = await generateExportCardCanvas();
+      const base64Data = exportCanvas.toDataURL("image/png");
+
+      // Check Android WebView Detection
+      const isAndroidWebView = /Android/i.test(navigator.userAgent) && /wv|WebView/i.test(navigator.userAgent);
+
+      /*
+        // Android WebView Interface Example:
+        //
+        // webView.addJavascriptInterface(new Object() {
+        //     @JavascriptInterface
+        //     public void saveImage(String base64, String fileName) {
+        //         // Save PNG to Android Downloads/Gallery
+        //     }
+        // }, "Android");
+      */
+
+      // Strategy 1: Optional Native Android Bridge
+      if (window.Android && typeof window.Android.saveImage === "function") {
+        window.Android.saveImage(base64Data, currentUserData.fileName);
+        showToast("success", "QR Card গ্যালারিতে সেভ হয়েছে!");
+        resetDownloadBtn();
+        return;
+      }
+
+      // Strategy 2: Standard Browser Download Link
+      if (!isAndroidWebView) {
+        const link = document.createElement("a");
+        link.download = currentUserData.fileName;
+        link.href = base64Data;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        showToast("success", "QR Card ডাউনলোড শুরু হয়েছে!");
+        resetDownloadBtn();
+        return;
+      }
+
+      // Strategy 3: WebView Fallback Modal
+      openWebviewModal(base64Data);
+      resetDownloadBtn();
+
+    } catch (err) {
+      console.error("Download execution error:", err);
+      showToast("error", "QR Code ডাউনলোড করতে সমস্যা হয়েছে।");
+      resetDownloadBtn();
+    }
+
+    function resetDownloadBtn() {
+      downloadBtn.disabled = false;
+      downloadBtnText.innerText = "QR Card Download করুন";
+    }
+  });
+
+  // WebView Fallback Modal Open/Close Logic
+  function openWebviewModal(imageData) {
+    const modal = document.getElementById('webviewModal');
+    const img = document.getElementById('modalPreviewImg');
+    img.src = imageData;
+    modal.classList.add('active');
+  }
+
+  document.getElementById('closeWebviewModal').addEventListener('click', () => {
+    document.getElementById('webviewModal').classList.remove('active');
+  });
+
+  document.getElementById('modalCloseBtn').addEventListener('click', () => {
+    document.getElementById('webviewModal').classList.remove('active');
+  });
+
+  // Share System Logic
+  function handleShare() {
+    if (navigator.share) {
+      navigator.share({
+        title: currentUserData.shopName,
+        text: `${currentUserData.shopName} - GHOTI MARKET`,
+        url: currentUserData.qrLink
+      }).catch((err) => {
+        if (err.name !== 'AbortError') openShareModal();
+      });
+    } else {
+      openShareModal();
+    }
+  }
+
+  document.getElementById('headerShareBtn').addEventListener('click', handleShare);
+
+  function openShareModal() {
+    document.getElementById('shareModal').classList.add('active');
+  }
+
+  document.getElementById('closeShareModal').addEventListener('click', () => {
+    document.getElementById('shareModal').classList.remove('active');
+  });
+
+  // Share Modal Actions
+  document.getElementById('shareWhatsapp').addEventListener('click', () => {
+    const text = encodeURIComponent(`${currentUserData.shopName} - GHOTI MARKET\n${currentUserData.qrLink}`);
+    window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+    document.getElementById('shareModal').classList.remove('active');
+  });
+
+  document.getElementById('shareFacebook').addEventListener('click', () => {
+    const url = encodeURIComponent(currentUserData.qrLink);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+    document.getElementById('shareModal').classList.remove('active');
+  });
+
+  // Copy Link Action
+  function copyLinkToClipboard() {
+    if (!currentUserData.qrLink) return;
+    navigator.clipboard.writeText(currentUserData.qrLink).then(() => {
+      showToast("success", "শপের লিংক কপি হয়েছে");
+    }).catch(() => {
+      // Fallback copy
+      const textArea = document.createElement("textarea");
+      textArea.value = currentUserData.qrLink;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+      showToast("success", "শপের লিংক কপি হয়েছে");
+    });
+  }
+
+  document.getElementById('copyLinkBtn').addEventListener('click', copyLinkToClipboard);
+  document.getElementById('shareCopy').addEventListener('click', () => {
+    copyLinkToClipboard();
+    document.getElementById('shareModal').classList.remove('active');
+  });
+
 </script>
 
 </body>
