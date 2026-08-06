@@ -62,7 +62,7 @@
       color: inherit;
     }
 
-    /* Background Ambient Graphics */
+    /* Ambient Background Elements */
     .bg-blob {
       position: fixed;
       border-radius: 50%;
@@ -86,6 +86,34 @@
       background: rgba(255, 133, 51, 0.12);
     }
 
+    /* Initial Page Auth Loader */
+    #pageAuthLoader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      gap: 16px;
+      transition: opacity 0.3s ease;
+    }
+    .loader-spinner {
+      width: 44px;
+      height: 44px;
+      border: 4px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
     /* --------------------------------------------------------------------------
        HEADER NAVIGATION
        -------------------------------------------------------------------------- */
@@ -94,7 +122,7 @@
       top: 0;
       left: 0;
       right: 0;
-      background: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
@@ -146,14 +174,17 @@
       cursor: pointer;
     }
 
+    .nav-btn:hover {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
     .nav-btn:active {
       transform: scale(0.92);
-      background: var(--primary);
-      color: #fff;
     }
 
     /* --------------------------------------------------------------------------
-       MAIN LAYOUT & CONTAINERS
+       MAIN CONTAINER
        -------------------------------------------------------------------------- */
     .container {
       max-width: 1100px;
@@ -165,7 +196,7 @@
     }
 
     /* --------------------------------------------------------------------------
-       USER WELCOME & CURRENT SUBSCRIPTION STATUS
+       WELCOME & STATUS CARD
        -------------------------------------------------------------------------- */
     .welcome-card {
       background: var(--card-bg);
@@ -242,14 +273,12 @@
     /* Status Pill Box */
     .sub-status-box {
       margin-top: 20px;
-      padding: 16px;
+      padding: 18px;
       border-radius: var(--radius-md);
       background: var(--bg);
       border: 1px solid var(--border);
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 12px;
     }
 
@@ -257,6 +286,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      flex-wrap: wrap;
     }
 
     .status-badge {
@@ -293,8 +323,80 @@
       color: var(--text-main);
     }
 
+    /* Live Countdown Grid UI */
+    .countdown-timer-grid {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 8px 0;
+      flex-wrap: wrap;
+    }
+
+    .countdown-box {
+      background: #ffffff;
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-sm);
+      padding: 8px 14px;
+      min-width: 65px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      flex: 1;
+      max-width: 90px;
+    }
+
+    .countdown-num {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      line-height: 1;
+    }
+
+    .countdown-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .expiry-date-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+    }
+
+    .expiry-date-text i {
+      color: var(--primary);
+    }
+
+    .btn-scroll-plans {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: #ffffff;
+      border: none;
+      padding: 9px 18px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      box-shadow: 0 2px 8px rgba(255, 106, 0, 0.25);
+      transition: transform 0.2s ease;
+      width: fit-content;
+    }
+
+    .btn-scroll-plans:active {
+      transform: scale(0.96);
+    }
+
     /* --------------------------------------------------------------------------
-       SECTION TITLES
+       SECTION HEADERS
        -------------------------------------------------------------------------- */
     .section-header {
       text-align: center;
@@ -314,7 +416,7 @@
     }
 
     /* --------------------------------------------------------------------------
-       PLAN CARDS GRID
+       PLANS GRID
        -------------------------------------------------------------------------- */
     .plans-grid {
       display: grid;
@@ -353,7 +455,6 @@
       border-color: var(--primary);
     }
 
-    /* Popular Highlighted Card */
     .plan-card.is-popular {
       border: 2px solid var(--primary);
       box-shadow: var(--shadow-lg);
@@ -499,21 +600,17 @@
       transition: all 0.2s ease;
     }
 
+    .buy-plan-btn:hover {
+      box-shadow: 0 6px 18px rgba(255, 106, 0, 0.4);
+    }
+
     .buy-plan-btn:active {
       transform: scale(0.98);
       opacity: 0.9;
     }
 
-    .buy-plan-btn.active-btn {
-      background: var(--success-light);
-      color: var(--success);
-      border: 1px solid var(--success);
-      box-shadow: none;
-      cursor: default;
-    }
-
     /* --------------------------------------------------------------------------
-       VALUE PROPOSITION / COMPARISON SECTION
+       VALUE SECTION
        -------------------------------------------------------------------------- */
     .value-card {
       background: var(--card-bg);
@@ -563,7 +660,7 @@
     }
 
     /* --------------------------------------------------------------------------
-       USER ACCOUNT MINI DETAILS CARD
+       ACCOUNT SUMMARY CARD
        -------------------------------------------------------------------------- */
     .account-summary-card {
       background: var(--card-bg);
@@ -574,7 +671,7 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 16px;
     }
 
     .account-info-group {
@@ -602,10 +699,11 @@
       font-size: 14px;
       font-weight: 700;
       color: var(--text-main);
+      word-break: break-all;
     }
 
     /* --------------------------------------------------------------------------
-       FAQ ACCORDION SECTION
+       FAQ ACCORDION
        -------------------------------------------------------------------------- */
     .faq-card {
       background: var(--card-bg);
@@ -657,13 +755,12 @@
     .accordion-content {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+      transition: max-height 0.3s ease-in-out;
       background: var(--bg);
     }
 
     .accordion-item.open .accordion-content {
       max-height: 300px;
-      transition: max-height 0.3s cubic-bezier(1, 0, 1, 0);
     }
 
     .accordion-body {
@@ -717,6 +814,11 @@
       align-items: center;
       gap: 8px;
       box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .btn-support-wa:active {
+      transform: scale(0.96);
     }
 
     .btn-support-contact {
@@ -730,10 +832,15 @@
       align-items: center;
       gap: 8px;
       backdrop-filter: blur(4px);
+      transition: transform 0.2s ease;
+    }
+
+    .btn-support-contact:active {
+      transform: scale(0.96);
     }
 
     /* --------------------------------------------------------------------------
-       SKELETON & EMPTY / ERROR STATES
+       SKELETON & STATE CARDS
        -------------------------------------------------------------------------- */
     .skeleton-box {
       background: linear-gradient(90deg, #fee2d5 25%, #fff0eb 50%, #fee2d5 75%);
@@ -780,7 +887,7 @@
     }
 
     /* --------------------------------------------------------------------------
-       CUSTOM MODAL POPUP SYSTEM
+       CUSTOM MODAL
        -------------------------------------------------------------------------- */
     .modal-backdrop {
       position: fixed;
@@ -790,6 +897,7 @@
       bottom: 0;
       background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       z-index: 1000;
       display: flex;
       align-items: center;
@@ -797,7 +905,7 @@
       padding: 20px;
       opacity: 0;
       visibility: hidden;
-      transition: all 0.3s ease;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 
     .modal-backdrop.active {
@@ -812,7 +920,7 @@
       width: 100%;
       padding: 24px;
       box-shadow: var(--shadow-lg);
-      transform: scale(0.9);
+      transform: scale(0.92);
       transition: transform 0.3s ease;
       text-align: center;
     }
@@ -891,6 +999,11 @@
       font-weight: 700;
       font-family: inherit;
       cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .btn-modal-cancel:hover {
+      background: var(--border);
     }
 
     .btn-modal-confirm {
@@ -907,9 +1020,14 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
+      transition: opacity 0.2s ease;
     }
 
-    /* Toast Notification */
+    .btn-modal-confirm:hover {
+      opacity: 0.9;
+    }
+
+    /* Toast Notification Container */
     #toast-container {
       position: fixed;
       top: 20px;
@@ -936,8 +1054,8 @@
     }
 
     @keyframes toastIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translate(-50%, -20px); }
+      to { opacity: 1; transform: translate(0, 0); }
     }
 
     .toast-icon { font-size: 16px; color: var(--primary); }
@@ -946,14 +1064,20 @@
 </head>
 <body>
 
-  <!-- Background Glowing Shapes -->
+  <!-- Background Ambient Graphics -->
   <div class="bg-blob bg-blob-1"></div>
   <div class="bg-blob bg-blob-2"></div>
 
-  <!-- Custom Toast Container -->
+  <!-- Initial Auth Loading Overlay -->
+  <div id="pageAuthLoader">
+    <div class="loader-spinner"></div>
+    <span style="font-size: 14px; font-weight: 600; color: var(--text-muted);">অ্যাকাউন্ট ভেরিফাই করা হচ্ছে...</span>
+  </div>
+
+  <!-- Toast Container -->
   <div id="toast-container"></div>
 
-  <!-- Sticky Top Header -->
+  <!-- Sticky Top Navigation -->
   <header class="app-header">
     <div class="header-inner">
       <div class="brand-logo">
@@ -961,14 +1085,8 @@
         <span>GHOTI MARKET</span>
       </div>
       <div class="nav-actions">
-        <a href="index.html" class="nav-btn" aria-label="Home">
+        <a href="seller.ghotimarket.com/dashboard" class="nav-btn" aria-label="হ">
           <i class="fa-solid fa-house"></i>
-        </a>
-        <a href="dashboard.html" class="nav-btn" aria-label="Dashboard">
-          <i class="fa-solid fa-chart-line"></i>
-        </a>
-        <a href="profile.html" class="nav-btn" aria-label="Profile">
-          <i class="fa-solid fa-user"></i>
         </a>
       </div>
     </div>
@@ -985,17 +1103,19 @@
         </div>
         <div class="user-details">
           <h2 id="userNameDisplay">স্বাগতম, Seller 👋</h2>
-          <div class="username-tag" id="userHandleDisplay">@loading...</div>
+          <div class="username-tag" id="userHandleDisplay">Seller Account</div>
           <p>আপনার Seller সুবিধাগুলো সচল রাখতে উপযুক্ত Subscription নির্বাচন করুন</p>
         </div>
       </div>
 
-      <!-- Realtime Subscription Status -->
+      <!-- Realtime Subscription Live Countdown Status Box -->
       <div class="sub-status-box" id="subStatusContainer">
         <div class="status-left">
           <div class="status-badge none" id="statusBadge">
-            <i class="fa-solid fa-clock"></i> <span>চেক করা হচ্ছে...</span>
+            <i class="fa-solid fa-circle-info"></i> <span>চেক করা হচ্ছে...</span>
           </div>
+        </div>
+        <div id="statusContentArea">
           <span class="status-info-text" id="statusInfoText">মেয়াদ তথ্য লোড হচ্ছে...</span>
         </div>
       </div>
@@ -1020,17 +1140,17 @@
     <!-- Account Details Summary -->
     <section class="account-summary-card">
       <div class="account-info-group">
-        <i class="fa-solid fa-shield-halved"></i>
+        <i class="fa-solid fa-envelope"></i>
         <div class="account-text-details">
           <span>Seller Account Email</span>
-          <span id="accEmailDisplay">loading...</span>
+          <span id="accEmailDisplay">লোড হচ্ছে...</span>
         </div>
       </div>
       <div class="account-info-group">
         <i class="fa-solid fa-id-card"></i>
         <div class="account-text-details">
           <span>Seller User ID</span>
-          <span id="accUidDisplay">loading...</span>
+          <span id="accUidDisplay">লোড হচ্ছে...</span>
         </div>
       </div>
     </section>
@@ -1073,7 +1193,7 @@
       </div>
     </section>
 
-    <!-- FAQ Section -->
+    <!-- FAQ Accordion Section -->
     <section class="faq-card">
       <div class="section-header" style="text-align: left;">
         <h3 class="section-title" style="font-size: 20px;">সাধারণ জিজ্ঞাসা (FAQ)</h3>
@@ -1081,7 +1201,7 @@
       </div>
       <div class="accordion" id="faqAccordion">
         <div class="accordion-item">
-          <button class="accordion-header">
+          <button class="accordion-header" type="button" aria-expanded="false">
             <span>Subscription কী এবং কেন প্রয়োজন?</span>
             <i class="fa-solid fa-chevron-down"></i>
           </button>
@@ -1092,7 +1212,7 @@
           </div>
         </div>
         <div class="accordion-item">
-          <button class="accordion-header">
+          <button class="accordion-header" type="button" aria-expanded="false">
             <span>কোন Plan-টি আমার জন্য সবচেয়ে ভালো?</span>
             <i class="fa-solid fa-chevron-down"></i>
           </button>
@@ -1103,13 +1223,13 @@
           </div>
         </div>
         <div class="accordion-item">
-          <button class="accordion-header">
+          <button class="accordion-header" type="button" aria-expanded="false">
             <span>Payment প্রক্রিয়া কীভাবে সম্পন্ন হবে?</span>
             <i class="fa-solid fa-chevron-down"></i>
           </button>
           <div class="accordion-content">
             <div class="accordion-body">
-              "এই প্যাকটি নিন" বাটনে ক্লিক করলে সরাসরি Admin-এর সাথে WhatsApp-এ যুক্ত হবেন। সেখানে Bkash, Nagad বা Rocket-এর মাধ্যমে মূল্য পরিশোধ করে সাবস্ক্রিপশন চালু করতে পারবেন।
+              "এই প্যাকটি নিন" বাটনে ক্লিক করলে সরাসরি Admin-এর সাথে WhatsApp-এ যুক্ত হবেন। সেখানে bKash, Nagad বা Rocket-এর মাধ্যমে মূল্য পরিশোধ করে সাবস্ক্রিপশন চালু করতে পারবেন।
             </div>
           </div>
         </div>
@@ -1121,10 +1241,10 @@
       <h3>সাহায্য বা তথ্যের প্রয়োজন?</h3>
       <p>প্যাকেজ নির্বাচন বা পেমেন্ট সংক্রান্ত যেকোনো সহায়তায় আমাদের অ্যাডমিন টিমের সাথে যোগাযোগ করুন</p>
       <div class="support-btns">
-        <a href="https://wa.me/8801727003670" class="btn-support-wa">
+        <a href="https://wa.me/8801727003670" target="_blank" rel="noopener noreferrer" class="btn-support-wa">
           <i class="fa-brands fa-whatsapp"></i> WhatsApp Support
         </a>
-        <a href="https://wa.me/8801727003670" class="btn-support-contact">
+        <a href="https://wa.me/8801727003670" target="_blank" rel="noopener noreferrer" class="btn-support-contact">
           <i class="fa-solid fa-headset"></i> Contact Admin
         </a>
       </div>
@@ -1132,14 +1252,14 @@
 
   </main>
 
-  <!-- Custom Purchase Confirmation Modal Popup -->
-  <div class="modal-backdrop" id="purchaseModal">
+  <!-- Custom Purchase Confirmation Modal -->
+  <div class="modal-backdrop" id="purchaseModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-box">
       <div class="modal-icon-header">
         <i class="fa-solid fa-cart-shopping"></i>
       </div>
-      <h3 class="modal-title">Subscription নির্বাচন করেছেন</h3>
-      <p class="modal-subtitle">নিচের প্যাকেজটি নিতে আপনি অ্যাডমিনের সাথে WhatsApp-এ মেসেজ পাঠাচ্ছেন</p>
+      <h3 class="modal-title" id="modalTitle">Subscription নির্বাচন করেছেন</h3>
+      <p class="modal-subtitle">নিচের প্যাকেজটি নিতে আপনি অ্যাডমিনের সাথে WhatsApp-এ যোগাযোগ করছেন</p>
 
       <div class="modal-details-box">
         <div class="modal-details-row">
@@ -1157,33 +1277,33 @@
       </div>
 
       <div class="modal-actions">
-        <button class="btn-modal-cancel" id="closeModalBtn">বাতিল</button>
-        <button class="btn-modal-confirm" id="confirmWaBtn">
+        <button type="button" class="btn-modal-cancel" id="closeModalBtn">বাতিল</button>
+        <button type="button" class="btn-modal-confirm" id="confirmWaBtn">
           <i class="fa-brands fa-whatsapp"></i> WhatsApp-এ যান
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Firebase JavaScript Module Script -->
+  <!-- Firebase JavaScript Logic -->
   <script type="module">
     // ==========================================================================
-    // 1. FIREBASE INITIALIZATION & CONFIGURATION
+    // 1. FIREBASE INITIALIZATION
     // ==========================================================================
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, doc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    constconst firebaseConfig = {
-  apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
-  authDomain: "ghotimarket.firebaseapp.com",
-  databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
-  projectId: "ghotimarket",
-  storageBucket: "ghotimarket.firebasestorage.app",
-  messagingSenderId: "481257644093",
-  appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
-  measurementId: "G-4SR8V2EKC1"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+      authDomain: "ghotimarket.firebaseapp.com",
+      databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+      projectId: "ghotimarket",
+      storageBucket: "ghotimarket.firebasestorage.app",
+      messagingSenderId: "481257644093",
+      appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+      measurementId: "G-4SR8V2EKC1"
+    };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -1193,18 +1313,19 @@
     let currentUserData = {
       uid: "",
       email: "",
-      shopName: "",
+      shopName: "Seller",
       shopLogo: "",
       username: "",
-      activeDays: 0,
-      hasActiveSub: false,
-      packageId: ""
+      profileUnlockedUntil: 0
     };
     let selectedPackageForModal = null;
+    let unsubscribeUser = null;
+    let unsubscribePackages = null;
+    let countdownInterval = null;
 
-    // Helper: Escape Text for Security (XSS Protection)
+    // Helper: XSS Protection HTML Escape
     function escapeHtml(text) {
-      if (!text) return '';
+      if (text === null || text === undefined) return '';
       return String(text)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
@@ -1213,7 +1334,17 @@
         .replace(/'/g, "&#039;");
     }
 
-    // Helper: Toast Notifications
+    // Helper: URL Sanitization for Images
+    function sanitizeUrl(url) {
+      if (!url) return '';
+      const trimmed = String(url).trim();
+      if (trimmed.startsWith('javascript:') || trimmed.startsWith('data:text/html')) {
+        return '';
+      }
+      return trimmed;
+    }
+
+    // Helper: Custom Toast Notification
     function showToast(message) {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
@@ -1230,15 +1361,40 @@
       }, 3000);
     }
 
-    // Helper: Convert Numbers to Bengali Digits
+    // Helper: Convert Digits to Bengali
     function toBengaliNum(num) {
       const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
       return String(num).replace(/\d/g, d => bengaliDigits[d]);
     }
 
-    // Helper: Month & Days Conversion Format
+    // Helper: Safely Extract profileUnlockedUntil Timestamp in Milliseconds
+    function getProfileUnlockTime(value) {
+      if (!value) return 0;
+      if (typeof value === "number") return value;
+      if (typeof value === "string" && !isNaN(Number(value))) return Number(value);
+      if (value && typeof value.toMillis === "function") return value.toMillis();
+      if (value && typeof value.seconds === "number") return value.seconds * 1000;
+      return 0;
+    }
+
+    // Helper: Format Expiry Date/Time according to Bangladesh Timezone (bn-BD)
+    function formatExpiryDate(timestampMs) {
+      try {
+        const date = new Date(timestampMs);
+        return new Intl.DateTimeFormat("bn-BD", {
+          dateStyle: "long",
+          timeStyle: "medium",
+          timeZone: "Asia/Dhaka"
+        }).format(date);
+      } catch (e) {
+        return new Date(timestampMs).toLocaleString('bn-BD');
+      }
+    }
+
+    // Helper: Format Duration Text for Plan Display
     function getDurationText(days) {
       const d = Number(days);
+      if (isNaN(d) || d <= 0) return "০ দিন";
       const months = Math.round(d / 30);
       if (months >= 1 && d % 30 === 0) {
         return `${toBengaliNum(months)} মাস · ${toBengaliNum(d)} দিন`;
@@ -1248,126 +1404,287 @@
       return `${toBengaliNum(d)} দিন`;
     }
 
+    // Hide Initial Loader
+    function hideAuthLoader() {
+      const loader = document.getElementById('pageAuthLoader');
+      if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.style.display = 'none', 300);
+      }
+    }
+
     // ==========================================================================
     // 2. AUTHENTICATION & SECURITY GUARD
     // ==========================================================================
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        // User is not logged in -> Redirect to login page
         window.location.href = "login.html";
         return;
       }
 
-      currentUserData.uid = user.uid;
+      // Set fallback user data directly from Auth instance
+      currentUserData.uid = user.uid || "";
       currentUserData.email = user.email || "N/A";
+      currentUserData.shopName = user.displayName || "Seller";
+      currentUserData.shopLogo = user.photoURL || "";
 
-      // Render Account Info Details
+      // Render Account Summary Details
       document.getElementById('accEmailDisplay').textContent = currentUserData.email;
-      document.getElementById('accUidDisplay').textContent = user.uid.substring(0, 10) + '...';
+      document.getElementById('accUidDisplay').textContent = currentUserData.uid;
 
-      // Load Profile & Active Subscription status from users/{uid}
-      await loadUserProfile(user.uid);
+      // Render initial default profile view using Auth fallback
+      renderProfileUI();
 
-      // Start Realtime Package Loading
+      // Start Realtime Listener for users/{uid} document
+      listenToUserProfile(user.uid);
+
+      // Start independent packages collection listener
       listenToPackages();
+
+      hideAuthLoader();
     });
 
     // ==========================================================================
-    // 3. USER PROFILE & SUBSCRIPTION STATUS
+    // 3. REALTIME USER PROFILE & UNLOCK TIMESTAMPS (onSnapshot)
     // ==========================================================================
-    async function loadUserProfile(uid) {
-      try {
-        const userRef = doc(db, "users", uid);
-        const userSnap = await getDoc(userRef);
+    function listenToUserProfile(uid) {
+      if (unsubscribeUser) {
+        unsubscribeUser();
+      }
 
+      const userRef = doc(db, "users", uid);
+
+      unsubscribeUser = onSnapshot(userRef, (userSnap) => {
         if (userSnap.exists()) {
           const uData = userSnap.data();
-          currentUserData.shopName = uData.shopName || uData.name || "Rahim Fashion";
-          currentUserData.shopLogo = uData.shopLogo || uData.photoURL || "";
+          currentUserData.shopName = uData.shopName || uData.name || auth.currentUser.displayName || "Seller";
+          currentUserData.shopLogo = uData.shopLogo || uData.photoURL || auth.currentUser.photoURL || "";
           currentUserData.username = uData.username || "";
-          currentUserData.hasActiveSub = uData.hasActiveSub || uData.subscriptionActive || false;
-          currentUserData.activeDays = uData.subscriptionRemainingDays || uData.daysRemaining || 0;
-          currentUserData.packageId = uData.packageId || "";
-
-          // UI Header Display
-          document.getElementById('userNameDisplay').textContent = `স্বাগতম, ${currentUserData.shopName} 👋`;
-          document.getElementById('userHandleDisplay').textContent = currentUserData.username ? `@${currentUserData.username}` : `UID: ${uid.substring(0, 8)}`;
-
-          if (currentUserData.shopLogo) {
-            document.getElementById('avatarBox').innerHTML = `<img src="${escapeHtml(currentUserData.shopLogo)}" alt="Logo">`;
-          }
-
-          // Render Active Subscription Status Pill
-          renderSubscriptionStatus();
+          currentUserData.profileUnlockedUntil = getProfileUnlockTime(uData.profileUnlockedUntil);
         } else {
-          document.getElementById('userNameDisplay').textContent = `স্বাগতম, Seller 👋`;
-          document.getElementById('userHandleDisplay').textContent = `UID: ${uid.substring(0, 8)}`;
-          renderSubscriptionStatus();
+          currentUserData.profileUnlockedUntil = 0;
         }
-      } catch (err) {
-        console.error("Error fetching user profile:", err);
-        renderSubscriptionStatus();
-      }
+
+        renderProfileUI();
+        handleSubscriptionCountdown();
+      }, (err) => {
+        console.warn("Notice: Realtime users/{uid} listener error.", err);
+        renderProfileUI();
+        handleSubscriptionCountdown();
+      });
     }
 
-    function renderSubscriptionStatus() {
-      const badge = document.getElementById('statusBadge');
-      const text = document.getElementById('statusInfoText');
+    function renderProfileUI() {
+      const nameElem = document.getElementById('userNameDisplay');
+      const handleElem = document.getElementById('userHandleDisplay');
+      const avatarBox = document.getElementById('avatarBox');
 
-      if (currentUserData.hasActiveSub && currentUserData.activeDays > 0) {
-        badge.className = "status-badge active";
-        badge.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>সক্রিয় Subscription</span>`;
-        text.textContent = `মেয়াদ: ${toBengaliNum(currentUserData.activeDays)} দিন বাকি রয়েছে`;
-      } else if (currentUserData.activeDays === 0 && currentUserData.hasActiveSub) {
-        badge.className = "status-badge expired";
-        badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>মেয়াদ শেষ</span>`;
-        text.textContent = `নতুন একটি Plan নির্বাচন করে Seller সুবিধাগুলো চালু রাখুন।`;
+      nameElem.textContent = currentUserData.shopName ? `স্বাগতম, ${currentUserData.shopName} 👋` : `স্বাগতম, Seller 👋`;
+
+      if (currentUserData.username) {
+        handleElem.textContent = `@${currentUserData.username}`;
+      } else if (currentUserData.uid) {
+        handleElem.textContent = `UID: ${currentUserData.uid.substring(0, 10)}...`;
       } else {
-        badge.className = "status-badge none";
-        badge.innerHTML = `<i class="fa-solid fa-circle-info"></i> <span>কোনো Active Plan নেই</span>`;
-        text.textContent = `আপনার প্রয়োজন অনুযায়ী একটি Plan নির্বাচন করে সুবিধাগুলো সচল রাখুন।`;
+        handleElem.textContent = `Seller Account`;
+      }
+
+      avatarBox.innerHTML = '';
+      const safeLogo = sanitizeUrl(currentUserData.shopLogo);
+      if (safeLogo) {
+        const img = document.createElement('img');
+        img.src = safeLogo;
+        img.alt = "Shop Logo";
+        img.onerror = () => {
+          avatarBox.innerHTML = '<i class="fa-solid fa-store avatar-placeholder"></i>';
+        };
+        avatarBox.appendChild(img);
+      } else {
+        avatarBox.innerHTML = '<i class="fa-solid fa-store avatar-placeholder"></i>';
       }
     }
 
     // ==========================================================================
-    // 4. LOAD & SORT PACKAGES (FIRESTORE REALTIME)
+    // 4. LIVE COUNTDOWN TIMER & STATUS RENDERER
+    // ==========================================================================
+    function handleSubscriptionCountdown() {
+      const targetMs = currentUserData.profileUnlockedUntil;
+      const now = Date.now();
+
+      // Clear existing interval if any
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+
+      // No profileUnlockedUntil or invalid
+      if (!targetMs) {
+        renderNoSubState();
+        return;
+      }
+
+      // Expired Timestamp
+      if (targetMs <= now) {
+        renderExpiredState(targetMs);
+        return;
+      }
+
+      // Active Subscription -> Start Live Countdown Loop
+      const runCountdown = () => {
+        const currentMs = Date.now();
+        const remainingMs = targetMs - currentMs;
+
+        if (remainingMs <= 0) {
+          if (countdownInterval) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+          }
+          renderExpiredState(targetMs);
+          return;
+        }
+
+        const totalSeconds = Math.floor(remainingMs / 1000);
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        renderActiveStateUI(days, hours, minutes, seconds, targetMs);
+      };
+
+      runCountdown();
+      countdownInterval = setInterval(runCountdown, 1000);
+    }
+
+    function renderActiveStateUI(d, h, m, s, targetMs) {
+      const badge = document.getElementById('statusBadge');
+      const contentArea = document.getElementById('statusContentArea');
+
+      badge.className = "status-badge active";
+      badge.innerHTML = `<i class="fa-solid fa-clock"></i> <span>Subscription মেয়াদ বাকি</span>`;
+
+      const formattedDate = formatExpiryDate(targetMs);
+
+      contentArea.innerHTML = `
+        <div class="countdown-timer-grid">
+          <div class="countdown-box">
+            <div class="countdown-num">${toBengaliNum(d)}</div>
+            <div class="countdown-label">দিন</div>
+          </div>
+          <div class="countdown-box">
+            <div class="countdown-num">${toBengaliNum(h)}</div>
+            <div class="countdown-label">ঘণ্টা</div>
+          </div>
+          <div class="countdown-box">
+            <div class="countdown-num">${toBengaliNum(m)}</div>
+            <div class="countdown-label">মিনিট</div>
+          </div>
+          <div class="countdown-box">
+            <div class="countdown-num">${toBengaliNum(s)}</div>
+            <div class="countdown-label">সেকেন্ড</div>
+          </div>
+        </div>
+        <div class="expiry-date-text">
+          <i class="fa-solid fa-calendar-check"></i> মেয়াদ শেষ হবে: <strong>${escapeHtml(formattedDate)}</strong>
+        </div>
+      `;
+    }
+
+    function renderExpiredState(targetMs) {
+      const badge = document.getElementById('statusBadge');
+      const contentArea = document.getElementById('statusContentArea');
+
+      badge.className = "status-badge expired";
+      badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>Subscription মেয়াদ শেষ</span>`;
+
+      let expiryNotice = "";
+      if (targetMs > 0) {
+        expiryNotice = `<div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">মেয়াদ শেষ হয়েছিল: ${escapeHtml(formatExpiryDate(targetMs))}</div>`;
+      }
+
+      contentArea.innerHTML = `
+        <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start; margin-top: 4px;">
+          <span class="status-info-text">আপনার Seller সুবিধার মেয়াদ শেষ হয়ে গেছে। নতুন Subscription নির্বাচন করুন।</span>
+          ${expiryNotice}
+          <button type="button" class="btn-scroll-plans" id="scrollPlansBtn">
+            <i class="fa-solid fa-cart-plus"></i> নতুন Subscription নিন
+          </button>
+        </div>
+      `;
+
+      const btn = document.getElementById('scrollPlansBtn');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          document.getElementById('plansGrid').scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+    }
+
+    function renderNoSubState() {
+      const badge = document.getElementById('statusBadge');
+      const contentArea = document.getElementById('statusContentArea');
+
+      badge.className = "status-badge none";
+      badge.innerHTML = `<i class="fa-solid fa-circle-info"></i> <span>Subscription মেয়াদ পাওয়া যায়নি</span>`;
+
+      contentArea.innerHTML = `
+        <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start; margin-top: 4px;">
+          <span class="status-info-text">আপনার Seller সুবিধা চালু করতে একটি উপযুক্ত Subscription প্ল্যান নির্বাচন করুন।</span>
+          <button type="button" class="btn-scroll-plans" id="scrollPlansBtn">
+            <i class="fa-solid fa-cart-plus"></i> প্ল্যান নির্বাচন করুন
+          </button>
+        </div>
+      `;
+
+      const btn = document.getElementById('scrollPlansBtn');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          document.getElementById('plansGrid').scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+    }
+
+    // ==========================================================================
+    // 5. INDEPENDENT REALTIME PACKAGE LISTENER
     // ==========================================================================
     function listenToPackages() {
+      if (unsubscribePackages) {
+        unsubscribePackages();
+      }
+
       const packagesRef = collection(db, "packages");
       const grid = document.getElementById('plansGrid');
 
-      onSnapshot(packagesRef, (snapshot) => {
+      unsubscribePackages = onSnapshot(packagesRef, (snapshot) => {
         let rawPackages = [];
 
         snapshot.forEach((docSnap) => {
           const p = docSnap.data();
-          p.id = docSnap.id;
+          const pkgId = docSnap.id;
 
-          // Data Validation
           const price = Number(p.price);
           const days = Number(p.days);
 
           if (!isNaN(price) && !isNaN(days) && price >= 0 && days > 0) {
             rawPackages.push({
-              id: p.id,
-              name: p.name || `${days} দিনের Plan`,
+              id: pkgId,
+              name: p.name || `${toBengaliNum(days)} দিনের Plan`,
               price: price,
               days: days,
               desc: p.desc || "Seller account-এর সুবিধা চালু রাখার জন্য একটি কার্যকর প্যাকেজ।",
-              popular: p.popular || false,
-              featured: p.featured || false
+              popular: Boolean(p.popular),
+              featured: Boolean(p.featured)
             });
           }
         });
 
-        // Safe Fallback / No Packages State
         if (rawPackages.length === 0) {
           grid.innerHTML = `
             <div class="state-card" style="grid-column: 1 / -1;">
               <i class="fa-solid fa-box-open"></i>
               <h4>বর্তমানে কোনো Subscription Plan নেই</h4>
               <p>নতুন Plan যুক্ত হলে এখানে দেখতে পারবেন। সহায়তার জন্য যোগাযোগ করুন।</p>
-              <a href="https://wa.me/8801727003670" class="btn-support-wa" style="display:inline-flex;">
+              <a href="https://wa.me/8801727003670" target="_blank" rel="noopener noreferrer" class="btn-support-wa" style="display:inline-flex;">
                 <i class="fa-brands fa-whatsapp"></i> Contact Admin
               </a>
             </div>
@@ -1375,55 +1692,62 @@
           return;
         }
 
-        // 🔢 CRITICAL: PLAN SERIAL ORDER ASCENDING BY DAYS
-        rawPackages.sort((a, b) => Number(a.days) - Number(b.days));
+        // Ascending order by duration days
+        rawPackages.sort((a, b) => a.days - b.days);
 
-        // Render Sorted Packages
         renderPlansGrid(rawPackages);
       }, (error) => {
-        console.error("Firestore Packages Error:", error);
+        console.error("Firestore Packages Snapshot Error:", error);
         grid.innerHTML = `
           <div class="state-card" style="grid-column: 1 / -1;">
             <i class="fa-solid fa-circle-exclamation" style="color: var(--danger);"></i>
-            <h4>তথ্য লোড করা যায়নি</h4>
-            <p>প্যাকেজ তথ্য পেতে সমস্যা হয়েছে। আবার চেষ্টা করুন।</p>
-            <button class="buy-plan-btn" onclick="location.reload()" style="max-width:200px; margin:0 auto;">আবার চেষ্টা করুন</button>
+            <h4>প্যাকেজ তথ্য লোড করা যাচ্ছে না</h4>
+            <p>ইন্টারনেট সংযোগ চেক করে আবার চেষ্টা করুন।</p>
+            <button type="button" class="buy-plan-btn" id="retryPackagesBtn" style="max-width:200px; margin:0 auto;">
+              <i class="fa-solid fa-rotate-right"></i> আবার চেষ্টা করুন
+            </button>
           </div>
         `;
+
+        const retryBtn = document.getElementById('retryPackagesBtn');
+        if (retryBtn) {
+          retryBtn.addEventListener('click', () => {
+            listenToPackages();
+          });
+        }
       });
     }
 
     // ==========================================================================
-    // 5. RENDER PLAN CARDS TO UI
+    // 6. RENDER PLANS GRID
     // ==========================================================================
     function renderPlansGrid(packages) {
       const grid = document.getElementById('plansGrid');
       let html = '';
 
+      const hasExplicitPopular = packages.some(p => p.popular);
+
       packages.forEach((pkg, index) => {
         const serialNum = String(index + 1).padStart(2, '0');
         const durationStr = getDurationText(pkg.days);
-        
-        // Monthly calculated price equivalent
+
         const monthsCount = pkg.days / 30;
-        const approxMonthlyPrice = Math.round(pkg.price / monthsCount);
+        const approxMonthlyPrice = monthsCount > 0 ? Math.round(pkg.price / monthsCount) : pkg.price;
 
-        const isCurrentActive = currentUserData.hasActiveSub && (currentUserData.packageId === pkg.id || currentUserData.activeDays === pkg.days);
-
-        // Popular badge determination logic
-        const isPopular = pkg.popular || (index === Math.floor(packages.length / 2) && packages.length > 2);
+        // Determine Popular & Best Value badges logically
+        const isPopular = pkg.popular || (!hasExplicitPopular && index === Math.floor(packages.length / 2) && packages.length >= 3);
         const isBestValue = pkg.featured || pkg.days >= 180;
 
         html += `
           <div class="plan-card ${isPopular ? 'is-popular' : ''}">
             ${isPopular ? '<div class="popular-ribbon">সবচেয়ে জনপ্রিয়</div>' : ''}
-            
+
             <div class="plan-index-badge">${serialNum}</div>
-            
+
             ${isBestValue ? '<div class="best-value-pill"><i class="fa-solid fa-star"></i> সেরা পছন্দ</div>' : ''}
 
             <h4 class="plan-title">${escapeHtml(pkg.name)}</h4>
-            
+
             <div class="plan-price-wrapper">
               <span class="plan-price">৳${toBengaliNum(pkg.price)}</span>
               <span class="plan-duration-tag">/ ${toBengaliNum(pkg.days)} দিন</span>
@@ -1447,23 +1771,17 @@
               <li><i class="fa-solid fa-circle-check"></i> প্রোডাক্ট সেলস ও অ্যাডমিন কন্টাক্ট</li>
             </ul>
 
-            ${isCurrentActive ? `
-              <button class="buy-plan-btn active-btn" disabled>
-                <i class="fa-solid fa-circle-check"></i> বর্তমানে সক্রিয়
-              </button>
-            ` : `
-              <button class="buy-plan-btn" data-pkg-id="${pkg.id}">
-                <i class="fa-solid fa-cart-shopping"></i> এই প্যাকটি নিন
-              </button>
-            `}
+            <button type="button" class="buy-plan-btn" data-pkg-id="${escapeHtml(pkg.id)}">
+              <i class="fa-solid fa-cart-shopping"></i> এই প্যাকটি নিন
+            </button>
           </div>
         `;
       });
 
       grid.innerHTML = html;
 
-      // Attach Click Handlers to Buy Buttons securely
-      document.querySelectorAll('.buy-plan-btn[data-pkg-id]').forEach(btn => {
+      // Event delegation / click handlers
+      grid.querySelectorAll('.buy-plan-btn[data-pkg-id]').forEach(btn => {
         btn.addEventListener('click', (e) => {
           const id = e.currentTarget.getAttribute('data-pkg-id');
           const targetPkg = packages.find(p => p.id === id);
@@ -1473,62 +1791,92 @@
     }
 
     // ==========================================================================
-    // 6. WHATSAPP PURCHASE MODAL LOGIC (ANDROID WEBVIEW SAFE)
+    // 7. PURCHASE MODAL & WHATSAPP REDIRECT LOGIC
     // ==========================================================================
+    const purchaseModal = document.getElementById('purchaseModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const confirmWaBtn = document.getElementById('confirmWaBtn');
+
     function openPurchaseModal(pkg) {
       selectedPackageForModal = pkg;
       document.getElementById('modalPkgName').textContent = pkg.name;
       document.getElementById('modalPkgPrice').textContent = `৳${toBengaliNum(pkg.price)}`;
       document.getElementById('modalPkgDays').textContent = `${toBengaliNum(pkg.days)} দিন (${getDurationText(pkg.days)})`;
 
-      document.getElementById('purchaseModal').classList.add('active');
+      purchaseModal.classList.add('active');
     }
 
-    document.getElementById('closeModalBtn').addEventListener('click', () => {
-      document.getElementById('purchaseModal').classList.remove('active');
+    function closeModal() {
+      purchaseModal.classList.remove('active');
+      selectedPackageForModal = null;
+    }
+
+    closeModalBtn.addEventListener('click', closeModal);
+
+    purchaseModal.addEventListener('click', (e) => {
+      if (e.target === purchaseModal) closeModal();
     });
 
-    document.getElementById('confirmWaBtn').addEventListener('click', () => {
-      if (!selectedPackageForModal) return;
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && purchaseModal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+
+    confirmWaBtn.addEventListener('click', () => {
+      if (!selectedPackageForModal) {
+        showToast("কোনো প্যাকেজ নির্বাচিত হয়নি!");
+        return;
+      }
 
       const p = selectedPackageForModal;
-      const usernameDisplay = currentUserData.username ? `@${currentUserData.username}` : 'N/A';
-      
+      const sellerIdentifier = currentUserData.shopName || (currentUserData.username ? `@${currentUserData.username}` : 'Seller Account');
+
+      // Fully valid formatted WhatsApp message string with complete concatenation
       const message = `আসসালামু আলাইকুম, আমি GHOTI MARKET-এর একটি Subscription নিতে চাই।\n\n` +
                       `📦 প্যাকেজ: ${p.name}\n` +
                       `💰 মূল্য: ৳${p.price}\n` +
                       `🕒 মেয়াদ: ${p.days} দিন\n` +
-                      `🏪 Seller Account: ${usernameDisplay}\n` +
-                      `🆔 UID: ${currentUserData.uid}`;
-                      `📧 লগিন ইমেইল: ${currentUserData.email}\n`   
+                      `🏪 Seller Account: ${sellerIdentifier}\n` +
+                      `🆔 UID: ${currentUserData.uid}\n` +
+                      `📧 লগিন ইমেইল: ${currentUserData.email}`;
 
-      const encodedMessage = encodeURIComponent(message);
-      const whatsappUrl = `https://wa.me/8801727003670?text=${encodedMessage}`;
+      const whatsappUrl = `https://wa.me/8801727003670?text=${encodeURIComponent(message)}`;
 
-      document.getElementById('purchaseModal').classList.remove('active');
+      closeModal();
       showToast("WhatsApp-এ রিডাইরেক্ট করা হচ্ছে...");
 
-      // Android WebView Compatibility: Use direct window navigation
       setTimeout(() => {
         window.location.href = whatsappUrl;
-      }, 400);
+      }, 300);
     });
 
     // ==========================================================================
-    // 7. FAQ ACCORDION INTERACTION
+    // 8. ACCORDION LOGIC
     // ==========================================================================
     document.querySelectorAll('.accordion-header').forEach(header => {
       header.addEventListener('click', () => {
         const item = header.parentElement;
         const isOpen = item.classList.contains('open');
 
-        // Close other items
-        document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+        document.querySelectorAll('.accordion-item').forEach(i => {
+          i.classList.remove('open');
+          const h = i.querySelector('.accordion-header');
+          if (h) h.setAttribute('aria-expanded', 'false');
+        });
 
         if (!isOpen) {
           item.classList.add('open');
+          header.setAttribute('aria-expanded', 'true');
         }
       });
+    });
+
+    // Cleanup Interval & Unsubscribe on Unload
+    window.addEventListener('beforeunload', () => {
+      if (countdownInterval) clearInterval(countdownInterval);
+      if (unsubscribeUser) unsubscribeUser();
+      if (unsubscribePackages) unsubscribePackages();
     });
   </script>
 </body>
