@@ -4,237 +4,780 @@
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     <title>Edit Profile | Ghoti Market</title>  
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">  
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">  
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  
     <style>  
-        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f8f9fa; --danger: #e74c3c; --success: #2ecc71; }  
-        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg); margin: 0; padding: 20px; }  
+        :root {  
+            --primary: #2563eb;  
+            --primary-dark: #1d4ed8;  
+            --primary-light: #eff6ff;  
+            --accent: #3b82f6;  
+            --dark: #0f172a;  
+            --bg: #f8fafc;  
+            --card-bg: #ffffff;  
+            --text-main: #1e293b;  
+            --text-muted: #64748b;  
+            --border: #e2e8f0;  
+            --border-focus: #93c5fd;  
+            --danger: #dc2626;  
+            --danger-bg: #fef2f2;  
+            --success: #16a34a;  
+            --success-bg: #f0fdf4;  
+            --warning: #d97706;  
+            --warning-bg: #fffbebfb;  
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);  
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);  
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);  
+            --radius-lg: 20px;  
+            --radius-md: 12px;  
+            --radius-sm: 8px;  
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);  
+        }  
+
+        * {  
+            box-sizing: border-box;  
+            margin: 0;  
+            padding: 0;  
+        }  
+
+        body {  
+            font-family: 'Hind Siliguri', sans-serif;  
+            background-color: var(--bg);  
+            color: var(--text-main);  
+            min-height: 100vh;  
+            display: flex;  
+            justify-content: center;  
+            align-items: center;  
+            padding: 24px 16px;  
+            line-height: 1.5;  
+        }  
+
+        /* Skeleton Loader Styles */  
+        .skeleton-container {  
+            width: 100%;  
+            max-width: 680px;  
+            background: var(--card-bg);  
+            border-radius: var(--radius-lg);  
+            overflow: hidden;  
+            box-shadow: var(--shadow-lg);  
+            border: 1px solid var(--border);  
+            padding: 24px;  
+        }  
+
+        .skeleton-pulse {  
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);  
+            background-size: 200% 100%;  
+            animation: skeleton-loading 1.5s infinite;  
+            border-radius: var(--radius-sm);  
+        }  
+
+        @keyframes skeleton-loading {  
+            0% { background-position: 200% 0; }  
+            100% { background-position: -200% 0; }  
+        }  
+
+        .skeleton-header { height: 160px; border-radius: var(--radius-md); margin-bottom: 24px; }  
+        .skeleton-title { height: 28px; width: 40%; margin-bottom: 16px; }  
+        .skeleton-input { height: 48px; width: 100%; margin-bottom: 20px; border-radius: var(--radius-md); }  
+        .skeleton-button { height: 52px; width: 100%; border-radius: var(--radius-md); margin-top: 12px; }  
+
+        /* Main Container */  
         .profile-container {  
-        max-width: 450px;  
-        margin: 0 auto;  
-        background: white;  
-        border-radius: 25px;  
-        overflow: hidden;  
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);  
-    }  
+            width: 100%;  
+            max-width: 680px;  
+            background: var(--card-bg);  
+            border-radius: var(--radius-lg);  
+            overflow: hidden;  
+            box-shadow: var(--shadow-lg);  
+            border: 1px solid var(--border);  
+            animation: fadeIn 0.4s ease-out forwards;  
+        }  
 
-    .profile-header {  
-        background: linear-gradient(135deg, var(--primary), #1a252f);  
-        color: white;  
-        padding: 40px 20px;  
-        text-align: center;  
-    }  
+        @keyframes fadeIn {  
+            from { opacity: 0; transform: translateY(10px); }  
+            to { opacity: 1; transform: translateY(0); }  
+        }  
 
-    .avatar-box {  
-        width: 90px;  
-        height: 90px;  
-        background: white;  
-        color: var(--accent);  
-        border-radius: 50%;  
-        display: flex;  
-        align-items: center;  
-        justify-content: center;  
-        font-size: 50px;  
-        margin: 0 auto 15px;  
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);  
-    }  
+        /* Header Design */  
+        .profile-header {  
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%);  
+            color: white;  
+            padding: 36px 24px;  
+            text-align: center;  
+            position: relative;  
+        }  
 
-    .profile-header h2 { margin: 0; font-size: 22px; font-weight: 700; }  
-    .uid-badge {   
-        display: inline-block;   
-        background: rgba(255,255,255,0.15);   
-        padding: 5px 15px;   
-        border-radius: 20px;   
-        font-size: 12px;   
-        margin-top: 10px;  
-        letter-spacing: 0.5px;  
-    }  
+        /* Professional Logo & Avatar Design */
+        .avatar-wrapper {  
+            position: relative;  
+            width: 96px;  
+            height: 96px;  
+            margin: 0 auto 16px;  
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.15));
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+        }  
 
-    .form-body { padding: 30px 25px; }  
-    .input-group { margin-bottom: 20px; text-align: left; }  
-    .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; font-size: 14px; }  
-      
-    .input-box { position: relative; }  
-    .input-box i { position: absolute; left: 15px; top: 14px; color: #aaa; }  
-      
-    input, textarea {  
-        width: 100%;  
-        padding: 14px 15px 14px 45px;  
-        border: 1.5px solid #ddd;  
-        border-radius: 12px;  
-        box-sizing: border-box;  
-        outline: none;  
-        transition: 0.3s;  
-        font-size: 15px;  
-        font-family: 'Hind Siliguri', sans-serif;
-    }  
-    textarea {
-        resize: none;
-        height: 100px;
-        padding-top: 14px;
-    }
-    input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(52,152,219,0.1); }  
-    input.error-border, textarea.error-border { border-color: var(--danger) !important; box-shadow: 0 0 10px rgba(231,76,60,0.1) !important; }
+        .avatar-box {  
+            width: 100%;  
+            height: 100%;  
+            background: #ffffff;  
+            color: var(--primary);  
+            border-radius: 50%;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            font-size: 38px;  
+            border: 4px solid #ffffff;  
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+            position: relative;
+        }  
 
-    .char-counter {
-        display: block;
-        text-align: right;
-        font-size: 12px;
-        color: #777;
-        margin-top: 5px;
-    }
-    .char-counter.error-text {
-        color: var(--danger);
-        font-weight: 600;
-    }
+        .avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 50%;
+        }
 
-    /* Keyword Management UI Styles */
-    .keyword-input-wrapper {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 12px;
-    }
-    .keyword-input-wrapper input {
-        padding-left: 15px;
-    }
-    .keyword-add-btn {
-        background: var(--primary);
-        color: white;
-        border: none;
-        padding: 0 20px;
-        border-radius: 12px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: 0.2s;
-    }
-    .keyword-add-btn:hover { background: var(--accent); }
-    
-    .keywords-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        min-height: 40px;
-        padding: 10px;
-        background: #f1f4f6;
-        border-radius: 12px;
-        border: 1px dashed #cbd5e1;
-    }
-    .keyword-chip {
-        background: white;
-        color: var(--primary);
-        border: 1px solid #cbd5e1;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 13px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-    }
-    .keyword-chip i {
-        cursor: pointer;
-        color: var(--danger);
-        font-size: 12px;
-        transition: transform 0.2s;
-    }
-    .keyword-chip i:hover { transform: scale(1.2); }
+        .verified-badge {  
+            position: absolute;  
+            bottom: 2px;  
+            right: 2px;  
+            background: var(--success);  
+            color: white;  
+            width: 28px;  
+            height: 28px;  
+            border-radius: 50%;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            font-size: 13px;  
+            border: 2px solid white;  
+            box-shadow: var(--shadow-md);  
+            z-index: 2;
+        }  
 
-    .btn-update {  
-        background: linear-gradient(135deg, var(--accent), #2980b9);  
-        color: white;  
-        border: none;  
-        width: 100%;  
-        padding: 15px;  
-        border-radius: 12px;  
-        font-size: 16px;  
-        font-weight: 700;  
-        cursor: pointer;  
-        margin-top: 10px;  
-        transition: 0.3s;  
-        box-shadow: 0 5px 15px rgba(52,152,219,.3);  
-    }  
-    .btn-update:hover { transform: translateY(-2px); }  
-    .btn-update:active { transform: scale(0.97); }  
-    .btn-update:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }  
+        .profile-header h2 {  
+            font-size: 24px;  
+            font-weight: 700;  
+            margin-bottom: 4px;  
+            letter-spacing: -0.3px;  
+        }  
 
-    .btn-back {  
-        display: block;  
-        text-align: center;  
-        margin-top: 20px;  
-        color: #777;  
-        text-decoration: none;  
-        font-size: 14px;  
-        font-weight: 600;  
-    }  
-    .btn-back:hover { color: var(--primary); }  
+        .profile-header p {  
+            font-size: 14px;  
+            color: rgba(255, 255, 255, 0.8);  
+            margin-bottom: 12px;  
+        }  
 
-    /* Custom Popup */  
-    #customPopup{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:999;}  
-    .popup-box{background:#fff;padding:25px;border-radius:16px;text-align:center;max-width:320px;}  
-    .popup-box i{font-size:40px;color:var(--accent);margin-bottom:10px;}  
-    .popup-box.error i{color:var(--danger);}  
-</style>
+        .header-meta-group {  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            gap: 10px;  
+            flex-wrap: wrap;  
+        }  
+
+        .uid-badge {  
+            display: inline-flex;  
+            align-items: center;  
+            gap: 6px;  
+            background: rgba(255, 255, 255, 0.12);  
+            backdrop-filter: blur(8px);  
+            padding: 4px 14px;  
+            border-radius: 20px;  
+            font-size: 12px;  
+            font-weight: 500;  
+            border: 1px solid rgba(255, 255, 255, 0.15);  
+            color: rgba(255, 255, 255, 0.95);  
+        }  
+
+        .status-pill {  
+            display: inline-flex;  
+            align-items: center;  
+            gap: 6px;  
+            background: rgba(22, 163, 74, 0.2);  
+            padding: 4px 12px;  
+            border-radius: 20px;  
+            font-size: 12px;  
+            font-weight: 500;  
+            color: #86efac;  
+            border: 1px solid rgba(134, 239, 172, 0.3);  
+        }  
+
+        .status-dot {  
+            width: 7px;  
+            height: 7px;  
+            background-color: #4ade80;  
+            border-radius: 50%;  
+            box-shadow: 0 0 8px #4ade80;  
+        }  
+
+        /* Profile Summary Strip */  
+        .profile-summary-strip {  
+            background: #f1f5f9;  
+            border-bottom: 1px solid var(--border);  
+            padding: 12px 24px;  
+            display: flex;  
+            align-items: center;  
+            justify-content: space-between;  
+            font-size: 13px;  
+        }  
+
+        .summary-store-title {  
+            display: flex;  
+            align-items: center;  
+            gap: 8px;  
+            font-weight: 600;  
+            color: var(--text-main);  
+        }  
+
+        .summary-status {  
+            display: flex;  
+            align-items: center;  
+            gap: 6px;  
+            font-weight: 500;  
+            padding: 2px 10px;  
+            border-radius: 12px;  
+            transition: var(--transition);  
+        }  
+
+        .summary-status.clean {  
+            background: var(--success-bg);  
+            color: var(--success);  
+        }  
+
+        .summary-status.dirty {  
+            background: var(--warning-bg);  
+            color: var(--warning);  
+        }  
+
+        /* Form Body */  
+        .form-body {  
+            padding: 32px 28px;  
+        }  
+
+        .input-group {  
+            margin-bottom: 24px;  
+        }  
+
+        .input-group label {  
+            display: flex;  
+            align-items: center;  
+            justify-content: space-between;  
+            margin-bottom: 8px;  
+            font-weight: 600;  
+            color: var(--text-main);  
+            font-size: 14px;  
+        }  
+
+        .label-subtext {  
+            font-weight: 400;  
+            color: var(--text-muted);  
+            font-size: 12px;  
+        }  
+
+        .input-box {  
+            position: relative;  
+        }  
+
+        .input-box i.input-icon {  
+            position: absolute;  
+            left: 16px;  
+            top: 50%;  
+            transform: translateY(-50%);  
+            color: var(--text-muted);  
+            font-size: 16px;  
+            transition: var(--transition);  
+            pointer-events: none;  
+        }  
+
+        .input-box.textarea-box i.input-icon {  
+            top: 18px;  
+            transform: none;  
+        }  
+
+        input[type="text"],  
+        input[type="tel"],  
+        textarea {  
+            width: 100%;  
+            padding: 13px 16px 13px 46px;  
+            border: 1.5px solid var(--border);  
+            border-radius: var(--radius-md);  
+            background-color: #fff;  
+            color: var(--text-main);  
+            font-size: 15px;  
+            font-family: 'Hind Siliguri', sans-serif;  
+            outline: none;  
+            transition: var(--transition);  
+        }  
+
+        textarea {  
+            resize: none;  
+            height: 110px;  
+            line-height: 1.6;  
+        }  
+
+        input:focus, textarea:focus {  
+            border-color: var(--primary);  
+            box-shadow: 0 0 0 4px var(--primary-light);  
+        }  
+
+        .input-box:focus-within i.input-icon {  
+            color: var(--primary);  
+        }  
+
+        /* Error States */  
+        input.error-border, textarea.error-border {  
+            border-color: var(--danger) !important;  
+            background-color: var(--danger-bg);  
+        }  
+
+        input.error-border:focus, textarea.error-border:focus {  
+            box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.15) !important;  
+        }  
+
+        .error-message {  
+            color: var(--danger);  
+            font-size: 12px;  
+            margin-top: 6px;  
+            display: none;  
+            align-items: center;  
+            gap: 4px;  
+            font-weight: 500;  
+        }  
+
+        .error-message.visible {  
+            display: flex;  
+        }  
+
+        /* Character Counter */  
+        .char-counter-wrapper {  
+            display: flex;  
+            justify-content: space-between;  
+            align-items: center;  
+            margin-top: 6px;  
+        }  
+
+        .char-counter {  
+            font-size: 12px;  
+            color: var(--text-muted);  
+            font-weight: 500;  
+            margin-left: auto;  
+        }  
+
+        .char-counter.warning { color: var(--warning); }  
+        .char-counter.error { color: var(--danger); font-weight: 700; }  
+
+        /* Keyword Section UI */  
+        .keyword-input-wrapper {  
+            display: flex;  
+            gap: 10px;  
+            margin-bottom: 12px;  
+        }  
+
+        .keyword-input-wrapper input {  
+            padding-left: 16px;  
+        }  
+
+        .keyword-add-btn {  
+            background: var(--primary);  
+            color: white;  
+            border: none;  
+            padding: 0 20px;  
+            border-radius: var(--radius-md);  
+            cursor: pointer;  
+            font-weight: 600;  
+            font-family: 'Hind Siliguri', sans-serif;  
+            font-size: 14px;  
+            transition: var(--transition);  
+            white-space: nowrap;  
+            display: inline-flex;  
+            align-items: center;  
+            gap: 6px;  
+        }  
+
+        .keyword-add-btn:hover {  
+            background: var(--primary-dark);  
+            transform: translateY(-1px);  
+        }  
+
+        .keyword-add-btn:disabled {  
+            background: #cbd5e1;  
+            cursor: not-allowed;  
+            transform: none;  
+        }  
+
+        .keywords-container {  
+            display: flex;  
+            flex-wrap: wrap;  
+            gap: 8px;  
+            min-height: 52px;  
+            padding: 12px;  
+            background: var(--bg);  
+            border-radius: var(--radius-md);  
+            border: 1px dashed #cbd5e1;  
+            align-items: center;  
+        }  
+
+        .keyword-chip {  
+            background: white;  
+            color: var(--text-main);  
+            border: 1px solid var(--border);  
+            padding: 6px 14px;  
+            border-radius: 20px;  
+            font-size: 13px;  
+            font-weight: 500;  
+            display: inline-flex;  
+            align-items: center;  
+            gap: 8px;  
+            box-shadow: var(--shadow-sm);  
+            animation: popIn 0.2s ease-out;  
+            transition: var(--transition);  
+        }  
+
+        @keyframes popIn {  
+            from { transform: scale(0.8); opacity: 0; }  
+            to { transform: scale(1); opacity: 1; }  
+        }  
+
+        .keyword-chip:hover {  
+            border-color: var(--border-focus);  
+        }  
+
+        .keyword-chip .remove-btn {  
+            cursor: pointer;  
+            color: var(--text-muted);  
+            font-size: 13px;  
+            transition: var(--transition);  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            width: 18px;  
+            height: 18px;  
+            border-radius: 50%;  
+        }  
+
+        .keyword-chip .remove-btn:hover {  
+            background: var(--danger-bg);  
+            color: var(--danger);  
+        }  
+
+        .empty-keywords-hint {  
+            color: var(--text-muted);  
+            font-size: 13px;  
+            width: 100%;  
+            text-align: center;  
+            user-select: none;  
+        }  
+
+        /* Buttons */  
+        .btn-update {  
+            background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);  
+            color: white;  
+            border: none;  
+            width: 100%;  
+            padding: 15px;  
+            border-radius: var(--radius-md);  
+            font-size: 16px;  
+            font-weight: 700;  
+            font-family: 'Hind Siliguri', sans-serif;  
+            cursor: pointer;  
+            margin-top: 12px;  
+            transition: var(--transition);  
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            gap: 10px;  
+        }  
+
+        .btn-update:hover:not(:disabled) {  
+            transform: translateY(-2px);  
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);  
+        }  
+
+        .btn-update:active:not(:disabled) {  
+            transform: scale(0.98);  
+        }  
+
+        .btn-update:disabled {  
+            opacity: 0.65;  
+            cursor: not-allowed;  
+            box-shadow: none;  
+            transform: none;  
+        }  
+
+        .btn-back {  
+            display: inline-flex;  
+            align-items: center;  
+            justify-content: center;  
+            gap: 8px;  
+            width: 100%;  
+            text-align: center;  
+            margin-top: 20px;  
+            color: var(--text-muted);  
+            text-decoration: none;  
+            font-size: 14px;  
+            font-weight: 600;  
+            padding: 10px;  
+            border-radius: var(--radius-sm);  
+            transition: var(--transition);  
+        }  
+
+        .btn-back:hover {  
+            color: var(--primary);  
+            background: var(--primary-light);  
+        }  
+
+        /* Custom Modal System */  
+        .modal-overlay {  
+            position: fixed;  
+            inset: 0;  
+            background: rgba(15, 23, 42, 0.6);  
+            backdrop-filter: blur(6px);  
+            display: none;  
+            align-items: center;  
+            justify-content: center;  
+            z-index: 1000;  
+            padding: 20px;  
+            animation: fadeIn 0.2s ease-out;  
+        }  
+
+        .modal-card {  
+            background: white;  
+            padding: 32px 28px;  
+            border-radius: var(--radius-lg);  
+            text-align: center;  
+            max-width: 360px;  
+            width: 100%;  
+            box-shadow: var(--shadow-lg);  
+            transform: scale(0.95);  
+            animation: modalPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;  
+        }  
+
+        @keyframes modalPop {  
+            to { transform: scale(1); }  
+        }  
+
+        .modal-icon-box {  
+            width: 64px;  
+            height: 64px;  
+            border-radius: 50%;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            margin: 0 auto 16px;  
+            font-size: 28px;  
+        }  
+
+        .modal-card.success .modal-icon-box {  
+            background: var(--success-bg);  
+            color: var(--success);  
+        }  
+
+        .modal-card.error .modal-icon-box {  
+            background: var(--danger-bg);  
+            color: var(--danger);  
+        }  
+
+        .modal-card h3 {  
+            font-size: 20px;  
+            font-weight: 700;  
+            color: var(--text-main);  
+            margin-bottom: 8px;  
+        }  
+
+        .modal-card p {  
+            font-size: 14px;  
+            color: var(--text-muted);  
+            margin-bottom: 24px;  
+            line-height: 1.5;  
+        }  
+
+        .modal-btn {  
+            width: 100%;  
+            padding: 12px;  
+            border: none;  
+            border-radius: var(--radius-md);  
+            font-weight: 600;  
+            font-family: 'Hind Siliguri', sans-serif;  
+            font-size: 15px;  
+            cursor: pointer;  
+            transition: var(--transition);  
+        }  
+
+        .modal-card.success .modal-btn {  
+            background: var(--primary);  
+            color: white;  
+        }  
+
+        .modal-card.success .modal-btn:hover {  
+            background: var(--primary-dark);  
+        }  
+
+        .modal-card.error .modal-btn {  
+            background: var(--text-main);  
+            color: white;  
+        }  
+
+        .modal-card.error .modal-btn:hover {  
+            background: #000;  
+        }  
+
+        /* Responsive Breakpoints */  
+        @media (max-width: 480px) {  
+            body { padding: 12px 8px; }  
+            .form-body { padding: 24px 18px; }  
+            .profile-header { padding: 28px 16px; }  
+            .keyword-input-wrapper { flex-direction: row; }  
+            .keyword-add-btn { padding: 0 16px; }  
+        }  
+    </style>  
 </head>  
 <body>  
-<div class="profile-container">  
+
+<!-- Skeleton Loader (Shown during initial load) -->  
+<div id="skeletonLoader" class="skeleton-container">  
+    <div class="skeleton-pulse skeleton-header"></div>  
+    <div class="skeleton-pulse skeleton-title"></div>  
+    <div class="skeleton-pulse skeleton-input"></div>  
+    <div class="skeleton-pulse skeleton-title"></div>  
+    <div class="skeleton-pulse skeleton-input"></div>  
+    <div class="skeleton-pulse skeleton-input" style="height: 90px;"></div>  
+    <div class="skeleton-pulse skeleton-button"></div>  
+</div>  
+
+<!-- Main Profile Card Container -->  
+<div id="mainContainer" class="profile-container" style="display: none;">  
     <div class="profile-header">  
-        <div class="avatar-box"><i class="fas fa-store"></i></div>  
+        <div class="avatar-wrapper">  
+            <div class="avatar-box" id="shopLogoBox">
+                <i class="fas fa-store"></i>
+            </div>  
+            <div class="verified-badge" title="যাচাইকৃত সেলার"><i class="fas fa-check"></i></div>  
+        </div>  
         <h2 id="displayShopName">লোড হচ্ছে...</h2>  
-        <div class="uid-badge">UID: <span id="uidText">...</span></div>  
+        <p>আপনার দোকানের তথ্য আপডেট করুন</p>  
+        <div class="header-meta-group">  
+            <div class="uid-badge">  
+                <i class="fas fa-fingerprint"></i> UID: <span id="uidText">...</span>  
+            </div>  
+            <div class="status-pill">  
+                <span class="status-dot"></span> ভেরিফাইড মার্চেন্ট  
+            </div>  
+        </div>  
+    </div>  
+
+    <div class="profile-summary-strip">  
+        <span class="summary-store-title">  
+            <i class="fas fa-shop" style="color: var(--primary);"></i> সেলার প্রোফাইল  
+        </span>  
+        <span id="unsavedIndicator" class="summary-status clean">  
+            <i class="fas fa-check-circle"></i> সব তথ্য সংরক্ষিত  
+        </span>  
     </div>  
 
     <div class="form-body">  
+        <!-- Shop Name Input -->  
         <div class="input-group">  
-            <label>দোকানের নাম</label>  
+            <label for="shopName">  
+                <span>দোকানের নাম</span>  
+                <span class="label-subtext">প্রয়োজনীয়</span>  
+            </label>  
             <div class="input-box">  
-                <i class="fas fa-shopping-bag"></i>  
-                <input type="text" id="shopName" placeholder="দোকানের নাম">  
+                <i class="fas fa-shopping-bag input-icon"></i>  
+                <input type="text" id="shopName" placeholder="আপনার দোকানের নাম লিখুন">  
+            </div>  
+            <div id="shopNameError" class="error-message">  
+                <i class="fas fa-exclamation-circle"></i> <span>দোকানের নাম দেয়া আবশ্যক</span>  
             </div>  
         </div>  
 
+        <!-- WhatsApp Input -->  
         <div class="input-group">  
-            <label>WhatsApp নাম্বার</label>  
+            <label for="whatsapp">  
+                <span>WhatsApp নাম্বার</span>  
+                <span class="label-subtext">গ্রাহক যোগাযোগের জন্য</span>  
+            </label>  
             <div class="input-box">  
-                <i class="fab fa-whatsapp"></i>  
+                <i class="fab fa-whatsapp input-icon"></i>  
                 <input type="tel" id="whatsapp" placeholder="01XXXXXXXXX">  
             </div>  
-        </div>  
-
-        <div class="input-group">  
-            <label>শপের বর্ণনা (Shop Description)</label>  
-            <div class="input-box">  
-                <i class="fas fa-align-left" style="top: 15px;"></i>  
-                <textarea id="shopDescription" placeholder="আপনার শপ সম্পর্কে সংক্ষেপে লিখুন..." oninput="handleDescInput()"></textarea>  
+            <div id="whatsappError" class="error-message">  
+                <i class="fas fa-exclamation-circle"></i> <span>সঠিক ১১ ডিজিটের WhatsApp নাম্বার দিন (যেমন: 01700000000)</span>  
             </div>  
-            <span id="charCounter" class="char-counter">০/২০০</span>  
         </div>  
 
+        <!-- Shop Description Input -->  
         <div class="input-group">  
-            <label>শপ সার্চ কিওয়ার্ড (Shop Keywords)</label>  
-            <div class="keyword-input-wrapper">
-                <input type="text" id="keywordInput" placeholder="নতুন কিওয়ার্ড লিখুন..." onkeypress="handleKeywordKeypress(event)">
-                <button type="button" class="keyword-add-btn" onclick="addKeyword()">যোগ</button>
-            </div>
-            <div id="keywordsList" class="keywords-container">
-                <!-- Keywords will render here dynamically -->
-            </div>
+            <label for="shopDescription">  
+                <span>শপের বর্ণনা (Shop Description)</span>  
+            </label>  
+            <div class="input-box textarea-box">  
+                <i class="fas fa-align-left input-icon"></i>  
+                <textarea id="shopDescription" placeholder="আপনার শপ সম্পর্কে সংক্ষেপে বিস্তারিত লিখুন..."></textarea>  
+            </div>  
+            <div class="char-counter-wrapper">  
+                <div id="descError" class="error-message">  
+                    <i class="fas fa-exclamation-circle"></i> <span>২০০ অক্ষরের সীমা অতিক্রম করেছে</span>  
+                </div>  
+                <span id="charCounter" class="char-counter">০ / ২০০</span>  
+            </div>  
         </div>  
 
-        <button class="btn-update" onclick="updateProfile()" id="upBtn">  
-            তথ্য আপডেট করুন  
+        <!-- Shop Keywords Input -->  
+        <div class="input-group">  
+            <label for="keywordInput">  
+                <span>শপ সার্চ কিওয়ার্ড (Shop Keywords)</span>  
+                <span id="keywordCounterText" class="label-subtext">০ / ১০টি</span>  
+            </label>  
+            <div class="keyword-input-wrapper">  
+                <input type="text" id="keywordInput" placeholder="নতুন কিওয়ার্ড লিখুন (যেমন: ফ্যাশন)...">  
+                <button type="button" id="addKeywordBtn" class="keyword-add-btn">  
+                    <i class="fas fa-plus"></i> যোগ  
+                </button>  
+            </div>  
+            <div id="keywordsList" class="keywords-container">  
+                <!-- Keywords chips will be safely dynamically rendered here -->  
+            </div>  
+        </div>  
+
+        <!-- Update Button -->  
+        <button class="btn-update" id="upBtn">  
+            <i class="fas fa-save"></i> <span>তথ্য আপডেট করুন</span>  
         </button>  
 
-        <a href="dashboard.html" class="btn-back"><i class="fas fa-arrow-left"></i> ড্যাশবোর্ডে ফিরুন</a>  
+        <!-- Back Link -->  
+        <a href="dashboard.html" class="btn-back">  
+            <i class="fas fa-arrow-left"></i> ড্যাশবোর্ডে ফিরে যান  
+        </a>  
     </div>  
 </div>  
 
-<div id="customPopup"></div>  
+<!-- Custom Modern Modal -->  
+<div id="customModal" class="modal-overlay">  
+    <div id="modalCard" class="modal-card success">  
+        <div class="modal-icon-box">  
+            <i id="modalIcon" class="fas fa-check"></i>  
+        </div>  
+        <h3 id="modalTitle">সফল হয়েছে!</h3>  
+        <p id="modalMessage">আপনার প্রোফাইল সফলভাবে আপডেট করা হয়েছে।</p>  
+        <button id="modalCloseBtn" class="modal-btn">ঠিক আছে</button>  
+    </div>  
+</div>  
 
 <script type="module">  
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";  
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";  
     import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";  
 
+    // Firebase Initialization  
     const app = initializeApp({   
         apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",   
         projectId: "ghotimarket",  
@@ -243,137 +786,349 @@
     const auth = getAuth(app);  
     const db = getFirestore(app);  
 
-    let currentKeywords = [];
+    // App State Management  
+    let currentKeywords = [];  
+    let initialData = {  
+        shopName: "",  
+        whatsapp: "",  
+        shopDescription: "",  
+        shopKeywords: []  
+    };  
+    let currentUser = null;  
 
-    function showPopup(msg, type='success'){  
-        const popup = document.getElementById('customPopup');  
-        popup.innerHTML = `<div class="popup-box ${type==='error'?'error':''}"><i class="fas fa-${type==='success'?'check-circle':'exclamation-circle'}"></i><p>${msg}</p><button onclick="this.parentElement.parentElement.style.display='none'" style="background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:8px;margin-top:10px;cursor:pointer;">ঠিক আছে</button></div>`;  
-        popup.style.display='flex';  
+    // Elements  
+    const skeletonLoader = document.getElementById('skeletonLoader');  
+    const mainContainer = document.getElementById('mainContainer');  
+    const shopLogoBox = document.getElementById('shopLogoBox');
+    const displayShopName = document.getElementById('displayShopName');  
+    const uidText = document.getElementById('uidText');  
+    const shopNameInput = document.getElementById('shopName');  
+    const whatsappInput = document.getElementById('whatsapp');  
+    const shopDescriptionInput = document.getElementById('shopDescription');  
+    const charCounter = document.getElementById('charCounter');  
+    const keywordInput = document.getElementById('keywordInput');  
+    const addKeywordBtn = document.getElementById('addKeywordBtn');  
+    const keywordsList = document.getElementById('keywordsList');  
+    const keywordCounterText = document.getElementById('keywordCounterText');  
+    const upBtn = document.getElementById('upBtn');  
+    const unsavedIndicator = document.getElementById('unsavedIndicator');  
+
+    // Error Message Elements  
+    const shopNameError = document.getElementById('shopNameError');  
+    const whatsappError = document.getElementById('whatsappError');  
+    const descError = document.getElementById('descError');  
+
+    // Modal Elements  
+    const customModal = document.getElementById('customModal');  
+    const modalCard = document.getElementById('modalCard');  
+    const modalIcon = document.getElementById('modalIcon');  
+    const modalTitle = document.getElementById('modalTitle');  
+    const modalMessage = document.getElementById('modalMessage');  
+    const modalCloseBtn = document.getElementById('modalCloseBtn');  
+
+    // Safe Shop Logo Rendering Logic
+    function renderShopLogo(logoUrl) {
+        shopLogoBox.innerHTML = '';
+        if (logoUrl && typeof logoUrl === 'string' && logoUrl.trim() !== '') {
+            const img = document.createElement('img');
+            img.src = logoUrl.trim();
+            img.alt = 'Shop Logo';
+            img.loading = 'eager';
+            img.onerror = () => {
+                shopLogoBox.innerHTML = '<i class="fas fa-store"></i>';
+            };
+            shopLogoBox.appendChild(img);
+        } else {
+            shopLogoBox.innerHTML = '<i class="fas fa-store"></i>';
+        }
+    }
+
+    // Helper: Convert Numbers to Bengali Digits  
+    function toBengaliNum(num) {  
+        if (num === null || num === undefined) return '০';  
+        const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];  
+        return num.toString().replace(/\d/g, d => bnDigits[d]);  
     }  
 
-    function convertToBengaliNumber(num) {
-        const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-        return num.toString().replace(/\d/g, d => bengaliDigits[d]);
-    }
+    // Helper: Show Custom Modal System  
+    function showModal(title, msg, type = 'success') {  
+        modalCard.className = `modal-card ${type}`;  
+        modalTitle.innerText = title;  
+        modalMessage.innerText = msg;  
+          
+        if (type === 'success') {  
+            modalIcon.className = 'fas fa-check';  
+        } else {  
+            modalIcon.className = 'fas fa-exclamation';  
+        }  
 
-    window.handleDescInput = () => {
-        const descField = document.getElementById('shopDescription');
-        const counter = document.getElementById('charCounter');
-        const updateBtn = document.getElementById('upBtn');
-        const length = descField.value.length;
+        customModal.style.display = 'flex';  
+    }  
 
-        counter.innerText = `${convertToBengaliNumber(length)}/২০০`;
+    modalCloseBtn.addEventListener('click', () => {  
+        customModal.style.display = 'none';  
+    });  
 
-        if (length > 200) {
-            descField.classList.add('error-border');
-            counter.classList.add('error-text');
-            updateBtn.disabled = true;
-        } else {
-            descField.classList.remove('error-border');
-            counter.classList.remove('error-text');
-            updateBtn.disabled = false;
-        }
-    }
+    customModal.addEventListener('click', (e) => {  
+        if (e.target === customModal) {  
+            customModal.style.display = 'none';  
+        }  
+    });  
 
-    window.renderKeywords = () => {
-        const container = document.getElementById('keywordsList');
-        if (currentKeywords.length === 0) {
-            container.innerHTML = `<span style="color: #999; font-size: 13px; width: 100%; text-align: center; padding: 5px;">কোনো কিওয়ার্ড যোগ করা হয়নি</span>`;
-            return;
-        }
-        let html = '';
-        currentKeywords.forEach((kw, index) => {
-            html += `<div class="keyword-chip">
-                <span>${kw}</span>
-                <i class="fas fa-times" onclick="removeKeyword(${index})" title="মুছে ফেলুন"></i>
-            </div>`;
-        });
-        container.innerHTML = html;
-    }
+    // Check Unsaved Changes  
+    function checkUnsavedChanges() {  
+        const sName = shopNameInput.value.trim();  
+        const wa = whatsappInput.value.trim();  
+        const sDesc = shopDescriptionInput.value.trim();  
 
-    window.addKeyword = () => {
-        const input = document.getElementById('keywordInput');
-        const val = input.value.trim();
-        if(!val) return;
-        if(currentKeywords.includes(val)) {
-            showPopup("এই কিওয়ার্ডটি ইতিমধ্যে যোগ করা হয়েছে!", 'error');
-            return;
-        }
-        currentKeywords.push(val);
-        input.value = '';
-        renderKeywords();
-    }
+        const isChanged =   
+            sName !== initialData.shopName ||  
+            wa !== initialData.whatsapp ||  
+            sDesc !== initialData.shopDescription ||  
+            JSON.stringify(currentKeywords) !== JSON.stringify(initialData.shopKeywords);  
 
-    window.handleKeywordKeypress = (e) => {
-        if(e.key === 'Enter') {
-            e.preventDefault();
-            addKeyword();
-        }
-    }
+        if (isChanged) {  
+            unsavedIndicator.className = 'summary-status dirty';  
+            unsavedIndicator.innerHTML = '<i class="fas fa-pen"></i> পরিবর্তন সংরক্ষণ করা হয়নি';  
+        } else {  
+            unsavedIndicator.className = 'summary-status clean';  
+            unsavedIndicator.innerHTML = '<i class="fas fa-check-circle"></i> সব তথ্য সংরক্ষিত';  
+        }  
+    }  
 
-    window.removeKeyword = (index) => {
-        currentKeywords.splice(index, 1);
-        renderKeywords();
-    }
+    // Live Description Input Handler & Validation  
+    function validateDescription() {  
+        const length = shopDescriptionInput.value.length;  
+        charCounter.innerText = `${toBengaliNum(length)} / ২০০`;  
 
-    onAuthStateChanged(auth, async user => {  
-        if(user) {  
-            document.getElementById('uidText').innerText = user.uid.substring(0,8)+'...';  
-            const snap = await getDoc(doc(db, "users", user.uid));  
-            if(snap.exists()) {  
-                const data = snap.data();  
-                document.getElementById('displayShopName').innerText = data.shopName || 'আমার শপ';  
-                document.getElementById('shopName').value = data.shopName || "";  
-                document.getElementById('whatsapp').value = data.whatsapp || "";  
-                document.getElementById('shopDescription').value = data.shopDescription || "";
-                currentKeywords = Array.isArray(data.shopKeywords) ? [...data.shopKeywords] : [];
-                handleDescInput();
-                renderKeywords();
+        if (length > 200) {  
+            shopDescriptionInput.classList.add('error-border');  
+            charCounter.className = 'char-counter error';  
+            descError.classList.add('visible');  
+            return false;  
+        } else {  
+            shopDescriptionInput.classList.remove('error-border');  
+            charCounter.className = length > 170 ? 'char-counter warning' : 'char-counter';  
+            descError.classList.remove('visible');  
+            return true;  
+        }  
+    }  
+
+    shopDescriptionInput.addEventListener('input', () => {  
+        validateDescription();  
+        checkUnsavedChanges();  
+    });  
+
+    // Validate Shop Name  
+    function validateShopName() {  
+        const val = shopNameInput.value.trim();  
+        if (!val) {  
+            shopNameInput.classList.add('error-border');  
+            shopNameError.classList.add('visible');  
+            return false;  
+        } else {  
+            shopNameInput.classList.remove('error-border');  
+            shopNameError.classList.remove('visible');  
+            return true;  
+        }  
+    }  
+
+    shopNameInput.addEventListener('input', () => {  
+        validateShopName();  
+        checkUnsavedChanges();  
+    });  
+
+    // Validate WhatsApp Number  
+    function validateWhatsApp() {  
+        const val = whatsappInput.value.trim();  
+        const isValid = /^01[3-9]\d{8}$/.test(val);  
+        if (!isValid) {  
+            whatsappInput.classList.add('error-border');  
+            whatsappError.classList.add('visible');  
+            return false;  
+        } else {  
+            whatsappInput.classList.remove('error-border');  
+            whatsappError.classList.remove('visible');  
+            return true;  
+        }  
+    }  
+
+    whatsappInput.addEventListener('input', () => {  
+        validateWhatsApp();  
+        checkUnsavedChanges();  
+    });  
+
+    // XSS Safe DOM-based Tag Rendering  
+    function renderKeywords() {  
+        keywordsList.innerHTML = '';  
+        const count = currentKeywords.length;  
+        keywordCounterText.innerText = `${toBengaliNum(count)} / ১০টি`;  
+
+        if (count >= 10) {  
+            addKeywordBtn.disabled = true;  
+            keywordInput.disabled = true;  
+            keywordInput.placeholder = "সর্বোচ্চ ১০টি কিওয়ার্ড সম্পন্ন হয়েছে";  
+        } else {  
+            addKeywordBtn.disabled = false;  
+            keywordInput.disabled = false;  
+            keywordInput.placeholder = "নতুন কিওয়ার্ড লিখুন (যেমন: ফ্যাশন)...";  
+        }  
+
+        if (count === 0) {  
+            const emptyHint = document.createElement('div');  
+            emptyHint.className = 'empty-keywords-hint';  
+            emptyHint.innerText = 'কোনো কিওয়ার্ড যোগ করা হয়নি';  
+            keywordsList.appendChild(emptyHint);  
+            return;  
+        }  
+
+        currentKeywords.forEach((kw, index) => {  
+            const chip = document.createElement('div');  
+            chip.className = 'keyword-chip';  
+
+            const textSpan = document.createElement('span');  
+            textSpan.textContent = kw;  
+
+            const removeBtn = document.createElement('span');  
+            removeBtn.className = 'remove-btn';  
+            removeBtn.title = 'মুছে ফেলুন';  
+            removeBtn.innerHTML = '<i class="fas fa-times"></i>';  
+            removeBtn.addEventListener('click', () => removeKeyword(index));  
+
+            chip.appendChild(textSpan);  
+            chip.appendChild(removeBtn);  
+            keywordsList.appendChild(chip);  
+        });  
+    }  
+
+    function addKeyword() {  
+        if (currentKeywords.length >= 10) {  
+            showModal("সীমা অতিক্রম!", "আপনি সর্বোচ্চ ১০টি সার্চ কিওয়ার্ড যোগ করতে পারবেন।", 'error');  
+            return;  
+        }  
+
+        const val = keywordInput.value.trim();  
+        if (!val) return;  
+
+        if (currentKeywords.some(k => k.toLowerCase() === val.toLowerCase())) {  
+            showModal("সতর্কতা!", "এই কিওয়ার্ডটি ইতিমধ্যে যোগ করা হয়েছে।", 'error');  
+            return;  
+        }  
+
+        currentKeywords.push(val);  
+        keywordInput.value = '';  
+        renderKeywords();  
+        checkUnsavedChanges();  
+    }  
+
+    function removeKeyword(index) {  
+        currentKeywords.splice(index, 1);  
+        renderKeywords();  
+        checkUnsavedChanges();  
+    }  
+
+    addKeywordBtn.addEventListener('click', addKeyword);  
+
+    keywordInput.addEventListener('keypress', (e) => {  
+        if (e.key === 'Enter') {  
+            e.preventDefault();  
+            addKeyword();  
+        }  
+    });  
+
+    // Authentication and Initialization State  
+    onAuthStateChanged(auth, async (user) => {  
+        if (user) {  
+            currentUser = user;  
+            uidText.innerText = user.uid.substring(0, 8) + '...';  
+
+            try {  
+                const snap = await getDoc(doc(db, "users", user.uid));  
+                if (snap.exists()) {  
+                    const data = snap.data();  
+                    initialData = {  
+                        shopName: data.shopName || "",  
+                        whatsapp: data.whatsapp || "",  
+                        shopDescription: data.shopDescription || "",  
+                        shopKeywords: Array.isArray(data.shopKeywords) ? [...data.shopKeywords] : []  
+                    };  
+
+                    // Render Shop Logo from Firestore read-only field
+                    renderShopLogo(data.shopLogo || '');
+
+                    displayShopName.innerText = initialData.shopName || 'আমার শপ';  
+                    shopNameInput.value = initialData.shopName;  
+                    whatsappInput.value = initialData.whatsapp;  
+                    shopDescriptionInput.value = initialData.shopDescription;  
+                    currentKeywords = [...initialData.shopKeywords];  
+
+                    validateDescription();  
+                    renderKeywords();  
+                    checkUnsavedChanges();  
+                }  
+            } catch (err) {  
+                showModal("ত্রুটি!", "তথ্য লোড করতে সমস্যা হয়েছে: " + err.message, 'error');  
+            } finally {  
+                skeletonLoader.style.display = 'none';  
+                mainContainer.style.display = 'block';  
             }  
         } else {  
             window.location.href = "login.html";  
         }  
     });  
 
-    window.updateProfile = async () => {  
-        const btn = document.getElementById('upBtn');  
-        const sName = document.getElementById('shopName').value.trim();  
-        const wa = document.getElementById('whatsapp').value.trim();  
-        const sDesc = document.getElementById('shopDescription').value.trim();  
+    // Profile Update Execution  
+    upBtn.addEventListener('click', async () => {  
+        const isNameValid = validateShopName();  
+        const isWaValid = validateWhatsApp();  
+        const isDescValid = validateDescription();  
 
-        if(!sName || !wa) {  
-            showPopup("সবগুলো ঘর পূরণ করুন!", 'error');  
+        if (!isNameValid || !isWaValid || !isDescValid) {  
+            showModal("সতর্কতা!", "অনুগ্রহ করে ফর্মের ভুলগুলো সংশোধন করুন।", 'error');  
             return;  
         }  
-        if(!/^01[3-9]\d{8}$/.test(wa)){  
-            showPopup("সঠিক Whatsapp নাম্বার দিন!", 'error');  
+
+        if (currentKeywords.length > 10) {  
+            showModal("সতর্কতা!", "সর্বোচ্চ ১০টি কিওয়ার্ড রাখা যাবে।", 'error');  
             return;  
         }  
-        if(sDesc.length > 200){
-            showPopup("শপের বর্ণনা সর্বোচ্চ ২০০ অক্ষরের মধ্যে হতে হবে!", 'error');
-            return;
-        }
 
-        btn.disabled = true;  
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> আপডেট হচ্ছে...';  
+        const sName = shopNameInput.value.trim();  
+        const wa = whatsappInput.value.trim();  
+        const sDesc = shopDescriptionInput.value.trim();  
+
+        upBtn.disabled = true;  
+        upBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>আপডেট হচ্ছে...</span>';  
 
         try {  
-            await updateDoc(doc(db, "users", auth.currentUser.uid), {  
+            // Note: shopLogo field is intentionally omitted here to prevent overwrite
+            await updateDoc(doc(db, "users", currentUser.uid), {  
                 shopName: sName,  
-                whatsapp: wa,
-                shopDescription: sDesc,
-                shopKeywords: currentKeywords
+                whatsapp: wa,  
+                shopDescription: sDesc,  
+                shopKeywords: currentKeywords  
             });  
-            showPopup("আপনার প্রোফাইল সফলভাবে আপডেট হয়েছে!", 'success');  
-            document.getElementById('displayShopName').innerText = sName;  
-            btn.innerHTML = 'তথ্য আপডেট করুন';  
-            btn.disabled = false;  
+
+            // Update local initial state  
+            initialData = {  
+                shopName: sName,  
+                whatsapp: wa,  
+                shopDescription: sDesc,  
+                shopKeywords: [...currentKeywords]  
+            };  
+
+            displayShopName.innerText = sName;  
+            checkUnsavedChanges();  
+
+            showModal("সফল হয়েছে!", "আপনার দোকানের প্রোফাইল তথ্য সফলভাবে আপডেট করা হয়েছে।", 'success');  
         } catch (err) {  
-            showPopup("আপডেট করতে সমস্যা হয়েছে: "+err.message, 'error');  
-            btn.disabled = false;  
-            btn.innerHTML = 'তথ্য আপডেট করুন';  
+            showModal("ব্যর্থ হয়েছে!", "আপডেট করার সময় সমস্যা হয়েছে। আবার চেষ্টা করুন।", 'error');  
+            console.error("Firestore Update Error:", err);  
+        } finally {  
+            upBtn.disabled = false;  
+            upBtn.innerHTML = '<i class="fas fa-save"></i> <span>তথ্য আপডেট করুন</span>';  
         }  
-    }  
-</script>
+    });  
+</script>  
 </body>  
 </html>
