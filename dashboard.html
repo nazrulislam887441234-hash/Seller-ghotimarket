@@ -34,14 +34,13 @@
         .hidden { display: none !important; }
 
         /* ===== HEADER ===== */
-        .header { background: var(--card); padding: 20px; padding-top: calc(20px + env(safe-area-inset-top)); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 40; box-shadow: var(--shadow-sm); }
-        .header-profile { display: flex; align-items: center; gap: 12px; min-width: 0; }
+        .header { background: var(--card); padding: 16px 20px; padding-top: calc(16px + env(safe-area-inset-top)); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 40; box-shadow: var(--shadow-sm); gap: 10px; }
+        .header-profile { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
         
-        /* SHOP LOGO / AVATAR STYLES */
         .header-avatar { 
-            width: 48px; 
-            height: 48px; 
-            min-width: 48px; 
+            width: 44px; 
+            height: 44px; 
+            min-width: 44px; 
             border-radius: 50%; 
             overflow: hidden; 
             background: var(--primary-light); 
@@ -53,22 +52,40 @@
             box-shadow: 0 3px 10px rgba(0,0,0,.08); 
             cursor: pointer;
             padding: 0;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.2s ease;
             flex-shrink: 0;
         }
-        .header-avatar:hover { transform: scale(1.05); box-shadow: 0 5px 12px rgba(248, 86, 6, 0.15); }
         .header-avatar:active { transform: scale(0.92); }
         .header-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
         
         .header-info { min-width: 0; flex: 1; }
-        .header-info h2 { font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
-        .header-info p { font-size: 13px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .header-actions { display: flex; gap: 12px; flex-shrink: 0; }
-        .icon-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--bg); display: flex; align-items: center; justify-content: center; color: var(--text-dark); transition: background 0.2s; }
+        .header-info h2 { font-size: 17px; font-weight: 700; color: var(--text-dark); margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .header-info p { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .header-actions { display: flex; gap: 8px; flex-shrink: 0; align-items: center; }
+        .icon-btn { width: 38px; height: 38px; border-radius: 50%; background: var(--bg); display: flex; align-items: center; justify-content: center; color: var(--text-dark); transition: background 0.2s; position: relative; }
         .icon-btn:active { background: #e5e7eb; }
 
-        @media (max-width: 380px) {
-            .header-info h2 { max-width: 150px; }
+        /* NOTIFICATION BADGE & ANIMATION */
+        .notification-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 9px;
+            height: 9px;
+            background: var(--danger);
+            border-radius: 50%;
+            border: 2px solid var(--card);
+            animation: notificationPulse 1.5s infinite;
+        }
+        @keyframes notificationPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50% { transform: scale(1.15); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+        }
+
+        @media (max-width: 360px) {
+            .header { padding: 14px 15px; }
+            .header-info h2 { font-size: 15px; }
         }
 
         /* ===== SHOP LINK BOX ===== */
@@ -99,7 +116,7 @@
         .seller-banner { padding: 0 20px 20px; }
         .banner-wrapper { position: relative; width: 100%; aspect-ratio: 981 / 363; border-radius: var(--radius-xl); overflow: hidden; background: var(--border); box-shadow: var(--shadow-md); }
         .banner-slider { display: flex; height: 100%; transition: transform 0.4s ease-in-out; }
-        .banner-item { flex: 0 0 100%; max-width: 100%; }
+        .banner-item { flex: 0 0 100%; max-width: 100%; position: relative; }
         .banner-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .banner-dots { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }
         .banner-dot { width: 6px; height: 6px; border-radius: 50%; background: #d1d5db; transition: 0.3s; }
@@ -201,16 +218,27 @@
     <header class="header">
         <div class="header-profile">
             <button class="header-avatar" id="shopAvatar" onclick="goToShopBranding()" aria-label="শপের লোগো ও ব্যানার সেট করুন">
-                <!-- SKELETON / PLACEHOLDER BEFORE DATA LOADS -->
                 <div class="skeleton" style="width:100%;height:100%;border-radius:50%;"></div>
             </button>
             <div class="header-info">
-                <h2 id="sName"><div class="skeleton" style="width:120px;height:20px;"></div></h2>
+                <h2 id="sName"><div class="skeleton" style="width:100px;height:18px;"></div></h2>
                 <p id="uidDisplay">লোড হচ্ছে...</p>
             </div>
         </div>
         <div class="header-actions">
-            <button class="icon-btn" onclick="openMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+            <!-- FEATURE: NOTIFICATION BELL -->
+            <button class="icon-btn" onclick="location.href='modification.html'" aria-label="নোটিফিকেশন">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span class="notification-badge"></span>
+            </button>
+            <button class="icon-btn" onclick="openMenu()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                    <circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>
+                </svg>
+            </button>
         </div>
     </header>
 
@@ -284,14 +312,6 @@
         </div>
     </div>
     <div class="product-list" id="productList">
-        <!-- Skeleton Loaders -->
-        <div class="product-card">
-            <div class="skeleton" style="width:72px;height:72px;border-radius:12px;"></div>
-            <div class="product-info" style="display:flex;flex-direction:column;gap:8px;">
-                <div class="skeleton" style="width:80%;height:16px;"></div>
-                <div class="skeleton" style="width:40%;height:16px;"></div>
-            </div>
-        </div>
         <div class="product-card">
             <div class="skeleton" style="width:72px;height:72px;border-radius:12px;"></div>
             <div class="product-info" style="display:flex;flex-direction:column;gap:8px;">
@@ -400,6 +420,11 @@
         <div id="menuSheet" class="bottom-sheet hidden" onclick="event.stopPropagation()">
             <div class="sheet-handle"></div>
             <div class="menu-list">
+                <!-- FEATURE: SUBSCRIPTION OPTION -->
+                <a href="locked.html" class="menu-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                    💳 সাবস্ক্রিপশন
+                </a>
                 <a href="settings.html" class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>সেটিংস</a>
                 <a href="change-password.html" class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>পাসওয়ার্ড পরিবর্তন</a>
                 <a href="termsandcondition.html" class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>শর্তাবলী</a>
@@ -440,21 +465,16 @@
             window.location.href = "upload-banner-logo.html";
         };
 
-        // ===== PLUS ICON SVG CONSTANT =====
-        const PLUS_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="24" height="24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
+        const PLUS_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
 
-        // ===== UPDATE HEADER SHOP AVATAR LOGIC =====
         const updateShopAvatar = (logoUrl) => {
             const avatarBtn = document.getElementById("shopAvatar");
             if (!avatarBtn) return;
-
             if (logoUrl && typeof logoUrl === 'string' && logoUrl.trim() !== "") {
                 const img = document.createElement("img");
                 img.src = logoUrl.trim();
                 img.alt = "Shop Logo";
-                img.onerror = () => {
-                    avatarBtn.innerHTML = PLUS_SVG;
-                };
+                img.onerror = () => { avatarBtn.innerHTML = PLUS_SVG; };
                 avatarBtn.innerHTML = "";
                 avatarBtn.appendChild(img);
             } else {
@@ -468,20 +488,31 @@
             return str.toString().replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
         };
 
+        const isSafeUrl = (url) => {
+            if (!url) return false;
+            try {
+                const parsed = new URL(url, window.location.origin);
+                return ['http:', 'https:'].includes(parsed.protocol);
+            } catch { return false; }
+        };
+
+        window.openBannerLink = (url) => {
+            if (isSafeUrl(url)) {
+                window.open(url, '_blank');
+            }
+        };
+
         // ===== TOAST SYSTEM =====
         window.showToast = (msg, type = 'success') => {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            
             let iconSvg = '';
             if(type === 'success') iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
             else if(type === 'error') iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
             else iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
-
             toast.innerHTML = `<div class="t-icon">${iconSvg}</div><div class="toast-msg">${escapeHTML(msg)}</div>`;
             container.appendChild(toast);
-            
             setTimeout(() => {
                 toast.style.animation = 'toastFadeOut 0.3s forwards';
                 setTimeout(() => toast.remove(), 300);
@@ -512,28 +543,19 @@
         };
         window.openMenu = () => openModal('menuSheet');
 
-        // ===== NOTICE SYSTEM LOGIC =====
         const initNoticeSystem = () => {
             setTimeout(() => {
                 const notice1Seen = localStorage.getItem("ghoti_notice_1_seen");
                 const notice2Seen = localStorage.getItem("ghoti_notice_2_seen");
-
-                if (!notice1Seen) {
-                    openModal('noticeModal1');
-                } else if (!notice2Seen) {
-                    openModal('noticeModal2');
-                }
+                if (!notice1Seen) openModal('noticeModal1');
+                else if (!notice2Seen) openModal('noticeModal2');
             }, 500);
         };
 
         window.closeNotice1 = () => {
             localStorage.setItem("ghoti_notice_1_seen", "true");
             closeModal('noticeModal1');
-            setTimeout(() => {
-                if(!localStorage.getItem("ghoti_notice_2_seen")) {
-                    openModal('noticeModal2');
-                }
-            }, 400);
+            setTimeout(() => { if(!localStorage.getItem("ghoti_notice_2_seen")) openModal('noticeModal2'); }, 400);
         };
 
         window.closeNotice2 = () => {
@@ -546,16 +568,12 @@
             if (user) {
                 currentUser = user;
                 document.getElementById('uidDisplay').textContent = `UID: ${user.uid}`;
-                
                 try {
                     const userSnap = await getDoc(doc(db, "users", user.uid));
                     if (userSnap.exists()) {
                         userData = userSnap.data();
                         document.getElementById("sName").textContent = escapeHTML(userData.shopName || "Shop Name");
-                        
-                        // Render Shop Logo or Plus SVG Fallback
                         updateShopAvatar(userData.shopLogo);
-
                         if (userData.username && userData.username.trim() !== "") {
                             document.getElementById("usernameBox").classList.add("hidden");
                             const linkBox = document.getElementById("shopLinkBox");
@@ -567,27 +585,20 @@
                             document.getElementById("usernameBox").classList.remove("hidden");
                             document.getElementById("shopLinkBox").classList.add("hidden");
                         }
-                    } else {
-                        updateShopAvatar(null);
-                    }
-                    
-                    // Initialize Dashboard Data
+                    } else { updateShopAvatar(null); }
                     initNoticeSystem();
                     loadSellerBanner();
                     loadProducts();
                 } catch (err) {
-                    console.error("User fetch error:", err);
+                    console.error(err);
                     updateShopAvatar(null);
-                    showToast("ইউজার ডাটা লোড করতে সমস্যা হয়েছে", "error");
+                    showToast("ডাটা লোড করতে সমস্যা হয়েছে", "error");
                 }
-            } else {
-                window.location.href = "login.html";
-            }
+            } else { window.location.href = "login.html"; }
         });
 
-        // ===== COPY LOGIC =====
         window.copyShopLink = async () => {
-            const url = document.getElementById("shopLink").href;
+            const url = document.getElementById("shopLink").textContent;
             try {
                 await navigator.clipboard.writeText(url);
                 const btn = document.getElementById("copyShopBtn");
@@ -595,9 +606,7 @@
                 btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg> কপি হয়েছে';
                 showToast("শপের লিংক কপি করা হয়েছে", "success");
                 setTimeout(() => { btn.innerHTML = originalHtml; }, 2000);
-            } catch (e) { 
-                showToast("লিংক কপি করা যায়নি", "error"); 
-            }
+            } catch (e) { showToast("লিংক কপি করা যায়নি", "error"); }
         };
 
         window.copyProductLink = async (id, slug, btn) => {
@@ -608,12 +617,10 @@
                 btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
                 showToast("পণ্য সফলভাবে কপি হয়েছে", "success");
                 setTimeout(() => { btn.innerHTML = originalHtml; }, 2000);
-            } catch (e) { 
-                showToast("লিংক কপি করা যায়নি", "error"); 
-            }
+            } catch (e) { showToast("লিংক কপি করা যায়নি", "error"); }
         };
 
-        // ===== BANNER SYSTEM =====
+        // ===== FEATURE: CLICKABLE BANNER SYSTEM =====
         let banners = [];
         let currentSlide = 0;
         let slideTimer = null;
@@ -624,8 +631,6 @@
                 banners = [];
                 snap.forEach(doc => banners.push(doc.data()));
                 renderBanner();
-            }, (error) => {
-                console.error("Banner Error:", error);
             });
         };
 
@@ -633,28 +638,24 @@
             const container = document.getElementById('bannerContainer');
             const slider = document.getElementById('bannerSlider');
             const dots = document.getElementById('bannerDots');
-            
             clearInterval(slideTimer);
-            
-            if (banners.length === 0) {
-                container.classList.add('hidden');
-                return;
-            }
+            if (banners.length === 0) { container.classList.add('hidden'); return; }
             container.classList.remove('hidden');
             
-            slider.innerHTML = banners.map(b => `
-                <div class="banner-item">
+            slider.innerHTML = banners.map(b => {
+                const bLink = b.link || b.url || b.clickUrl || "";
+                const isClickable = isSafeUrl(bLink);
+                return `
+                <div class="banner-item" ${isClickable ? `onclick="openBannerLink('${escapeHTML(bLink)}')" style="cursor:pointer;"` : ''}>
                     <img src="${escapeHTML(b.image || '')}" alt="Banner" onerror="this.src='https://via.placeholder.com/981x363/f5f5f5/999?text=No+Image'">
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
             
             if (banners.length > 1) {
                 dots.innerHTML = banners.map((_, i) => `<div class="banner-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`).join('');
                 startAutoSlide();
                 setupBannerTouch();
-            } else {
-                dots.innerHTML = '';
-            }
+            } else { dots.innerHTML = ''; }
             currentSlide = 0;
             updateSlider();
         };
@@ -664,21 +665,18 @@
             slideTimer = setInterval(() => {
                 currentSlide = (currentSlide + 1) % banners.length;
                 updateSlider();
-            }, 3000);
+            }, 4000);
         };
 
         const updateSlider = () => {
-            document.getElementById('bannerSlider').style.transform = `translateX(-${currentSlide * 100}%)`;
+            const slider = document.getElementById('bannerSlider');
+            if (slider) slider.style.transform = `translateX(-${currentSlide * 100}%)`;
             document.querySelectorAll('.banner-dot').forEach((dot, index) => {
                 dot.classList.toggle('active', index === currentSlide);
             });
         };
 
-        window.goToSlide = (i) => {
-            currentSlide = i;
-            updateSlider();
-            startAutoSlide();
-        };
+        window.goToSlide = (i) => { currentSlide = i; updateSlider(); startAutoSlide(); };
 
         const setupBannerTouch = () => {
             const wrapper = document.querySelector('.banner-wrapper');
@@ -703,45 +701,31 @@
                     allProducts.push({id: d.id, ...data});
                     if(data.status !== 'inactive' && data.active !== false) activeCount++;
                 });
-                
                 document.getElementById('totalProducts').textContent = allProducts.length;
                 document.getElementById('activeProducts').textContent = activeCount;
-                
                 renderProductList(allProducts);
-            }, error => {
-                console.error("Products error:", error);
-                showToast("পণ্য লোড করতে সমস্যা হয়েছে", "error");
             });
         };
 
         const renderProductList = (products) => {
             const listDiv = document.getElementById('productList');
             if (products.length === 0) {
-                listDiv.innerHTML = `
-                    <div class="empty-state">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-                        <p>এখনো কোনো পণ্য যোগ করা হয়নি।</p>
-                        <button onclick="checkLock()" style="margin-top:16px; background:var(--primary); color:white; padding:10px 20px; border-radius:8px; font-weight:600;">প্রথম পণ্য যোগ করুন</button>
-                    </div>`;
+                listDiv.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg><p>এখনো কোনো পণ্য যোগ করা হয়নি।</p></div>`;
                 return;
             }
-
             listDiv.innerHTML = products.map(p => {
                 const imgUrl = (p.images && p.images[0]) ? p.images[0] : 'https://via.placeholder.com/150';
                 const isActive = p.status !== 'inactive' && p.active !== false;
-                const statusHtml = isActive ? `<span class="product-status">Active</span>` : `<span class="product-status inactive">Inactive</span>`;
-                
-                return `
-                <div class="product-card">
+                return `<div class="product-card">
                     <img src="${escapeHTML(imgUrl)}" alt="Product" class="product-img">
                     <div class="product-info">
-                        <div class="product-title">${escapeHTML(p.name)} ${statusHtml}</div>
+                        <div class="product-title">${escapeHTML(p.name)} ${isActive ? `<span class="product-status">Active</span>` : `<span class="product-status inactive">Inactive</span>`}</div>
                         <div class="product-price">৳ ${escapeHTML(p.price)}</div>
                     </div>
                     <div class="product-actions">
-                        <button class="p-btn btn-edit" onclick="editProduct('${p.id}')" aria-label="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-                        <button class="p-btn btn-copy" onclick="copyProductLink('${p.id}', '${p.slug || ''}', this)" aria-label="Copy Link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-                        <button class="p-btn btn-del" onclick="triggerDelete('${p.id}')" aria-label="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
+                        <button class="p-btn btn-edit" onclick="editProduct('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                        <button class="p-btn btn-copy" onclick="copyProductLink('${p.id}', '${p.slug || ''}', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+                        <button class="p-btn btn-del" onclick="triggerDelete('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
                     </div>
                 </div>`;
             }).join('');
@@ -751,60 +735,39 @@
             const term = document.getElementById('searchInput').value.toLowerCase();
             const filtered = allProducts.filter(p => {
                 const nameMatch = p.name && p.name.toLowerCase().includes(term);
-                let keywordMatch = false;
+                let kwMatch = false;
                 if(p.keywords) {
-                    const kwString = Array.isArray(p.keywords) ? p.keywords.join(" ") : p.keywords;
-                    keywordMatch = kwString.toLowerCase().includes(term);
+                    const kws = Array.isArray(p.keywords) ? p.keywords.join(" ") : p.keywords;
+                    kwMatch = kws.toLowerCase().includes(term);
                 }
-                return nameMatch || keywordMatch;
+                return nameMatch || kwMatch;
             });
             renderProductList(filtered);
         };
 
         window.editProduct = (id) => { window.location.href = `edit.html?id=${id}`; };
-
-        window.triggerDelete = (id) => {
-            productDeleteId = id;
-            openModal('deleteModal');
-        };
-
+        window.triggerDelete = (id) => { productDeleteId = id; openModal('deleteModal'); };
         window.confirmDelete = async () => {
             if(!productDeleteId) return;
             try {
                 await deleteDoc(doc(db, "products", productDeleteId));
-                showToast("পণ্য সফলভাবে মুছে ফেলা হয়েছে।", "success");
+                showToast("পণ্য মুছে ফেলা হয়েছে", "success");
                 closeModal('deleteModal');
-            } catch (err) {
-                console.error(err);
-                showToast("পণ্য মুছে ফেলতে সমস্যা হয়েছে।", "error");
-            }
+            } catch (err) { showToast("মুছে ফেলা সম্ভব হয়নি", "error"); }
         };
 
-        // ===== FAB UPLOAD / LOCK SYSTEM =====
         window.checkLock = () => {
             if(!userData) return;
             if(!userData.profileUnlockedUntil || userData.profileUnlockedUntil < Date.now()) {
                 window.location.href = "locked.html";
-            } else {
-                window.location.href = "upload.html";
-            }
+            } else { window.location.href = "upload.html"; }
         };
 
-        // ===== LOGOUT SYSTEM =====
-        window.triggerLogout = () => {
-            closeModal('menuSheet');
-            setTimeout(() => openModal('logoutModal'), 300);
-        };
-
+        window.triggerLogout = () => { closeModal('menuSheet'); setTimeout(() => openModal('logoutModal'), 300); };
         window.confirmLogout = async () => {
-            try {
-                await signOut(auth);
-                window.location.href = "login.html";
-            } catch (error) {
-                showToast("লগআউট করতে সমস্যা হয়েছে", "error");
-            }
+            try { await signOut(auth); window.location.href = "login.html"; } 
+            catch (error) { showToast("লগআউট করা যায়নি", "error"); }
         };
-
     </script>
 </body>
 </html>
