@@ -476,6 +476,79 @@
             user-select: none;  
         }  
 
+        /* NEW ADDITION: UID Settings Card Styles */
+        .uid-settings-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            transition: var(--transition);
+        }
+
+        .uid-info-box {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .uid-title-text {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .uid-status-badge {
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .uid-status-badge.added {
+            color: var(--success);
+        }
+
+        .uid-status-badge.not-added {
+            color: var(--danger);
+        }
+
+        .btn-add-uid-trigger {
+            background: var(--dark);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            font-family: 'Hind Siliguri', sans-serif;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-add-uid-trigger:hover {
+            background: #1e293b;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-add-uid-trigger:active {
+            transform: scale(0.98);
+        }
+
         /* Buttons */  
         .btn-update {  
             background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);  
@@ -637,6 +710,8 @@
             .profile-header { padding: 28px 16px; }  
             .keyword-input-wrapper { flex-direction: row; }  
             .keyword-add-btn { padding: 0 16px; }  
+            .uid-settings-card { flex-direction: column; align-items: flex-start; }
+            .btn-add-uid-trigger { width: 100%; justify-content: center; }
         }  
     </style>  
 </head>  
@@ -684,6 +759,21 @@
     </div>  
 
     <div class="form-body">  
+        <!-- NEW ADDITION: Add UID Settings Option -->
+        <div class="uid-settings-card">
+            <div class="uid-info-box">
+                <span class="uid-title-text">
+                    <i class="fas fa-fingerprint" style="color: var(--primary);"></i> সিকিউরিটি ও আইডেন্টিটি
+                </span>
+                <span id="uidStatusDisplay" class="uid-status-badge not-added">
+                    <i class="fas fa-times-circle"></i> UID যুক্ত করা হয়নি
+                </span>
+            </div>
+            <button type="button" id="openUidModalBtn" class="btn-add-uid-trigger">
+                <i class="fas fa-fingerprint"></i> Add UID
+            </button>
+        </div>
+
         <!-- Shop Name Input -->  
         <div class="input-group">  
             <label for="shopName">  
@@ -772,6 +862,21 @@
     </div>  
 </div>  
 
+<!-- NEW ADDITION: Confirmation Modal for Add UID -->
+<div id="confirmUidModal" class="modal-overlay">  
+    <div class="modal-card">  
+        <div class="modal-icon-box" style="background: var(--primary-light); color: var(--primary);">  
+            <i class="fas fa-fingerprint"></i>  
+        </div>  
+        <h3>UID সংযুক্তিকরণ</h3>  
+        <p>আপনার Firebase UID আপনার প্রোফাইলে সংযুক্ত করা হবে।</p>  
+        <div style="display: flex; gap: 10px;">
+            <button id="cancelAddUidBtn" class="modal-btn" style="background: var(--bg); color: var(--text-main); border: 1px solid var(--border);">বাতিল</button>
+            <button id="confirmAddUidBtn" class="modal-btn" style="background: var(--primary); color: white;">নিশ্চিত করুন</button>
+        </div>
+    </div>  
+</div>
+
 <script type="module">  
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";  
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";  
@@ -795,6 +900,7 @@
         shopKeywords: []  
     };  
     let currentUser = null;  
+    let storedUidInDoc = null; // Track UID field in Firestore
 
     // Elements  
     const skeletonLoader = document.getElementById('skeletonLoader');  
@@ -812,6 +918,13 @@
     const keywordCounterText = document.getElementById('keywordCounterText');  
     const upBtn = document.getElementById('upBtn');  
     const unsavedIndicator = document.getElementById('unsavedIndicator');  
+
+    // NEW ELEMENTS FOR ADD UID FEATURE
+    const uidStatusDisplay = document.getElementById('uidStatusDisplay');
+    const openUidModalBtn = document.getElementById('openUidModalBtn');
+    const confirmUidModal = document.getElementById('confirmUidModal');
+    const cancelAddUidBtn = document.getElementById('cancelAddUidBtn');
+    const confirmAddUidBtn = document.getElementById('confirmAddUidBtn');
 
     // Error Message Elements  
     const shopNameError = document.getElementById('shopNameError');  
@@ -874,6 +987,17 @@
             customModal.style.display = 'none';  
         }  
     });  
+
+    // NEW ADDITION: Render UID Status Display
+    function renderUidStatus(uidVal) {
+        if (uidVal && currentUser && uidVal === currentUser.uid) {
+            uidStatusDisplay.className = 'uid-status-badge added';
+            uidStatusDisplay.innerHTML = '<i class="fas fa-check-circle"></i> UID যুক্ত করা হয়েছে ✓';
+        } else {
+            uidStatusDisplay.className = 'uid-status-badge not-added';
+            uidStatusDisplay.innerHTML = '<i class="fas fa-times-circle"></i> UID যুক্ত করা হয়নি';
+        }
+    }
 
     // Check Unsaved Changes  
     function checkUnsavedChanges() {  
@@ -1053,6 +1177,10 @@
                         shopKeywords: Array.isArray(data.shopKeywords) ? [...data.shopKeywords] : []  
                     };  
 
+                    // Store existing UID field status
+                    storedUidInDoc = data.uid || null;
+                    renderUidStatus(storedUidInDoc);
+
                     // Render Shop Logo from Firestore read-only field
                     renderShopLogo(data.shopLogo || '');
 
@@ -1076,6 +1204,65 @@
             window.location.href = "login.html";  
         }  
     });  
+
+    // NEW ADDITION: ADD UID MODAL LOGIC
+    openUidModalBtn.addEventListener('click', () => {
+        if (!currentUser) return;
+
+        // Requirement 8: If already saved with same UID
+        if (storedUidInDoc && storedUidInDoc === currentUser.uid) {
+            showModal("তথ্য", "আপনার UID ইতিমধ্যে যুক্ত করা আছে।", 'success');
+            return;
+        }
+
+        // Open Confirmation Dialog Modal
+        confirmUidModal.style.display = 'flex';
+    });
+
+    cancelAddUidBtn.addEventListener('click', () => {
+        confirmUidModal.style.display = 'none';
+    });
+
+    confirmAddUidBtn.addEventListener('click', async () => {
+        confirmUidModal.style.display = 'none';
+
+        if (!currentUser) {
+            window.location.href = "login.html";
+            return;
+        }
+
+        openUidModalBtn.disabled = true;
+        openUidModalBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> প্রসেসিং...';
+
+        try {
+            // Safety check: Fetch latest document before update
+            const userRef = doc(db, "users", currentUser.uid);
+            const userSnap = await getDoc(userRef);
+
+            if (userSnap.exists() && userSnap.data().uid === currentUser.uid) {
+                storedUidInDoc = currentUser.uid;
+                renderUidStatus(storedUidInDoc);
+                showModal("তথ্য", "আপনার UID ইতিমধ্যে যুক্ত করা আছে।", 'success');
+                return;
+            }
+
+            // Requirement 10 & 11: Safely update only the 'uid' field using currentUser.uid
+            await updateDoc(userRef, {
+                uid: currentUser.uid
+            });
+
+            storedUidInDoc = currentUser.uid;
+            renderUidStatus(storedUidInDoc);
+
+            showModal("সফল হয়েছে!", "আপনার UID সফলভাবে সংযুক্ত করা হয়েছে।", 'success');
+        } catch (err) {
+            console.error("UID Save Error:", err);
+            showModal("ব্যর্থ হয়েছে!", "UID সংযুক্ত করতে সমস্যা হয়েছে: " + err.message, 'error');
+        } finally {
+            openUidModalBtn.disabled = false;
+            openUidModalBtn.innerHTML = '<i class="fas fa-fingerprint"></i> Add UID';
+        }
+    });
 
     // Profile Update Execution  
     upBtn.addEventListener('click', async () => {  
