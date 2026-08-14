@@ -4,1880 +4,227 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Seller Subscription</title>
-
-  <!-- Google Font: Hind Siliguri -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome 6.5.1 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
   <style>
-    /* ==========================================================================
-       GHOTI MARKET DESIGN SYSTEM (Pure CSS - Mobile First)
-       ========================================================================== */
-    :root {
-      --primary: #ff6a00;
-      --primary-dark: #e05d00;
-      --primary-light: #fff0eb;
-      --secondary: #ff8533;
-      --bg: #fff7f1;
-      --card-bg: #ffffff;
-      --text-main: #1f2937;
-      --text-muted: #6b7280;
-      --border: #fee2d5;
-      --border-accent: #ffd1b8;
-      --success: #10b981;
-      --success-light: #ecfdf5;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --shadow-sm: 0 2px 8px rgba(255, 106, 0, 0.05);
-      --shadow-md: 0 8px 20px rgba(255, 106, 0, 0.08);
-      --shadow-lg: 0 15px 35px rgba(255, 106, 0, 0.12);
-      --radius-sm: 10px;
-      --radius-md: 18px;
-      --radius-lg: 24px;
-      --radius-full: 9999px;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      font-family: 'Hind Siliguri', sans-serif;
-      background-color: var(--bg);
-      color: var(--text-main);
-      min-height: 100vh;
-      line-height: 1.5;
-      padding-bottom: 50px;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    /* Ambient Background Elements */
-    .bg-blob {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(80px);
-      z-index: -1;
-      opacity: 0.5;
-      pointer-events: none;
-    }
-    .bg-blob-1 {
-      top: -100px;
-      right: -100px;
-      width: 350px;
-      height: 350px;
-      background: rgba(255, 106, 0, 0.15);
-    }
-    .bg-blob-2 {
-      bottom: 10%;
-      left: -100px;
-      width: 300px;
-      height: 300px;
-      background: rgba(255, 133, 51, 0.12);
-    }
-
-    /* Initial Page Auth Loader */
-    #pageAuthLoader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: var(--bg);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      gap: 16px;
-      transition: opacity 0.3s ease;
-    }
-    .loader-spinner {
-      width: 44px;
-      height: 44px;
-      border: 4px solid var(--border);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* --------------------------------------------------------------------------
-       HEADER NAVIGATION
-       -------------------------------------------------------------------------- */
-    .app-header {
-      position: sticky;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      z-index: 100;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .header-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .brand-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--primary-dark);
-    }
-
-    .brand-logo i {
-      font-size: 24px;
-      color: var(--primary);
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .nav-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: var(--radius-full);
-      background: var(--primary-light);
-      color: var(--primary);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-
-    .nav-btn:hover {
-      background: var(--primary);
-      color: #ffffff;
-    }
-
-    .nav-btn:active {
-      transform: scale(0.92);
-    }
-
-    /* --------------------------------------------------------------------------
-       MAIN CONTAINER
-       -------------------------------------------------------------------------- */
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 24px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    /* --------------------------------------------------------------------------
-       WELCOME & STATUS CARD
-       -------------------------------------------------------------------------- */
-    .welcome-card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-md);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .welcome-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 6px;
-      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-    }
-
-    .user-profile-flex {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .avatar-wrapper {
-      width: 70px;
-      height: 70px;
-      border-radius: var(--radius-full);
-      border: 3px solid var(--primary);
-      background: var(--primary-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      flex-shrink: 0;
-    }
-
-    .avatar-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .avatar-placeholder {
-      font-size: 32px;
-      color: var(--primary);
-    }
-
-    .user-details h2 {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--text-main);
-      line-height: 1.2;
-    }
-
-    .user-details .username-tag {
-      font-size: 14px;
-      color: var(--primary);
-      font-weight: 600;
-      margin-top: 2px;
-    }
-
-    .user-details p {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    /* Status Pill Box */
-    .sub-status-box {
-      margin-top: 20px;
-      padding: 18px;
-      border-radius: var(--radius-md);
-      background: var(--bg);
-      border: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .status-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .status-badge {
-      padding: 6px 14px;
-      border-radius: var(--radius-full);
-      font-size: 13px;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .status-badge.active {
-      background: var(--success-light);
-      color: var(--success);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-
-    .status-badge.expired {
-      background: #fef2f2;
-      color: var(--danger);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-
-    .status-badge.none {
-      background: #fffbe6;
-      color: var(--warning);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-    }
-
-    .status-info-text {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-main);
-    }
-
-    /* Live Countdown Grid UI */
-    .countdown-timer-grid {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 8px 0;
-      flex-wrap: wrap;
-    }
-
-    .countdown-box {
-      background: #ffffff;
-      border: 1px solid var(--border-accent);
-      border-radius: var(--radius-sm);
-      padding: 8px 14px;
-      min-width: 65px;
-      text-align: center;
-      box-shadow: var(--shadow-sm);
-      flex: 1;
-      max-width: 90px;
-    }
-
-    .countdown-num {
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--primary-dark);
-      line-height: 1;
-    }
-
-    .countdown-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 600;
-      margin-top: 4px;
-    }
-
-    .expiry-date-text {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 4px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 500;
-    }
-
-    .expiry-date-text i {
-      color: var(--primary);
-    }
-
-    .btn-scroll-plans {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      color: #ffffff;
-      border: none;
-      padding: 9px 18px;
-      border-radius: var(--radius-md);
-      font-size: 13px;
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 6px;
-      box-shadow: 0 2px 8px rgba(255, 106, 0, 0.25);
-      transition: transform 0.2s ease;
-      width: fit-content;
-    }
-
-    .btn-scroll-plans:active {
-      transform: scale(0.96);
-    }
-
-    /* --------------------------------------------------------------------------
-       SECTION HEADERS
-       -------------------------------------------------------------------------- */
-    .section-header {
-      text-align: center;
-      margin: 12px 0 8px 0;
-    }
-
-    .section-title {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .section-subtitle {
-      font-size: 14px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    /* --------------------------------------------------------------------------
-       PLANS GRID
-       -------------------------------------------------------------------------- */
-    .plans-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-
-    @media (min-width: 640px) {
-      .plans-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .plans-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    .plan-card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      padding: 28px 24px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      overflow: hidden;
-    }
-
-    .plan-card:hover {
-      transform: translateY(-6px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--primary);
-    }
-
-    .plan-card.is-popular {
-      border: 2px solid var(--primary);
-      box-shadow: var(--shadow-lg);
-      background: linear-gradient(180deg, #ffffff 0%, #fffbf8 100%);
-    }
-
-    .popular-ribbon {
-      position: absolute;
-      top: 14px;
-      right: -32px;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      color: #fff;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 4px 34px;
-      transform: rotate(45deg);
-      box-shadow: var(--shadow-sm);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    .best-value-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      background: var(--primary-light);
-      color: var(--primary);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: var(--radius-full);
-      width: fit-content;
-      margin-bottom: 12px;
-      border: 1px solid var(--border-accent);
-    }
-
-    .plan-index-badge {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--primary);
-      background: var(--primary-light);
-      width: 28px;
-      height: 28px;
-      border-radius: var(--radius-full);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-    }
-
-    .plan-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 8px;
-    }
-
-    .plan-price-wrapper {
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-      margin-bottom: 4px;
-    }
-
-    .plan-price {
-      font-size: 34px;
-      font-weight: 800;
-      color: var(--primary-dark);
-      line-height: 1;
-    }
-
-    .plan-duration-tag {
-      font-size: 14px;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .monthly-breakdown {
-      font-size: 12px;
-      color: var(--success);
-      font-weight: 600;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .plan-divider {
-      height: 1px;
-      background: var(--border);
-      margin: 12px 0 16px 0;
-    }
-
-    .plan-features-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 24px;
-      flex-grow: 1;
-    }
-
-    .plan-features-list li {
-      font-size: 14px;
-      color: var(--text-main);
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-    }
-
-    .plan-features-list li i {
-      color: var(--success);
-      font-size: 14px;
-      margin-top: 3px;
-    }
-
-    .plan-desc-text {
-      font-size: 13px;
-      color: var(--text-muted);
-      background: var(--bg);
-      padding: 10px 12px;
-      border-radius: var(--radius-sm);
-      margin-bottom: 16px;
-      line-height: 1.4;
-    }
-
-    .buy-plan-btn {
-      width: 100%;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      color: #ffffff;
-      border: none;
-      padding: 14px 20px;
-      border-radius: var(--radius-md);
-      font-size: 16px;
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 14px rgba(255, 106, 0, 0.3);
-      transition: all 0.2s ease;
-    }
-
-    .buy-plan-btn:hover {
-      box-shadow: 0 6px 18px rgba(255, 106, 0, 0.4);
-    }
-
-    .buy-plan-btn:active {
-      transform: scale(0.98);
-      opacity: 0.9;
-    }
-
-    /* --------------------------------------------------------------------------
-       VALUE SECTION
-       -------------------------------------------------------------------------- */
-    .value-card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .value-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    @media (min-width: 640px) {
-      .value-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .value-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 12px;
-      border-radius: var(--radius-sm);
-      background: var(--bg);
-    }
-
-    .value-item i {
-      font-size: 18px;
-      color: var(--primary);
-      margin-top: 2px;
-    }
-
-    .value-item-text h4 {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .value-item-text p {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    /* --------------------------------------------------------------------------
-       ACCOUNT SUMMARY CARD
-       -------------------------------------------------------------------------- */
-    .account-summary-card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .account-info-group {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .account-info-group i {
-      font-size: 24px;
-      color: var(--primary);
-    }
-
-    .account-text-details {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .account-text-details span:first-child {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .account-text-details span:last-child {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-main);
-      word-break: break-all;
-    }
-
-    /* --------------------------------------------------------------------------
-       FAQ ACCORDION
-       -------------------------------------------------------------------------- */
-    .faq-card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .accordion {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .accordion-item {
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      transition: all 0.2s ease;
-    }
-
-    .accordion-header {
-      width: 100%;
-      padding: 16px;
-      background: var(--card-bg);
-      border: none;
-      text-align: left;
-      font-size: 15px;
-      font-weight: 700;
-      font-family: inherit;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-    }
-
-    .accordion-header i {
-      color: var(--primary);
-      transition: transform 0.3s ease;
-    }
-
-    .accordion-item.open .accordion-header i {
-      transform: rotate(180deg);
-    }
-
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease-in-out;
-      background: var(--bg);
-    }
-
-    .accordion-item.open .accordion-content {
-      max-height: 300px;
-    }
-
-    .accordion-body {
-      padding: 16px;
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      border-top: 1px solid var(--border);
-    }
-
-    /* --------------------------------------------------------------------------
-       SUPPORT & FOOTER
-       -------------------------------------------------------------------------- */
-    .support-card {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: #ffffff;
-      border-radius: var(--radius-lg);
-      padding: 28px 20px;
-      text-align: center;
-      box-shadow: var(--shadow-lg);
-    }
-
-    .support-card h3 {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .support-card p {
-      font-size: 14px;
-      opacity: 0.9;
-      margin-bottom: 20px;
-    }
-
-    .support-btns {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .btn-support-wa {
-      background: #25d366;
-      color: #fff;
-      padding: 12px 20px;
-      border-radius: var(--radius-md);
-      font-weight: 700;
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-      transition: transform 0.2s ease;
-    }
-
-    .btn-support-wa:active {
-      transform: scale(0.96);
-    }
-
-    .btn-support-contact {
-      background: rgba(255, 255, 255, 0.2);
-      color: #fff;
-      padding: 12px 20px;
-      border-radius: var(--radius-md);
-      font-weight: 700;
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      backdrop-filter: blur(4px);
-      transition: transform 0.2s ease;
-    }
-
-    .btn-support-contact:active {
-      transform: scale(0.96);
-    }
-
-    /* --------------------------------------------------------------------------
-       SKELETON & STATE CARDS
-       -------------------------------------------------------------------------- */
-    .skeleton-box {
-      background: linear-gradient(90deg, #fee2d5 25%, #fff0eb 50%, #fee2d5 75%);
-      background-size: 200% 100%;
-      animation: skeleton-shimmer 1.5s infinite;
-      border-radius: var(--radius-md);
-    }
-
-    @keyframes skeleton-shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    .skeleton-card {
-      height: 340px;
-      border-radius: var(--radius-lg);
-    }
-
-    .state-card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      padding: 32px 20px;
-      text-align: center;
-      border: 1px dashed var(--border-accent);
-    }
-
-    .state-card i {
-      font-size: 40px;
-      color: var(--primary);
-      margin-bottom: 12px;
-    }
-
-    .state-card h4 {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .state-card p {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 4px;
-      margin-bottom: 16px;
-    }
-
-    /* --------------------------------------------------------------------------
-       CUSTOM MODAL
-       -------------------------------------------------------------------------- */
-    .modal-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
-
-    .modal-backdrop.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .modal-box {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      max-width: 400px;
-      width: 100%;
-      padding: 24px;
-      box-shadow: var(--shadow-lg);
-      transform: scale(0.92);
-      transition: transform 0.3s ease;
-      text-align: center;
-    }
-
-    .modal-backdrop.active .modal-box {
-      transform: scale(1);
-    }
-
-    .modal-icon-header {
-      width: 60px;
-      height: 60px;
-      border-radius: var(--radius-full);
-      background: var(--primary-light);
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      margin: 0 auto 16px auto;
-    }
-
-    .modal-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 6px;
-    }
-
-    .modal-subtitle {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-    }
-
-    .modal-details-box {
-      background: var(--bg);
-      padding: 12px 16px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      margin-bottom: 20px;
-      text-align: left;
-    }
-
-    .modal-details-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      margin-bottom: 6px;
-    }
-
-    .modal-details-row:last-child {
-      margin-bottom: 0;
-    }
-
-    .modal-details-row span:first-child {
-      color: var(--text-muted);
-    }
-
-    .modal-details-row span:last-child {
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 12px;
-    }
-
-    .btn-modal-cancel {
-      flex: 1;
-      background: var(--bg);
-      color: var(--text-main);
-      border: 1px solid var(--border);
-      padding: 12px;
-      border-radius: var(--radius-md);
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    .btn-modal-cancel:hover {
-      background: var(--border);
-    }
-
-    .btn-modal-confirm {
-      flex: 1;
-      background: #25d366;
-      color: #fff;
-      border: none;
-      padding: 12px;
-      border-radius: var(--radius-md);
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: opacity 0.2s ease;
-    }
-
-    .btn-modal-confirm:hover {
-      opacity: 0.9;
-    }
-
-    /* Toast Notification Container */
-    #toast-container {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 9999;
-      width: 90%;
-      max-width: 360px;
-      pointer-events: none;
-    }
-
-    .toast {
-      background: #ffffff;
-      border-radius: var(--radius-md);
-      padding: 12px 16px;
-      box-shadow: var(--shadow-lg);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-left: 4px solid var(--primary);
-      margin-bottom: 8px;
-      animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-      pointer-events: auto;
-    }
-
-    @keyframes toastIn {
-      from { opacity: 0; transform: translate(-50%, -20px); }
-      to { opacity: 1; transform: translate(0, 0); }
-    }
-
-    .toast-icon { font-size: 16px; color: var(--primary); }
-    .toast-msg { font-size: 13px; font-weight: 600; color: var(--text-main); }
+    /* আপনার আগের সব CSS এখানে থাকবে - আমি ছোট করলাম */
+    :root{--primary:#ff6a00;--primary-dark:#e05d00;--primary-light:#fff0eb;--secondary:#ff8533;--bg:#fff7f1;--card-bg:#ffffff;--text-main:#1f2937;--text-muted:#6b7280;--border:#fee2d5;--border-accent:#ffd1b8;--success:#10b981;--success-light:#ecfdf5;--warning:#f59e0b;--danger:#ef4444;--shadow-sm:0 2px 8px rgba(255, 106, 0, 0.05);--shadow-md:0 8px 20px rgba(255, 106, 0, 0.08);--shadow-lg:0 15px 35px rgba(255, 106, 0, 0.12);--radius-sm:10px;--radius-md:18px;--radius-lg:24px;--radius-full:9999px;}
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+    body{font-family:'Hind Siliguri',sans-serif;background-color:var(--bg);color:var(--text-main);min-height:100vh;line-height:1.5;padding-bottom:50px;}
+   .bg-blob{position:fixed;border-radius:50%;filter:blur(80px);z-index:-1;opacity:0.5;pointer-events:none;}
+   .bg-blob-1{top:-100px;right:-100px;width:350px;height:350px;background:rgba(255, 106, 0, 0.15);}
+   .bg-blob-2{bottom:10%;left:-100px;width:300px;height:300px;background:rgba(255, 133, 51, 0.12);}
+    #pageAuthLoader{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2000;gap:16px;transition:opacity 0.3s ease;}
+   .loader-spinner{width:44px;height:44px;border:4px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 0.8s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+   .app-header{position:sticky;top:0;left:0;right:0;background:rgba(255, 255, 255, 0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:100;box-shadow:var(--shadow-sm);}
+   .header-inner{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;}
+   .brand-logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;color:var(--primary-dark);}
+   .brand-logo i{font-size:24px;color:var(--primary);}
+   .nav-actions{display:flex;align-items:center;gap:8px;}
+   .nav-btn{width:40px;height:40px;border-radius:var(--radius-full);background:var(--primary-light);color:var(--primary);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s ease;cursor:pointer;}
+   .container{max-width:1100px;margin:0 auto;padding:24px 16px;display:flex;flex-direction:column;gap:24px;}
+   .welcome-card{background:var(--card-bg);border-radius:var(--radius-lg);padding:24px;border:1px solid var(--border);box-shadow:var(--shadow-md);position:relative;overflow:hidden;}
+   .welcome-card::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);}
+   .user-profile-flex{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+   .avatar-wrapper{width:70px;height:70px;border-radius:var(--radius-full);border:3px solid var(--primary);background:var(--primary-light);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:var(--shadow-sm);flex-shrink:0;}
+   .avatar-wrapper img{width:100%;height:100%;object-fit:cover;}
+   .avatar-placeholder{font-size:32px;color:var(--primary);}
+   .user-details h2{font-size:22px;font-weight:700;color:var(--text-main);line-height:1.2;}
+   .user-details.username-tag{font-size:14px;color:var(--primary);font-weight:600;margin-top:2px;}
+   .sub-status-box{margin-top:20px;padding:18px;border-radius:var(--radius-md);background:var(--bg);border:1px solid var(--border);display:flex;flex-direction:column;gap:12px;}
+   .status-badge{padding:6px 14px;border-radius:var(--radius-full);font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;}
+   .status-badge.active{background:var(--success-light);color:var(--success);border:1px solid rgba(16, 185, 129, 0.3);}
+   .status-badge.expired{background:#fef2f2;color:var(--danger);border:1px solid rgba(239, 68, 68, 0.3);}
+   .status-badge.none{background:#fffbe6;color:var(--warning);border:1px solid rgba(245, 158, 11, 0.3);}
+   .countdown-timer-grid{display:flex;align-items:center;gap:10px;margin:8px 0;flex-wrap:wrap;}
+   .countdown-box{background:#ffffff;border:1px solid var(--border-accent);border-radius:var(--radius-sm);padding:8px 14px;min-width:65px;text-align:center;box-shadow:var(--shadow-sm);flex:1;max-width:90px;}
+   .countdown-num{font-size:20px;font-weight:800;color:var(--primary-dark);line-height:1;}
+   .countdown-label{font-size:11px;color:var(--text-muted);font-weight:600;margin-top:4px;}
+   .section-header{text-align:center;margin:12px 0 8px 0;}
+   .section-title{font-size:24px;font-weight:700;color:var(--text-main);}
+   .plans-grid{display:grid;grid-template-columns:1fr;gap:20px;}
+    @media(min-width:640px){.plans-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(min-width:1024px){.plans-grid{grid-template-columns:repeat(3,1fr);}}
+   .plan-card{background:var(--card-bg);border-radius:var(--radius-lg);padding:28px 24px;border:1px solid var(--border);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;position:relative;transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);overflow:hidden;}
+   .plan-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--primary);}
+   .plan-card.is-popular{border:2px solid var(--primary);box-shadow:var(--shadow-lg);background:linear-gradient(180deg, #ffffff 0%, #fffbf8 100%);}
+   .popular-ribbon{position:absolute;top:14px;right:-32px;background:linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);color:#fff;font-size:11px;font-weight:700;padding:4px 34px;transform:rotate(45deg);box-shadow:var(--shadow-sm);letter-spacing:0.5px;text-transform:uppercase;}
+   .plan-price{font-size:34px;font-weight:800;color:var(--primary-dark);line-height:1;}
+   .buy-plan-btn{width:100%;background:linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);color:#ffffff;border:none;padding:14px 20px;border-radius:var(--radius-md);font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(255, 106, 0, 0.3);transition:all 0.2s ease;}
+   .account-summary-card{background:var(--card-bg);border-radius:var(--radius-lg);padding:20px;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+   .modal-backdrop{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0, 0, 0, 0.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:opacity 0.3s ease, visibility 0.3s ease;}
+   .modal-backdrop.active{opacity:1;visibility:visible;}
+   .modal-box{background:var(--card-bg);border-radius:var(--radius-lg);max-width:400px;width:100%;padding:24px;box-shadow:var(--shadow-lg);transform:scale(0.92);transition:transform 0.3s ease;text-align:center;}
+   .modal-backdrop.active.modal-box{transform:scale(1);}
+   .modal-actions{display:flex;gap:12px;flex-direction:column;}
+   .btn-modal-cancel{flex:1;background:var(--bg);color:var(--text-main);border:1px solid var(--border);padding:12px;border-radius:var(--radius-md);font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.2s ease;}
+   .btn-modal-confirm{flex:1;background:#25d366;color:#fff;border:none;padding:12px;border-radius:var(--radius-md);font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity 0.2s ease;}
+   .btn-wallet{background:var(--primary);}
+    #toast-container{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:9999;width:90%;max-width:360px;pointer-events:none;}
+   .toast{background:#ffffff;border-radius:var(--radius-md);padding:12px 16px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;border-left:4px solid var(--primary);margin-bottom:8px;animation:toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;pointer-events:auto;}
+    @keyframes toastIn{from{opacity:0;transform:translate(-50%, -20px);}to{opacity:1;transform:translate(0, 0);}}
   </style>
 </head>
 <body>
-
-  <!-- Background Ambient Graphics -->
   <div class="bg-blob bg-blob-1"></div>
   <div class="bg-blob bg-blob-2"></div>
-
-  <!-- Initial Auth Loading Overlay -->
-  <div id="pageAuthLoader">
-    <div class="loader-spinner"></div>
-    <span style="font-size: 14px; font-weight: 600; color: var(--text-muted);">অ্যাকাউন্ট ভেরিফাই করা হচ্ছে...</span>
-  </div>
-
-  <!-- Toast Container -->
+  <div id="pageAuthLoader"><div class="loader-spinner"></div><span style="font-size: 14px; font-weight: 600; color: var(--text-muted);">অ্যাকাউন্ট ভেরিফাই করা হচ্ছে...</span></div>
   <div id="toast-container"></div>
-
-  <!-- Sticky Top Navigation -->
-  <header class="app-header">
-    <div class="header-inner">
-      <div class="brand-logo">
-        <i class="fa-solid fa-bag-shopping"></i>
-        <span>GHOTI MARKET</span>
-      </div>
-      <div class="nav-actions">
-        <a href="https://seller.ghotimarket.com/dashboard" class="nav-btn" aria-label="হ">
-          <i class="fa-solid fa-house"></i>
-        </a>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main View Container -->
+  <header class="app-header"><div class="header-inner"><div class="brand-logo"><i class="fa-solid fa-bag-shopping"></i><span>GHOTI MARKET</span></div><div class="nav-actions"><a href="https://seller.ghotimarket.com/dashboard" class="nav-btn"><i class="fa-solid fa-house"></i></a></div></div></header>
   <main class="container">
-
-    <!-- Welcome & Subscription Status Card -->
     <section class="welcome-card" id="userWelcomeCard">
-      <div class="user-profile-flex">
-        <div class="avatar-wrapper" id="avatarBox">
-          <i class="fa-solid fa-store avatar-placeholder"></i>
-        </div>
-        <div class="user-details">
-          <h2 id="userNameDisplay">স্বাগতম, Seller 👋</h2>
-          <div class="username-tag" id="userHandleDisplay">Seller Account</div>
-          <p>আপনার Seller সুবিধাগুলো সচল রাখতে উপযুক্ত Subscription নির্বাচন করুন</p>
-        </div>
-      </div>
-
-      <!-- Realtime Subscription Live Countdown Status Box -->
-      <div class="sub-status-box" id="subStatusContainer">
-        <div class="status-left">
-          <div class="status-badge none" id="statusBadge">
-            <i class="fa-solid fa-circle-info"></i> <span>চেক করা হচ্ছে...</span>
-          </div>
-        </div>
-        <div id="statusContentArea">
-          <span class="status-info-text" id="statusInfoText">মেয়াদ তথ্য লোড হচ্ছে...</span>
-        </div>
-      </div>
+      <div class="user-profile-flex"><div class="avatar-wrapper" id="avatarBox"><i class="fa-solid fa-store avatar-placeholder"></i></div><div class="user-details"><h2 id="userNameDisplay">স্বাগতম, Seller 👋</h2><div class="username-tag" id="userHandleDisplay">Seller Account</div><p>আপনার Seller সুবিধাগুলো সচল রাখতে উপযুক্ত Subscription নির্বাচন করুন</p></div></div>
+      <div class="sub-status-box" id="subStatusContainer"><div class="status-left"><div class="status-badge none" id="statusBadge"><i class="fa-solid fa-circle-info"></i> <span>চেক করা হচ্ছে...</span></div></div><div id="statusContentArea"><span class="status-info-text" id="statusInfoText">মেয়াদ তথ্য লোড হচ্ছে...</span></div></div>
     </section>
-
-    <!-- Subscription Plans Section -->
-    <section>
-      <div class="section-header">
-        <h3 class="section-title">আপনার Seller Subscription নির্বাচন করুন</h3>
-        <p class="section-subtitle">ব্যবসার পরিধি বাড়াতে দীর্ঘমেয়াদি প্ল্যানে বিশেষ সুবিধা উপভোগ করুন</p>
-      </div>
-
-      <!-- Dynamic Plans Grid Container -->
-      <div class="plans-grid" id="plansGrid">
-        <!-- Loading Skeleton Cards -->
-        <div class="skeleton-box skeleton-card"></div>
-        <div class="skeleton-box skeleton-card"></div>
-        <div class="skeleton-box skeleton-card"></div>
-      </div>
-    </section>
-
-    <!-- Account Details Summary -->
-    <section class="account-summary-card">
-      <div class="account-info-group">
-        <i class="fa-solid fa-envelope"></i>
-        <div class="account-text-details">
-          <span>Seller Account Email</span>
-          <span id="accEmailDisplay">লোড হচ্ছে...</span>
-        </div>
-      </div>
-      <div class="account-info-group">
-        <i class="fa-solid fa-id-card"></i>
-        <div class="account-text-details">
-          <span>Seller User ID</span>
-          <span id="accUidDisplay">লোড হচ্ছে...</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Plan Value Comparison Section -->
-    <section class="value-card">
-      <div class="section-header" style="text-align: left;">
-        <h3 class="section-title" style="font-size: 20px;">কেন Subscription নেবেন?</h3>
-        <p class="section-subtitle">GHOTI MARKET-এ Seller অ্যাকাউন্টের গুরুত্বপূর্ণ সুবিধাসমূহ</p>
-      </div>
-      <div class="value-grid">
-        <div class="value-item">
-          <i class="fa-solid fa-circle-check"></i>
-          <div class="value-item-text">
-            <h4>Seller Profile সক্রিয় রাখা</h4>
-            <p>আপনার দোকান ক্রেতাদের কাছে সব সময় দৃশ্যমান থাকবে।</p>
-          </div>
-        </div>
-        <div class="value-item">
-          <i class="fa-solid fa-bullhorn"></i>
-          <div class="value-item-text">
-            <h4>Product Promotion</h4>
-            <p>মার্কেটপ্লেসে আপনার পণ্য প্রমোট করার সুযোগ।</p>
-          </div>
-        </div>
-        <div class="value-item">
-          <i class="fa-solid fa-gauge-high"></i>
-          <div class="value-item-text">
-            <h4>Full Dashboard Access</h4>
-            <p>অর্ডার, কাস্টমার মেসেজ ও সেলস ট্র্যাক করার ড্যাশবোর্ড।</p>
-          </div>
-        </div>
-        <div class="value-item">
-          <i class="fa-solid fa-percent"></i>
-          <div class="value-item-text">
-            <h4>দীর্ঘমেয়াদি Plan-এ বেশি ছাড়</h4>
-            <p>বেশি মেয়াদের প্যাকেজে প্রতি মাসে খরচ অনেক সাশ্রয়ী।</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ Accordion Section -->
-    <section class="faq-card">
-      <div class="section-header" style="text-align: left;">
-        <h3 class="section-title" style="font-size: 20px;">সাধারণ জিজ্ঞাসা (FAQ)</h3>
-        <p class="section-subtitle">সাবস্ক্রিপশন সংক্রান্ত সাধারণ প্রশ্নাবলীর উত্তর</p>
-      </div>
-      <div class="accordion" id="faqAccordion">
-        <div class="accordion-item">
-          <button class="accordion-header" type="button" aria-expanded="false">
-            <span>Subscription কী এবং কেন প্রয়োজন?</span>
-            <i class="fa-solid fa-chevron-down"></i>
-          </button>
-          <div class="accordion-content">
-            <div class="accordion-body">
-              GHOTI MARKET Seller account-এর নির্দিষ্ট সুবিধা সচল রাখার জন্য Subscription প্রয়োজন। এর মাধ্যমে আপনার পণ্য ক্রেতাদের কাছে নিয়মিত প্রদর্শিত হয়।
-            </div>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-header" type="button" aria-expanded="false">
-            <span>কোন Plan-টি আমার জন্য সবচেয়ে ভালো?</span>
-            <i class="fa-solid fa-chevron-down"></i>
-          </button>
-          <div class="accordion-content">
-            <div class="accordion-body">
-              আপনার ব্যবসার পরিকল্পনা অনুযায়ী মেয়াদ নির্বাচন করুন। দীর্ঘমেয়াদি প্ল্যান (যেমন ৩ মাস, ৬ মাস বা ১২ মাস) নিলে প্রতি মাসের খরচ অনেক কমে আসে।
-            </div>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-header" type="button" aria-expanded="false">
-            <span>Payment প্রক্রিয়া কীভাবে সম্পন্ন হবে?</span>
-            <i class="fa-solid fa-chevron-down"></i>
-          </button>
-          <div class="accordion-content">
-            <div class="accordion-body">
-              "এই প্যাকটি নিন" বাটনে ক্লিক করলে সরাসরি Admin-এর সাথে WhatsApp-এ যুক্ত হবেন। সেখানে bKash, Nagad বা Rocket-এর মাধ্যমে মূল্য পরিশোধ করে সাবস্ক্রিপশন চালু করতে পারবেন।
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Direct Support Section -->
-    <section class="support-card">
-      <h3>সাহায্য বা তথ্যের প্রয়োজন?</h3>
-      <p>প্যাকেজ নির্বাচন বা পেমেন্ট সংক্রান্ত যেকোনো সহায়তায় আমাদের অ্যাডমিন টিমের সাথে যোগাযোগ করুন</p>
-      <div class="support-btns">
-        <a href="https://wa.me/8801727003670" target="_blank" rel="noopener noreferrer" class="btn-support-wa">
-          <i class="fa-brands fa-whatsapp"></i> WhatsApp Support
-        </a>
-        <a href="https://wa.me/8801727003670" target="_blank" rel="noopener noreferrer" class="btn-support-contact">
-          <i class="fa-solid fa-headset"></i> Contact Admin
-        </a>
-      </div>
-    </section>
-
+    <section><div class="section-header"><h3 class="section-title">আপনার Seller Subscription নির্বাচন করুন</h3></div><div class="plans-grid" id="plansGrid"><div class="skeleton-box skeleton-card"></div><div class="skeleton-box skeleton-card"></div><div class="skeleton-box skeleton-card"></div></div></section>
+    <section class="account-summary-card"><div><span>বর্তমান Wallet Balance</span><h3 id="walletBalanceDisplay" style="font-size:24px;color:var(--primary);">৳০</h3></div><div><span>Seller Email</span><h4 id="accEmailDisplay">লোড হচ্ছে...</h4></div></section>
   </main>
-
-  <!-- Custom Purchase Confirmation Modal -->
-  <div class="modal-backdrop" id="purchaseModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-backdrop" id="purchaseModal">
     <div class="modal-box">
-      <div class="modal-icon-header">
-        <i class="fa-solid fa-cart-shopping"></i>
-      </div>
-      <h3 class="modal-title" id="modalTitle">Subscription নির্বাচন করেছেন</h3>
-      <p class="modal-subtitle">নিচের প্যাকেজটি নিতে আপনি অ্যাডমিনের সাথে WhatsApp-এ যোগাযোগ করছেন</p>
-
+      <div class="modal-icon-header"><i class="fa-solid fa-cart-shopping"></i></div>
+      <h3 class="modal-title">Subscription নির্বাচন করেছেন</h3>
+      <p class="modal-subtitle">নিচের প্যাকেজটি নির্বাচন করুন</p>
       <div class="modal-details-box">
-        <div class="modal-details-row">
-          <span>প্যাকেজের নাম:</span>
-          <span id="modalPkgName">-</span>
-        </div>
-        <div class="modal-details-row">
-          <span>প্যাকেজ মূল্য:</span>
-          <span id="modalPkgPrice">৳-</span>
-        </div>
-        <div class="modal-details-row">
-          <span>মেয়াদ:</span>
-          <span id="modalPkgDays">- দিন</span>
-        </div>
+        <div class="modal-details-row"><span>প্যাকেজের নাম:</span><span id="modalPkgName">-</span></div>
+        <div class="modal-details-row"><span>প্যাকেজ মূল্য:</span><span id="modalPkgPrice">৳-</span></div>
+        <div class="modal-details-row"><span>আপনার ব্যালেন্স:</span><span id="modalUserBalance">৳-</span></div>
       </div>
-
       <div class="modal-actions">
         <button type="button" class="btn-modal-cancel" id="closeModalBtn">বাতিল</button>
-        <button type="button" class="btn-modal-confirm" id="confirmWaBtn">
-          <i class="fa-brands fa-whatsapp"></i> WhatsApp-এ যান
-        </button>
+        <button type="button" class="btn-modal-confirm btn-wallet" id="confirmWalletBtn"><i class="fa-solid fa-wallet"></i> Wallet দিয়ে কিনুন</button>
+        <button type="button" class="btn-modal-confirm" id="confirmWaBtn"><i class="fa-brands fa-whatsapp"></i> WhatsApp-এ যান</button>
       </div>
     </div>
   </div>
 
-  <!-- Firebase JavaScript Logic -->
-  <script type="module">
-    // ==========================================================================
-    // 1. FIREBASE INITIALIZATION
-    // ==========================================================================
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, onSnapshot, collection, updateDoc, addDoc, serverTimestamp, runTransaction, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
-      authDomain: "ghotimarket.firebaseapp.com",
-      databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
-      projectId: "ghotimarket",
-      storageBucket: "ghotimarket.firebasestorage.app",
-      messagingSenderId: "481257644093",
-      appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
-      measurementId: "G-4SR8V2EKC1"
-    };
+const firebaseConfig = {apiKey:"AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",authDomain:"ghotimarket.firebaseapp.com",databaseURL:"https://ghotimarket-default-rtdb.firebaseio.com",projectId:"ghotimarket",storageBucket:"ghotimarket.firebasestorage.app",messagingSenderId:"481257644093",appId:"1:481257644093:web:0dfc3699d6b3c86afeca54",measurementId:"G-4SR8V2EKC1"};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+let currentUserData = {uid:"",email:"",shopName:"Seller",shopLogo:"",username:"",profileUnlockedUntil:0,balance:0};
+let selectedPackageForModal = null;
+let unsubscribeUser = null;
+let unsubscribePackages = null;
+let countdownInterval = null;
 
-    // Global State
-    let currentUserData = {
-      uid: "",
-      email: "",
-      shopName: "Seller",
-      shopLogo: "",
-      username: "",
-      profileUnlockedUntil: 0
-    };
-    let selectedPackageForModal = null;
-    let unsubscribeUser = null;
-    let unsubscribePackages = null;
-    let countdownInterval = null;
+function escapeHtml(text){if(text===null||text===undefined)return'';return String(text).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
+function toBengaliNum(num){const bengaliDigits=['০','১','২','৩','৪','৫','৬','৭','৮','৯'];return String(num).replace(/\d/g,d=>bengaliDigits[d]);}
+function getProfileUnlockTime(value){if(!value)return 0;if(typeof value==="number")return value;if(typeof value==="string"&&!isNaN(Number(value)))return Number(value);if(value&&typeof value.toMillis==="function")return value.toMillis();if(value&&typeof value.seconds==="number")return value.seconds*1000;return 0;}
+function showToast(message){const container=document.getElementById('toast-container');const toast=document.createElement('div');toast.className='toast';toast.innerHTML=`<i class="fa-solid fa-circle-info toast-icon"></i><span class="toast-msg">${escapeHtml(message)}</span>`;container.appendChild(toast);setTimeout(()=>{toast.style.opacity='0';setTimeout(()=>toast.remove(),300);},3000);}
+function hideAuthLoader(){const loader=document.getElementById('pageAuthLoader');if(loader){loader.style.opacity='0';setTimeout(()=>loader.style.display='none',300);}}
 
-    // Helper: XSS Protection HTML Escape
-    function escapeHtml(text) {
-      if (text === null || text === undefined) return '';
-      return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
+onAuthStateChanged(auth, async (user) => {
+  if(!user){window.location.href="login.html";return;}
+  currentUserData.uid=user.uid||"";currentUserData.email=user.email||"N/A";currentUserData.shopName=user.displayName||"Seller";currentUserData.shopLogo=user.photoURL||"";
+  document.getElementById('accEmailDisplay').textContent=currentUserData.email;
+  listenToUserProfile(user.uid);listenToPackages();hideAuthLoader();
+});
 
-    // Helper: URL Sanitization for Images
-    function sanitizeUrl(url) {
-      if (!url) return '';
-      const trimmed = String(url).trim();
-      if (trimmed.startsWith('javascript:') || trimmed.startsWith('data:text/html')) {
-        return '';
-      }
-      return trimmed;
-    }
+function listenToUserProfile(uid){
+  if(unsubscribeUser){unsubscribeUser();}
+  const userRef=doc(db,"users",uid);
+  unsubscribeUser=onSnapshot(userRef,(userSnap)=>{
+    if(userSnap.exists()){
+      const uData=userSnap.data();
+      currentUserData.shopName=uData.shopName||uData.name||auth.currentUser.displayName||"Seller";
+      currentUserData.shopLogo=uData.shopLogo||uData.photoURL||auth.currentUser.photoURL||"";
+      currentUserData.username=uData.username||"";
+      currentUserData.profileUnlockedUntil=getProfileUnlockTime(uData.profileUnlockedUntil);
+      currentUserData.balance=Number(uData.balance)||0;
+    }else{currentUserData.profileUnlockedUntil=0;currentUserData.balance=0;}
+    document.getElementById('walletBalanceDisplay').textContent=`৳${toBengaliNum(currentUserData.balance)}`;
+    handleSubscriptionCountdown();
+  });
+}
 
-    // Helper: Custom Toast Notification
-    function showToast(message) {
-      const container = document.getElementById('toast-container');
-      const toast = document.createElement('div');
-      toast.className = 'toast';
-      toast.innerHTML = `
-        <i class="fa-solid fa-circle-info toast-icon"></i>
-        <span class="toast-msg">${escapeHtml(message)}</span>
-      `;
-      container.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transition = 'all 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    }
+function handleSubscriptionCountdown(){
+  const targetMs=currentUserData.profileUnlockedUntil;const now=Date.now();
+  if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null;}
+  if(!targetMs||targetMs<=now){document.getElementById('statusBadge').className="status-badge expired";document.getElementById('statusBadge').innerHTML=`<i class="fa-solid fa-triangle-exclamation"></i> <span>Subscription মেয়াদ শেষ</span>`;return;}
+  const runCountdown=()=>{const remainingMs=targetMs-Date.now();if(remainingMs<=0){clearInterval(countdownInterval);return;}
+    const totalSeconds=Math.floor(remainingMs/1000);const d=Math.floor(totalSeconds/86400);const h=Math.floor((totalSeconds%86400)/3600);const m=Math.floor((totalSeconds%3600)/60);const s=totalSeconds%60;
+    document.getElementById('statusBadge').className="status-badge active";document.getElementById('statusBadge').innerHTML=`<i class="fa-solid fa-clock"></i> <span>Subscription মেয়াদ বাকি</span>`;
+    document.getElementById('statusContentArea').innerHTML=`<div class="countdown-timer-grid"><div class="countdown-box"><div class="countdown-num">${toBengaliNum(d)}</div><div class="countdown-label">দিন</div></div><div class="countdown-box"><div class="countdown-num">${toBengaliNum(h)}</div><div class="countdown-label">ঘণ্টা</div></div><div class="countdown-box"><div class="countdown-num">${toBengaliNum(m)}</div><div class="countdown-label">মিনিট</div></div><div class="countdown-box"><div class="countdown-num">${toBengaliNum(s)}</div><div class="countdown-label">সেকেন্ড</div></div></div>`;
+  };
+  runCountdown();countdownInterval=setInterval(runCountdown,1000);
+}
 
-    // Helper: Convert Digits to Bengali
-    function toBengaliNum(num) {
-      const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-      return String(num).replace(/\d/g, d => bengaliDigits[d]);
-    }
+function listenToPackages(){
+  if(unsubscribePackages){unsubscribePackages();}
+  const packagesRef=collection(db,"packages");const grid=document.getElementById('plansGrid');
+  unsubscribePackages=onSnapshot(packagesRef,(snapshot)=>{
+    let rawPackages=[];snapshot.forEach((docSnap)=>{const p=docSnap.data();const pkgId=docSnap.id;const price=Number(p.price);const days=Number(p.days);if(!isNaN(price)&&!isNaN(days)&&price>=0&&days>0){rawPackages.push({id:pkgId,name:p.name||`${toBengaliNum(days)} দিনের Plan`,price:price,days:days,desc:p.desc||"Seller account-এর সুবিধা চালু রাখার জন্য একটি কার্যকর প্যাকেজ।",popular:Boolean(p.popular),featured:Boolean(p.featured)});}});
+    rawPackages.sort((a,b)=>a.days-b.days);renderPlansGrid(rawPackages);
+  });
+}
 
-    // Helper: Safely Extract profileUnlockedUntil Timestamp in Milliseconds
-    function getProfileUnlockTime(value) {
-      if (!value) return 0;
-      if (typeof value === "number") return value;
-      if (typeof value === "string" && !isNaN(Number(value))) return Number(value);
-      if (value && typeof value.toMillis === "function") return value.toMillis();
-      if (value && typeof value.seconds === "number") return value.seconds * 1000;
-      return 0;
-    }
+function renderPlansGrid(packages){
+  const grid=document.getElementById('plansGrid');let html='';
+  packages.forEach((pkg,index)=>{
+    html+=`<div class="plan-card ${pkg.popular?'is-popular':''}">${pkg.popular?'<div class="popular-ribbon">সবচেয়ে জনপ্রিয়</div>':''}<h4 class="plan-title">${escapeHtml(pkg.name)}</h4><div><span class="plan-price">৳${toBengaliNum(pkg.price)}</span><span>/ ${toBengaliNum(pkg.days)} দিন</span></div><p style="font-size:12px;color:var(--text-muted);margin:8px 0;">${escapeHtml(pkg.desc)}</p><button type="button" class="buy-plan-btn" data-pkg-id="${escapeHtml(pkg.id)}"><i class="fa-solid fa-cart-shopping"></i> এই প্যাকটি নিন</button></div>`;
+  });
+  grid.innerHTML=html;
+  grid.querySelectorAll('.buy-plan-btn[data-pkg-id]').forEach(btn=>{btn.addEventListener('click',(e)=>{const id=e.currentTarget.getAttribute('data-pkg-id');const targetPkg=packages.find(p=>p.id===id);if(targetPkg)openPurchaseModal(targetPkg);});});
+}
 
-    // Helper: Format Expiry Date/Time according to Bangladesh Timezone (bn-BD)
-    function formatExpiryDate(timestampMs) {
-      try {
-        const date = new Date(timestampMs);
-        return new Intl.DateTimeFormat("bn-BD", {
-          dateStyle: "long",
-          timeStyle: "medium",
-          timeZone: "Asia/Dhaka"
-        }).format(date);
-      } catch (e) {
-        return new Date(timestampMs).toLocaleString('bn-BD');
-      }
-    }
+const purchaseModal=document.getElementById('purchaseModal');
+const closeModalBtn=document.getElementById('closeModalBtn');
+const confirmWaBtn=document.getElementById('confirmWaBtn');
+const confirmWalletBtn=document.getElementById('confirmWalletBtn');
 
-    // Helper: Format Duration Text for Plan Display
-    function getDurationText(days) {
-      const d = Number(days);
-      if (isNaN(d) || d <= 0) return "০ দিন";
-      const months = Math.round(d / 30);
-      if (months >= 1 && d % 30 === 0) {
-        return `${toBengaliNum(months)} মাস · ${toBengaliNum(d)} দিন`;
-      } else if (d >= 30) {
-        return `প্রায় ${toBengaliNum(months)} মাস · ${toBengaliNum(d)} দিন`;
-      }
-      return `${toBengaliNum(d)} দিন`;
-    }
+function openPurchaseModal(pkg){
+  selectedPackageForModal=pkg;
+  document.getElementById('modalPkgName').textContent=pkg.name;
+  document.getElementById('modalPkgPrice').textContent=`৳${toBengaliNum(pkg.price)}`;
+  document.getElementById('modalUserBalance').textContent=`৳${toBengaliNum(currentUserData.balance)}`;
+  purchaseModal.classList.add('active');
+}
+function closeModal(){purchaseModal.classList.remove('active');selectedPackageForModal=null;}
+closeModalBtn.addEventListener('click',closeModal);
+purchaseModal.addEventListener('click',(e)=>{if(e.target===purchaseModal)closeModal();});
 
-    // Hide Initial Loader
-    function hideAuthLoader() {
-      const loader = document.getElementById('pageAuthLoader');
-      if (loader) {
-        loader.style.opacity = '0';
-        setTimeout(() => loader.style.display = 'none', 300);
-      }
-    }
+// 1. WHATSAPP BUTTON
+confirmWaBtn.addEventListener('click',()=>{
+  if(!selectedPackageForModal){showToast("কোনো প্যাকেজ নির্বাচিত হয়নি!");return;}
+  const p=selectedPackageForModal;const sellerIdentifier=currentUserData.shopName||(currentUserData.username?`@${currentUserData.username}`:'Seller Account');
+  const message=`আসসালামু আলাইকুম, আমি GHOTI MARKET-এর একটি Subscription নিতে চাই।\n\n📦 প্যাকেজ: ${p.name}\n💰 মূল্য: ৳${p.price}\n🕒 মেয়াদ: ${p.days} দিন\n🏪 Seller Account: ${sellerIdentifier}\n🆔 UID: ${currentUserData.uid}\n📧 লগিন ইমেইল: ${currentUserData.email}`;
+  const whatsappUrl=`https://wa.me/8801727003670?text=${encodeURIComponent(message)}`;
+  closeModal();showToast("WhatsApp-এ রিডাইরেক্ট করা হচ্ছে...");setTimeout(()=>{window.location.href=whatsappUrl;},300);
+});
 
-    // ==========================================================================
-    // 2. AUTHENTICATION & SECURITY GUARD
-    // ==========================================================================
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.href = "login.html";
-        return;
-      }
+// 2. WALLET BUY BUTTON - MAIN LOGIC
+confirmWalletBtn.addEventListener('click',async()=>{
+  if(!selectedPackageForModal)return;
+  const p=selectedPackageForModal;const uid=currentUserData.uid;const userRef=doc(db,"users",uid);
 
-      // Set fallback user data directly from Auth instance
-      currentUserData.uid = user.uid || "";
-      currentUserData.email = user.email || "N/A";
-      currentUserData.shopName = user.displayName || "Seller";
-      currentUserData.shopLogo = user.photoURL || "";
-
-      // Render Account Summary Details
-      document.getElementById('accEmailDisplay').textContent = currentUserData.email;
-      document.getElementById('accUidDisplay').textContent = currentUserData.uid;
-
-      // Render initial default profile view using Auth fallback
-      renderProfileUI();
-
-      // Start Realtime Listener for users/{uid} document
-      listenToUserProfile(user.uid);
-
-      // Start independent packages collection listener
-      listenToPackages();
-
-      hideAuthLoader();
+  try{
+    confirmWalletBtn.disabled=true;confirmWalletBtn.innerHTML=`<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং...`;
+    await runTransaction(db,async(transaction)=>{
+      const userDoc=await transaction.get(userRef);
+      if(!userDoc.exists())throw"User not found";
+      const userData=userDoc.data();const currentBalance=Number(userData.balance)||0;const currentExpiry=getProfileUnlockTime(userData.profileUnlockedUntil);
+      if(currentBalance<p.price){throw`আপনার ব্যালেন্সে ৳${p.price} নেই। বর্তমান ব্যালেন্স: ৳${currentBalance}`;}
+      const newBalance=currentBalance-p.price;
+      const months=p.price/300;const msToAdd=months*30*24*60*60*1000;const newExpiry=currentExpiry+msToAdd;
+      transaction.update(userRef,{balance:newBalance,profileUnlockedUntil:newExpiry});
+      const historyRef=doc(collection(db,"users_transection"));
+      transaction.set(historyRef,{userId:uid,amount:-p.price,type:"SUBSCRIPTION_BUY",packageName:p.name,packageDays:p.days,packagePrice:p.price,prevBalance:currentBalance,newBalance:newBalance,prevExpiry:currentExpiry,newExpiry:newExpiry,createdAt:serverTimestamp(),note:`Wallet থেকে ${p.name} ক্রয় করা হয়েছে`});
     });
-
-    // ==========================================================================
-    // 3. REALTIME USER PROFILE & UNLOCK TIMESTAMPS (onSnapshot)
-    // ==========================================================================
-    function listenToUserProfile(uid) {
-      if (unsubscribeUser) {
-        unsubscribeUser();
-      }
-
-      const userRef = doc(db, "users", uid);
-
-      unsubscribeUser = onSnapshot(userRef, (userSnap) => {
-        if (userSnap.exists()) {
-          const uData = userSnap.data();
-          currentUserData.shopName = uData.shopName || uData.name || auth.currentUser.displayName || "Seller";
-          currentUserData.shopLogo = uData.shopLogo || uData.photoURL || auth.currentUser.photoURL || "";
-          currentUserData.username = uData.username || "";
-          currentUserData.profileUnlockedUntil = getProfileUnlockTime(uData.profileUnlockedUntil);
-        } else {
-          currentUserData.profileUnlockedUntil = 0;
-        }
-
-        renderProfileUI();
-        handleSubscriptionCountdown();
-      }, (err) => {
-        console.warn("Notice: Realtime users/{uid} listener error.", err);
-        renderProfileUI();
-        handleSubscriptionCountdown();
-      });
-    }
-
-    function renderProfileUI() {
-      const nameElem = document.getElementById('userNameDisplay');
-      const handleElem = document.getElementById('userHandleDisplay');
-      const avatarBox = document.getElementById('avatarBox');
-
-      nameElem.textContent = currentUserData.shopName ? `স্বাগতম, ${currentUserData.shopName} 👋` : `স্বাগতম, Seller 👋`;
-
-      if (currentUserData.username) {
-        handleElem.textContent = `@${currentUserData.username}`;
-      } else if (currentUserData.uid) {
-        handleElem.textContent = `UID: ${currentUserData.uid.substring(0, 10)}...`;
-      } else {
-        handleElem.textContent = `Seller Account`;
-      }
-
-      avatarBox.innerHTML = '';
-      const safeLogo = sanitizeUrl(currentUserData.shopLogo);
-      if (safeLogo) {
-        const img = document.createElement('img');
-        img.src = safeLogo;
-        img.alt = "Shop Logo";
-        img.onerror = () => {
-          avatarBox.innerHTML = '<i class="fa-solid fa-store avatar-placeholder"></i>';
-        };
-        avatarBox.appendChild(img);
-      } else {
-        avatarBox.innerHTML = '<i class="fa-solid fa-store avatar-placeholder"></i>';
-      }
-    }
-
-    // ==========================================================================
-    // 4. LIVE COUNTDOWN TIMER & STATUS RENDERER
-    // ==========================================================================
-    function handleSubscriptionCountdown() {
-      const targetMs = currentUserData.profileUnlockedUntil;
-      const now = Date.now();
-
-      // Clear existing interval if any
-      if (countdownInterval) {
-        clearInterval(countdownInterval);
-        countdownInterval = null;
-      }
-
-      // No profileUnlockedUntil or invalid
-      if (!targetMs) {
-        renderNoSubState();
-        return;
-      }
-
-      // Expired Timestamp
-      if (targetMs <= now) {
-        renderExpiredState(targetMs);
-        return;
-      }
-
-      // Active Subscription -> Start Live Countdown Loop
-      const runCountdown = () => {
-        const currentMs = Date.now();
-        const remainingMs = targetMs - currentMs;
-
-        if (remainingMs <= 0) {
-          if (countdownInterval) {
-            clearInterval(countdownInterval);
-            countdownInterval = null;
-          }
-          renderExpiredState(targetMs);
-          return;
-        }
-
-        const totalSeconds = Math.floor(remainingMs / 1000);
-        const days = Math.floor(totalSeconds / 86400);
-        const hours = Math.floor((totalSeconds % 86400) / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-
-        renderActiveStateUI(days, hours, minutes, seconds, targetMs);
-      };
-
-      runCountdown();
-      countdownInterval = setInterval(runCountdown, 1000);
-    }
-
-    function renderActiveStateUI(d, h, m, s, targetMs) {
-      const badge = document.getElementById('statusBadge');
-      const contentArea = document.getElementById('statusContentArea');
-
-      badge.className = "status-badge active";
-      badge.innerHTML = `<i class="fa-solid fa-clock"></i> <span>Subscription মেয়াদ বাকি</span>`;
-
-      const formattedDate = formatExpiryDate(targetMs);
-
-      contentArea.innerHTML = `
-        <div class="countdown-timer-grid">
-          <div class="countdown-box">
-            <div class="countdown-num">${toBengaliNum(d)}</div>
-            <div class="countdown-label">দিন</div>
-          </div>
-          <div class="countdown-box">
-            <div class="countdown-num">${toBengaliNum(h)}</div>
-            <div class="countdown-label">ঘণ্টা</div>
-          </div>
-          <div class="countdown-box">
-            <div class="countdown-num">${toBengaliNum(m)}</div>
-            <div class="countdown-label">মিনিট</div>
-          </div>
-          <div class="countdown-box">
-            <div class="countdown-num">${toBengaliNum(s)}</div>
-            <div class="countdown-label">সেকেন্ড</div>
-          </div>
-        </div>
-        <div class="expiry-date-text">
-          <i class="fa-solid fa-calendar-check"></i> মেয়াদ শেষ হবে: <strong>${escapeHtml(formattedDate)}</strong>
-        </div>
-      `;
-    }
-
-    function renderExpiredState(targetMs) {
-      const badge = document.getElementById('statusBadge');
-      const contentArea = document.getElementById('statusContentArea');
-
-      badge.className = "status-badge expired";
-      badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>Subscription মেয়াদ শেষ</span>`;
-
-      let expiryNotice = "";
-      if (targetMs > 0) {
-        expiryNotice = `<div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">মেয়াদ শেষ হয়েছিল: ${escapeHtml(formatExpiryDate(targetMs))}</div>`;
-      }
-
-      contentArea.innerHTML = `
-        <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start; margin-top: 4px;">
-          <span class="status-info-text">আপনার Seller সুবিধার মেয়াদ শেষ হয়ে গেছে। নতুন Subscription নির্বাচন করুন।</span>
-          ${expiryNotice}
-          <button type="button" class="btn-scroll-plans" id="scrollPlansBtn">
-            <i class="fa-solid fa-cart-plus"></i> নতুন Subscription নিন
-          </button>
-        </div>
-      `;
-
-      const btn = document.getElementById('scrollPlansBtn');
-      if (btn) {
-        btn.addEventListener('click', () => {
-          document.getElementById('plansGrid').scrollIntoView({ behavior: 'smooth' });
-        });
-      }
-    }
-
-    function renderNoSubState() {
-      const badge = document.getElementById('statusBadge');
-      const contentArea = document.getElementById('statusContentArea');
-
-      badge.className = "status-badge none";
-      badge.innerHTML = `<i class="fa-solid fa-circle-info"></i> <span>Subscription মেয়াদ পাওয়া যায়নি</span>`;
-
-      contentArea.innerHTML = `
-        <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start; margin-top: 4px;">
-          <span class="status-info-text">আপনার Seller সুবিধা চালু করতে একটি উপযুক্ত Subscription প্ল্যান নির্বাচন করুন।</span>
-          <button type="button" class="btn-scroll-plans" id="scrollPlansBtn">
-            <i class="fa-solid fa-cart-plus"></i> প্ল্যান নির্বাচন করুন
-          </button>
-        </div>
-      `;
-
-      const btn = document.getElementById('scrollPlansBtn');
-      if (btn) {
-        btn.addEventListener('click', () => {
-          document.getElementById('plansGrid').scrollIntoView({ behavior: 'smooth' });
-        });
-      }
-    }
-
-    // ==========================================================================
-    // 5. INDEPENDENT REALTIME PACKAGE LISTENER
-    // ==========================================================================
-    function listenToPackages() {
-      if (unsubscribePackages) {
-        unsubscribePackages();
-      }
-
-      const packagesRef = collection(db, "packages");
-      const grid = document.getElementById('plansGrid');
-
-      unsubscribePackages = onSnapshot(packagesRef, (snapshot) => {
-        let rawPackages = [];
-
-        snapshot.forEach((docSnap) => {
-          const p = docSnap.data();
-          const pkgId = docSnap.id;
-
-          const price = Number(p.price);
-          const days = Number(p.days);
-
-          if (!isNaN(price) && !isNaN(days) && price >= 0 && days > 0) {
-            rawPackages.push({
-              id: pkgId,
-              name: p.name || `${toBengaliNum(days)} দিনের Plan`,
-              price: price,
-              days: days,
-              desc: p.desc || "Seller account-এর সুবিধা চালু রাখার জন্য একটি কার্যকর প্যাকেজ।",
-              popular: Boolean(p.popular),
-              featured: Boolean(p.featured)
-            });
-          }
-        });
-
-        if (rawPackages.length === 0) {
-          grid.innerHTML = `
-            <div class="state-card" style="grid-column: 1 / -1;">
-              <i class="fa-solid fa-box-open"></i>
-              <h4>বর্তমানে কোনো Subscription Plan নেই</h4>
-              <p>নতুন Plan যুক্ত হলে এখানে দেখতে পারবেন। সহায়তার জন্য যোগাযোগ করুন।</p>
-              <a href="https://wa.me/8801727003670" target="_blank" rel="noopener noreferrer" class="btn-support-wa" style="display:inline-flex;">
-                <i class="fa-brands fa-whatsapp"></i> Contact Admin
-              </a>
-            </div>
-          `;
-          return;
-        }
-
-        // Ascending order by duration days
-        rawPackages.sort((a, b) => a.days - b.days);
-
-        renderPlansGrid(rawPackages);
-      }, (error) => {
-        console.error("Firestore Packages Snapshot Error:", error);
-        grid.innerHTML = `
-          <div class="state-card" style="grid-column: 1 / -1;">
-            <i class="fa-solid fa-circle-exclamation" style="color: var(--danger);"></i>
-            <h4>প্যাকেজ তথ্য লোড করা যাচ্ছে না</h4>
-            <p>ইন্টারনেট সংযোগ চেক করে আবার চেষ্টা করুন।</p>
-            <button type="button" class="buy-plan-btn" id="retryPackagesBtn" style="max-width:200px; margin:0 auto;">
-              <i class="fa-solid fa-rotate-right"></i> আবার চেষ্টা করুন
-            </button>
-          </div>
-        `;
-
-        const retryBtn = document.getElementById('retryPackagesBtn');
-        if (retryBtn) {
-          retryBtn.addEventListener('click', () => {
-            listenToPackages();
-          });
-        }
-      });
-    }
-
-    // ==========================================================================
-    // 6. RENDER PLANS GRID
-    // ==========================================================================
-    function renderPlansGrid(packages) {
-      const grid = document.getElementById('plansGrid');
-      let html = '';
-
-      const hasExplicitPopular = packages.some(p => p.popular);
-
-      packages.forEach((pkg, index) => {
-        const serialNum = String(index + 1).padStart(2, '0');
-        const durationStr = getDurationText(pkg.days);
-
-        const monthsCount = pkg.days / 30;
-        const approxMonthlyPrice = monthsCount > 0 ? Math.round(pkg.price / monthsCount) : pkg.price;
-
-        // Determine Popular & Best Value badges logically
-        const isPopular = pkg.popular || (!hasExplicitPopular && index === Math.floor(packages.length / 2) && packages.length >= 3);
-        const isBestValue = pkg.featured || pkg.days >= 180;
-
-        html += `
-          <div class="plan-card ${isPopular ? 'is-popular' : ''}">
-            ${isPopular ? '<div class="popular-ribbon">সবচেয়ে জনপ্রিয়</div>' : ''}
-
-            <div class="plan-index-badge">${serialNum}</div>
-
-            ${isBestValue ? '<div class="best-value-pill"><i class="fa-solid fa-star"></i> সেরা পছন্দ</div>' : ''}
-
-            <h4 class="plan-title">${escapeHtml(pkg.name)}</h4>
-
-            <div class="plan-price-wrapper">
-              <span class="plan-price">৳${toBengaliNum(pkg.price)}</span>
-              <span class="plan-duration-tag">/ ${toBengaliNum(pkg.days)} দিন</span>
-            </div>
-
-            <div class="monthly-breakdown">
-              <i class="fa-solid fa-chart-line"></i> প্রতি মাসে ≈ ৳${toBengaliNum(approxMonthlyPrice)}
-            </div>
-
-            <div class="plan-desc-text">
-              <i class="fa-solid fa-clock"></i> মেয়াদকাল: <strong>${durationStr}</strong><br>
-              ${escapeHtml(pkg.desc)}
-            </div>
-
-            <div class="plan-divider"></div>
-
-            <ul class="plan-features-list">
-              <li><i class="fa-solid fa-circle-check"></i> Seller Profile প্রমোশন সক্রিয়</li>
-              <li><i class="fa-solid fa-circle-check"></i> Seller Dashboard ব্যবহারের সুবিধা</li>
-              <li><i class="fa-solid fa-circle-check"></i> Marketplace Product Visibility</li>
-              <li><i class="fa-solid fa-circle-check"></i> প্রোডাক্ট সেলস ও অ্যাডমিন কন্টাক্ট</li>
-            </ul>
-
-            <button type="button" class="buy-plan-btn" data-pkg-id="${escapeHtml(pkg.id)}">
-              <i class="fa-solid fa-cart-shopping"></i> এই প্যাকটি নিন
-            </button>
-          </div>
-        `;
-      });
-
-      grid.innerHTML = html;
-
-      // Event delegation / click handlers
-      grid.querySelectorAll('.buy-plan-btn[data-pkg-id]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const id = e.currentTarget.getAttribute('data-pkg-id');
-          const targetPkg = packages.find(p => p.id === id);
-          if (targetPkg) openPurchaseModal(targetPkg);
-        });
-      });
-    }
-
-    // ==========================================================================
-    // 7. PURCHASE MODAL & WHATSAPP REDIRECT LOGIC
-    // ==========================================================================
-    const purchaseModal = document.getElementById('purchaseModal');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const confirmWaBtn = document.getElementById('confirmWaBtn');
-
-    function openPurchaseModal(pkg) {
-      selectedPackageForModal = pkg;
-      document.getElementById('modalPkgName').textContent = pkg.name;
-      document.getElementById('modalPkgPrice').textContent = `৳${toBengaliNum(pkg.price)}`;
-      document.getElementById('modalPkgDays').textContent = `${toBengaliNum(pkg.days)} দিন (${getDurationText(pkg.days)})`;
-
-      purchaseModal.classList.add('active');
-    }
-
-    function closeModal() {
-      purchaseModal.classList.remove('active');
-      selectedPackageForModal = null;
-    }
-
-    closeModalBtn.addEventListener('click', closeModal);
-
-    purchaseModal.addEventListener('click', (e) => {
-      if (e.target === purchaseModal) closeModal();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && purchaseModal.classList.contains('active')) {
-        closeModal();
-      }
-    });
-
-    confirmWaBtn.addEventListener('click', () => {
-      if (!selectedPackageForModal) {
-        showToast("কোনো প্যাকেজ নির্বাচিত হয়নি!");
-        return;
-      }
-
-      const p = selectedPackageForModal;
-      const sellerIdentifier = currentUserData.shopName || (currentUserData.username ? `@${currentUserData.username}` : 'Seller Account');
-
-      // Fully valid formatted WhatsApp message string with complete concatenation
-      const message = `আসসালামু আলাইকুম, আমি GHOTI MARKET-এর একটি Subscription নিতে চাই।\n\n` +
-                      `📦 প্যাকেজ: ${p.name}\n` +
-                      `💰 মূল্য: ৳${p.price}\n` +
-                      `🕒 মেয়াদ: ${p.days} দিন\n` +
-                      `🏪 Seller Account: ${sellerIdentifier}\n` +
-                      `🆔 UID: ${currentUserData.uid}\n` +
-                      `📧 লগিন ইমেইল: ${currentUserData.email}`;
-
-      const whatsappUrl = `https://wa.me/8801727003670?text=${encodeURIComponent(message)}`;
-
-      closeModal();
-      showToast("WhatsApp-এ রিডাইরেক্ট করা হচ্ছে...");
-
-      setTimeout(() => {
-        window.location.href = whatsappUrl;
-      }, 300);
-    });
-
-    // ==========================================================================
-    // 8. ACCORDION LOGIC
-    // ==========================================================================
-    document.querySelectorAll('.accordion-header').forEach(header => {
-      header.addEventListener('click', () => {
-        const item = header.parentElement;
-        const isOpen = item.classList.contains('open');
-
-        document.querySelectorAll('.accordion-item').forEach(i => {
-          i.classList.remove('open');
-          const h = i.querySelector('.accordion-header');
-          if (h) h.setAttribute('aria-expanded', 'false');
-        });
-
-        if (!isOpen) {
-          item.classList.add('open');
-          header.setAttribute('aria-expanded', 'true');
-        }
-      });
-    });
-
-    // Cleanup Interval & Unsubscribe on Unload
-    window.addEventListener('beforeunload', () => {
-      if (countdownInterval) clearInterval(countdownInterval);
-      if (unsubscribeUser) unsubscribeUser();
-      if (unsubscribePackages) unsubscribePackages();
-    });
-  </script>
+    closeModal();showToast(`✅ ${p.name} সফলভাবে একটিভ হয়েছে! ৳${p.price} কাটা হয়েছে`);
+  }catch(error){console.error("Wallet Purchase Error:",error);showToast(`❌ Error: ${error}`);}
+  finally{confirmWalletBtn.disabled=false;confirmWalletBtn.innerHTML=`<i class="fa-solid fa-wallet"></i> Wallet দিয়ে কিনুন`;}
+});
+
+window.addEventListener('beforeunload',()=>{if(countdownInterval)clearInterval(countdownInterval);if(unsubscribeUser)unsubscribeUser();if(unsubscribePackages)unsubscribePackages();});
+</script>
 </body>
 </html>
