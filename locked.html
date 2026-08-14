@@ -3,228 +3,1588 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Seller Subscription</title>
+  <title>Seller Subscription - GHOTI MARKET</title>
+  
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <style>
-    /* আপনার আগের সব CSS এখানে থাকবে - আমি ছোট করলাম */
-    :root{--primary:#ff6a00;--primary-dark:#e05d00;--primary-light:#fff0eb;--secondary:#ff8533;--bg:#fff7f1;--card-bg:#ffffff;--text-main:#1f2937;--text-muted:#6b7280;--border:#fee2d5;--border-accent:#ffd1b8;--success:#10b981;--success-light:#ecfdf5;--warning:#f59e0b;--danger:#ef4444;--shadow-sm:0 2px 8px rgba(255, 106, 0, 0.05);--shadow-md:0 8px 20px rgba(255, 106, 0, 0.08);--shadow-lg:0 15px 35px rgba(255, 106, 0, 0.12);--radius-sm:10px;--radius-md:18px;--radius-lg:24px;--radius-full:9999px;}
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-    body{font-family:'Hind Siliguri',sans-serif;background-color:var(--bg);color:var(--text-main);min-height:100vh;line-height:1.5;padding-bottom:50px;}
-   .bg-blob{position:fixed;border-radius:50%;filter:blur(80px);z-index:-1;opacity:0.5;pointer-events:none;}
-   .bg-blob-1{top:-100px;right:-100px;width:350px;height:350px;background:rgba(255, 106, 0, 0.15);}
-   .bg-blob-2{bottom:10%;left:-100px;width:300px;height:300px;background:rgba(255, 133, 51, 0.12);}
-    #pageAuthLoader{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2000;gap:16px;transition:opacity 0.3s ease;}
-   .loader-spinner{width:44px;height:44px;border:4px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 0.8s linear infinite;}
-    @keyframes spin{to{transform:rotate(360deg);}}
-   .app-header{position:sticky;top:0;left:0;right:0;background:rgba(255, 255, 255, 0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:100;box-shadow:var(--shadow-sm);}
-   .header-inner{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;}
-   .brand-logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;color:var(--primary-dark);}
-   .brand-logo i{font-size:24px;color:var(--primary);}
-   .nav-actions{display:flex;align-items:center;gap:8px;}
-   .nav-btn{width:40px;height:40px;border-radius:var(--radius-full);background:var(--primary-light);color:var(--primary);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s ease;cursor:pointer;}
-   .container{max-width:1100px;margin:0 auto;padding:24px 16px;display:flex;flex-direction:column;gap:24px;}
-   .welcome-card{background:var(--card-bg);border-radius:var(--radius-lg);padding:24px;border:1px solid var(--border);box-shadow:var(--shadow-md);position:relative;overflow:hidden;}
-   .welcome-card::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);}
-   .user-profile-flex{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
-   .avatar-wrapper{width:70px;height:70px;border-radius:var(--radius-full);border:3px solid var(--primary);background:var(--primary-light);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:var(--shadow-sm);flex-shrink:0;}
-   .avatar-wrapper img{width:100%;height:100%;object-fit:cover;}
-   .avatar-placeholder{font-size:32px;color:var(--primary);}
-   .user-details h2{font-size:22px;font-weight:700;color:var(--text-main);line-height:1.2;}
-   .user-details.username-tag{font-size:14px;color:var(--primary);font-weight:600;margin-top:2px;}
-   .sub-status-box{margin-top:20px;padding:18px;border-radius:var(--radius-md);background:var(--bg);border:1px solid var(--border);display:flex;flex-direction:column;gap:12px;}
-   .status-badge{padding:6px 14px;border-radius:var(--radius-full);font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;}
-   .status-badge.active{background:var(--success-light);color:var(--success);border:1px solid rgba(16, 185, 129, 0.3);}
-   .status-badge.expired{background:#fef2f2;color:var(--danger);border:1px solid rgba(239, 68, 68, 0.3);}
-   .status-badge.none{background:#fffbe6;color:var(--warning);border:1px solid rgba(245, 158, 11, 0.3);}
-   .countdown-timer-grid{display:flex;align-items:center;gap:10px;margin:8px 0;flex-wrap:wrap;}
-   .countdown-box{background:#ffffff;border:1px solid var(--border-accent);border-radius:var(--radius-sm);padding:8px 14px;min-width:65px;text-align:center;box-shadow:var(--shadow-sm);flex:1;max-width:90px;}
-   .countdown-num{font-size:20px;font-weight:800;color:var(--primary-dark);line-height:1;}
-   .countdown-label{font-size:11px;color:var(--text-muted);font-weight:600;margin-top:4px;}
-   .section-header{text-align:center;margin:12px 0 8px 0;}
-   .section-title{font-size:24px;font-weight:700;color:var(--text-main);}
-   .plans-grid{display:grid;grid-template-columns:1fr;gap:20px;}
-    @media(min-width:640px){.plans-grid{grid-template-columns:repeat(2,1fr);}}
-    @media(min-width:1024px){.plans-grid{grid-template-columns:repeat(3,1fr);}}
-   .plan-card{background:var(--card-bg);border-radius:var(--radius-lg);padding:28px 24px;border:1px solid var(--border);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;position:relative;transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);overflow:hidden;}
-   .plan-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--primary);}
-   .plan-card.is-popular{border:2px solid var(--primary);box-shadow:var(--shadow-lg);background:linear-gradient(180deg, #ffffff 0%, #fffbf8 100%);}
-   .popular-ribbon{position:absolute;top:14px;right:-32px;background:linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);color:#fff;font-size:11px;font-weight:700;padding:4px 34px;transform:rotate(45deg);box-shadow:var(--shadow-sm);letter-spacing:0.5px;text-transform:uppercase;}
-   .plan-price{font-size:34px;font-weight:800;color:var(--primary-dark);line-height:1;}
-   .buy-plan-btn{width:100%;background:linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);color:#ffffff;border:none;padding:14px 20px;border-radius:var(--radius-md);font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(255, 106, 0, 0.3);transition:all 0.2s ease;}
-   .account-summary-card{background:var(--card-bg);border-radius:var(--radius-lg);padding:20px;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
-   .modal-backdrop{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0, 0, 0, 0.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:opacity 0.3s ease, visibility 0.3s ease;}
-   .modal-backdrop.active{opacity:1;visibility:visible;}
-   .modal-box{background:var(--card-bg);border-radius:var(--radius-lg);max-width:400px;width:100%;padding:24px;box-shadow:var(--shadow-lg);transform:scale(0.92);transition:transform 0.3s ease;text-align:center;}
-   .modal-backdrop.active.modal-box{transform:scale(1);}
-   .modal-actions{display:flex;gap:12px;flex-direction:column;}
-   .btn-modal-cancel{flex:1;background:var(--bg);color:var(--text-main);border:1px solid var(--border);padding:12px;border-radius:var(--radius-md);font-weight:700;font-family:inherit;cursor:pointer;transition:background 0.2s ease;}
-   .btn-modal-confirm{flex:1;background:#25d366;color:#fff;border:none;padding:12px;border-radius:var(--radius-md);font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity 0.2s ease;}
-   .btn-wallet{background:var(--primary);}
-    #toast-container{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:9999;width:90%;max-width:360px;pointer-events:none;}
-   .toast{background:#ffffff;border-radius:var(--radius-md);padding:12px 16px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;border-left:4px solid var(--primary);margin-bottom:8px;animation:toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;pointer-events:auto;}
-    @keyframes toastIn{from{opacity:0;transform:translate(-50%, -20px);}to{opacity:1;transform:translate(0, 0);}}
+    :root {
+      --primary: #ff6a00;
+      --primary-dark: #e05d00;
+      --primary-light: #fff0eb;
+      --secondary: #ff8533;
+      --bg: #fff7f1;
+      --card-bg: #ffffff;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --border: #fee2d5;
+      --border-accent: #ffd1b8;
+      --success: #10b981;
+      --success-light: #ecfdf5;
+      --warning: #f59e0b;
+      --warning-light: #fffbe6;
+      --danger: #ef4444;
+      --danger-light: #fef2f2;
+      --shadow-sm: 0 2px 8px rgba(255, 106, 0, 0.05);
+      --shadow-md: 0 8px 20px rgba(255, 106, 0, 0.08);
+      --shadow-lg: 0 15px 35px rgba(255, 106, 0, 0.12);
+      --radius-sm: 10px;
+      --radius-md: 18px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Hind Siliguri', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+
+    /* Background Ambient Blobs */
+    .bg-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      z-index: -1;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .bg-blob-1 {
+      top: -100px;
+      right: -100px;
+      width: 380px;
+      height: 380px;
+      background: rgba(255, 106, 0, 0.15);
+    }
+    .bg-blob-2 {
+      bottom: 10%;
+      left: -100px;
+      width: 320px;
+      height: 320px;
+      background: rgba(255, 133, 51, 0.12);
+    }
+
+    /* Page Auth Loader */
+    #pageAuthLoader {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      gap: 16px;
+      transition: opacity 0.3s ease;
+    }
+    .loader-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Sticky Header */
+    .app-header {
+      position: sticky;
+      top: 0; left: 0; right: 0;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      text-decoration: none;
+    }
+    .brand-logo i {
+      font-size: 24px;
+      color: var(--primary);
+    }
+    .header-balance-pill {
+      background: var(--primary-light);
+      border: 1px solid var(--border-accent);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .nav-btn:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* Welcome Profile Card */
+    .welcome-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+    .welcome-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+    }
+    .user-profile-flex {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .avatar-wrapper {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-full);
+      border: 3px solid var(--primary);
+      background: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+    }
+    .avatar-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .avatar-placeholder {
+      font-size: 36px;
+      color: var(--primary);
+    }
+    .user-details {
+      flex: 1;
+      min-width: 220px;
+    }
+    .user-details h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+    .username-tag {
+      font-size: 14px;
+      color: var(--primary-dark);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .status-badges-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .chip {
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .chip.active-chip {
+      background: var(--success-light);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .chip.inactive-chip {
+      background: var(--danger-light);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .chip.verified-chip {
+      background: #e0f2fe;
+      color: #0284c7;
+      border: 1px solid rgba(2, 132, 199, 0.3);
+    }
+    .chip.unverified-chip {
+      background: var(--warning-light);
+      color: var(--warning);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    /* Subscription Status Box */
+    .sub-status-box {
+      margin-top: 22px;
+      padding: 20px;
+      border-radius: var(--radius-md);
+      background: var(--bg);
+      border: 1px solid var(--border-accent);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .status-badge-title {
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+    }
+    .status-badge-title.active {
+      background: var(--success-light);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .status-badge-title.expired {
+      background: var(--danger-light);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .status-badge-title.none {
+      background: var(--warning-light);
+      color: var(--warning);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .countdown-timer-grid {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 8px 0;
+      flex-wrap: wrap;
+    }
+    .countdown-box {
+      background: #ffffff;
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      min-width: 75px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      flex: 1;
+      max-width: 100px;
+    }
+    .countdown-num {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      line-height: 1;
+    }
+    .countdown-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .expiry-info-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .expired-action-area {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .expired-msg {
+      font-size: 14px;
+      color: var(--danger);
+      font-weight: 600;
+    }
+    .btn-renew {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+    .btn-renew:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Section Headers */
+    .section-header {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .section-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Plans Grid */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 640px) {
+      .plans-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .plans-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .plan-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 30px 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+    }
+    .plan-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary);
+    }
+    .plan-card.is-popular {
+      border: 2px solid var(--primary);
+      box-shadow: var(--shadow-lg);
+      background: linear-gradient(180deg, #ffffff 0%, #fffbf8 100%);
+    }
+    .popular-ribbon {
+      position: absolute;
+      top: 16px;
+      right: -32px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 36px;
+      transform: rotate(45deg);
+      box-shadow: var(--shadow-sm);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .featured-badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      width: fit-content;
+      margin-bottom: 12px;
+    }
+    .plan-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+    .plan-price-wrapper {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .plan-price {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      line-height: 1;
+    }
+    .plan-duration {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .approx-cost {
+      font-size: 12px;
+      color: var(--secondary);
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .plan-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 20px;
+      border-bottom: 1px dashed var(--border);
+      padding-bottom: 16px;
+    }
+    .features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 26px;
+      flex: 1;
+    }
+    .features-list li {
+      font-size: 13px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .features-list li i {
+      color: var(--success);
+      font-size: 14px;
+    }
+    .buy-plan-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: #ffffff;
+      border: none;
+      padding: 14px 20px;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(255, 106, 0, 0.3);
+      transition: all 0.2s ease;
+    }
+    .buy-plan-btn:hover {
+      opacity: 0.95;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(255, 106, 0, 0.4);
+    }
+
+    /* Account Summary Card */
+    .account-summary-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 20px;
+    }
+    @media (min-width: 640px) {
+      .account-summary-card {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .summary-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .summary-item span {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .summary-item h4 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      word-break: break-all;
+    }
+
+    /* FAQ Accordion Section */
+    .faq-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+    .faq-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .faq-title i {
+      color: var(--primary);
+    }
+    .accordion-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+    .accordion-header {
+      width: 100%;
+      background: var(--bg);
+      border: none;
+      padding: 16px 20px;
+      text-align: left;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .accordion-header i {
+      color: var(--primary);
+      transition: transform 0.3s ease;
+    }
+    .accordion-item.open .accordion-header i {
+      transform: rotate(180deg);
+    }
+    .accordion-body {
+      padding: 0 20px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      background: #ffffff;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .accordion-item.open .accordion-body {
+      padding: 16px 20px;
+      max-height: 200px;
+    }
+
+    /* Support Card */
+    .support-card {
+      background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+      color: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      box-shadow: var(--shadow-md);
+    }
+    .support-text h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .support-text p {
+      font-size: 13px;
+      color: #9ca3af;
+    }
+    .btn-support-wa {
+      background: #25d366;
+      color: #ffffff;
+      padding: 12px 22px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+    .btn-support-wa:hover {
+      background: #20ba5a;
+      transform: translateY(-2px);
+    }
+
+    /* Modal Backdrop & Box */
+    .modal-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .modal-backdrop.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-box {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      max-width: 420px;
+      width: 100%;
+      padding: 28px 24px;
+      box-shadow: var(--shadow-lg);
+      transform: scale(0.92);
+      transition: transform 0.3s ease;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+    .modal-backdrop.active .modal-box {
+      transform: scale(1);
+    }
+    .modal-icon-header {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-full);
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin: 0 auto 16px auto;
+    }
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .modal-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      margin-bottom: 20px;
+    }
+    .modal-details-box {
+      background: var(--bg);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
+    }
+    .modal-details-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+    .modal-details-row span:first-child {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .modal-details-row span:last-child {
+      color: var(--text-main);
+      font-weight: 700;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .btn-modal-cancel {
+      flex: 1;
+      background: var(--bg);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 13px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .btn-modal-cancel:hover {
+      background: #f3f4f6;
+    }
+    .btn-modal-confirm {
+      flex: 1.5;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: #ffffff;
+      border: none;
+      padding: 13px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(255, 106, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+    .btn-modal-confirm:hover {
+      opacity: 0.95;
+    }
+    .btn-modal-confirm:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Toast Container */
+    #toast-container {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      width: 90%;
+      max-width: 400px;
+      pointer-events: none;
+    }
+    .toast {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-left: 5px solid var(--primary);
+      margin-bottom: 10px;
+      animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      pointer-events: auto;
+    }
+    .toast.success { border-left-color: var(--success); }
+    .toast.error { border-left-color: var(--danger); }
+    .toast.warning { border-left-color: var(--warning); }
+    .toast-icon { font-size: 18px; }
+    .toast.success .toast-icon { color: var(--success); }
+    .toast.error .toast-icon { color: var(--danger); }
+    .toast.warning .toast-icon { color: var(--warning); }
+    .toast-msg { font-size: 14px; font-weight: 600; color: var(--text-main); }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Background Blobs -->
   <div class="bg-blob bg-blob-1"></div>
   <div class="bg-blob bg-blob-2"></div>
-  <div id="pageAuthLoader"><div class="loader-spinner"></div><span style="font-size: 14px; font-weight: 600; color: var(--text-muted);">অ্যাকাউন্ট ভেরিফাই করা হচ্ছে...</span></div>
+
+  <!-- Page Loader -->
+  <div id="pageAuthLoader">
+    <div class="loader-spinner"></div>
+    <span style="font-size: 15px; font-weight: 600; color: var(--text-muted);">অ্যাকাউন্ট ভেরিফাই করা হচ্ছে...</span>
+  </div>
+
+  <!-- Toast Notification Container -->
   <div id="toast-container"></div>
-  <header class="app-header"><div class="header-inner"><div class="brand-logo"><i class="fa-solid fa-bag-shopping"></i><span>GHOTI MARKET</span></div><div class="nav-actions"><a href="https://seller.ghotimarket.com/dashboard" class="nav-btn"><i class="fa-solid fa-house"></i></a></div></div></header>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <a href="#" class="brand-logo">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span>GHOTI MARKET</span>
+      </a>
+      <div class="nav-actions">
+        <div class="header-balance-pill">
+          <i class="fa-solid fa-wallet"></i>
+          <span id="headerBalanceDisplay">৳০</span>
+        </div>
+        <a href="https://seller.ghotimarket.com/dashboard" class="nav-btn" title="Dashboard">
+          <i class="fa-solid fa-house"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
   <main class="container">
+
+    <!-- Welcome & Seller Profile Card -->
     <section class="welcome-card" id="userWelcomeCard">
-      <div class="user-profile-flex"><div class="avatar-wrapper" id="avatarBox"><i class="fa-solid fa-store avatar-placeholder"></i></div><div class="user-details"><h2 id="userNameDisplay">স্বাগতম, Seller 👋</h2><div class="username-tag" id="userHandleDisplay">Seller Account</div><p>আপনার Seller সুবিধাগুলো সচল রাখতে উপযুক্ত Subscription নির্বাচন করুন</p></div></div>
-      <div class="sub-status-box" id="subStatusContainer"><div class="status-left"><div class="status-badge none" id="statusBadge"><i class="fa-solid fa-circle-info"></i> <span>চেক করা হচ্ছে...</span></div></div><div id="statusContentArea"><span class="status-info-text" id="statusInfoText">মেয়াদ তথ্য লোড হচ্ছে...</span></div></div>
+      <div class="user-profile-flex">
+        <div class="avatar-wrapper" id="avatarBox">
+          <i class="fa-solid fa-store avatar-placeholder"></i>
+        </div>
+        <div class="user-details">
+          <h2 id="userNameDisplay">স্বাগতম, Seller 👋</h2>
+          <div class="username-tag" id="userHandleDisplay">@seller</div>
+          
+          <div class="status-badges-group">
+            <span class="chip inactive-chip" id="activeStatusChip">
+              <i class="fa-solid fa-circle-dot"></i> <span>Inactive</span>
+            </span>
+            <span class="chip unverified-chip" id="verifiedStatusChip">
+              <i class="fa-solid fa-triangle-exclamation"></i> <span>Unverified</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subscription Status Area -->
+      <div class="sub-status-box" id="subStatusContainer">
+        <div class="status-badge-title none" id="statusBadge">
+          <i class="fa-solid fa-circle-info"></i> <span>স্ট্যাটাস চেক করা হচ্ছে...</span>
+        </div>
+        
+        <div id="statusContentArea">
+          <p class="expiry-info-text">মেয়াদ তথ্য লোড হচ্ছে...</p>
+        </div>
+      </div>
     </section>
-    <section><div class="section-header"><h3 class="section-title">আপনার Seller Subscription নির্বাচন করুন</h3></div><div class="plans-grid" id="plansGrid"><div class="skeleton-box skeleton-card"></div><div class="skeleton-box skeleton-card"></div><div class="skeleton-box skeleton-card"></div></div></section>
-    <section class="account-summary-card"><div><span>বর্তমান Wallet Balance</span><h3 id="walletBalanceDisplay" style="font-size:24px;color:var(--primary);">৳০</h3></div><div><span>Seller Email</span><h4 id="accEmailDisplay">লোড হচ্ছে...</h4></div></section>
+
+    <!-- Subscription Plans Section -->
+    <section id="packagesSection">
+      <div class="section-header">
+        <h3 class="section-title">আপনার Seller Subscription নির্বাচন করুন</h3>
+        <p class="section-subtitle">আপনার ব্যবসার পরিধি অনুযায়ী মানানসই প্যাকেজ বাছাই করুন</p>
+      </div>
+
+      <div class="plans-grid" id="plansGrid">
+        <!-- Package Cards dynamically rendered via JS -->
+      </div>
+    </section>
+
+    <!-- Account Summary Card -->
+    <section class="account-summary-card">
+      <div class="summary-item">
+        <span>💰 Current Wallet Balance</span>
+        <h4 id="summaryWalletBalance" style="color: var(--primary-dark);">৳০</h4>
+      </div>
+      <div class="summary-item">
+        <span>📧 Seller Email</span>
+        <h4 id="summaryEmail">লোড হচ্ছে...</h4>
+      </div>
+      <div class="summary-item">
+        <span>🆔 Seller User ID</span>
+        <h4 id="summaryUid">UID...</h4>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-card">
+      <h3 class="faq-title"><i class="fa-solid fa-circle-question"></i> সাধারণ জিজ্ঞাসাবলী (FAQ)</h3>
+      
+      <div class="accordion-item">
+        <button type="button" class="accordion-header">
+          <span>কেন GHOTI MARKET Subscription নেওয়া প্রয়োজন?</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="accordion-body">
+          <p>GHOTI MARKET-এ আপনার প্রোডাক্ট কাস্টমারদের কাছে দৃশ্যমান করতে এবং সেলার ড্যাশবোর্ডের সব অ্যাডভান্সড ফিচার ব্যবহার করতে সক্রিয় সাবস্ক্রিপশন থাকা আবশ্যক। সাবস্ক্রিপশন থাকলে আপনার শপ ভেরিফাইড ব্যাজ লাভ করবে।</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button type="button" class="accordion-header">
+          <span>Wallet Balance কিভাবে রিচার্জ করব?</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="accordion-body">
+          <p>আপনার ড্যাশবোর্ডের Wallet সেকশন থেকে বিকাশ, নগদ বা রকেটের মাধ্যমে খুব সহজেই ব্যালেন্স রিচার্জ করে নিতে পারেন। ব্যালেন্স যোগ হওয়ার সাথে সাথেই তা দিয়ে সাবস্ক্রিপশন কেনা যাবে।</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button type="button" class="accordion-header">
+          <span>সাবস্ক্রিপশনের মেয়াদ চলাকালীন নতুন প্যাক কিনলে কি হবে?</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="accordion-body">
+          <p>আপনার বর্তমান সাবস্ক্রিপশন মেয়াদ শেষ হওয়ার আগেই নতুন প্যাক কিনলে নতুন প্যাকের মেয়াদ আপনার বর্তমান অবশিষ্ট মেয়াদের সাথে সাথে যুক্ত (Add) হয়ে যাবে। ফলে আপনার কোনো দিন নষ্ট হবে না।</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button type="button" class="accordion-header">
+          <span>মেয়াদ শেষ হয়ে গেলে আমার শপের প্রোডাক্ট কি থাকবে?</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="accordion-body">
+          <p>হ্যাঁ, আপনার প্রোডাক্ট মুছে যাবে না। তবে কাস্টমাররা সাময়িকভাবে আপনার শপ দেখতে পাবে না। পুনরায় ওয়ালেট থেকে সাবস্ক্রিপশন রিচার্জ করার সাথে সাথেই শপ লাইভ হয়ে যাবে।</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- General Support Section -->
+    <section class="support-card">
+      <div class="support-text">
+        <h3>সহযোগিতা প্রয়োজন?</h3>
+        <p>সাবস্ক্রিপশন বা ওয়ালেট সংক্রান্ত যেকোনো সহায়তার জন্য হেল্পডেস্কে যোগাযোগ করুন।</p>
+      </div>
+      <a href="https://wa.me/8801727003670?text=%E0%A6%86%E0%A6%B8%E0%A7%8D%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%AF%E0%A6%BC%E0%A6%95%E0%A6%BF%E0%A6%AE%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20GHOTI%20MARKET%20%E0%A6%BB%E0%A6%B8%E0%A6%B2%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A6%BE%E0%A6%AA%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%9F%20%E0%A6%9A%E0%A6%BE%E0%A6%87" target="_blank" rel="noopener noreferrer" class="btn-support-wa">
+        <i class="fa-brands fa-whatsapp"></i> কাস্টমার সাপোর্ট
+      </a>
+    </section>
+
   </main>
+
+  <!-- Purchase Modal -->
   <div class="modal-backdrop" id="purchaseModal">
     <div class="modal-box">
-      <div class="modal-icon-header"><i class="fa-solid fa-cart-shopping"></i></div>
-      <h3 class="modal-title">Subscription নির্বাচন করেছেন</h3>
-      <p class="modal-subtitle">নিচের প্যাকেজটি নির্বাচন করুন</p>
-      <div class="modal-details-box">
-        <div class="modal-details-row"><span>প্যাকেজের নাম:</span><span id="modalPkgName">-</span></div>
-        <div class="modal-details-row"><span>প্যাকেজ মূল্য:</span><span id="modalPkgPrice">৳-</span></div>
-        <div class="modal-details-row"><span>আপনার ব্যালেন্স:</span><span id="modalUserBalance">৳-</span></div>
+      <div class="modal-icon-header">
+        <i class="fa-solid fa-wallet"></i>
       </div>
+      <h3 class="modal-title">Subscription নিশ্চিতকরণ</h3>
+      <p class="modal-subtitle">আপনার Wallet থেকে সরাসরি সাবস্ক্রিপশন সম্পূর্ণ করুন</p>
+      
+      <div class="modal-details-box">
+        <div class="modal-details-row">
+          <span>প্যাকেজের নাম:</span>
+          <span id="modalPkgName">-</span>
+        </div>
+        <div class="modal-details-row">
+          <span>প্যাকেজ মূল্য:</span>
+          <span id="modalPkgPrice" style="color: var(--primary-dark);">৳-</span>
+        </div>
+        <div class="modal-details-row">
+          <span>প্যাকেজের মেয়াদ:</span>
+          <span id="modalPkgDays">- দিন</span>
+        </div>
+        <div class="modal-details-row">
+          <span>আপনার Wallet Balance:</span>
+          <span id="modalUserBalance">৳-</span>
+        </div>
+        <div class="modal-details-row" style="border-top: 1px dashed var(--border-accent); padding-top: 8px; margin-top: 4px;">
+          <span>ক্রয়ের পর অবশিষ্ট ব্যালেন্স:</span>
+          <span id="modalRemBalance">৳-</span>
+        </div>
+      </div>
+
+      <!-- STRICTLY 2 BUTTONS ONLY - NO WHATSAPP BUTTON -->
       <div class="modal-actions">
         <button type="button" class="btn-modal-cancel" id="closeModalBtn">বাতিল</button>
-        <button type="button" class="btn-modal-confirm btn-wallet" id="confirmWalletBtn"><i class="fa-solid fa-wallet"></i> Wallet দিয়ে কিনুন</button>
-        <button type="button" class="btn-modal-confirm" id="confirmWaBtn"><i class="fa-brands fa-whatsapp"></i> WhatsApp-এ যান</button>
+        <button type="button" class="btn-modal-confirm" id="confirmWalletBtn">
+          <i class="fa-solid fa-wallet"></i> Wallet দিয়ে কিনুন
+        </button>
       </div>
     </div>
   </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, onSnapshot, collection, updateDoc, addDoc, serverTimestamp, runTransaction, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  <!-- Firebase v10 Modular SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { 
+      getFirestore, 
+      doc, 
+      onSnapshot, 
+      collection, 
+      serverTimestamp, 
+      runTransaction 
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = {apiKey:"AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",authDomain:"ghotimarket.firebaseapp.com",databaseURL:"https://ghotimarket-default-rtdb.firebaseio.com",projectId:"ghotimarket",storageBucket:"ghotimarket.firebasestorage.app",messagingSenderId:"481257644093",appId:"1:481257644093:web:0dfc3699d6b3c86afeca54",measurementId:"G-4SR8V2EKC1"};
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+      authDomain: "ghotimarket.firebaseapp.com",
+      databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+      projectId: "ghotimarket",
+      storageBucket: "ghotimarket.firebasestorage.app",
+      messagingSenderId: "481257644093",
+      appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+      measurementId: "G-4SR8V2EKC1"
+    };
 
-let currentUserData = {uid:"",email:"",shopName:"Seller",shopLogo:"",username:"",profileUnlockedUntil:0,balance:0};
-let selectedPackageForModal = null;
-let unsubscribeUser = null;
-let unsubscribePackages = null;
-let countdownInterval = null;
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-function escapeHtml(text){if(text===null||text===undefined)return'';return String(text).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
-function toBengaliNum(num){const bengaliDigits=['০','১','২','৩','৪','৫','৬','৭','৮','৯'];return String(num).replace(/\d/g,d=>bengaliDigits[d]);}
-function getProfileUnlockTime(value){if(!value)return 0;if(typeof value==="number")return value;if(typeof value==="string"&&!isNaN(Number(value)))return Number(value);if(value&&typeof value.toMillis==="function")return value.toMillis();if(value&&typeof value.seconds==="number")return value.seconds*1000;return 0;}
-function showToast(message){const container=document.getElementById('toast-container');const toast=document.createElement('div');toast.className='toast';toast.innerHTML=`<i class="fa-solid fa-circle-info toast-icon"></i><span class="toast-msg">${escapeHtml(message)}</span>`;container.appendChild(toast);setTimeout(()=>{toast.style.opacity='0';setTimeout(()=>toast.remove(),300);},3000);}
-function hideAuthLoader(){const loader=document.getElementById('pageAuthLoader');if(loader){loader.style.opacity='0';setTimeout(()=>loader.style.display='none',300);}}
+    // Global App State
+    let currentUserData = {
+      uid: "",
+      email: "",
+      shopName: "Seller",
+      shopLogo: "",
+      username: "",
+      profileUnlockedUntil: 0,
+      balance: 0,
+      active: false,
+      verified: false
+    };
 
-onAuthStateChanged(auth, async (user) => {
-  if(!user){window.location.href="login.html";return;}
-  currentUserData.uid=user.uid||"";currentUserData.email=user.email||"N/A";currentUserData.shopName=user.displayName||"Seller";currentUserData.shopLogo=user.photoURL||"";
-  document.getElementById('accEmailDisplay').textContent=currentUserData.email;
-  listenToUserProfile(user.uid);listenToPackages();hideAuthLoader();
-});
+    let selectedPackageForModal = null;
+    let unsubscribeUser = null;
+    let unsubscribePackages = null;
+    let countdownInterval = null;
 
-function listenToUserProfile(uid){
-  if(unsubscribeUser){unsubscribeUser();}
-  const userRef=doc(db,"users",uid);
-  unsubscribeUser=onSnapshot(userRef,(userSnap)=>{
-    if(userSnap.exists()){
-      const uData=userSnap.data();
-      currentUserData.shopName=uData.shopName||uData.name||auth.currentUser.displayName||"Seller";
-      currentUserData.shopLogo=uData.shopLogo||uData.photoURL||auth.currentUser.photoURL||"";
-      currentUserData.username=uData.username||"";
-      currentUserData.profileUnlockedUntil=getProfileUnlockTime(uData.profileUnlockedUntil);
-      currentUserData.balance=Number(uData.balance)||0;
-    }else{currentUserData.profileUnlockedUntil=0;currentUserData.balance=0;}
-    document.getElementById('walletBalanceDisplay').textContent=`৳${toBengaliNum(currentUserData.balance)}`;
-    handleSubscriptionCountdown();
-  });
-}
+    // Helper: Escape HTML string to prevent XSS
+    function escapeHtml(text) {
+      if (text === null || text === undefined) return '';
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
 
-function handleSubscriptionCountdown(){
-  const targetMs=currentUserData.profileUnlockedUntil;const now=Date.now();
-  if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null;}
-  if(!targetMs||targetMs<=now){document.getElementById('statusBadge').className="status-badge expired";document.getElementById('statusBadge').innerHTML=`<i class="fa-solid fa-triangle-exclamation"></i> <span>Subscription মেয়াদ শেষ</span>`;return;}
-  const runCountdown=()=>{const remainingMs=targetMs-Date.now();if(remainingMs<=0){clearInterval(countdownInterval);return;}
-    const totalSeconds=Math.floor(remainingMs/1000);const d=Math.floor(totalSeconds/86400);const h=Math.floor((totalSeconds%86400)/3600);const m=Math.floor((totalSeconds%3600)/60);const s=totalSeconds%60;
-    document.getElementById('statusBadge').className="status-badge active";document.getElementById('statusBadge').innerHTML=`<i class="fa-solid fa-clock"></i> <span>Subscription মেয়াদ বাকি</span>`;
-    document.getElementById('statusContentArea').innerHTML=`<div class="countdown-timer-grid"><div class="countdown-box"><div class="countdown-num">${toBengaliNum(d)}</div><div class="countdown-label">দিন</div></div><div class="countdown-box"><div class="countdown-num">${toBengaliNum(h)}</div><div class="countdown-label">ঘণ্টা</div></div><div class="countdown-box"><div class="countdown-num">${toBengaliNum(m)}</div><div class="countdown-label">মিনিট</div></div><div class="countdown-box"><div class="countdown-num">${toBengaliNum(s)}</div><div class="countdown-label">সেকেন্ড</div></div></div>`;
-  };
-  runCountdown();countdownInterval=setInterval(runCountdown,1000);
-}
+    // Helper: Convert English digits to Bengali digits
+    function toBengaliNum(num) {
+      if (num === null || num === undefined) return '০';
+      const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+      return String(num).replace(/\d/g, d => bengaliDigits[d]);
+    }
 
-function listenToPackages(){
-  if(unsubscribePackages){unsubscribePackages();}
-  const packagesRef=collection(db,"packages");const grid=document.getElementById('plansGrid');
-  unsubscribePackages=onSnapshot(packagesRef,(snapshot)=>{
-    let rawPackages=[];snapshot.forEach((docSnap)=>{const p=docSnap.data();const pkgId=docSnap.id;const price=Number(p.price);const days=Number(p.days);if(!isNaN(price)&&!isNaN(days)&&price>=0&&days>0){rawPackages.push({id:pkgId,name:p.name||`${toBengaliNum(days)} দিনের Plan`,price:price,days:days,desc:p.desc||"Seller account-এর সুবিধা চালু রাখার জন্য একটি কার্যকর প্যাকেজ।",popular:Boolean(p.popular),featured:Boolean(p.featured)});}});
-    rawPackages.sort((a,b)=>a.days-b.days);renderPlansGrid(rawPackages);
-  });
-}
+    // Helper: Normalize profileUnlockedUntil to Milliseconds
+    function getProfileUnlockTime(value) {
+      if (!value) return 0;
+      if (typeof value === "number") return value;
+      if (typeof value === "string" && !isNaN(Number(value))) return Number(value);
+      if (value && typeof value.toMillis === "function") return value.toMillis();
+      if (value && typeof value.seconds === "number") return value.seconds * 1000;
+      return 0;
+    }
 
-function renderPlansGrid(packages){
-  const grid=document.getElementById('plansGrid');let html='';
-  packages.forEach((pkg,index)=>{
-    html+=`<div class="plan-card ${pkg.popular?'is-popular':''}">${pkg.popular?'<div class="popular-ribbon">সবচেয়ে জনপ্রিয়</div>':''}<h4 class="plan-title">${escapeHtml(pkg.name)}</h4><div><span class="plan-price">৳${toBengaliNum(pkg.price)}</span><span>/ ${toBengaliNum(pkg.days)} দিন</span></div><p style="font-size:12px;color:var(--text-muted);margin:8px 0;">${escapeHtml(pkg.desc)}</p><button type="button" class="buy-plan-btn" data-pkg-id="${escapeHtml(pkg.id)}"><i class="fa-solid fa-cart-shopping"></i> এই প্যাকটি নিন</button></div>`;
-  });
-  grid.innerHTML=html;
-  grid.querySelectorAll('.buy-plan-btn[data-pkg-id]').forEach(btn=>{btn.addEventListener('click',(e)=>{const id=e.currentTarget.getAttribute('data-pkg-id');const targetPkg=packages.find(p=>p.id===id);if(targetPkg)openPurchaseModal(targetPkg);});});
-}
+    // Helper: Format date to Bangladesh Time (Asia/Dhaka)
+    function formatBDDate(ms) {
+      if (!ms) return "N/A";
+      try {
+        const date = new Date(ms);
+        return date.toLocaleString('bn-BD', {
+          timeZone: 'Asia/Dhaka',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        });
+      } catch (e) {
+        return new Date(ms).toLocaleString();
+      }
+    }
 
-const purchaseModal=document.getElementById('purchaseModal');
-const closeModalBtn=document.getElementById('closeModalBtn');
-const confirmWaBtn=document.getElementById('confirmWaBtn');
-const confirmWalletBtn=document.getElementById('confirmWalletBtn');
+    // Helper: Show Toast Notification
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      let iconClass = 'fa-solid fa-circle-info';
+      if (type === 'success') iconClass = 'fa-solid fa-circle-check';
+      if (type === 'error') iconClass = 'fa-solid fa-circle-xmark';
+      if (type === 'warning') iconClass = 'fa-solid fa-triangle-exclamation';
 
-function openPurchaseModal(pkg){
-  selectedPackageForModal=pkg;
-  document.getElementById('modalPkgName').textContent=pkg.name;
-  document.getElementById('modalPkgPrice').textContent=`৳${toBengaliNum(pkg.price)}`;
-  document.getElementById('modalUserBalance').textContent=`৳${toBengaliNum(currentUserData.balance)}`;
-  purchaseModal.classList.add('active');
-}
-function closeModal(){purchaseModal.classList.remove('active');selectedPackageForModal=null;}
-closeModalBtn.addEventListener('click',closeModal);
-purchaseModal.addEventListener('click',(e)=>{if(e.target===purchaseModal)closeModal();});
+      toast.innerHTML = `
+        <i class="${iconClass} toast-icon"></i>
+        <span class="toast-msg">${escapeHtml(message)}</span>
+      `;
+      container.appendChild(toast);
 
-// 1. WHATSAPP BUTTON
-confirmWaBtn.addEventListener('click',()=>{
-  if(!selectedPackageForModal){showToast("কোনো প্যাকেজ নির্বাচিত হয়নি!");return;}
-  const p=selectedPackageForModal;const sellerIdentifier=currentUserData.shopName||(currentUserData.username?`@${currentUserData.username}`:'Seller Account');
-  const message=`আসসালামু আলাইকুম, আমি GHOTI MARKET-এর একটি Subscription নিতে চাই।\n\n📦 প্যাকেজ: ${p.name}\n💰 মূল্য: ৳${p.price}\n🕒 মেয়াদ: ${p.days} দিন\n🏪 Seller Account: ${sellerIdentifier}\n🆔 UID: ${currentUserData.uid}\n📧 লগিন ইমেইল: ${currentUserData.email}`;
-  const whatsappUrl=`https://wa.me/8801727003670?text=${encodeURIComponent(message)}`;
-  closeModal();showToast("WhatsApp-এ রিডাইরেক্ট করা হচ্ছে...");setTimeout(()=>{window.location.href=whatsappUrl;},300);
-});
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-20px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
 
-// 2. WALLET BUY BUTTON - MAIN LOGIC
-confirmWalletBtn.addEventListener('click',async()=>{
-  if(!selectedPackageForModal)return;
-  const p=selectedPackageForModal;const uid=currentUserData.uid;const userRef=doc(db,"users",uid);
+    // Helper: Hide Auth Loader
+    function hideAuthLoader() {
+      const loader = document.getElementById('pageAuthLoader');
+      if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.style.display = 'none', 300);
+      }
+    }
 
-  try{
-    confirmWalletBtn.disabled=true;confirmWalletBtn.innerHTML=`<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং...`;
-    await runTransaction(db,async(transaction)=>{
-      const userDoc=await transaction.get(userRef);
-      if(!userDoc.exists())throw"User not found";
-      const userData=userDoc.data();const currentBalance=Number(userData.balance)||0;const currentExpiry=getProfileUnlockTime(userData.profileUnlockedUntil);
-      if(currentBalance<p.price){throw`আপনার ব্যালেন্সে ৳${p.price} নেই। বর্তমান ব্যালেন্স: ৳${currentBalance}`;}
-      const newBalance=currentBalance-p.price;
-      const months=p.price/300;const msToAdd=months*30*24*60*60*1000;const newExpiry=currentExpiry+msToAdd;
-      transaction.update(userRef,{balance:newBalance,profileUnlockedUntil:newExpiry});
-      const historyRef=doc(collection(db,"users_transection"));
-      transaction.set(historyRef,{userId:uid,amount:-p.price,type:"SUBSCRIPTION_BUY",packageName:p.name,packageDays:p.days,packagePrice:p.price,prevBalance:currentBalance,newBalance:newBalance,prevExpiry:currentExpiry,newExpiry:newExpiry,createdAt:serverTimestamp(),note:`Wallet থেকে ${p.name} ক্রয় করা হয়েছে`});
+    // Auth Listener
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      currentUserData.uid = user.uid || "";
+      currentUserData.email = user.email || "N/A";
+      
+      document.getElementById('summaryEmail').textContent = currentUserData.email;
+      document.getElementById('summaryUid').textContent = currentUserData.uid;
+
+      listenToUserProfile(user.uid);
+      listenToPackages();
+      hideAuthLoader();
     });
-    closeModal();showToast(`✅ ${p.name} সফলভাবে একটিভ হয়েছে! ৳${p.price} কাটা হয়েছে`);
-  }catch(error){console.error("Wallet Purchase Error:",error);showToast(`❌ Error: ${error}`);}
-  finally{confirmWalletBtn.disabled=false;confirmWalletBtn.innerHTML=`<i class="fa-solid fa-wallet"></i> Wallet দিয়ে কিনুন`;}
-});
 
-window.addEventListener('beforeunload',()=>{if(countdownInterval)clearInterval(countdownInterval);if(unsubscribeUser)unsubscribeUser();if(unsubscribePackages)unsubscribePackages();});
-</script>
+    // Realtime Listener for User Profile
+    function listenToUserProfile(uid) {
+      if (unsubscribeUser) unsubscribeUser();
+
+      const userRef = doc(db, "users", uid);
+      unsubscribeUser = onSnapshot(userRef, (userSnap) => {
+        if (userSnap.exists()) {
+          const uData = userSnap.data();
+          
+          currentUserData.shopName = uData.shopName || uData.name || auth.currentUser?.displayName || "Seller";
+          currentUserData.shopLogo = uData.shopLogo || uData.photoURL || auth.currentUser?.photoURL || "";
+          currentUserData.username = uData.username || "";
+          currentUserData.balance = Number(uData.balance) || 0;
+          currentUserData.active = uData.active === true;
+          currentUserData.verified = uData.verified === true;
+          currentUserData.profileUnlockedUntil = getProfileUnlockTime(uData.profileUnlockedUntil);
+
+          // Update UI
+          updateUserProfileUI();
+        } else {
+          currentUserData.balance = 0;
+          currentUserData.active = false;
+          currentUserData.verified = false;
+          currentUserData.profileUnlockedUntil = 0;
+          updateUserProfileUI();
+        }
+      }, (error) => {
+        console.error("Error listening to user profile:", error);
+        showToast("প্রোফাইল তথ্য লোড করতে সমস্যা হয়েছে", "error");
+      });
+    }
+
+    // Update User Profile UI
+    function updateUserProfileUI() {
+      // Shop Name & Username
+      document.getElementById('userNameDisplay').textContent = currentUserData.shopName;
+      document.getElementById('userHandleDisplay').textContent = currentUserData.username ? `@${currentUserData.username}` : 'Seller Account';
+
+      // Shop Logo Avatar
+      const avatarBox = document.getElementById('avatarBox');
+      if (currentUserData.shopLogo) {
+        avatarBox.innerHTML = `<img src="${escapeHtml(currentUserData.shopLogo)}" alt="Shop Logo" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\\'fa-solid fa-store avatar-placeholder\\'></i>';">`;
+      } else {
+        avatarBox.innerHTML = `<i class="fa-solid fa-store avatar-placeholder"></i>`;
+      }
+
+      // Active Status
+      const activeChip = document.getElementById('activeStatusChip');
+      if (currentUserData.active) {
+        activeChip.className = "chip active-chip";
+        activeChip.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>🟢 Active</span>`;
+      } else {
+        activeChip.className = "chip inactive-chip";
+        activeChip.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> <span>🔴 Inactive</span>`;
+      }
+
+      // Verified Status
+      const verifiedChip = document.getElementById('verifiedStatusChip');
+      if (currentUserData.verified) {
+        verifiedChip.className = "chip verified-chip";
+        verifiedChip.innerHTML = `<i class="fa-solid fa-badge-check"></i> <span>✅ Verified</span>`;
+      } else {
+        verifiedChip.className = "chip unverified-chip";
+        verifiedChip.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>⚠️ Unverified</span>`;
+      }
+
+      // Balance Displays (Top Header, Account Summary, Modal if open)
+      const formattedBalance = `৳${toBengaliNum(currentUserData.balance)}`;
+      document.getElementById('headerBalanceDisplay').textContent = formattedBalance;
+      document.getElementById('summaryWalletBalance').textContent = formattedBalance;
+
+      if (selectedPackageForModal) {
+        document.getElementById('modalUserBalance').textContent = formattedBalance;
+        const rem = currentUserData.balance - selectedPackageForModal.price;
+        document.getElementById('modalRemBalance').textContent = `৳${toBengaliNum(rem >= 0 ? rem : 0)}`;
+      }
+
+      // Handle Subscription Countdown
+      handleSubscriptionCountdown();
+    }
+
+    // Handle Countdown Timer & Subscription UI
+    function handleSubscriptionCountdown() {
+      const targetMs = currentUserData.profileUnlockedUntil;
+      const now = Date.now();
+
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+
+      const statusBadge = document.getElementById('statusBadge');
+      const statusContentArea = document.getElementById('statusContentArea');
+
+      // Expired or No Subscription
+      if (!targetMs || targetMs <= now) {
+        statusBadge.className = "status-badge-title expired";
+        statusBadge.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>Subscription মেয়াদ শেষ</span>`;
+
+        statusContentArea.innerHTML = `
+          <div class="expired-action-area">
+            <p class="expired-msg">আপনার Seller সুবিধার মেয়াদ শেষ হয়ে গেছে। নতুন Subscription নির্বাচন করুন।</p>
+            <button type="button" class="btn-renew" id="scrollToPlansBtn">
+              <i class="fa-solid fa-cart-shopping"></i> নতুন Subscription নিন
+            </button>
+          </div>
+        `;
+
+        document.getElementById('scrollToPlansBtn')?.addEventListener('click', () => {
+          document.getElementById('packagesSection').scrollIntoView({ behavior: 'smooth' });
+        });
+        return;
+      }
+
+      // Active Subscription
+      statusBadge.className = "status-badge-title active";
+      statusBadge.innerHTML = `<i class="fa-solid fa-clock"></i> <span>Subscription সক্রিয় আছে</span>`;
+
+      const runCountdown = () => {
+        const remainingMs = currentUserData.profileUnlockedUntil - Date.now();
+        if (remainingMs <= 0) {
+          clearInterval(countdownInterval);
+          handleSubscriptionCountdown();
+          return;
+        }
+
+        const totalSeconds = Math.floor(remainingMs / 1000);
+        const d = Math.floor(totalSeconds / 86400);
+        const h = Math.floor((totalSeconds % 86400) / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = totalSeconds % 60;
+
+        statusContentArea.innerHTML = `
+          <div>
+            <div style="font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;">
+              Subscription মেয়াদ বাকি:
+            </div>
+            <div class="countdown-timer-grid">
+              <div class="countdown-box">
+                <div class="countdown-num">${toBengaliNum(d)}</div>
+                <div class="countdown-label">দিন</div>
+              </div>
+              <div class="countdown-box">
+                <div class="countdown-num">${toBengaliNum(h)}</div>
+                <div class="countdown-label">ঘণ্টা</div>
+              </div>
+              <div class="countdown-box">
+                <div class="countdown-num">${toBengaliNum(m)}</div>
+                <div class="countdown-label">মিনিট</div>
+              </div>
+              <div class="countdown-box">
+                <div class="countdown-num">${toBengaliNum(s)}</div>
+                <div class="countdown-label">সেকেন্ড</div>
+              </div>
+            </div>
+            <p class="expiry-info-text" style="margin-top: 10px;">
+              <i class="fa-regular fa-calendar-check" style="color: var(--primary);"></i>
+              মেয়াদ শেষ হবে: ${formatBDDate(targetMs)}
+            </p>
+          </div>
+        `;
+      };
+
+      runCountdown();
+      countdownInterval = setInterval(runCountdown, 1000);
+    }
+
+    // Realtime Listener for Packages Collection
+    function listenToPackages() {
+      if (unsubscribePackages) unsubscribePackages();
+
+      const packagesRef = collection(db, "packages");
+      unsubscribePackages = onSnapshot(packagesRef, (snapshot) => {
+        let rawPackages = [];
+        snapshot.forEach((docSnap) => {
+          const p = docSnap.data();
+          const pkgId = docSnap.id;
+          const price = Number(p.price);
+          const days = Number(p.days);
+
+          if (!isNaN(price) && !isNaN(days) && price >= 0 && days > 0) {
+            rawPackages.push({
+              id: pkgId,
+              name: p.name || `${toBengaliNum(days)} দিনের Plan`,
+              price: price,
+              days: days,
+              desc: p.desc || "Seller account-এর সুবিধা সক্রিয় রাখার জন্য উপযুক্ত প্যাকেজ।",
+              popular: Boolean(p.popular),
+              featured: Boolean(p.featured)
+            });
+          }
+        });
+
+        // Sort ascending by duration (days)
+        rawPackages.sort((a, b) => a.days - b.days);
+        renderPlansGrid(rawPackages);
+      }, (error) => {
+        console.error("Error loading packages:", error);
+        showToast("প্যাকেজসমূহ লোড করতে সমস্যা হয়েছে", "error");
+      });
+    }
+
+    // Render Package Cards
+    function renderPlansGrid(packages) {
+      const grid = document.getElementById('plansGrid');
+      
+      if (packages.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">বর্তমানে কোনো সাবস্ক্রিপশন প্যাকেজ নেই।</div>`;
+        return;
+      }
+
+      let html = '';
+      packages.forEach((pkg, index) => {
+        const approxDaily = Math.round(pkg.price / pkg.days);
+
+        html += `
+          <div class="plan-card ${pkg.popular ? 'is-popular' : ''}">
+            ${pkg.popular ? '<div class="popular-ribbon">সবচেয়ে জনপ্রিয়</div>' : ''}
+            ${pkg.featured ? '<span class="featured-badge">⭐ Best Value</span>' : ''}
+            
+            <h4 class="plan-title">${escapeHtml(pkg.name)}</h4>
+            
+            <div class="plan-price-wrapper">
+              <span class="plan-price">৳${toBengaliNum(pkg.price)}</span>
+              <span class="plan-duration">/ ${toBengaliNum(pkg.days)} দিন</span>
+            </div>
+            
+            <div class="approx-cost">মাত্র ৳${toBengaliNum(approxDaily)} / দিন</div>
+            <p class="plan-desc">${escapeHtml(pkg.desc)}</p>
+
+            <ul class="features-list">
+              <li><i class="fa-solid fa-circle-check"></i> ${toBengaliNum(pkg.days)} দিন ড্যাশবোর্ড এক্সেস</li>
+              <li><i class="fa-solid fa-circle-check"></i> আনলিমিটেড প্রোডাক্ট লিস্ট করার সুযোগ</li>
+              <li><i class="fa-solid fa-circle-check"></i> Verified Seller ব্যাজ সাপোর্ট</li>
+              <li><i class="fa-solid fa-circle-check"></i> কাস্টমার সার্চ লিস্টে অগ্রাধিকার</li>
+              <li><i class="fa-solid fa-circle-check"></i> ২৪/৭ ডেডিকেটেড সেলার সাপোর্ট</li>
+            </ul>
+
+            <button type="button" class="buy-plan-btn" data-pkg-id="${escapeHtml(pkg.id)}">
+              <i class="fa-solid fa-cart-shopping"></i> এই প্যাকটি নিন
+            </button>
+          </div>
+        `;
+      });
+
+      grid.innerHTML = html;
+
+      // Attach Event Listeners to Buy Buttons
+      grid.querySelectorAll('.buy-plan-btn[data-pkg-id]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.currentTarget.getAttribute('data-pkg-id');
+          const targetPkg = packages.find(p => p.id === id);
+          if (targetPkg) {
+            openPurchaseModal(targetPkg);
+          }
+        });
+      });
+    }
+
+    // Modal References
+    const purchaseModal = document.getElementById('purchaseModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const confirmWalletBtn = document.getElementById('confirmWalletBtn');
+
+    // Open Modal
+    function openPurchaseModal(pkg) {
+      selectedPackageForModal = pkg;
+      
+      document.getElementById('modalPkgName').textContent = pkg.name;
+      document.getElementById('modalPkgPrice').textContent = `৳${toBengaliNum(pkg.price)}`;
+      document.getElementById('modalPkgDays').textContent = `${toBengaliNum(pkg.days)} দিন`;
+      document.getElementById('modalUserBalance').textContent = `৳${toBengaliNum(currentUserData.balance)}`;
+
+      const rem = currentUserData.balance - pkg.price;
+      document.getElementById('modalRemBalance').textContent = `৳${toBengaliNum(rem >= 0 ? rem : 0)}`;
+
+      purchaseModal.classList.add('active');
+    }
+
+    // Close Modal
+    function closeModal() {
+      purchaseModal.classList.remove('active');
+      selectedPackageForModal = null;
+    }
+
+    closeModalBtn.addEventListener('click', closeModal);
+    purchaseModal.addEventListener('click', (e) => {
+      if (e.target === purchaseModal) closeModal();
+    });
+
+    // Wallet Purchase Logic (runTransaction)
+    confirmWalletBtn.addEventListener('click', async () => {
+      if (!selectedPackageForModal) return;
+
+      const p = selectedPackageForModal;
+      const uid = currentUserData.uid;
+      const userRef = doc(db, "users", uid);
+
+      // UI Processing State
+      confirmWalletBtn.disabled = true;
+      confirmWalletBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং...`;
+
+      try {
+        await runTransaction(db, async (transaction) => {
+          // Fetch freshest user document
+          const userDoc = await transaction.get(userRef);
+          if (!userDoc.exists()) {
+            throw new Error("ব্যবহারকারীর অ্যাকাউন্ট পাওয়া যায়নি!");
+          }
+
+          const userData = userDoc.data();
+          const currentBalance = Number(userData.balance) || 0;
+          const currentExpiry = getProfileUnlockTime(userData.profileUnlockedUntil);
+
+          // 1. Balance Validation
+          if (currentBalance < p.price) {
+            const err = new Error("INSUFFICIENT_BALANCE");
+            err.currentBalance = currentBalance;
+            err.requiredPrice = p.price;
+            throw err;
+          }
+
+          // 2. Expiry Time Calculation
+          const baseTime = currentExpiry > Date.now() ? currentExpiry : Date.now();
+          const msToAdd = Number(p.days) * 24 * 60 * 60 * 1000;
+          const newExpiry = baseTime + msToAdd;
+
+          // 3. New Balance
+          const newBalance = currentBalance - Number(p.price);
+
+          // 4. Update User Document
+          transaction.update(userRef, {
+            balance: newBalance,
+            profileUnlockedUntil: newExpiry
+          });
+
+          // 5. Create Transaction History Entry
+          const tranRef = doc(collection(db, "users_transection"));
+          transaction.set(tranRef, {
+            userId: uid,
+            amount: -Number(p.price),
+            type: "SUBSCRIPTION_BUY",
+            packageName: p.name,
+            packageDays: Number(p.days),
+            packagePrice: Number(p.price),
+            prevBalance: currentBalance,
+            newBalance: newBalance,
+            prevExpiry: currentExpiry,
+            newExpiry: newExpiry,
+            createdAt: serverTimestamp(),
+            note: `Wallet থেকে ${p.name} ক্রয় করা হয়েছে`
+          });
+        });
+
+        // Purchase Success
+        closeModal();
+        showToast(`✅ ${p.name} সফলভাবে একটিভ হয়েছে! ৳${toBengaliNum(p.price)} Wallet থেকে কাটা হয়েছে`, "success");
+
+      } catch (error) {
+        console.error("Wallet Transaction Error:", error);
+
+        if (error.message === "INSUFFICIENT_BALANCE") {
+          const req = toBengaliNum(error.requiredPrice || p.price);
+          const curr = toBengaliNum(error.currentBalance || currentUserData.balance);
+          showToast(`❌ আপনার Wallet Balance পর্যাপ্ত নয়। প্রয়োজন: ৳${req} বর্তমান Balance: ৳${curr}`, "error");
+        } else {
+          showToast(`❌ ক্রয় ব্যর্থ হয়েছে: ${error.message || "ট্রানজেকশনে সমস্যা হয়েছে"}`, "error");
+        }
+      } finally {
+        confirmWalletBtn.disabled = false;
+        confirmWalletBtn.innerHTML = `<i class="fa-solid fa-wallet"></i> Wallet দিয়ে কিনুন`;
+      }
+    });
+
+    // FAQ Accordion Toggle JS
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const item = header.parentElement;
+        const isOpen = item.classList.contains('open');
+
+        // Close other items
+        document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+
+        if (!isOpen) {
+          item.classList.add('open');
+        }
+      });
+    });
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      if (countdownInterval) clearInterval(countdownInterval);
+      if (unsubscribeUser) unsubscribeUser();
+      if (unsubscribePackages) unsubscribePackages();
+    });
+  </script>
 </body>
 </html>
