@@ -1379,12 +1379,29 @@
         });
 
         historyContainer.innerHTML = html;
-      }, (error) => {
+ }, (error) => {
         console.error("History Error:", error);
         if (error.code === 'failed-precondition') {
+          // Firebase error message এর ভিতর লিঙ্ক থাকে
+          const indexUrl = error.message.match(/https:\/\/console\.firebase\.google\.com[^\s]*/);
+          const link = indexUrl? indexUrl[0] : "#";
+
           historyContainer.innerHTML = `
-            <div class="empty-state" style="color:var(--danger);">
-              Firestore Index প্রয়োজন। Firebase Console-এ Index লিঙ্ক তৈরি করুন।
+            <div class="empty-state" style="border-color:var(--danger);">
+              <div class="empty-icon">⚠️</div>
+              <div style="font-weight:700; margin-bottom:8px;">Firestore Index প্রয়োজন</div>
+              <div style="font-size:0.85rem; margin-bottom:14px;">
+                History দেখতে এই Index টা বানাতে হবে
+              </div>
+              <a href="${link}" target="_blank" style="
+                background: var(--gradient-primary);
+                color:white;
+                padding:10px 16px;
+                border-radius:10px;
+                text-decoration:none;
+                font-weight:700;
+                display:inline-block;
+              ">1 ক্লিকে Index বান</a>
             </div>
           `;
         } else {
@@ -1393,7 +1410,6 @@
           `;
         }
       });
-    }
 
     function getMethodIcon(method) {
       if (method === 'bKash') return '🟣';
