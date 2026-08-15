@@ -588,8 +588,9 @@
             <div><span class="brand-badge">GHOTI MARKET</span></div>
             <h1>Balance Add করুন</h1>
             <p>আপনার পছন্দের Payment Method নির্বাচন করুন</p>
+            <p style="font-size: 13px; color: var(--primary); margin-top: 4px; font-weight: 500;">(এই ব্যালেন্স শুধু Subscription এবং অন্যন্য ফিচার ব্যবহার এর জন্য)</p>
             <div id="user-email-display" class="user-email-badge" style="display: none;">
-                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                 <span id="current-user-email">...</span>
             </div>
         </header>
@@ -621,7 +622,7 @@
                     <!-- bKash Card -->
                     <div class="method-card" onclick="selectPaymentMethod('bkash')">
                         <div class="method-header">
-                            <div class="method-icon bkash-icon">bK</div>
+                            <img src="https://ghotimarket.com/bkash.png" alt="bKash" style="width: 36px; height: 36px; object-fit: contain; border-radius: 8px;">
                             <div class="radio-dot" id="radio-bkash"></div>
                         </div>
                         <div class="method-name">bKash</div>
@@ -631,7 +632,7 @@
                     <!-- Nagad Card -->
                     <div class="method-card" onclick="selectPaymentMethod('nagad')">
                         <div class="method-header">
-                            <div class="method-icon nagad-icon">N</div>
+                            <img src="https://ghotimarket.com/nogad.png" alt="Nagad" style="width: 36px; height: 36px; object-fit: contain; border-radius: 8px;">
                             <div class="radio-dot" id="radio-nagad"></div>
                         </div>
                         <div class="method-name">Nagad</div>
@@ -641,7 +642,7 @@
                     <!-- Redot Pay Card -->
                     <div class="method-card" onclick="selectPaymentMethod('redotpay')">
                         <div class="method-header">
-                            <div class="method-icon usd-icon">$</div>
+                            <img src="https://ghotimarket.com/redotpay.png" alt="Redot Pay" style="width: 36px; height: 36px; object-fit: contain; border-radius: 8px;">
                             <div class="radio-dot" id="radio-redotpay"></div>
                         </div>
                         <div class="method-name">Pay with USD</div>
