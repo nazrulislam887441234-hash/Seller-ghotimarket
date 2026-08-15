@@ -1,1022 +1,889 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Balance - GHOTI MARKET</title>
-
-  <!-- Google Font: Hind Siliguri -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    /* =========================================================
-       CSS VARIABLES & GLOBAL STYLES
-       ========================================================= */
-    :root {
-      --primary: #FF6B35;
-      --primary-hover: #E85A26;
-      --gradient-primary: linear-gradient(135deg, #FF6B35, #FFA500);
-      --bg-color: #FFF8F3;
-      --card-bg: #FFFFFF;
-      --text-main: #0F172A;
-      --text-muted: #64748B;
-      --border-color: #E2E8F0;
-      
-      --bkash: #E2136E;
-      --bkash-bg: #FDF0F5;
-      --nagad: #F7931E;
-      --nagad-bg: #FFF8F0;
-      --redot: #0F172A;
-      --redot-bg: #1E293B;
-      
-      --success: #10B981;
-      --warning: #F59E0B;
-      --danger: #EF4444;
-      
-      --radius-lg: 20px;
-      --radius-md: 14px;
-      --radius-sm: 8px;
-      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03);
-      --shadow-md: 0 8px 24px rgba(255, 107, 53, 0.08);
-      --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Hind Siliguri', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      line-height: 1.6;
-      padding-bottom: 40px;
-    }
-
-    .container {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 0 16px;
-    }
-
-    /* =========================================================
-       HEADER SECTION
-       ========================================================= */
-    header {
-      background: var(--card-bg);
-      border-bottom: 1px solid var(--border-color);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .header-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 16px;
-      max-width: 680px;
-      margin: 0 auto;
-    }
-
-    .brand-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-badge {
-      background: var(--gradient-primary);
-      color: #fff;
-      font-weight: 700;
-      font-size: 1.1rem;
-      padding: 4px 12px;
-      border-radius: 10px;
-      letter-spacing: 0.5px;
-    }
-
-    .header-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .user-pill {
-      font-size: 0.82rem;
-      background: #F1F5F9;
-      color: var(--text-muted);
-      padding: 4px 10px;
-      border-radius: 20px;
-      max-width: 150px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    /* =========================================================
-       HERO / TOP BANNER
-       ========================================================= */
-    .top-banner {
-      background: var(--gradient-primary);
-      color: white;
-      padding: 24px 20px;
-      border-radius: var(--radius-lg);
-      margin: 20px 0;
-      box-shadow: var(--shadow-md);
-    }
-
-    .top-banner h1 {
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .top-banner p {
-      font-size: 0.95rem;
-      opacity: 0.95;
-    }
-
-    /* =========================================================
-       PAYMENT METHOD SELECTOR CARDS
-       ========================================================= */
-    .section-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .methods-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .method-card {
-      background: var(--card-bg);
-      border: 2px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 14px 10px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .method-card:hover {
-      transform: translateY(-2px);
-    }
-
-    .method-card.active {
-      border-color: currentColor;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-    }
-
-    .method-card.bkash { color: var(--bkash); }
-    .method-card.bkash.active { background: var(--bkash-bg); }
-
-    .method-card.nagad { color: var(--nagad); }
-    .method-card.nagad.active { background: var(--nagad-bg); }
-
-    .method-card.redot { color: #38BDF8; }
-    .method-card.redot { background: #0F172A; border-color: #334155; }
-    .method-card.redot.active { border-color: #38BDF8; background: #1E293B; }
-
-    .method-icon {
-      font-size: 1.8rem;
-      margin-bottom: 6px;
-    }
-
-    .method-name {
-      font-weight: 700;
-      font-size: 0.95rem;
-      line-height: 1.2;
-    }
-
-    .method-card.redot .method-name { color: #FFF; }
-
-    .method-desc {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    .method-card.redot .method-desc { color: #94A3B8; }
-
-    .select-pill {
-      margin-top: 8px;
-      font-size: 0.75rem;
-      padding: 2px 8px;
-      border-radius: 12px;
-      border: 1px solid currentColor;
-      font-weight: 600;
-    }
-
-    /* =========================================================
-       DYNAMIC PAYMENT PANELS
-       ========================================================= */
-    .payment-panel {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      border: 1px solid var(--border-color);
-      box-shadow: var(--shadow-sm);
-      display: none;
-      animation: fadeIn 0.3s ease;
-      margin-bottom: 30px;
-    }
-
-    .payment-panel.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Panel Header Info Box */
-    .info-box {
-      border-radius: var(--radius-md);
-      padding: 16px;
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .bkash-panel .info-box { background: var(--bkash-bg); border: 1px solid rgba(226, 19, 110, 0.2); }
-    .nagad-panel .info-box { background: var(--nagad-bg); border: 1px solid rgba(247, 147, 30, 0.2); }
-    .redot-panel .info-box { background: #1E293B; border: 1px solid #334155; color: white; }
-
-    .info-title {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .redot-panel .info-title { color: #94A3B8; }
-
-    .info-number {
-      font-size: 1.3rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-
-    .btn-copy {
-      background: #FFFFFF;
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 6px 14px;
-      border-radius: var(--radius-sm);
-      font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s;
-    }
-
-    .redot-panel .btn-copy {
-      background: #334155;
-      color: white;
-      border: 1px solid #475569;
-    }
-
-    .btn-copy:active { transform: scale(0.95); }
-
-    /* Step-by-step Guides */
-    .instructions-card {
-      background: #F8FAFC;
-      border: 1px solid #E2E8F0;
-      border-radius: var(--radius-md);
-      padding: 16px;
-      margin-bottom: 20px;
-    }
-
-    .redot-panel .instructions-card {
-      background: #0F172A;
-      border-color: #334155;
-      color: #E2E8F0;
-    }
-
-    .instructions-title {
-      font-weight: 700;
-      font-size: 0.95rem;
-      margin-bottom: 12px;
-      color: var(--text-main);
-    }
-
-    .redot-panel .instructions-title { color: #38BDF8; }
-
-    .steps-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .steps-list li {
-      font-size: 0.88rem;
-      display: flex;
-      gap: 8px;
-    }
-
-    .step-num {
-      background: #E2E8F0;
-      color: var(--text-main);
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .redot-panel .step-num {
-      background: #334155;
-      color: #38BDF8;
-    }
-
-    .warning-box {
-      background: #FFFBEB;
-      border: 1px solid #FDE68A;
-      color: #92400E;
-      padding: 10px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 0.85rem;
-      margin-top: 12px;
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-
-    .redot-panel .warning-box {
-      background: #451A03;
-      border-color: #78350F;
-      color: #FDE68A;
-    }
-
-    /* Forms */
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-label {
-      display: block;
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 6px;
-    }
-
-    .input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .currency-symbol {
-      position: absolute;
-      left: 14px;
-      font-weight: 700;
-      color: var(--text-muted);
-      font-size: 1rem;
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1.5px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      font-size: 0.95rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .has-symbol {
-      padding-left: 32px;
-    }
-
-    .form-input:focus {
-      border-color: var(--primary);
-    }
-
-    .btn-submit {
-      width: 100%;
-      background: var(--gradient-primary);
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: var(--radius-md);
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: var(--shadow-md);
-      transition: transform 0.2s, opacity 0.2s;
-      margin-top: 10px;
-    }
-
-    .btn-submit:hover { opacity: 0.95; }
-    .btn-submit:active { transform: scale(0.99); }
-    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    .currency-notice {
-      background: #F1F5F9;
-      padding: 8px 12px;
-      border-radius: var(--radius-sm);
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: #475569;
-      margin-bottom: 14px;
-      display: inline-block;
-    }
-
-    /* =========================================================
-       CONFIRMATION MODAL
-       ========================================================= */
-    .modal-overlay {
-      position: fixed;
-      top:0; left:0; right:0; bottom:0;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 16px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal-card {
-      background: white;
-      border-radius: var(--radius-lg);
-      width: 100%;
-      max-width: 440px;
-      padding: 24px;
-      box-shadow: var(--shadow-lg);
-      transform: scale(0.9);
-      transition: transform 0.25s ease;
-    }
-
-    .modal-overlay.active .modal-card {
-      transform: scale(1);
-    }
-
-    .modal-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 16px;
-      color: var(--text-main);
-    }
-
-    .modal-details {
-      background: #F8FAFC;
-      border: 1px solid #E2E8F0;
-      border-radius: var(--radius-md);
-      padding: 14px;
-      margin-bottom: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .modal-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.9rem;
-    }
-
-    .modal-row-label { color: var(--text-muted); }
-    .modal-row-value { font-weight: 700; color: var(--text-main); }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .btn-cancel {
-      flex: 1;
-      background: #F1F5F9;
-      color: var(--text-main);
-      border: none;
-      padding: 12px;
-      border-radius: var(--radius-sm);
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .btn-confirm {
-      flex: 1.5;
-      background: var(--gradient-primary);
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: var(--radius-sm);
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    /* =========================================================
-       HISTORY SECTION & CARDS
-       ========================================================= */
-    .history-section {
-      margin-top: 30px;
-    }
-
-    .history-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 14px;
-    }
-
-    .history-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 16px;
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-    }
-
-    .history-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .history-method {
-      font-weight: 700;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .history-amount {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .history-meta {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      border-top: 1px dashed #E2E8F0;
-      padding-top: 8px;
-    }
-
-    /* Badges */
-    .status-badge {
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .badge-pending { background: #FEF3C7; color: #D97706; }
-    .badge-approved { background: #D1FAE5; color: #059669; }
-    .badge-rejected { background: #FEE2E2; color: #DC2626; }
-
-    .status-desc {
-      font-size: 0.8rem;
-      margin-top: 2px;
-    }
-
-    .admin-note-box {
-      background: #FEF2F2;
-      border-left: 3px solid #EF4444;
-      padding: 8px 12px;
-      font-size: 0.82rem;
-      color: #991B1B;
-      border-radius: 0 6px 6px 0;
-      margin-top: 4px;
-    }
-
-    /* Skeleton Loader */
-    .skeleton-card {
-      background: #FFFFFF;
-      border-radius: var(--radius-md);
-      padding: 16px;
-      height: 100px;
-      animation: pulse 1.5s infinite;
-      border: 1px solid var(--border-color);
-    }
-
-    @keyframes pulse {
-      0% { opacity: 0.6; }
-      50% { opacity: 1; }
-      100% { opacity: 0.6; }
-    }
-
-    /* Empty State */
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      background: white;
-      border-radius: var(--radius-md);
-      border: 1px dashed var(--border-color);
-      color: var(--text-muted);
-    }
-
-    .empty-icon {
-      font-size: 2.5rem;
-      margin-bottom: 8px;
-      opacity: 0.6;
-    }
-
-    /* =========================================================
-       TOAST NOTIFICATION
-       ========================================================= */
-    #toast-container {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2000;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      pointer-events: none;
-    }
-
-    .toast {
-      background: #0F172A;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 30px;
-      font-size: 0.88rem;
-      font-weight: 500;
-      box-shadow: var(--shadow-lg);
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      pointer-events: auto;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .toast.error { background: #DC2626; }
-    .toast.success { background: #059669; }
-
-    /* Mobile adjustments */
-    @media (max-width: 480px) {
-      .methods-grid { gap: 8px; }
-      .method-card { padding: 10px 6px; }
-      .method-icon { font-size: 1.5rem; }
-      .method-name { font-size: 0.85rem; }
-      .method-desc { font-size: 0.68rem; }
-      .info-number { font-size: 1.1rem; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Balance | GHOTI MARKET</title>
+    <!-- Google Fonts: Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           1. CSS VARIABLES & BASE STYLES
+           ========================================== */
+        :root {
+            --primary: #FF6B35;
+            --primary-hover: #E85A24;
+            --secondary: #FFA500;
+            --bg-main: #FFF8F3;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --card-bg: #FFFFFF;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.02);
+            --shadow-md: 0 10px 25px -5px rgba(255, 107, 53, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Hind Siliguri', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        /* ==========================================
+           2. HEADER & BRANDING
+           ========================================== */
+        .app-header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 10px 0;
+        }
+
+        .brand-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 4px 16px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+
+        .app-header h1 {
+            font-size: 28px;
+            color: var(--dark);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .app-header p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .user-email-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #ffffff;
+            border: 1px solid var(--border);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 13px;
+            color: var(--dark-light);
+            margin-top: 10px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .user-email-badge svg {
+            width: 14px;
+            height: 14px;
+            fill: var(--primary);
+        }
+
+        /* ==========================================
+           3. UI CARDS & SECTIONS
+           ========================================== */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ==========================================
+           4. AUTH / LOGIN REQUIRED CONTAINER
+           ========================================== */
+        #login-required-container {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .auth-icon-wrap {
+            width: 70px;
+            height: 70px;
+            background: #FFF0EB;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: var(--primary);
+        }
+
+        .auth-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 12px 32px;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            margin-top: 16px;
+            box-shadow: 0 4px 14px rgba(255, 107, 53, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================
+           5. PAYMENT METHOD SELECTION GRID
+           ========================================== */
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .method-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .method-card {
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            background: #fafafa;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .method-card:hover {
+            border-color: #cbd5e1;
+            background: #fff;
+        }
+
+        .method-card.active {
+            border-color: var(--primary);
+            background: #FFFDFB;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+        }
+
+        .method-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .method-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .bkash-icon { background: #e2136e; color: #fff; }
+        .nagad-icon { background: #f7931e; color: #fff; }
+        .usd-icon { background: #2563eb; color: #fff; }
+
+        .radio-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #cbd5e1;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .method-card.active .radio-dot {
+            border-color: var(--primary);
+            background-color: var(--primary);
+        }
+
+        .method-card.active .radio-dot::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .method-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .method-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* ==========================================
+           6. PAYMENT DETAILS & FORMS
+           ========================================== */
+        .payment-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .info-box {
+            background: #F8FAFC;
+            border: 1px dashed #cbd5e1;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .number-display-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            margin-top: 8px;
+        }
+
+        .number-val {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+            letter-spacing: 0.5px;
+        }
+
+        .copy-btn {
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            color: var(--dark-light);
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .instructions-list {
+            margin: 12px 0 0 0;
+            padding-left: 20px;
+            font-size: 13.5px;
+            color: var(--text-main);
+        }
+
+        .instructions-list li {
+            margin-bottom: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 15px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: #fff;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.12);
+        }
+
+        .form-control[readonly] {
+            background-color: #f8fafc;
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .currency-suffix {
+            position: absolute;
+            right: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.95;
+        }
+
+        .submit-btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* ==========================================
+           7. REQUEST HISTORY SECTION
+           ========================================== */
+        .request-item {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: transform 0.2s;
+        }
+
+        .request-item:hover {
+            transform: translateY(-1px);
+        }
+
+        .req-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .req-method {
+            font-weight: 700;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 15px;
+        }
+
+        .status-badge {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-pending { background: #FEF3C7; color: #D97706; }
+        .status-approved { background: #D1FAE5; color: #059669; }
+        .status-rejected { background: #FEE2E2; color: #DC2626; }
+
+        .req-body {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            font-size: 13.5px;
+        }
+
+        .req-info span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .req-info strong {
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .status-note {
+            margin-top: 8px;
+            font-size: 12px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            background: #f8fafc;
+        }
+
+        /* ==========================================
+           8. TOAST SYSTEM & UTILITIES
+           ========================================== */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--dark);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: auto;
+            animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .toast.error { background: var(--danger); }
+        .toast.success { background: #059669; }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Spinner */
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ffffff;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Page Loader Screen */
+        #app-loader {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 10px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- App Header -->
-  <header>
-    <div class="header-inner">
-      <div class="brand-logo">
-        <span class="brand-badge">GHOTI MARKET</span>
-      </div>
-      <div class="header-title">Add Balance</div>
-      <div id="user-email-display" class="user-pill">Loading...</div>
-    </div>
-  </header>
-
-  <main class="container">
-    
-    <!-- Top Hero Banner -->
-    <div class="top-banner">
-      <h1>Balance Add করুন</h1>
-      <p>আপনার পছন্দের Payment Method নির্বাচন করে নিরাপদে Payment Request পাঠান।</p>
+    <!-- Global App Loader -->
+    <div id="app-loader">
+        <div class="spinner" style="width: 36px; height: 36px; border-color: var(--primary); border-bottom-color: transparent;"></div>
+        <p style="margin-top: 12px; font-weight: 600; color: var(--dark);">GHOTI MARKET লোড হচ্ছে...</p>
     </div>
 
-    <!-- Payment Method Selector -->
-    <div class="section-title">
-      <span>💳 Payment Method বেছে নিন</span>
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div><span class="brand-badge">GHOTI MARKET</span></div>
+            <h1>Balance Add করুন</h1>
+            <p>আপনার পছন্দের Payment Method নির্বাচন করুন</p>
+            <div id="user-email-display" class="user-email-badge" style="display: none;">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span id="current-user-email">...</span>
+            </div>
+        </header>
+
+        <!-- LOGIN REQUIRED SCREEN -->
+        <div id="login-required-container" class="card">
+            <div class="auth-icon-wrap">
+                <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0110 0v4"></path></svg>
+            </div>
+            <h2 style="font-size: 20px; color: var(--dark); margin-bottom: 6px;">প্রথমে আপনার অ্যাকাউন্টে লগইন করুন</h2>
+            <p style="color: var(--text-muted); font-size: 14px;">Balance Add Request পাঠানোর জন্য লগইন করা বাধ্যতামূলক।</p>
+            <a href="login.html" class="auth-btn">
+                <span>Login করুন</span>
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </a>
+        </div>
+
+        <!-- MAIN APP CONTENT (AUTH REQUIRED) -->
+        <main id="authenticated-container" style="display: none;">
+            
+            <!-- SECTION: PAYMENT METHOD SELECTOR -->
+            <div class="card">
+                <div class="section-title">
+                    <svg width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                    <span>Payment Method নির্বাচন করুন</span>
+                </div>
+
+                <div class="method-grid">
+                    <!-- bKash Card -->
+                    <div class="method-card" onclick="selectPaymentMethod('bkash')">
+                        <div class="method-header">
+                            <div class="method-icon bkash-icon">bK</div>
+                            <div class="radio-dot" id="radio-bkash"></div>
+                        </div>
+                        <div class="method-name">bKash</div>
+                        <div class="method-desc">bKash Personal • Instant BDT</div>
+                    </div>
+
+                    <!-- Nagad Card -->
+                    <div class="method-card" onclick="selectPaymentMethod('nagad')">
+                        <div class="method-header">
+                            <div class="method-icon nagad-icon">N</div>
+                            <div class="radio-dot" id="radio-nagad"></div>
+                        </div>
+                        <div class="method-name">Nagad</div>
+                        <div class="method-desc">Nagad Personal • Instant BDT</div>
+                    </div>
+
+                    <!-- Redot Pay Card -->
+                    <div class="method-card" onclick="selectPaymentMethod('redotpay')">
+                        <div class="method-header">
+                            <div class="method-icon usd-icon">$</div>
+                            <div class="radio-dot" id="radio-redotpay"></div>
+                        </div>
+                        <div class="method-name">Pay with USD</div>
+                        <div class="method-desc">Redot Pay • International</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAYMENT FORM SECTION 1: BKASH -->
+            <div id="section-bkash" class="payment-section card">
+                <div class="section-title">
+                    <span style="color: #e2136e;">bKash Payment Instruction</span>
+                </div>
+
+                <div class="info-box">
+                    <div style="font-size: 13px; color: var(--text-muted); font-weight: 600;">bKash Personal Number:</div>
+                    <div class="number-display-wrap">
+                        <div class="number-val" id="bkash-number-val">01727003670</div>
+                        <button class="copy-btn" onclick="copyToClipboard('01727003670', 'bKash নাম্বার কপি হয়েছে')">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                            Copy Number
+                        </button>
+                    </div>
+
+                    <ol class="instructions-list">
+                        <li>আপনার নিজের bKash অ্যাকাউন্ট থেকে টাকা পাঠান।</li>
+                        <li>উপরের bKash Personal নাম্বারে payment করুন।</li>
+                        <li>Payment সফল হওয়ার পর Transaction ID সংগ্রহ করুন।</li>
+                        <li>যে bKash নাম্বার থেকে টাকা পাঠিয়েছেন সেটি নিচে লিখুন।</li>
+                        <li>কত টাকা পাঠিয়েছেন সেটি লিখুন।</li>
+                        <li>Transaction ID লিখুন।</li>
+                        <li>সব তথ্য ভালোভাবে যাচাই করে "Submit Request" চাপুন।</li>
+                    </ol>
+                    <div style="margin-top: 8px; font-size: 12px; color: var(--danger); font-weight: 600;">* শুধুমাত্র সফল Payment-এর Transaction ID প্রদান করুন।</div>
+                </div>
+
+                <form id="form-bkash" onsubmit="handlePaymentSubmit(event, 'bKash')">
+                    <div class="form-group">
+                        <label>Sender bKash Number *</label>
+                        <input type="tel" class="form-control" id="bkash-sender" placeholder="যে নাম্বার থেকে টাকা পাঠিয়েছেন" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount (৳) *</label>
+                        <div class="input-wrapper">
+                            <input type="number" min="1" class="form-control" id="bkash-amount" placeholder="কত টাকা পাঠিয়েছেন" required>
+                            <span class="currency-suffix">৳</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Transaction ID *</label>
+                        <input type="text" class="form-control" id="bkash-trx" placeholder="bKash Transaction ID" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Payment Number</label>
+                        <input type="text" class="form-control" value="01727003670" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Note (Optional)</label>
+                        <textarea class="form-control" id="bkash-note" rows="2">Balance Add Request via bKash</textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="btn-submit-bkash">
+                        <span>Payment Request পাঠান</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- PAYMENT FORM SECTION 2: NAGAD -->
+            <div id="section-nagad" class="payment-section card">
+                <div class="section-title">
+                    <span style="color: #f7931e;">Nagad Payment Instruction</span>
+                </div>
+
+                <div class="info-box">
+                    <div style="font-size: 13px; color: var(--text-muted); font-weight: 600;">Nagad Personal Number:</div>
+                    <div class="number-display-wrap">
+                        <div class="number-val" id="nagad-number-val">...</div>
+                        <button class="copy-btn" id="btn-copy-nagad" onclick="copyNagadNumber()">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                            Copy Number
+                        </button>
+                    </div>
+
+                    <ol class="instructions-list">
+                        <li>নিজের Nagad account থেকে payment করুন।</li>
+                        <li>উপরের Nagad Personal number ব্যবহার করুন।</li>
+                        <li>Payment successful হওয়ার পর Transaction ID সংগ্রহ করুন।</li>
+                        <li>যে number থেকে টাকা পাঠিয়েছেন সেটা লিখুন।</li>
+                        <li>Amount লিখুন।</li>
+                        <li>Transaction ID লিখুন।</li>
+                        <li>Submit করুন।</li>
+                    </ol>
+                </div>
+
+                <form id="form-nagad" onsubmit="handlePaymentSubmit(event, 'Nagad')">
+                    <div class="form-group">
+                        <label>Sender Nagad Number *</label>
+                        <input type="tel" class="form-control" id="nagad-sender" placeholder="যে নাম্বার থেকে টাকা পাঠিয়েছেন" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount (৳) *</label>
+                        <div class="input-wrapper">
+                            <input type="number" min="1" class="form-control" id="nagad-amount" placeholder="কত টাকা পাঠিয়েছেন" required>
+                            <span class="currency-suffix">৳</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Transaction ID *</label>
+                        <input type="text" class="form-control" id="nagad-trx" placeholder="Nagad Transaction ID" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Payment Number</label>
+                        <input type="text" class="form-control" id="nagad-readonly-num" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Note (Optional)</label>
+                        <textarea class="form-control" id="nagad-note" rows="2">Balance Add Request via Nagad</textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="btn-submit-nagad">
+                        <span>Payment Request পাঠান</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- PAYMENT FORM SECTION 3: REDOT PAY / USD -->
+            <div id="section-redotpay" class="payment-section card">
+                <div class="section-title">
+                    <span style="color: #2563eb;">International Payment • Redot Pay</span>
+                </div>
+
+                <div class="info-box">
+                    <div style="font-size: 13px; color: var(--text-muted); font-weight: 600;">Redot Pay Receiver UID:</div>
+                    <div class="number-display-wrap">
+                        <div class="number-val" id="redot-uid-val">1820194386</div>
+                        <button class="copy-btn" onclick="copyToClipboard('1820194386', 'Redot Pay UID কপি হয়েছে')">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                            Copy UID
+                        </button>
+                    </div>
+
+                    <ol class="instructions-list">
+                        <li>আপনার নিজের Redot Pay account-এ login করুন।</li>
+                        <li>P2P section-এর পাশে "Send" option খুঁজুন।</li>
+                        <li>Send option না থাকলে "More" এ গিয়ে Send option খুঁজুন।</li>
+                        <li>Send নির্বাচন করুন।</li>
+                        <li>"Transfer to Redot Pay user" option নির্বাচন করুন।</li>
+                        <li>UID option নির্বাচন করুন।</li>
+                        <li>Receiver UID হিসেবে লিখুন: <strong>1820194386</strong></li>
+                        <li>Payment amount USD হিসেবে লিখুন।</li>
+                        <li>Send চাপুন ও Payment confirm করুন।</li>
+                        <li>সফল Transaction-এর Transaction ID সংগ্রহ করুন।</li>
+                        <li>নিচের form-এ নিজের Redot Pay UID, Amount ও Transaction ID লিখে Submit Request চাপুন।</li>
+                    </ol>
+                </div>
+
+                <form id="form-redotpay" onsubmit="handlePaymentSubmit(event, 'Redot Pay')">
+                    <div class="form-group">
+                        <label>Your Redot Pay UID *</label>
+                        <input type="text" class="form-control" id="redot-user-uid" placeholder="আপনার নিজের Redot Pay UID" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount ($ USD) *</label>
+                        <div class="input-wrapper">
+                            <input type="number" step="0.01" min="0.01" class="form-control" id="redot-amount" placeholder="USD amount (ex: 10.50)" required>
+                            <span class="currency-suffix">$</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Transaction ID *</label>
+                        <input type="text" class="form-control" id="redot-trx" placeholder="Successful Redot Pay Transaction ID" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Receiver Payment UID</label>
+                        <input type="text" class="form-control" value="1820194386" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Note (Optional)</label>
+                        <textarea class="form-control" id="redot-note" rows="2">Balance Add Request via Redot Pay</textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="btn-submit-redotpay">
+                        <span>USD Payment Request পাঠান</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- SECTION: REQUEST HISTORY -->
+            <div class="card">
+                <div class="section-title">
+                    <svg width="20" height="20" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>আমার Balance Requests</span>
+                </div>
+
+                <div id="requests-history-list">
+                    <div class="empty-state">
+                        <div class="spinner" style="border-color: var(--primary); border-bottom-color: transparent;"></div>
+                        <p style="margin-top: 8px;">রিকোয়েস্ট হিস্ট্রি লোড হচ্ছে...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 
-    <div class="methods-grid">
-      <!-- bKash -->
-      <div class="method-card bkash active" onclick="selectPaymentMethod('bkash')">
-        <div class="method-icon">🟣</div>
-        <div>
-          <div class="method-name">বিকাশ</div>
-          <div class="method-desc">Personal Send Money</div>
-        </div>
-        <span class="select-pill">Select</span>
-      </div>
+    <!-- ==========================================
+       JAVASCRIPT MODULES & FIREBASE LOGIC
+       ========================================== -->
+    <script type="module">
+        // ------------------------------------------
+        // 1. FIREBASE SDK IMPORTS (v10 Modular)
+        // ------------------------------------------
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            addDoc, 
+            query, 
+            where, 
+            orderBy, 
+            onSnapshot, 
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
-      <!-- Nagad -->
-      <div class="method-card nagad" onclick="selectPaymentMethod('nagad')">
-        <div class="method-icon">🔴</div>
-        <div>
-          <div class="method-name">নগদ</div>
-          <div class="method-desc">Personal Send Money</div>
-        </div>
-        <span class="select-pill">Select</span>
-      </div>
-
-      <!-- Redot Pay -->
-      <div class="method-card redot" onclick="selectPaymentMethod('redot')">
-        <div class="method-icon">🌐</div>
-        <div>
-          <div class="method-name">ডলার হিসেবে Pay</div>
-          <div class="method-desc">Redot Pay USD</div>
-        </div>
-        <span class="select-pill">Select</span>
-      </div>
-    </div>
-
-    <!-- =========================================================
-         1. BIKASH PANEL
-         ========================================================= -->
-    <div id="panel-bkash" class="payment-panel bkash-panel active">
-      <div class="info-box">
-        <div>
-          <div class="info-title">বিকাশ Personal Number</div>
-          <div class="info-number">01727003670</div>
-        </div>
-        <button class="btn-copy" onclick="copyText('01727003670', 'বিকাশ নাম্বার কপি হয়েছে')">
-          📋 Copy
-        </button>
-      </div>
-
-      <div class="instructions-card">
-        <div class="instructions-title">📌 কীভাবে পেমেন্ট করবেন:</div>
-        <ul class="steps-list">
-          <li><span class="step-num">১</span> বিকাশ App খুলুন।</li>
-          <li><span class="step-num">২</span> Send Money অপশন ব্যবহার করে নির্ধারিত নাম্বারে টাকা পাঠান।</li>
-          <li><span class="step-num">৩</span> Payment সম্পন্ন হওয়ার পর Transaction ID সংগ্রহ করুন।</li>
-          <li><span class="step-num">৪</span> নিচের form-এ যে নাম্বার থেকে টাকা পাঠিয়েছেন সেই নাম্বার দিন।</li>
-          <li><span class="step-num">৫</span> আপনি কত টাকা পাঠিয়েছেন সেটি লিখুন।</li>
-          <li><span class="step-num">৬</span> Transaction ID দিন।</li>
-          <li><span class="step-num">৭</span> সব তথ্য যাচাই করে "Payment Request পাঠান" button চাপুন।</li>
-        </ul>
-        <div class="warning-box">
-          ⚠️ <strong>সতর্কতা:</strong> ভুল Transaction ID বা ভুল তথ্য দিলে Payment Request বাতিল হতে পারে।
-        </div>
-      </div>
-
-      <form id="form-bkash" onsubmit="handleFormSubmit(event, 'bKash')">
-        <div class="form-group">
-          <label class="form-label">Sender Number</label>
-          <input type="tel" id="bkash-sender" class="form-input" placeholder="01XXXXXXXXX" required pattern="01[3-9][0-9]{8}">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">কত টাকা পাঠিয়েছেন?</label>
-          <div class="input-wrapper">
-            <span class="currency-symbol">৳</span>
-            <input type="number" id="bkash-amount" class="form-input has-symbol" placeholder="0" min="1" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">bKash Transaction ID</label>
-          <input type="text" id="bkash-trx" class="form-input" placeholder="Transaction ID লিখুন" required>
-        </div>
-
-        <button type="submit" class="btn-submit">Payment Request পাঠান</button>
-      </form>
-    </div>
-
-    <!-- =========================================================
-         2. NAGAD PANEL
-         ========================================================= -->
-    <div id="panel-nagad" class="payment-panel nagad-panel">
-      <div class="info-box">
-        <div>
-          <div class="info-title">নগদ Personal Number</div>
-          <div class="info-number">01727003670</div>
-        </div>
-        <button class="btn-copy" onclick="copyText('01727003670', 'নগদ নাম্বার কপি হয়েছে')">
-          📋 Copy
-        </button>
-      </div>
-
-      <div class="instructions-card">
-        <div class="instructions-title">📌 কীভাবে পেমেন্ট করবেন:</div>
-        <ul class="steps-list">
-          <li><span class="step-num">১</span> নগদ App খুলুন।</li>
-          <li><span class="step-num">২</span> Send Money ব্যবহার করে 01727003670 নাম্বারে টাকা পাঠান।</li>
-          <li><span class="step-num">৩</span> Transaction সফল হলে Transaction ID সংগ্রহ করুন।</li>
-          <li><span class="step-num">৪</span> যে নাম্বার থেকে টাকা পাঠিয়েছেন সেটা লিখুন।</li>
-          <li><span class="step-num">৫</span> Payment amount লিখুন।</li>
-          <li><span class="step-num">৬</span> Transaction ID লিখুন।</li>
-          <li><span class="step-num">৭</span> Payment Request পাঠান।</li>
-        </ul>
-        <div class="warning-box">
-          ⚠️ <strong>সতর্কতা:</strong> ভুল Transaction ID বা ভুল Sender Number দিলে Request বাতিল হতে পারে।
-        </div>
-      </div>
-
-      <form id="form-nagad" onsubmit="handleFormSubmit(event, 'Nagad')">
-        <div class="form-group">
-          <label class="form-label">Sender Number</label>
-          <input type="tel" id="nagad-sender" class="form-input" placeholder="01XXXXXXXXX" required pattern="01[3-9][0-9]{8}">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">কত টাকা পাঠিয়েছেন?</label>
-          <div class="input-wrapper">
-            <span class="currency-symbol">৳</span>
-            <input type="number" id="nagad-amount" class="form-input has-symbol" placeholder="0" min="1" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Nagad Transaction ID</label>
-          <input type="text" id="nagad-trx" class="form-input" placeholder="Transaction ID লিখুন" required>
-        </div>
-
-        <button type="submit" class="btn-submit">Payment Request পাঠান</button>
-      </form>
-    </div>
-
-    <!-- =========================================================
-         3. REDOT PAY PANEL
-         ========================================================= -->
-    <div id="panel-redot" class="payment-panel redot-panel">
-      <div class="currency-notice">Payment Currency: USD ($)</div>
-
-      <div class="info-box">
-        <div>
-          <div class="info-title">Redot Pay Payment UID</div>
-          <div class="info-number">1820194386</div>
-        </div>
-        <button class="btn-copy" onclick="copyText('1820194386', 'Redot Pay UID কপি হয়েছে')">
-          📋 Copy
-        </button>
-      </div>
-
-      <div class="instructions-card">
-        <div class="instructions-title">🌐 Redot Pay থেকে কীভাবে Payment করবেন?</div>
-        <ul class="steps-list">
-          <li><span class="step-num">১</span> নিজের Redot Pay Account-এ Login করুন।</li>
-          <li><span class="step-num">২</span> P2P section-এর পাশে "Send" option খুঁজুন।</li>
-          <li><span class="step-num">৩</span> Send option না দেখতে পেলে "More" এ ক্লিক করুন।</li>
-          <li><span class="step-num">৪</span> "Send" select করুন।</li>
-          <li><span class="step-num">৫</span> "Transfer to Redot Pay user" option নির্বাচন করুন।</li>
-          <li><span class="step-num">৬</span> Payment method হিসেবে "UID" select করুন।</li>
-          <li><span class="step-num">৭</span> UID field-এ লিখুন: 1820194386</li>
-          <li><span class="step-num">৮</span> আপনি যত USD payment করতে চান সেই amount লিখুন।</li>
-          <li><span class="step-num">৯</span> "Send" button চাপুন।</li>
-          <li><span class="step-num">১০</span> Payment details যাচাই করে confirm করুন।</li>
-          <li><span class="step-num">১১</span> Payment সফল হলে Transaction ID সংগ্রহ করুন।</li>
-          <li><span class="step-num">১২</span> নিচের form-এ নিজের Redot Pay UID, USD amount এবং successful Transaction ID দিন।</li>
-        </ul>
-        <div class="warning-box">
-          ⚠️ <strong>গুরুত্বপূর্ণ:</strong> শুধুমাত্র সফল Transaction-এর তথ্য দিন। Pending/Failed Transaction গ্রহণ করা হবে না।
-        </div>
-      </div>
-
-      <form id="form-redot" onsubmit="handleFormSubmit(event, 'Redot Pay')">
-        <div class="form-group">
-          <label class="form-label">Your Redot Pay UID</label>
-          <input type="text" id="redot-uid" class="form-input" placeholder="নিজের Redot Pay UID লিখুন" required>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Payment Amount (USD)</label>
-          <div class="input-wrapper">
-            <span class="currency-symbol">$</span>
-            <input type="number" id="redot-amount" class="form-input has-symbol" placeholder="0.00" step="0.01" min="0.01" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Successful Transaction ID</label>
-          <input type="text" id="redot-trx" class="form-input" placeholder="Redot Pay Transaction ID" required>
-        </div>
-
-        <button type="submit" class="btn-submit">USD Payment Request পাঠান</button>
-      </form>
-    </div>
-
-    <!-- =========================================================
-         HISTORY SECTION
-         ========================================================= -->
-    <section class="history-section">
-      <div class="section-title">
-        <span>📜 আমার Payment Requests</span>
-      </div>
-
-      <div id="history-container" class="history-list">
-        <!-- Skeleton Loaders -->
-        <div class="skeleton-card"></div>
-        <div class="skeleton-card"></div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- =========================================================
-       CONFIRMATION MODAL
-       ========================================================= -->
-  <div id="confirm-modal" class="modal-overlay">
-    <div class="modal-card">
-      <div class="modal-title">Payment Request নিশ্চিতকরণ</div>
-      <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:12px;">
-        আপনি কি এই তথ্য দিয়ে Payment Request পাঠাতে চান?
-      </p>
-
-      <div class="modal-details">
-        <div class="modal-row">
-          <span class="modal-row-label">Method:</span>
-          <span id="modal-method" class="modal-row-value">-</span>
-        </div>
-        <div class="modal-row">
-          <span class="modal-row-label">Amount:</span>
-          <span id="modal-amount" class="modal-row-value">-</span>
-        </div>
-        <div class="modal-row" id="modal-sender-row">
-          <span class="modal-row-label">Sender:</span>
-          <span id="modal-sender" class="modal-row-value">-</span>
-        </div>
-        <div class="modal-row">
-          <span class="modal-row-label">Transaction ID:</span>
-          <span id="modal-trx" class="modal-row-value">-</span>
-        </div>
-      </div>
-
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-        <button id="btn-modal-confirm" class="btn-confirm">Confirm & Submit</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast Container -->
-  <div id="toast-container"></div>
-
-  <!-- =========================================================
-       FIREBASE & JAVASCRIPT LOGIC (MODULE)
-       ========================================================= -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { 
-      getAuth, 
-      onAuthStateChanged 
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { 
-      getFirestore, 
-      collection, 
-      addDoc, 
-      query, 
-      where, 
-      orderBy, 
-      onSnapshot, 
-      serverTimestamp,
-      getDocs
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    // ---------------------------------------------------------
-    // FIREBASE CONFIGURATION (PLACEHOLDER)
-    // ---------------------------------------------------------
-    const firebaseConfig = {
+        // ------------------------------------------
+        // 2. CONFIGURATION & CONSTANTS
+        // ------------------------------------------
+        
+        // 🔴 নিচে আপনার Firebase Config বসান
+        const firebaseConfig = {
   apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
   authDomain: "ghotimarket.firebaseapp.com",
   databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
@@ -1027,397 +894,398 @@
   measurementId: "G-4SR8V2EKC1"
 };
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+        // 🔴 আপনার Nagad Number নিচে সহজে পরিবর্তন করতে পারবেন
+        const NAGAD_NUMBER = "YOUR_NAGAD_NUMBER";
 
-    let currentUser = null;
-    let pendingSubmissionPayload = null;
+        const BKASH_NUMBER = "01727003670";
+        const REDOT_PAY_UID = "1820194386";
 
-    // ---------------------------------------------------------
-    // AUTHENTICATION GUARD
-    // ---------------------------------------------------------
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        // Logged out -> Redirect to login page
-        window.location.href = "login.html";
-        return;
-      }
-      
-      currentUser = user;
-      document.getElementById('user-email-display').textContent = user.email || "User";
-      
-      // Start Real-Time History Listener
-      listenToUserRequests(user.uid);
-    });
+        // ------------------------------------------
+        // 3. INITIALIZATION
+        // ------------------------------------------
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-    // ---------------------------------------------------------
-    // UI METHOD SWITCHER
-    // ---------------------------------------------------------
-    window.selectPaymentMethod = function(method) {
-      document.querySelectorAll('.method-card').forEach(card => card.classList.remove('active'));
-      document.querySelectorAll('.payment-panel').forEach(panel => panel.classList.remove('active'));
+        let currentUser = null;
+        let activePaymentMethod = null;
+        let historyUnsubscribe = null;
 
-      document.querySelector(`.method-card.${method}`).classList.add('active');
-      document.getElementById(`panel-${method}`).classList.add('active');
-    };
+        // Populate Nagad Numbers on Load
+        document.getElementById('nagad-number-val').innerText = NAGAD_NUMBER;
+        document.getElementById('nagad-readonly-num').value = NAGAD_NUMBER;
 
-    // ---------------------------------------------------------
-    // COPY TO CLIPBOARD WITH FALLBACK
-    // ---------------------------------------------------------
-    window.copyText = function(text, successMsg) {
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text)
-          .then(() => showToast(successMsg, 'success'))
-          .catch(() => fallbackCopy(text, successMsg));
-      } else {
-        fallbackCopy(text, successMsg);
-      }
-    };
+        // ------------------------------------------
+        // 4. AUTHENTICATION LISTENER
+        // ------------------------------------------
+        onAuthStateChanged(auth, (user) => {
+            const loader = document.getElementById('app-loader');
+            const authContainer = document.getElementById('authenticated-container');
+            const loginReqContainer = document.getElementById('login-required-container');
+            const userEmailDisplay = document.getElementById('user-email-display');
+            const currentUserEmailTxt = document.getElementById('current-user-email');
 
-    function fallbackCopy(text, successMsg) {
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      textArea.style.position = "fixed";
-      textArea.style.left = "-9999px";
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      try {
-        document.execCommand('copy');
-        showToast(successMsg, 'success');
-      } catch (err) {
-        showToast("কপি করতে ব্যর্থ হয়েছে", "error");
-      }
-      document.body.removeChild(textArea);
-    }
+            if (user) {
+                // User is signed in
+                currentUser = user;
+                currentUserEmailTxt.innerText = user.email || user.uid;
+                userEmailDisplay.style.display = 'inline-flex';
+                
+                loginReqContainer.style.display = 'none';
+                authContainer.style.display = 'block';
 
-    // ---------------------------------------------------------
-    // TOAST NOTIFICATION
-    // ---------------------------------------------------------
-    window.showToast = function(message, type = 'normal') {
-      const container = document.getElementById('toast-container');
-      const toast = document.createElement('div');
-      toast.className = `toast ${type}`;
-      toast.innerHTML = type === 'success' ? `✓ ${message}` : message;
+                // Fetch Request History
+                loadUserRequests(user.uid);
+            } else {
+                // User is signed out
+                currentUser = null;
+                userEmailDisplay.style.display = 'none';
+                authContainer.style.display = 'none';
+                loginReqContainer.style.display = 'block';
 
-      container.appendChild(toast);
-      
-      setTimeout(() => toast.classList.add('show'), 10);
-      
-      setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    };
+                if (historyUnsubscribe) historyUnsubscribe();
+            }
 
-    // ---------------------------------------------------------
-    // FORM SUBMISSION & VALIDATION
-    // ---------------------------------------------------------
-    window.handleFormSubmit = function(event, method) {
-      event.preventDefault();
-      
-      if (!currentUser) {
-        showToast("অনুগ্রহ করে পুনরায় লগইন করুন", "error");
-        return;
-      }
-
-      let payload = {
-        uid: currentUser.uid,
-        email: currentUser.email,
-        paymentMethod: method,
-        status: "pending",
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
-      };
-
-      if (method === 'bKash') {
-        const sender = document.getElementById('bkash-sender').value.trim();
-        const amount = parseFloat(document.getElementById('bkash-amount').value);
-        const trx = document.getElementById('bkash-trx').value.trim().toUpperCase();
-
-        if (!/^01[3-9][0-9]{8}$/.test(sender)) {
-          showToast("সঠিক ১১ ডিজিটের মোবাইল নাম্বার দিন", "error");
-          return;
-        }
-        if (!amount || amount < 1) {
-          showToast("সঠিক টাকার পরিমাণ দিন", "error");
-          return;
-        }
-        if (!trx) {
-          showToast("Transaction ID আবশ্যক", "error");
-          return;
-        }
-
-        payload.paymentType = "Personal";
-        payload.amount = amount;
-        payload.currency = "BDT";
-        payload.currencySymbol = "৳";
-        payload.senderNumber = sender;
-        payload.redotPayUid = "";
-        payload.transactionId = trx;
-        payload.paymentNumber = "01727003670";
-        payload.paymentUid = "";
-        payload.note = "Balance Add Request via bKash";
-
-      } else if (method === 'Nagad') {
-        const sender = document.getElementById('nagad-sender').value.trim();
-        const amount = parseFloat(document.getElementById('nagad-amount').value);
-        const trx = document.getElementById('nagad-trx').value.trim().toUpperCase();
-
-        if (!/^01[3-9][0-9]{8}$/.test(sender)) {
-          showToast("সঠিক ১১ ডিজিটের মোবাইল নাম্বার দিন", "error");
-          return;
-        }
-        if (!amount || amount < 1) {
-          showToast("সঠিক টাকার পরিমাণ দিন", "error");
-          return;
-        }
-        if (!trx) {
-          showToast("Transaction ID আবশ্যক", "error");
-          return;
-        }
-
-        payload.paymentType = "Personal";
-        payload.amount = amount;
-        payload.currency = "BDT";
-        payload.currencySymbol = "৳";
-        payload.senderNumber = sender;
-        payload.redotPayUid = "";
-        payload.transactionId = trx;
-        payload.paymentNumber = "01727003670";
-        payload.paymentUid = "";
-        payload.note = "Balance Add Request via Nagad";
-
-      } else if (method === 'Redot Pay') {
-        const uidVal = document.getElementById('redot-uid').value.trim();
-        const amount = parseFloat(document.getElementById('redot-amount').value);
-        const trx = document.getElementById('redot-trx').value.trim().toUpperCase();
-
-        if (!uidVal) {
-          showToast("Redot Pay UID আবশ্যক", "error");
-          return;
-        }
-        if (!amount || amount <= 0) {
-          showToast("সঠিক USD পরিমাণ দিন", "error");
-          return;
-        }
-        if (!trx) {
-          showToast("Transaction ID আবশ্যক", "error");
-          return;
-        }
-
-        payload.paymentType = "International";
-        payload.amount = amount;
-        payload.currency = "USD";
-        payload.currencySymbol = "$";
-        payload.senderNumber = "";
-        payload.redotPayUid = uidVal;
-        payload.transactionId = trx;
-        payload.paymentNumber = "";
-        payload.paymentUid = "1820194386";
-        payload.note = "Balance Add Request via Redot Pay";
-      }
-
-      // Hold payload and open Confirmation Modal
-      pendingSubmissionPayload = payload;
-      openConfirmationModal(payload);
-    };
-
-    // ---------------------------------------------------------
-    // MODAL HANDLERS
-    // ---------------------------------------------------------
-    function openConfirmationModal(p) {
-      document.getElementById('modal-method').textContent = p.paymentMethod;
-      document.getElementById('modal-amount').textContent = `${p.currencySymbol}${p.amount}`;
-      
-      const senderRow = document.getElementById('modal-sender-row');
-      if (p.paymentMethod === 'Redot Pay') {
-        senderRow.querySelector('.modal-row-label').textContent = "Redot UID:";
-        document.getElementById('modal-sender').textContent = p.redotPayUid;
-      } else {
-        senderRow.querySelector('.modal-row-label').textContent = "Sender:";
-        document.getElementById('modal-sender').textContent = p.senderNumber;
-      }
-
-      document.getElementById('modal-trx').textContent = p.transactionId;
-      document.getElementById('confirm-modal').classList.add('active');
-    }
-
-    window.closeModal = function() {
-      document.getElementById('confirm-modal').classList.remove('active');
-      pendingSubmissionPayload = null;
-    };
-
-    // Confirm button event inside modal
-    document.getElementById('btn-modal-confirm').addEventListener('click', async () => {
-      if (!pendingSubmissionPayload) return;
-      
-      const confirmBtn = document.getElementById('btn-modal-confirm');
-      const activeSubmitBtns = document.querySelectorAll('.btn-submit');
-      
-      confirmBtn.disabled = true;
-      confirmBtn.textContent = "পাঠানো হচ্ছে...";
-      activeSubmitBtns.forEach(b => { b.disabled = true; b.textContent = "Request পাঠানো হচ্ছে..."; });
-
-      try {
-        // Client-side Duplicate Transaction Check
-        const dupQuery = query(
-          collection(db, "add_balance"), 
-          where("transactionId", "==", pendingSubmissionPayload.transactionId)
-        );
-        const dupSnap = await getDocs(dupQuery);
-
-        if (!dupSnap.empty) {
-          showToast("এই Transaction ID দিয়ে ইতিমধ্যে Request পাঠানো হয়েছে", "error");
-          closeModal();
-          return;
-        }
-
-        // Save to Firestore
-        await addDoc(collection(db, "add_balance"), pendingSubmissionPayload);
-        
-        showToast("Payment Request সফলভাবে পাঠানো হয়েছে।", "success");
-        
-        // Reset active forms
-        document.getElementById('form-bkash').reset();
-        document.getElementById('form-nagad').reset();
-        document.getElementById('form-redot').reset();
-        
-        closeModal();
-      } catch (err) {
-        console.error("Firestore Error:", err);
-        if (err.code === 'permission-denied') {
-          showToast("আপনার এই কাজটি করার অনুমতি নেই।", "error");
-        } else if (err.message && err.message.includes("offline")) {
-          showToast("ইন্টারনেট সংযোগ পরীক্ষা করুন।", "error");
-        } else {
-          showToast("ত্রুটি ঘটেছে! আবার চেষ্টা করুন।", "error");
-        }
-      } finally {
-        confirmBtn.disabled = false;
-        confirmBtn.textContent = "Confirm & Submit";
-        activeSubmitBtns.forEach(b => { 
-          b.disabled = false; 
-          b.textContent = b.form?.id === 'form-redot' ? "USD Payment Request পাঠান" : "Payment Request পাঠান";
-        });
-      }
-    });
-
-    // ---------------------------------------------------------
-    // REAL-TIME USER HISTORY LISTENER
-    // ---------------------------------------------------------
-    function listenToUserRequests(uid) {
-      const historyContainer = document.getElementById('history-container');
-
-      // Query: uid == currentUser.uid, orderBy createdAt desc
-      const q = query(
-        collection(db, "add_balance"),
-        where("uid", "==", uid),
-        orderBy("createdAt", "desc")
-      );
-
-      onSnapshot(q, (snapshot) => {
-        if (snapshot.empty) {
-          historyContainer.innerHTML = `
-            <div class="empty-state">
-              <div class="empty-icon">📂</div>
-              <div>আপনার এখনো কোনো Payment Request নেই।</div>
-            </div>
-          `;
-          return;
-        }
-
-        let html = '';
-        snapshot.forEach((doc) => {
-          const item = doc.data();
-          const dateStr = item.createdAt?.toDate 
-            ? item.createdAt.toDate().toLocaleDateString('bn-BD', { day: 'numeric', month: 'short', year: 'numeric' })
-            : 'প্রসেসিং...';
-
-          let statusBadge = '';
-          let statusText = '';
-
-          if (item.status === 'approved') {
-            statusBadge = `<span class="status-badge badge-approved">🟢 Approved</span>`;
-            statusText = `<div class="status-desc" style="color:var(--success);">Payment Approved</div>`;
-          } else if (item.status === 'rejected') {
-            statusBadge = `<span class="status-badge badge-rejected">🔴 Rejected</span>`;
-            statusText = `<div class="status-desc" style="color:var(--danger);">Payment Request Rejected</div>`;
-          } else {
-            statusBadge = `<span class="status-badge badge-pending">🟠 Pending</span>`;
-            statusText = `<div class="status-desc" style="color:var(--warning);">আপনার Payment যাচাই করা হচ্ছে</div>`;
-          }
-
-          let adminNoteHtml = '';
-          if (item.status === 'rejected' && item.adminNote) {
-            adminNoteHtml = `<div class="admin-note-box"><strong>Admin Note:</strong> ${item.adminNote}</div>`;
-          }
-
-          html += `
-            <div class="history-card">
-              <div class="history-card-header">
-                <div class="history-method">
-                  ${getMethodIcon(item.paymentMethod)} ${item.paymentMethod}
-                </div>
-                <div class="history-amount">${item.currencySymbol}${item.amount}</div>
-              </div>
-
-              <div>
-                ${statusBadge}
-                ${statusText}
-                ${adminNoteHtml}
-              </div>
-
-              <div class="history-meta">
-                <span>Trx ID: <strong>${item.transactionId}</strong></span>
-                <span>${dateStr}</span>
-              </div>
-            </div>
-          `;
+            // Hide Loader
+            loader.style.display = 'none';
         });
 
-        historyContainer.innerHTML = html;
- }, (error) => {
-        console.error("History Error:", error);
-        if (error.code === 'failed-precondition') {
-          // Firebase error message এর ভিতর লিঙ্ক থাকে
-          const indexUrl = error.message.match(/https:\/\/console\.firebase\.google\.com[^\s]*/);
-          const link = indexUrl? indexUrl[0] : "#";
+        // ------------------------------------------
+        // 5. PAYMENT METHOD TOGGLE FUNCTION
+        // ------------------------------------------
+        window.selectPaymentMethod = function(method) {
+            activePaymentMethod = method;
 
-          historyContainer.innerHTML = `
-            <div class="empty-state" style="border-color:var(--danger);">
-              <div class="empty-icon">⚠️</div>
-              <div style="font-weight:700; margin-bottom:8px;">Firestore Index প্রয়োজন</div>
-              <div style="font-size:0.85rem; margin-bottom:14px;">
-                History দেখতে এই Index টা বানাতে হবে
-              </div>
-              <a href="${link}" target="_blank" style="
-                background: var(--gradient-primary);
-                color:white;
-                padding:10px 16px;
-                border-radius:10px;
-                text-decoration:none;
-                font-weight:700;
-                display:inline-block;
-              ">1 ক্লিকে Index বান</a>
-            </div>
-          `;
-        } else {
-          historyContainer.innerHTML = `
-            <div class="empty-state">হিস্ট্রি লোড করতে সমস্যা হয়েছে।</div>
-          `;
+            // Update radio selection active states
+            ['bkash', 'nagad', 'redotpay'].forEach(m => {
+                const card = document.getElementById(`radio-${m}`).closest('.method-card');
+                const sec = document.getElementById(`section-${m}`);
+                if (m === method) {
+                    card.classList.add('active');
+                    sec.style.display = 'block';
+                } else {
+                    card.classList.remove('active');
+                    sec.style.display = 'none';
+                }
+            });
+        };
+
+        // ------------------------------------------
+        // 6. COPY TO CLIPBOARD HELPER
+        // ------------------------------------------
+        window.copyToClipboard = function(text, toastMsg) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast(toastMsg, 'success');
+                }).catch(() => {
+                    fallbackCopyTextToClipboard(text, toastMsg);
+                });
+            } else {
+                fallbackCopyTextToClipboard(text, toastMsg);
+            }
+        };
+
+        window.copyNagadNumber = function() {
+            if (NAGAD_NUMBER === "YOUR_NAGAD_NUMBER") {
+                showToast("Nagad নাম্বার কনফিগার করা হয়নি!", "error");
+                return;
+            }
+            window.copyToClipboard(NAGAD_NUMBER, "Nagad নাম্বার কপি হয়েছে");
+        };
+
+        function fallbackCopyTextToClipboard(text, toastMsg) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.opacity = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast(toastMsg, 'success');
+            } catch (err) {
+                showToast("কপি করতে ব্যর্থ হয়েছে", 'error');
+            }
+            document.body.removeChild(textArea);
         }
-      });
-    }
 
-    function getMethodIcon(method) {
-      if (method === 'bKash') return '🟣';
-      if (method === 'Nagad') return '🔴';
-      if (method === 'Redot Pay') return '🌐';
-      return '💳';
-    }
-  </script>
+        // ------------------------------------------
+        // 7. TOAST NOTIFICATION SYSTEM
+        // ------------------------------------------
+        function showToast(message, type = 'default') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            let icon = 'ℹ️';
+            if (type === 'success') icon = '✓';
+            if (type === 'error') icon = '✕';
+
+            toast.innerHTML = `<span>${icon}</span><span>${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ------------------------------------------
+        // 8. FORM SUBMISSION & FIRESTORE WRITE
+        // ------------------------------------------
+        window.handlePaymentSubmit = async function(e, method) {
+            e.preventDefault();
+
+            if (!currentUser) {
+                showToast("প্রথমে Login করুন।", "error");
+                return;
+            }
+
+            let payload = {};
+            let btnId = '';
+            let formId = '';
+
+            if (method === 'bKash') {
+                btnId = 'btn-submit-bkash';
+                formId = 'form-bkash';
+                const sender = document.getElementById('bkash-sender').value.trim();
+                const amount = parseFloat(document.getElementById('bkash-amount').value);
+                const trx = document.getElementById('bkash-trx').value.trim();
+                const note = document.getElementById('bkash-note').value.trim();
+
+                if (!sender || isNaN(amount) || amount <= 0 || !trx) {
+                    showToast("সব তথ্য সঠিকভাবে পূরণ করুন।", "error");
+                    return;
+                }
+                if (trx.length < 4) {
+                    showToast("সঠিক Transaction ID প্রদান করুন।", "error");
+                    return;
+                }
+
+                payload = {
+                    uid: currentUser.uid,
+                    email: currentUser.email || "",
+                    paymentMethod: "bKash",
+                    status: "pending",
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp(),
+                    paymentType: "Mobile Banking",
+                    amount: amount,
+                    currency: "BDT",
+                    currencySymbol: "৳",
+                    senderNumber: sender,
+                    transactionId: trx,
+                    paymentNumber: BKASH_NUMBER,
+                    paymentUid: "",
+                    redotPayUid: "",
+                    note: note || "Balance Add Request via bKash"
+                };
+
+            } else if (method === 'Nagad') {
+                btnId = 'btn-submit-nagad';
+                formId = 'form-nagad';
+                const sender = document.getElementById('nagad-sender').value.trim();
+                const amount = parseFloat(document.getElementById('nagad-amount').value);
+                const trx = document.getElementById('nagad-trx').value.trim();
+                const note = document.getElementById('nagad-note').value.trim();
+
+                if (!sender || isNaN(amount) || amount <= 0 || !trx) {
+                    showToast("সব তথ্য সঠিকভাবে পূরণ করুন।", "error");
+                    return;
+                }
+                if (trx.length < 4) {
+                    showToast("সঠিক Transaction ID প্রদান করুন।", "error");
+                    return;
+                }
+
+                payload = {
+                    uid: currentUser.uid,
+                    email: currentUser.email || "",
+                    paymentMethod: "Nagad",
+                    status: "pending",
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp(),
+                    paymentType: "Mobile Banking",
+                    amount: amount,
+                    currency: "BDT",
+                    currencySymbol: "৳",
+                    senderNumber: sender,
+                    transactionId: trx,
+                    paymentNumber: NAGAD_NUMBER,
+                    paymentUid: "",
+                    redotPayUid: "",
+                    note: note || "Balance Add Request via Nagad"
+                };
+
+            } else if (method === 'Redot Pay') {
+                btnId = 'btn-submit-redotpay';
+                formId = 'form-redotpay';
+                const userUid = document.getElementById('redot-user-uid').value.trim();
+                const amount = parseFloat(document.getElementById('redot-amount').value);
+                const trx = document.getElementById('redot-trx').value.trim();
+                const note = document.getElementById('redot-note').value.trim();
+
+                if (!userUid || isNaN(amount) || amount <= 0 || !trx) {
+                    showToast("সব তথ্য সঠিকভাবে পূরণ করুন।", "error");
+                    return;
+                }
+                if (trx.length < 4) {
+                    showToast("সঠিক Transaction ID প্রদান করুন।", "error");
+                    return;
+                }
+
+                payload = {
+                    uid: currentUser.uid,
+                    email: currentUser.email || "",
+                    paymentMethod: "Redot Pay",
+                    status: "pending",
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp(),
+                    paymentType: "International",
+                    amount: amount,
+                    currency: "USD",
+                    currencySymbol: "$",
+                    senderNumber: "",
+                    transactionId: trx,
+                    paymentNumber: "",
+                    paymentUid: REDOT_PAY_UID,
+                    redotPayUid: userUid,
+                    note: note || "Balance Add Request via Redot Pay"
+                };
+            }
+
+            // Button Loading State
+            const btn = document.getElementById(btnId);
+            const originalBtnHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<span class="spinner"></span> <span>প্রসেস করা হচ্ছে...</span>`;
+
+            try {
+                // Auto-generated document ID write to "add_balance" collection
+                await addDoc(collection(db, "add_balance"), payload);
+                
+                showToast("আপনার Balance Add Request সফলভাবে পাঠানো হয়েছে।", "success");
+                document.getElementById(formId).reset();
+
+            } catch (error) {
+                console.error("Firestore error:", error);
+                let errText = "Request পাঠানো যায়নি। আবার চেষ্টা করুন।";
+                if (error.code === 'permission-denied') {
+                    errText = "আপনার এই কাজটি করার অনুমতি নেই।";
+                } else if (error.code === 'unavailable') {
+                    errText = "ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।";
+                }
+                showToast(errText, "error");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalBtnHtml;
+            }
+        };
+
+        // ------------------------------------------
+        // 9. REALTIME REQUEST HISTORY LISTENER
+        // ------------------------------------------
+        function loadUserRequests(uid) {
+            const listContainer = document.getElementById('requests-history-list');
+
+            // Query only current user's documents
+            const q = query(
+                collection(db, "add_balance"),
+                where("uid", "==", uid),
+                orderBy("createdAt", "desc")
+            );
+
+            // Realtime listener with Index Fallback support
+            historyUnsubscribe = onSnapshot(q, (snapshot) => {
+                renderRequests(snapshot.docs, listContainer);
+            }, (error) => {
+                console.warn("Firestore index error or fallback needed:", error);
+                // Fallback query without orderBy if Firestore index is missing
+                const fallbackQuery = query(
+                    collection(db, "add_balance"),
+                    where("uid", "==", uid)
+                );
+                onSnapshot(fallbackQuery, (snapshot) => {
+                    // Sort client-side
+                    const sortedDocs = snapshot.docs.sort((a, b) => {
+                        const tA = a.data().createdAt?.toMillis() || 0;
+                        const tB = b.data().createdAt?.toMillis() || 0;
+                        return tB - tA;
+                    });
+                    renderRequests(sortedDocs, listContainer);
+                });
+            });
+        }
+
+        function renderRequests(docs, container) {
+            if (docs.length === 0) {
+                container.innerHTML = `<div class="empty-state">আপনার কোনো Balance Add Request নেই।</div>`;
+                return;
+            }
+
+            let html = '';
+            docs.forEach(doc => {
+                const data = doc.data();
+                
+                // Status Badge Builder
+                let statusBadge = '';
+                let statusDesc = '';
+                if (data.status === 'approved') {
+                    statusBadge = `<span class="status-badge status-approved">✓ Approved</span>`;
+                    statusDesc = `<div class="status-note" style="color:#059669;">আপনার balance যোগ করা হয়েছে</div>`;
+                } else if (data.status === 'rejected') {
+                    statusBadge = `<span class="status-badge status-rejected">✕ Rejected</span>`;
+                    statusDesc = `<div class="status-note" style="color:#dc2626;">আপনার request বাতিল করা হয়েছে</div>`;
+                } else {
+                    statusBadge = `<span class="status-badge status-pending">🕒 Pending</span>`;
+                    statusDesc = `<div class="status-note" style="color:#d97706;">আপনার payment request যাচাই করা হচ্ছে</div>`;
+                }
+
+                // Date Formatter
+                let dateStr = 'প্রসেসিং...';
+                if (data.createdAt && data.createdAt.toDate) {
+                    const date = data.createdAt.toDate();
+                    dateStr = date.toLocaleDateString('bn-BD', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+
+                html += `
+                    <div class="request-item">
+                        <div class="req-header">
+                            <div class="req-method">
+                                <span>${data.paymentMethod || 'Payment'}</span>
+                            </div>
+                            ${statusBadge}
+                        </div>
+                        <div class="req-body">
+                            <div class="req-info">
+                                <span>পরিমাণ</span>
+                                <strong>${data.currencySymbol || ''} ${data.amount} ${data.currency || ''}</strong>
+                            </div>
+                            <div class="req-info">
+                                <span>Transaction ID</span>
+                                <strong>${data.transactionId || 'N/A'}</strong>
+                            </div>
+                            <div class="req-info" style="grid-column: span 2;">
+                                <span>তারিখ</span>
+                                <strong style="font-size: 12px; color: var(--text-muted);">${dateStr}</strong>
+                            </div>
+                        </div>
+                        ${statusDesc}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+    </script>
 </body>
 </html>
