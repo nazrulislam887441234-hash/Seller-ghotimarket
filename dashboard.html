@@ -28,7 +28,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg); color: var(--text-dark); padding-bottom: 80px; padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+        body { background-color: var(--bg); color: var(--text-dark); padding-bottom: 90px; padding-bottom: calc(90px + env(safe-area-inset-bottom)); }
         button { cursor: pointer; outline: none; border: none; font-family: inherit; }
         a { text-decoration: none; color: inherit; }
         .hidden { display: none !important; }
@@ -89,12 +89,58 @@
         }
 
         /* ===== SHOP LINK BOX ===== */
-        .shop-link-container { margin: 16px 20px; padding: 12px 16px; background: var(--primary-light); border-radius: var(--radius-md); border: 1px dashed rgba(248, 86, 6, 0.3); display: flex; justify-content: space-between; align-items: center; }
+        .shop-link-container { margin: 16px 20px 12px; padding: 12px 16px; background: var(--primary-light); border-radius: var(--radius-md); border: 1px dashed rgba(248, 86, 6, 0.3); display: flex; justify-content: space-between; align-items: center; }
         .shop-url { font-size: 14px; font-weight: 600; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%; }
         .copy-link-btn { background: var(--primary); color: white; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; display: flex; gap: 6px; align-items: center; }
         .copy-link-btn:active { background: var(--primary-dark); }
-        .username-alert { margin: 16px 20px; background: #fff3cd; color: #856404; padding: 12px 16px; border-radius: var(--radius-md); font-size: 14px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #ffeeba; }
+        .username-alert { margin: 16px 20px 12px; background: #fff3cd; color: #856404; padding: 12px 16px; border-radius: var(--radius-md); font-size: 14px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #ffeeba; }
         .username-btn { background: #856404; color: white; padding: 6px 12px; border-radius: 8px; font-size: 13px; }
+
+        /* ===== BIKASH-STYLE BALANCE CARD ===== */
+        .balance-card-container { margin: 16px 20px; }
+        .balance-card {
+            background: linear-gradient(135deg, var(--primary) 0%, #d84300 100%);
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: 16px 20px;
+            box-shadow: 0 8px 20px rgba(248, 86, 6, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+        .balance-card::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .balance-info { display: flex; flex-direction: column; gap: 4px; }
+        .balance-label { font-size: 13px; font-weight: 500; opacity: 0.95; display: flex; align-items: center; gap: 6px; }
+        .balance-amount { font-size: 24px; font-weight: 700; letter-spacing: 0.5px; }
+        .balance-toggle-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(4px);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            z-index: 1;
+        }
+        .balance-toggle-btn:active { transform: scale(0.95); background: rgba(255, 255, 255, 0.3); }
 
         /* ===== STATS SECTION ===== */
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 20px 20px; }
@@ -125,6 +171,21 @@
         /* ===== PRODUCT SECTION ===== */
         .section-header { padding: 0 20px 12px; display: flex; justify-content: space-between; align-items: center; }
         .section-title { font-size: 18px; font-weight: 700; }
+        .upload-btn-header {
+            background: var(--primary);
+            color: white;
+            padding: 8px 14px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 6px rgba(248, 86, 6, 0.3);
+            transition: all 0.2s ease;
+        }
+        .upload-btn-header:active { transform: scale(0.95); background: var(--primary-dark); }
+        
         .search-container { padding: 0 20px 16px; }
         .search-box { display: flex; align-items: center; background: var(--card); border-radius: var(--radius-md); padding: 10px 16px; border: 1px solid var(--border); }
         .search-box input { border: none; width: 100%; font-size: 15px; margin-left: 12px; outline: none; background: transparent; }
@@ -146,14 +207,35 @@
         .btn-del { background: #fee2e2; color: var(--danger); }
         .p-btn:active { transform: scale(0.9); }
 
-        /* ===== FAB ===== */
-        .fab { position: fixed; bottom: calc(85px + env(safe-area-inset-bottom)); right: 20px; width: 56px; height: 56px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(248, 86, 6, 0.4); z-index: 30; transition: transform 0.2s; }
-        .fab svg { width: 24px; height: 24px; }
-        .fab:active { transform: scale(0.92); }
-
-        /* ===== BOTTOM NAVIGATION ===== */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); display: flex; justify-content: space-around; padding: 12px 10px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); box-shadow: 0 -4px 10px rgba(0,0,0,0.03); z-index: 40; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); font-size: 11px; font-weight: 500; cursor: pointer; transition: 0.2s; }
+        /* ===== BOTTOM NAVIGATION (FIXED) ===== */
+        .bottom-nav { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            background: var(--card); 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            padding: 10px 0 calc(10px + env(safe-area-inset-bottom)); 
+            border-top: 1px solid var(--border); 
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.03); 
+            z-index: 40; 
+        }
+        .nav-item { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 4px; 
+            color: var(--text-muted); 
+            font-size: 11px; 
+            font-weight: 500; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            text-align: center;
+        }
         .nav-item svg { width: 22px; height: 22px; stroke-width: 1.5px; }
         .nav-item.active { color: var(--primary); }
         .nav-item.active svg { stroke-width: 2px; }
@@ -226,6 +308,13 @@
             </div>
         </div>
         <div class="header-actions">
+            <!-- SETTINGS ICON -->
+            <button class="icon-btn" onclick="location.href='settings.html'" aria-label="সেটিংস">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+            </button>
             <!-- FEATURE: NOTIFICATION BELL -->
             <button class="icon-btn" onclick="location.href='modification.html'" aria-label="নোটিফিকেশন">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
@@ -253,6 +342,25 @@
     <div id="usernameBox" class="username-alert hidden">
         <span>আপনার শপের লিংক তৈরি করতে Username সেট করুন।</span>
         <a href="set-username.html" class="username-btn">সেট করুন</a>
+    </div>
+
+    <!-- BIKASH-STYLE BALANCE CARD -->
+    <div class="balance-card-container">
+        <div class="balance-card">
+            <div class="balance-info">
+                <span class="balance-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+                    Available Balance
+                </span>
+                <div class="balance-amount" id="balanceDisplay">৳ ••••••</div>
+            </div>
+            <button class="balance-toggle-btn" id="toggleBalanceBtn" onclick="toggleBalance()">
+                <span id="eyeIcon" style="display:flex;align-items:center;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </span>
+                <span id="toggleText">Balance দেখুন</span>
+            </button>
+        </div>
     </div>
 
     <!-- STATS -->
@@ -291,6 +399,19 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
             <span>টোটাল হিসাব</span>
         </a>
+        <!-- NEW QUICK ACTIONS -->
+        <a href="add-balance.html" class="action-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+            <span>Add Balance</span>
+        </a>
+        <a href="mybalance.html" class="action-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span>Transaction History</span>
+        </a>
+        <a href="settings.html" class="action-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>সেটিংস</span>
+        </a>
     </section>
 
     <!-- BANNER SLIDER -->
@@ -304,6 +425,11 @@
     <!-- PRODUCTS -->
     <div class="section-header">
         <div class="section-title">আপনার পণ্যসমূহ</div>
+        <!-- UPLOAD PRODUCT BUTTON (Replaces Floating FAB) -->
+        <button class="upload-btn-header" onclick="checkLock()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            পণ্য আপলোড
+        </button>
     </div>
     <div class="search-container">
         <div class="search-box">
@@ -320,11 +446,6 @@
             </div>
         </div>
     </div>
-
-    <!-- FAB -->
-    <button class="fab" onclick="checkLock()" aria-label="Upload Product">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    </button>
 
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
@@ -459,6 +580,39 @@
         let userData = null;
         let allProducts = [];
         let productDeleteId = null;
+        let isBalanceShown = false;
+
+        // ===== BALANCE TOGGLE SYSTEM =====
+        window.toggleBalance = () => {
+            isBalanceShown = !isBalanceShown;
+            updateBalanceDisplay();
+        };
+
+        function updateBalanceDisplay() {
+            const displayEl = document.getElementById("balanceDisplay");
+            const toggleText = document.getElementById("toggleText");
+            const eyeIcon = document.getElementById("eyeIcon");
+            if (!displayEl) return;
+
+            let val = 0;
+            if (userData) {
+                if (userData.balance !== undefined && userData.balance !== null) {
+                    val = Number(userData.balance) || 0;
+                } else if (userData.walletBalance !== undefined && userData.walletBalance !== null) {
+                    val = Number(userData.walletBalance) || 0;
+                }
+            }
+
+            if (isBalanceShown) {
+                displayEl.textContent = `৳ ${val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                toggleText.textContent = "Balance লুকান";
+                eyeIcon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+            } else {
+                displayEl.textContent = "৳ ••••••";
+                toggleText.textContent = "Balance দেখুন";
+                eyeIcon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+            }
+        }
 
         // ===== SHOP BRANDING REDIRECT =====
         window.goToShopBranding = () => {
@@ -574,6 +728,7 @@
                         userData = userSnap.data();
                         document.getElementById("sName").textContent = escapeHTML(userData.shopName || "Shop Name");
                         updateShopAvatar(userData.shopLogo);
+                        updateBalanceDisplay();
                         if (userData.username && userData.username.trim() !== "") {
                             document.getElementById("usernameBox").classList.add("hidden");
                             const linkBox = document.getElementById("shopLinkBox");
@@ -585,13 +740,17 @@
                             document.getElementById("usernameBox").classList.remove("hidden");
                             document.getElementById("shopLinkBox").classList.add("hidden");
                         }
-                    } else { updateShopAvatar(null); }
+                    } else {
+                        updateShopAvatar(null);
+                        updateBalanceDisplay();
+                    }
                     initNoticeSystem();
                     loadSellerBanner();
                     loadProducts();
                 } catch (err) {
                     console.error(err);
                     updateShopAvatar(null);
+                    updateBalanceDisplay();
                     showToast("ডাটা লোড করতে সমস্যা হয়েছে", "error");
                 }
             } else { window.location.href = "login.html"; }
