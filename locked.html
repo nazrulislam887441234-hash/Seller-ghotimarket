@@ -968,7 +968,7 @@
         <h3>সহযোগিতা প্রয়োজন?</h3>
         <p>সাবস্ক্রিপশন বা ওয়ালেট সংক্রান্ত যেকোনো সহায়তার জন্য হেল্পডেস্কে যোগাযোগ করুন।</p>
       </div>
-      <a href="https://wa.me/8801727003670?text=%E0%A6%86%E0%A6%B8%E0%A7%8D%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%AF%E0%A6%BC%E0%A6%95%E0%A6%BF%E0%A6%AE%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20GHOTI%20MARKET%20%E0%A6%BB%E0%A6%B8%E0%A6%B2%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A6%BE%E0%A6%AA%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%9F%20%E0%A6%9A%E0%A6%BE%E0%A6%87" target="_blank" rel="noopener noreferrer" class="btn-support-wa">
+      <a href="https://wa.me/8801727003670?text=%E0%A6%86%E0%A6%B8%E0%A7%8D%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%B2%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%AF%E0%A6%95%E0%A6%BF%E0%A6%AE%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20GHOTI%20MARKET%20%E0%A6%BB%E0%A6%B8%E0%A6%B2%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A6%BE%E0%A6%AA%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%9F%20%E0%A6%9A%E0%A6%BE%E0%A6%87" target="_blank" rel="noopener noreferrer" class="btn-support-wa">
         <i class="fa-brands fa-whatsapp"></i> কাস্টমার সাপোর্ট
       </a>
     </section>
@@ -1076,10 +1076,14 @@
       return String(num).replace(/\d/g, d => bengaliDigits[d]);
     }
 
+    // Helper Function: converts number / string / Timestamp object to numeric milliseconds
     function getProfileUnlockTime(value) {
       if (!value) return 0;
-      if (typeof value === "number") return value;
-      if (typeof value === "string" && !isNaN(Number(value))) return Number(value);
+      if (typeof value === "number") return isNaN(value) ? 0 : value;
+      if (typeof value === "string") {
+        const num = Number(value);
+        return isNaN(num) ? 0 : num;
+      }
       if (value && typeof value.toMillis === "function") return value.toMillis();
       if (value && typeof value.seconds === "number") return value.seconds * 1000;
       return 0;
@@ -1236,7 +1240,26 @@
       const statusBadge = document.getElementById('statusBadge');
       const statusContentArea = document.getElementById('statusContentArea');
 
-      if (!targetMs || targetMs <= now) {
+      if (!targetMs || targetMs <= 0) {
+        statusBadge.className = "status-badge-title none";
+        statusBadge.innerHTML = `<i class="fa-solid fa-circle-info"></i> <span>কোনো সক্রিয় Subscription নেই</span>`;
+
+        statusContentArea.innerHTML = `
+          <div class="expired-action-area">
+            <p class="expired-msg">আপনার অ্যাকাউন্টটিতে বর্তমানে কোনো সাবস্ক্রিপশন চালু নেই।</p>
+            <button type="button" class="btn-renew" id="scrollToPlansBtn">
+              <i class="fa-solid fa-cart-shopping"></i> Subscription নির্বাচন করুন
+            </button>
+          </div>
+        `;
+
+        document.getElementById('scrollToPlansBtn')?.addEventListener('click', () => {
+          document.getElementById('packagesSection').scrollIntoView({ behavior: 'smooth' });
+        });
+        return;
+      }
+
+      if (targetMs <= now) {
         statusBadge.className = "status-badge-title expired";
         statusBadge.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>Subscription মেয়াদ শেষ</span>`;
 
@@ -1317,22 +1340,27 @@
           const p = docSnap.data();
           const pkgId = docSnap.id;
           const price = Number(p.price);
-          const days = Number(p.days);
 
-          if (!isNaN(price) && !isNaN(days) && price >= 0 && days > 0) {
+          if (!isNaN(price) && price > 0) {
+            const isSupported = (price % 300 === 0);
+            const months = isSupported ? price / 300 : 0;
+            const normalizedDays = isSupported ? months * 30 : (Number(p.days) || 0);
+
             rawPackages.push({
               id: pkgId,
-              name: p.name || `${toBengaliNum(days)} দিনের Plan`,
+              name: p.name || `${toBengaliNum(normalizedDays)} দিনের Plan`,
               price: price,
-              days: days,
+              days: normalizedDays,
+              months: months,
               desc: p.desc || "Seller account-এর সুবিধা সক্রিয় রাখার জন্য উপযুক্ত প্যাকেজ।",
               popular: Boolean(p.popular),
-              featured: Boolean(p.featured)
+              featured: Boolean(p.featured),
+              supported: isSupported
             });
           }
         });
 
-        rawPackages.sort((a, b) => a.days - b.days);
+        rawPackages.sort((a, b) => a.price - b.price);
         renderPlansGrid(rawPackages);
       }, (error) => {
         console.error("Error loading packages:", error);
@@ -1350,7 +1378,9 @@
 
       let html = '';
       packages.forEach((pkg) => {
-        const approxDaily = Math.round(pkg.price / pkg.days);
+        const isSupported = pkg.supported !== false;
+        const displayDays = isSupported ? pkg.months * 30 : pkg.days;
+        const approxDaily = displayDays > 0 ? Math.round(pkg.price / displayDays) : 0;
 
         html += `
           <div class="plan-card ${pkg.popular ? 'is-popular' : ''}">
@@ -1361,22 +1391,22 @@
             
             <div class="plan-price-wrapper">
               <span class="plan-price">৳${toBengaliNum(pkg.price)}</span>
-              <span class="plan-duration">/ ${toBengaliNum(pkg.days)} দিন</span>
+              <span class="plan-duration">/ ${toBengaliNum(displayDays)} দিন</span>
             </div>
             
             <div class="approx-cost">মাত্র ৳${toBengaliNum(approxDaily)} / দিন</div>
             <p class="plan-desc">${escapeHtml(pkg.desc)}</p>
 
             <ul class="features-list">
-              <li><i class="fa-solid fa-circle-check"></i> ${toBengaliNum(pkg.days)} দিন ড্যাশবোর্ড এক্সেস</li>
+              <li><i class="fa-solid fa-circle-check"></i> ${toBengaliNum(displayDays)} দিন ড্যাশবোর্ড এক্সেস ${isSupported ? `(${toBengaliNum(pkg.months)} মাস)` : ''}</li>
               <li><i class="fa-solid fa-circle-check"></i> আনলিমিটেড প্রোডাক্ট লিস্ট করার সুযোগ</li>
               <li><i class="fa-solid fa-circle-check"></i> Verified Seller ব্যাজ সাপোর্ট</li>
               <li><i class="fa-solid fa-circle-check"></i> কাস্টমার সার্চ লিস্টে অগ্রাধিকার</li>
               <li><i class="fa-solid fa-circle-check"></i> ২৪/৭ ডেডিকেটেড সেলার সাপোর্ট</li>
             </ul>
 
-            <button type="button" class="buy-plan-btn" data-pkg-id="${escapeHtml(pkg.id)}">
-              <i class="fa-solid fa-cart-shopping"></i> এই প্যাকটি নিন
+            <button type="button" class="buy-plan-btn" data-pkg-id="${escapeHtml(pkg.id)}" ${!isSupported ? 'style="opacity:0.6;"' : ''}>
+              <i class="fa-solid fa-cart-shopping"></i> ${isSupported ? 'এই প্যাকটি নিন' : 'অসমর্থিত প্যাকেজ'}
             </button>
           </div>
         `;
@@ -1389,6 +1419,10 @@
           const id = e.currentTarget.getAttribute('data-pkg-id');
           const targetPkg = packages.find(p => p.id === id);
           if (targetPkg) {
+            if (targetPkg.supported === false) {
+              showToast("এই প্যাকেজটি বর্তমানে সাপোর্টেড নয়। (মূল্য ৳৩০০-এর গুণিতক হতে হবে)", "warning");
+              return;
+            }
             openPurchaseModal(targetPkg);
           }
         });
@@ -1402,9 +1436,12 @@
     function openPurchaseModal(pkg) {
       selectedPackageForModal = pkg;
       
+      const months = pkg.price / 300;
+      const displayDays = months * 30;
+
       document.getElementById('modalPkgName').textContent = pkg.name;
       document.getElementById('modalPkgPrice').textContent = `৳${toBengaliNum(pkg.price)}`;
-      document.getElementById('modalPkgDays').textContent = `${toBengaliNum(pkg.days)} দিন`;
+      document.getElementById('modalPkgDays').textContent = `${toBengaliNum(displayDays)} দিন (${toBengaliNum(months)} মাস)`;
       document.getElementById('modalUserBalance').textContent = `৳${toBengaliNum(currentUserData.balance)}`;
 
       const rem = currentUserData.balance - pkg.price;
@@ -1423,12 +1460,28 @@
       if (e.target === purchaseModal) closeModal();
     });
 
-    // Atomic Transaction for Wallet Purchase
+    // Concurrency-Safe Atomic Transaction for Wallet Purchase
     confirmWalletBtn.addEventListener('click', async () => {
       if (!selectedPackageForModal) return;
 
       const p = selectedPackageForModal;
       const uid = currentUserData.uid;
+
+      if (!uid) {
+        showToast("❌ আপনার অ্যাকাউন্ট ভেরিফাইড নয়। অনুগ্রহ করে লগইন করুন।", "error");
+        return;
+      }
+
+      if (p.price <= 0 || p.price % 300 !== 0) {
+        showToast("❌ এই প্যাকেজটি বর্তমানে সাপোর্টেড নয়।", "error");
+        return;
+      }
+
+      if (currentUserData.balance < p.price) {
+        showToast(`❌ আপনার Wallet Balance পর্যাপ্ত নয়। প্রয়োজন: ৳${toBengaliNum(p.price)} বর্তমান Balance: ৳${toBengaliNum(currentUserData.balance)}`, "error");
+        return;
+      }
+
       const userRef = doc(db, "users", uid);
       const pkgRef = doc(db, "packages", p.id);
 
@@ -1437,31 +1490,30 @@
 
       try {
         await runTransaction(db, async (transaction) => {
-          // Fresh Document Reads inside transaction
+          // 1. Fresh Document Reads inside transaction
           const userDoc = await transaction.get(userRef);
           const pkgDoc = await transaction.get(pkgRef);
 
           if (!userDoc.exists()) {
-            throw new Error("ব্যবহারকারীর অ্যাকাউন্ট পাওয়া যায়নি!");
+            throw new Error("USER_NOT_FOUND");
           }
+
           if (!pkgDoc.exists()) {
-            throw new Error("এই subscription package বর্তমানে ব্যবহার করা যাচ্ছে না।");
+            throw new Error("PACKAGE_NOT_FOUND");
           }
 
           const userData = userDoc.data();
           const pkgData = pkgDoc.data();
 
           const realPrice = Number(pkgData.price);
-          const realDays = Number(pkgData.days);
           const realName = pkgData.name || p.name;
 
-          if (isNaN(realPrice) || isNaN(realDays) || realPrice <= 0 || realDays <= 0) {
-            throw new Error("প্যাকেজ কনফিগারেশন সঠিক নয়।");
+          // Strict Package Price Validation inside Transaction
+          if (isNaN(realPrice) || realPrice <= 0 || realPrice % 300 !== 0) {
+            throw new Error("INVALID_PACKAGE_PRICE");
           }
 
           const currentBalance = Number(userData.balance) || 0;
-          const currentExpiry = getProfileUnlockTime(userData.profileUnlockedUntil);
-
           if (currentBalance < realPrice) {
             const err = new Error("INSUFFICIENT_BALANCE");
             err.currentBalance = currentBalance;
@@ -1469,21 +1521,28 @@
             throw err;
           }
 
-          // Expiry Calculation Logic
-          const nowMs = Date.now();
-          const baseTime = currentExpiry > nowMs ? currentExpiry : nowMs;
-          const msToAdd = realDays * 24 * 60 * 60 * 1000;
-          const newExpiry = baseTime + msToAdd;
+          // Read current profile unlocked expiry timestamp (robust format handling)
+          const currentExpiry = getProfileUnlockTime(userData.profileUnlockedUntil);
 
+          // Subscription Duration Calculations derived strictly from price
+          // Rule logic: months = realPrice / 300, 1 month = 2,592,000,000 ms
+          const nowMs = Date.now();
+          const baseExpiry = currentExpiry > nowMs ? currentExpiry : nowMs;
+          const months = realPrice / 300;
+          const packageDays = months * 30;
+          const addedMs = months * 2592000000;
+
+          const newExpiry = baseExpiry + addedMs;
           const newBalance = currentBalance - realPrice;
 
-          // 1. Update User Document
+          // Update ONLY balance and profileUnlockedUntil on users/{uid} document
+          // To strictly abide by Security Rules affectedKeys([ "balance", "profileUnlockedUntil" ])
           transaction.update(userRef, {
             balance: newBalance,
             profileUnlockedUntil: newExpiry
           });
 
-          // 2. Create Transaction Entry
+          // Record Transaction History in a separate collection: users_transection
           const tranRef = doc(collection(db, "users_transection"));
           transaction.set(tranRef, {
             userId: uid,
@@ -1491,19 +1550,20 @@
             type: "SUBSCRIPTION_BUY",
             packageId: p.id,
             packageName: realName,
-            packageDays: realDays,
+            packageDays: packageDays,
             packagePrice: realPrice,
+            months: months,
             prevBalance: currentBalance,
             newBalance: newBalance,
             prevExpiry: currentExpiry,
             newExpiry: newExpiry,
             createdAt: serverTimestamp(),
-            note: `Wallet থেকে ${realName} ক্রয় করা হয়েছে`
+            note: `Wallet থেকে ${realName} (৳${realPrice}) সাবস্ক্রিপশন ক্রয় করা হয়েছে`
           });
         });
 
         closeModal();
-        showToast(`✅ ${p.name} সফলভাবে এক্টিভ হয়েছে! ৳${toBengaliNum(p.price)} কেটে নেওয়া হয়েছে`, "success");
+        showToast(`✅ Subscription সফলভাবে সক্রিয় হয়েছে!`, "success");
 
       } catch (error) {
         console.error("Wallet Transaction Error:", error);
@@ -1511,9 +1571,15 @@
         if (error.message === "INSUFFICIENT_BALANCE") {
           const req = toBengaliNum(error.requiredPrice || p.price);
           const curr = toBengaliNum(error.currentBalance || currentUserData.balance);
-          showToast(`❌ আপনার Wallet Balance পর্যাপ্ত নয়। প্রয়োজন: ৳${req} বর্তমান Balance: ৳${curr}`, "error");
+          showToast(`❌ আপনার Wallet Balance পর্যাপ্ত নয়। প্রয়োজন: ৳${req}, বর্তমান Balance: ৳${curr}`, "error");
+        } else if (error.message === "INVALID_PACKAGE_PRICE") {
+          showToast("❌ এই প্যাকেজটি বর্তমানে সাপোর্টেড নয়।", "error");
+        } else if (error.message === "USER_NOT_FOUND") {
+          showToast("❌ ব্যবহারকারীর অ্যাকাউন্ট পাওয়া যায়নি।", "error");
+        } else if (error.message === "PACKAGE_NOT_FOUND") {
+          showToast("❌ সাবস্ক্রিপশন প্যাকেজটি খুঁজে পাওয়া যায়নি।", "error");
         } else if (error.code === "permission-denied") {
-          showToast("❌ Subscription কেনার অনুমতি পাওয়া যায়নি। Security Rules অথবা package configuration পরীক্ষা করুন।", "error");
+          showToast("❌ ট্রানজেকশনে অনুমতি পাওয়া যায়নি। Security Rules অথবা তথ্যে গরমিল রয়েছে।", "error");
         } else {
           showToast(`❌ ${error.message || "ট্রানজেকশনে সমস্যা হয়েছে"}`, "error");
         }
@@ -1523,6 +1589,7 @@
       }
     });
 
+    // Accordion expand/collapse
     document.querySelectorAll('.accordion-header').forEach(header => {
       header.addEventListener('click', () => {
         const item = header.parentElement;
