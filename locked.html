@@ -54,7 +54,6 @@
       padding-bottom: 60px;
     }
 
-    /* Background Ambient Blobs */
     .bg-blob {
       position: fixed;
       border-radius: 50%;
@@ -78,7 +77,6 @@
       background: rgba(255, 133, 51, 0.12);
     }
 
-    /* Page Auth Loader */
     #pageAuthLoader {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -103,7 +101,6 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Sticky Header */
     .app-header {
       position: sticky;
       top: 0; left: 0; right: 0;
@@ -171,7 +168,6 @@
       color: #fff;
     }
 
-    /* Container */
     .container {
       max-width: 1100px;
       margin: 0 auto;
@@ -181,7 +177,6 @@
       gap: 28px;
     }
 
-    /* Welcome Profile Card */
     .welcome-card {
       background: var(--card-bg);
       border-radius: var(--radius-lg);
@@ -279,7 +274,6 @@
       border: 1px solid rgba(245, 158, 11, 0.3);
     }
 
-    /* Subscription Status Box */
     .sub-status-box {
       margin-top: 22px;
       padding: 20px;
@@ -385,7 +379,6 @@
       box-shadow: var(--shadow-md);
     }
 
-    /* Section Headers */
     .section-header {
       text-align: center;
       margin-bottom: 8px;
@@ -401,7 +394,6 @@
       margin-top: 4px;
     }
 
-    /* Plans Grid */
     .plans-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -541,7 +533,6 @@
       box-shadow: 0 6px 18px rgba(255, 106, 0, 0.4);
     }
 
-    /* Account Summary Card */
     .account-summary-card {
       background: var(--card-bg);
       border-radius: var(--radius-lg);
@@ -574,7 +565,6 @@
       word-break: break-all;
     }
 
-    /* FAQ Accordion Section */
     .faq-card {
       background: var(--card-bg);
       border-radius: var(--radius-lg);
@@ -639,7 +629,6 @@
       max-height: 200px;
     }
 
-    /* Support Card */
     .support-card {
       background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
       color: #ffffff;
@@ -679,7 +668,6 @@
       transform: translateY(-2px);
     }
 
-    /* Modal Backdrop & Box */
     .modal-backdrop {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -806,7 +794,6 @@
       cursor: not-allowed;
     }
 
-    /* Toast Container */
     #toast-container {
       position: fixed;
       top: 20px;
@@ -847,20 +834,16 @@
 </head>
 <body>
 
-  <!-- Background Blobs -->
   <div class="bg-blob bg-blob-1"></div>
   <div class="bg-blob bg-blob-2"></div>
 
-  <!-- Page Loader -->
   <div id="pageAuthLoader">
     <div class="loader-spinner"></div>
     <span style="font-size: 15px; font-weight: 600; color: var(--text-muted);">অ্যাকাউন্ট ভেরিফাই করা হচ্ছে...</span>
   </div>
 
-  <!-- Toast Notification Container -->
   <div id="toast-container"></div>
 
-  <!-- Header -->
   <header class="app-header">
     <div class="header-inner">
       <a href="#" class="brand-logo">
@@ -879,10 +862,8 @@
     </div>
   </header>
 
-  <!-- Main Content -->
   <main class="container">
 
-    <!-- Welcome & Seller Profile Card -->
     <section class="welcome-card" id="userWelcomeCard">
       <div class="user-profile-flex">
         <div class="avatar-wrapper" id="avatarBox">
@@ -903,7 +884,6 @@
         </div>
       </div>
 
-      <!-- Subscription Status Area -->
       <div class="sub-status-box" id="subStatusContainer">
         <div class="status-badge-title none" id="statusBadge">
           <i class="fa-solid fa-circle-info"></i> <span>স্ট্যাটাস চেক করা হচ্ছে...</span>
@@ -915,19 +895,15 @@
       </div>
     </section>
 
-    <!-- Subscription Plans Section -->
     <section id="packagesSection">
       <div class="section-header">
         <h3 class="section-title">আপনার Seller Subscription নির্বাচন করুন</h3>
         <p class="section-subtitle">আপনার ব্যবসার পরিধি অনুযায়ী মানানসই প্যাকেজ বাছাই করুন</p>
       </div>
 
-      <div class="plans-grid" id="plansGrid">
-        <!-- Package Cards dynamically rendered via JS -->
-      </div>
+      <div class="plans-grid" id="plansGrid"></div>
     </section>
 
-    <!-- Account Summary Card -->
     <section class="account-summary-card">
       <div class="summary-item">
         <span>💰 Current Wallet Balance</span>
@@ -943,7 +919,6 @@
       </div>
     </section>
 
-    <!-- FAQ Section -->
     <section class="faq-card">
       <h3 class="faq-title"><i class="fa-solid fa-circle-question"></i> সাধারণ জিজ্ঞাসাবলী (FAQ)</h3>
       
@@ -988,7 +963,6 @@
       </div>
     </section>
 
-    <!-- General Support Section -->
     <section class="support-card">
       <div class="support-text">
         <h3>সহযোগিতা প্রয়োজন?</h3>
@@ -1001,7 +975,6 @@
 
   </main>
 
-  <!-- Purchase Modal -->
   <div class="modal-backdrop" id="purchaseModal">
     <div class="modal-box">
       <div class="modal-icon-header">
@@ -1033,7 +1006,6 @@
         </div>
       </div>
 
-      <!-- STRICTLY 2 BUTTONS ONLY - NO WHATSAPP BUTTON -->
       <div class="modal-actions">
         <button type="button" class="btn-modal-cancel" id="closeModalBtn">বাতিল</button>
         <button type="button" class="btn-modal-confirm" id="confirmWalletBtn">
@@ -1056,7 +1028,6 @@
       runTransaction 
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
       authDomain: "ghotimarket.firebaseapp.com",
@@ -1068,12 +1039,10 @@
       measurementId: "G-4SR8V2EKC1"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Global App State
     let currentUserData = {
       uid: "",
       email: "",
@@ -1091,7 +1060,6 @@
     let unsubscribePackages = null;
     let countdownInterval = null;
 
-    // Helper: Escape HTML string to prevent XSS
     function escapeHtml(text) {
       if (text === null || text === undefined) return '';
       return String(text)
@@ -1102,14 +1070,12 @@
         .replace(/'/g, "&#039;");
     }
 
-    // Helper: Convert English digits to Bengali digits
     function toBengaliNum(num) {
       if (num === null || num === undefined) return '০';
       const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
       return String(num).replace(/\d/g, d => bengaliDigits[d]);
     }
 
-    // Helper: Normalize profileUnlockedUntil to Milliseconds
     function getProfileUnlockTime(value) {
       if (!value) return 0;
       if (typeof value === "number") return value;
@@ -1119,7 +1085,6 @@
       return 0;
     }
 
-    // Helper: Format date to Bangladesh Time (Asia/Dhaka)
     function formatBDDate(ms) {
       if (!ms) return "N/A";
       try {
@@ -1138,7 +1103,6 @@
       }
     }
 
-    // Helper: Show Toast Notification
     function showToast(message, type = 'info') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
@@ -1163,7 +1127,6 @@
       }, 3500);
     }
 
-    // Helper: Hide Auth Loader
     function hideAuthLoader() {
       const loader = document.getElementById('pageAuthLoader');
       if (loader) {
@@ -1172,7 +1135,6 @@
       }
     }
 
-    // Auth Listener
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.href = "login.html";
@@ -1190,7 +1152,6 @@
       hideAuthLoader();
     });
 
-    // Realtime Listener for User Profile
     function listenToUserProfile(uid) {
       if (unsubscribeUser) unsubscribeUser();
 
@@ -1207,7 +1168,6 @@
           currentUserData.verified = uData.verified === true;
           currentUserData.profileUnlockedUntil = getProfileUnlockTime(uData.profileUnlockedUntil);
 
-          // Update UI
           updateUserProfileUI();
         } else {
           currentUserData.balance = 0;
@@ -1222,13 +1182,10 @@
       });
     }
 
-    // Update User Profile UI
     function updateUserProfileUI() {
-      // Shop Name & Username
       document.getElementById('userNameDisplay').textContent = currentUserData.shopName;
       document.getElementById('userHandleDisplay').textContent = currentUserData.username ? `@${currentUserData.username}` : 'Seller Account';
 
-      // Shop Logo Avatar
       const avatarBox = document.getElementById('avatarBox');
       if (currentUserData.shopLogo) {
         avatarBox.innerHTML = `<img src="${escapeHtml(currentUserData.shopLogo)}" alt="Shop Logo" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\\'fa-solid fa-store avatar-placeholder\\'></i>';">`;
@@ -1236,7 +1193,6 @@
         avatarBox.innerHTML = `<i class="fa-solid fa-store avatar-placeholder"></i>`;
       }
 
-      // Active Status
       const activeChip = document.getElementById('activeStatusChip');
       if (currentUserData.active) {
         activeChip.className = "chip active-chip";
@@ -1246,7 +1202,6 @@
         activeChip.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> <span>🔴 Inactive</span>`;
       }
 
-      // Verified Status
       const verifiedChip = document.getElementById('verifiedStatusChip');
       if (currentUserData.verified) {
         verifiedChip.className = "chip verified-chip";
@@ -1256,7 +1211,6 @@
         verifiedChip.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>⚠️ Unverified</span>`;
       }
 
-      // Balance Displays (Top Header, Account Summary, Modal if open)
       const formattedBalance = `৳${toBengaliNum(currentUserData.balance)}`;
       document.getElementById('headerBalanceDisplay').textContent = formattedBalance;
       document.getElementById('summaryWalletBalance').textContent = formattedBalance;
@@ -1267,11 +1221,9 @@
         document.getElementById('modalRemBalance').textContent = `৳${toBengaliNum(rem >= 0 ? rem : 0)}`;
       }
 
-      // Handle Subscription Countdown
       handleSubscriptionCountdown();
     }
 
-    // Handle Countdown Timer & Subscription UI
     function handleSubscriptionCountdown() {
       const targetMs = currentUserData.profileUnlockedUntil;
       const now = Date.now();
@@ -1284,7 +1236,6 @@
       const statusBadge = document.getElementById('statusBadge');
       const statusContentArea = document.getElementById('statusContentArea');
 
-      // Expired or No Subscription
       if (!targetMs || targetMs <= now) {
         statusBadge.className = "status-badge-title expired";
         statusBadge.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>Subscription মেয়াদ শেষ</span>`;
@@ -1304,7 +1255,6 @@
         return;
       }
 
-      // Active Subscription
       statusBadge.className = "status-badge-title active";
       statusBadge.innerHTML = `<i class="fa-solid fa-clock"></i> <span>Subscription সক্রিয় আছে</span>`;
 
@@ -1357,7 +1307,6 @@
       countdownInterval = setInterval(runCountdown, 1000);
     }
 
-    // Realtime Listener for Packages Collection
     function listenToPackages() {
       if (unsubscribePackages) unsubscribePackages();
 
@@ -1383,7 +1332,6 @@
           }
         });
 
-        // Sort ascending by duration (days)
         rawPackages.sort((a, b) => a.days - b.days);
         renderPlansGrid(rawPackages);
       }, (error) => {
@@ -1392,7 +1340,6 @@
       });
     }
 
-    // Render Package Cards
     function renderPlansGrid(packages) {
       const grid = document.getElementById('plansGrid');
       
@@ -1402,7 +1349,7 @@
       }
 
       let html = '';
-      packages.forEach((pkg, index) => {
+      packages.forEach((pkg) => {
         const approxDaily = Math.round(pkg.price / pkg.days);
 
         html += `
@@ -1437,7 +1384,6 @@
 
       grid.innerHTML = html;
 
-      // Attach Event Listeners to Buy Buttons
       grid.querySelectorAll('.buy-plan-btn[data-pkg-id]').forEach(btn => {
         btn.addEventListener('click', (e) => {
           const id = e.currentTarget.getAttribute('data-pkg-id');
@@ -1449,12 +1395,10 @@
       });
     }
 
-    // Modal References
     const purchaseModal = document.getElementById('purchaseModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const confirmWalletBtn = document.getElementById('confirmWalletBtn');
 
-    // Open Modal
     function openPurchaseModal(pkg) {
       selectedPackageForModal = pkg;
       
@@ -1469,7 +1413,6 @@
       purchaseModal.classList.add('active');
     }
 
-    // Close Modal
     function closeModal() {
       purchaseModal.classList.remove('active');
       selectedPackageForModal = null;
@@ -1480,73 +1423,87 @@
       if (e.target === purchaseModal) closeModal();
     });
 
-    // Wallet Purchase Logic (runTransaction)
+    // Atomic Transaction for Wallet Purchase
     confirmWalletBtn.addEventListener('click', async () => {
       if (!selectedPackageForModal) return;
 
       const p = selectedPackageForModal;
       const uid = currentUserData.uid;
       const userRef = doc(db, "users", uid);
+      const pkgRef = doc(db, "packages", p.id);
 
-      // UI Processing State
       confirmWalletBtn.disabled = true;
       confirmWalletBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং...`;
 
       try {
         await runTransaction(db, async (transaction) => {
-          // Fetch freshest user document
+          // Fresh Document Reads inside transaction
           const userDoc = await transaction.get(userRef);
+          const pkgDoc = await transaction.get(pkgRef);
+
           if (!userDoc.exists()) {
             throw new Error("ব্যবহারকারীর অ্যাকাউন্ট পাওয়া যায়নি!");
           }
+          if (!pkgDoc.exists()) {
+            throw new Error("এই subscription package বর্তমানে ব্যবহার করা যাচ্ছে না।");
+          }
 
           const userData = userDoc.data();
+          const pkgData = pkgDoc.data();
+
+          const realPrice = Number(pkgData.price);
+          const realDays = Number(pkgData.days);
+          const realName = pkgData.name || p.name;
+
+          if (isNaN(realPrice) || isNaN(realDays) || realPrice <= 0 || realDays <= 0) {
+            throw new Error("প্যাকেজ কনফিগারেশন সঠিক নয়।");
+          }
+
           const currentBalance = Number(userData.balance) || 0;
           const currentExpiry = getProfileUnlockTime(userData.profileUnlockedUntil);
 
-          // 1. Balance Validation
-          if (currentBalance < p.price) {
+          if (currentBalance < realPrice) {
             const err = new Error("INSUFFICIENT_BALANCE");
             err.currentBalance = currentBalance;
-            err.requiredPrice = p.price;
+            err.requiredPrice = realPrice;
             throw err;
           }
 
-          // 2. Expiry Time Calculation
-          const baseTime = currentExpiry > Date.now() ? currentExpiry : Date.now();
-          const msToAdd = Number(p.days) * 24 * 60 * 60 * 1000;
+          // Expiry Calculation Logic
+          const nowMs = Date.now();
+          const baseTime = currentExpiry > nowMs ? currentExpiry : nowMs;
+          const msToAdd = realDays * 24 * 60 * 60 * 1000;
           const newExpiry = baseTime + msToAdd;
 
-          // 3. New Balance
-          const newBalance = currentBalance - Number(p.price);
+          const newBalance = currentBalance - realPrice;
 
-          // 4. Update User Document
+          // 1. Update User Document
           transaction.update(userRef, {
             balance: newBalance,
             profileUnlockedUntil: newExpiry
           });
 
-          // 5. Create Transaction History Entry
+          // 2. Create Transaction Entry
           const tranRef = doc(collection(db, "users_transection"));
           transaction.set(tranRef, {
             userId: uid,
-            amount: -Number(p.price),
+            amount: -realPrice,
             type: "SUBSCRIPTION_BUY",
-            packageName: p.name,
-            packageDays: Number(p.days),
-            packagePrice: Number(p.price),
+            packageId: p.id,
+            packageName: realName,
+            packageDays: realDays,
+            packagePrice: realPrice,
             prevBalance: currentBalance,
             newBalance: newBalance,
             prevExpiry: currentExpiry,
             newExpiry: newExpiry,
             createdAt: serverTimestamp(),
-            note: `Wallet থেকে ${p.name} ক্রয় করা হয়েছে`
+            note: `Wallet থেকে ${realName} ক্রয় করা হয়েছে`
           });
         });
 
-        // Purchase Success
         closeModal();
-        showToast(`✅ ${p.name} সফলভাবে একটিভ হয়েছে! ৳${toBengaliNum(p.price)} Wallet থেকে কাটা হয়েছে`, "success");
+        showToast(`✅ ${p.name} সফলভাবে এক্টিভ হয়েছে! ৳${toBengaliNum(p.price)} কেটে নেওয়া হয়েছে`, "success");
 
       } catch (error) {
         console.error("Wallet Transaction Error:", error);
@@ -1555,8 +1512,10 @@
           const req = toBengaliNum(error.requiredPrice || p.price);
           const curr = toBengaliNum(error.currentBalance || currentUserData.balance);
           showToast(`❌ আপনার Wallet Balance পর্যাপ্ত নয়। প্রয়োজন: ৳${req} বর্তমান Balance: ৳${curr}`, "error");
+        } else if (error.code === "permission-denied") {
+          showToast("❌ Subscription কেনার অনুমতি পাওয়া যায়নি। Security Rules অথবা package configuration পরীক্ষা করুন।", "error");
         } else {
-          showToast(`❌ ক্রয় ব্যর্থ হয়েছে: ${error.message || "ট্রানজেকশনে সমস্যা হয়েছে"}`, "error");
+          showToast(`❌ ${error.message || "ট্রানজেকশনে সমস্যা হয়েছে"}`, "error");
         }
       } finally {
         confirmWalletBtn.disabled = false;
@@ -1564,13 +1523,11 @@
       }
     });
 
-    // FAQ Accordion Toggle JS
     document.querySelectorAll('.accordion-header').forEach(header => {
       header.addEventListener('click', () => {
         const item = header.parentElement;
         const isOpen = item.classList.contains('open');
 
-        // Close other items
         document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
 
         if (!isOpen) {
@@ -1579,7 +1536,6 @@
       });
     });
 
-    // Cleanup on page unload
     window.addEventListener('beforeunload', () => {
       if (countdownInterval) clearInterval(countdownInterval);
       if (unsubscribeUser) unsubscribeUser();
