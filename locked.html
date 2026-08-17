@@ -968,7 +968,7 @@
         <h3>সহযোগিতা প্রয়োজন?</h3>
         <p>সাবস্ক্রিপশন বা ওয়ালেট সংক্রান্ত যেকোনো সহায়তার জন্য হেল্পডেস্কে যোগাযোগ করুন।</p>
       </div>
-      <a href="https://wa.me/8801727003670?text=%E0%A6%86%E0%A6%B8%E0%A7%8D%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%B2%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%AF%E0%A6%95%E0%A6%BF%E0%A6%AE%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20GHOTI%20MARKET%20%E0%A6%BB%E0%A6%B8%E0%A6%B2%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A6%BE%E0%A6%AA%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%9F%20%E0%A6%9A%E0%A6%BE%E0%A6%87" target="_blank" rel="noopener noreferrer" class="btn-support-wa">
+      <a href="https://wa.me/8801727003670?text=%E0%A6%86%E0%A6%B8%E0%A7%8D%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A6%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%AF%E0%A6%95%E0%A6%BF%E0%A6%AE%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20GHOTI%20MARKET%20%E0%A6%BB%E0%A6%BB%E0%A6%B8%E0%A6%B2%E0%A6%BE%E0%A6%B0%20%E0%A6%B8%E0%A6%BE%E0%A6%AA%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%9F%20%E0%A6%9A%E0%A6%BE%E0%A6%87" target="_blank" rel="noopener noreferrer" class="btn-support-wa">
         <i class="fa-brands fa-whatsapp"></i> কাস্টমার সাপোর্ট
       </a>
     </section>
@@ -1022,8 +1022,8 @@
     import { 
       getFirestore, 
       doc, 
+      collection,
       onSnapshot, 
-      collection, 
       serverTimestamp, 
       runTransaction 
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -1462,97 +1462,97 @@
 
     // Concurrency-Safe Atomic Transaction for Wallet Purchase
     confirmWalletBtn.addEventListener('click', async () => {
-  if (!selectedPackageForModal) return;
-  const p = selectedPackageForModal;
-  const uid = currentUserData.uid;
+      if (!selectedPackageForModal) return;
+      const p = selectedPackageForModal;
+      const uid = currentUserData.uid;
 
-  if (!uid) {
-    showToast("❌ অনুগ্রহ করে পুনরায় লগইন করুন।", "error");
-    return;
-  }
-  if (p.price <= 0 || p.price % 300 !== 0) {
-    showToast("❌ এই প্যাকেজটি বর্তমানে সমর্থিত নয়।", "error");
-    return;
-  }
-  if (currentUserData.balance < p.price) {
-    showToast(`❌ ওয়ালেট ব্যালেন্স পর্যাপ্ত নয়। প্রয়োজন: ৳${toBengaliNum(p.price)}`, "error");
-    return;
-  }
-
-  const userRef = doc(db, "users", uid);
-  const pkgRef = doc(doc(db, "packages", p.id));
-
-  confirmWalletBtn.disabled = true;
-  confirmWalletBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং...`;
-
-  try {
-    await runTransaction(db, async (transaction) => {
-      const userDoc = await transaction.get(userRef);
-      const pkgDoc = await transaction.get(pkgRef);
-
-      if (!userDoc.exists()) throw new Error("USER_NOT_FOUND");
-      if (!pkgDoc.exists()) throw new Error("PACKAGE_NOT_FOUND");
-
-      const userData = userDoc.data();
-      const pkgData = pkgDoc.data();
-      const realPrice = Number(pkgData.price);
-      const realName = pkgData.name || p.name;
-
-      if (isNaN(realPrice) || realPrice <= 0 || realPrice % 300 !== 0) {
-        throw new Error("INVALID_PACKAGE_PRICE");
+      if (!uid) {
+        showToast("❌ অনুগ্রহ করে পুনরায় লগইন করুন।", "error");
+        return;
+      }
+      if (p.price <= 0 || p.price % 300 !== 0) {
+        showToast("❌ এই প্যাকেজটি বর্তমানে সমর্থিত নয়।", "error");
+        return;
+      }
+      if (currentUserData.balance < p.price) {
+        showToast(`❌ ওয়ালেট ব্যালেন্স পর্যাপ্ত নয়। প্রয়োজন: ৳${toBengaliNum(p.price)}`, "error");
+        return;
       }
 
-      const currentBalance = Number(userData.balance) || 0;
-      if (currentBalance < realPrice) {
-        throw new Error("INSUFFICIENT_BALANCE");
+      const userRef = doc(db, "users", uid);
+      const pkgRef = doc(db, "packages", p.id); // Fixed syntax issue here
+
+      confirmWalletBtn.disabled = true;
+      confirmWalletBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং...`;
+
+      try {
+        await runTransaction(db, async (transaction) => {
+          const userDoc = await transaction.get(userRef);
+          const pkgDoc = await transaction.get(pkgRef);
+
+          if (!userDoc.exists()) throw new Error("ইউজার ডাটাবেজে আপনার তথ্য পাওয়া যায়নি।");
+          if (!pkgDoc.exists()) throw new Error("প্যাকেজটি পাওয়া যায়নি।");
+
+          const userData = userDoc.data();
+          const pkgData = pkgDoc.data();
+          const realPrice = Number(pkgData.price);
+          const realName = pkgData.name || p.name;
+
+          if (isNaN(realPrice) || realPrice <= 0 || realPrice % 300 !== 0) {
+            throw new Error("প্যাকেজের মূল্য সঠিক নয়।");
+          }
+
+          const currentBalance = Number(userData.balance) || 0;
+          if (currentBalance < realPrice) {
+            throw new Error("পর্যপ্ত ওয়ালেট ব্যালেন্স নেই।");
+          }
+
+          const currentExpiry = getProfileUnlockTime(userData.profileUnlockedUntil);
+          const nowMs = Date.now();
+          const baseExpiry = currentExpiry > nowMs ? currentExpiry : nowMs;
+          
+          const months = realPrice / 300;
+          const packageDays = months * 30;
+          const addedMs = months * 2592000000;
+          const newExpiry = baseExpiry + addedMs;
+          const newBalance = currentBalance - realPrice;
+
+          // ১. ইউজারের ব্যালেন্স ও মেয়াদের তথ্য আপডেট
+          transaction.update(userRef, {
+            balance: newBalance,
+            profileUnlockedUntil: newExpiry
+          });
+
+          // ২. ট্রানজেকশন হিস্ট্রি জমা
+          const tranRef = doc(collection(db, "users_transection"));
+          transaction.set(tranRef, {
+            userId: uid,
+            amount: -realPrice,
+            type: "SUBSCRIPTION_BUY",
+            packageId: p.id,
+            packageName: realName,
+            packageDays: packageDays,
+            packagePrice: realPrice,
+            months: months,
+            prevBalance: currentBalance,
+            newBalance: newBalance,
+            prevExpiry: currentExpiry,
+            newExpiry: newExpiry,
+            createdAt: serverTimestamp(),
+            note: `Wallet থেকে ${realName} (৳${realPrice}) সাবস্ক্রিপশন ক্রয় করা হয়েছে`
+          });
+        });
+
+        closeModal();
+        showToast(`✅ Subscription সফলভাবে সক্রিয় হয়েছে!`, "success");
+      } catch (error) {
+        console.error("Wallet Transaction Error:", error);
+        showToast(`❌ ${error.message || "ট্রানজেকশন সম্পন্ন করা যায়নি"}`, "error");
+      } finally {
+        confirmWalletBtn.disabled = false;
+        confirmWalletBtn.innerHTML = `<i class="fa-solid fa-wallet"></i> Wallet দিয়ে কিনুন`;
       }
-
-      const currentExpiry = getProfileUnlockTime(userData.profileUnlockedUntil);
-      const nowMs = Date.now();
-      const baseExpiry = currentExpiry > nowMs ? currentExpiry : nowMs;
-      
-      const months = realPrice / 300;
-      const packageDays = months * 30;
-      const addedMs = months * 2592000000;
-      const newExpiry = baseExpiry + addedMs;
-      const newBalance = currentBalance - realPrice;
-
-      // ১. আপডেট ইউজারের ব্যালেন্স এবং সাবস্ক্রিপশন মেয়াদ
-      transaction.update(userRef, {
-        balance: newBalance,
-        profileUnlockedUntil: newExpiry
-      });
-
-      // ২. ট্রানজেকশন হিস্ট্রি রেকর্ড
-      const tranRef = doc(collection(db, "users_transection"));
-      transaction.set(tranRef, {
-        userId: uid,
-        amount: -realPrice,
-        type: "SUBSCRIPTION_BUY",
-        packageId: p.id,
-        packageName: realName,
-        packageDays: packageDays,
-        packagePrice: realPrice,
-        months: months,
-        prevBalance: currentBalance,
-        newBalance: newBalance,
-        prevExpiry: currentExpiry,
-        newExpiry: newExpiry,
-        createdAt: serverTimestamp(),
-        note: `Wallet থেকে ${realName} (৳${realPrice}) সাবস্ক্রিপশন ক্রয় করা হয়েছে`
-      });
     });
-
-    closeModal();
-    showToast(`✅ Subscription সফলভাবে সক্রিয় হয়েছে!`, "success");
-  } catch (error) {
-    console.error("Wallet Transaction Error:", error);
-    showToast(`❌ ${error.message || "ট্রানজেকশন সম্পন্ন করা যায়নি"}`, "error");
-  } finally {
-    confirmWalletBtn.disabled = false;
-    confirmWalletBtn.innerHTML = `<i class="fa-solid fa-wallet"></i> Wallet দিয়ে কিনুন`;
-  }
-});
 
     // Accordion expand/collapse
     document.querySelectorAll('.accordion-header').forEach(header => {
