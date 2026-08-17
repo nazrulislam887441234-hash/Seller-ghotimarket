@@ -1426,19 +1426,26 @@ const webpFileName = `${baseName}_${uniqueSuffix}.webp`;
                 // Step 4: Saving Merchant Profile to Firestore
                 setLoading(true, "ধাপ ৪/৪: ডাটাবেজে তথ্য সংরক্ষণ করা হচ্ছে...");
                 const userDocData = {
-                    active: false,
-                    verified: false,
-                    createdAt: serverTimestamp(),
-                    email: currentUser.email,
-                    fullName: fullName,
-                    whatsapp: whatsapp,
-                    shopName: shopName,
-                    shopDescription: shopDescription,
-                    shopLogo: shopLogoUrl,
-                    shopBanner: shopBannerUrl,
-                    nidFront: nidFrontUrl,
-                    nidBack: nidBackUrl
-                };
+    active: false,
+    verified: false,
+    createdAt: serverTimestamp(),
+
+    // Firebase Authentication UID
+    uid: currentUser.uid,
+
+    // Profile unlock timestamp — শুরুতে 0
+    profileUnlockedUntil: 0,
+
+    email: currentUser.email,
+    fullName: fullName,
+    whatsapp: whatsapp,
+    shopName: shopName,
+    shopDescription: shopDescription,
+    shopLogo: shopLogoUrl,
+    shopBanner: shopBannerUrl,
+    nidFront: nidFrontUrl,
+    nidBack: nidBackUrl
+};
 
                 await setDoc(doc(db, "users", currentUser.uid), userDocData);
 
