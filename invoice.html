@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="GHOTI MARKET SELLER - Invoice Generator নির্দেশনা">
+  <title>GHOTI MARKET SELLER | Invoice Generator</title>
+  
+  <!-- Google Fonts: Inter + Hind Siliguri -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #0f172a;
+      --primary-light: #1e293b;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --success: #10b981;
+      --bg: #f8fafc;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: rgba(148, 163, 184, 0.25);
+      --shadow: 0 10px 40px -10px rgba(15, 23, 42, 0.12);
+      --shadow-lg: 0 25px 50px -12px rgba(15, 23, 42, 0.18);
+      --radius: 20px;
+      --radius-sm: 14px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: 'Inter', 'Hind Siliguri', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Subtle background decorations */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -20%;
+      right: -10%;
+      width: 60vw;
+      height: 60vw;
+      max-width: 500px;
+      max-height: 500px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -15%;
+      left: -10%;
+      width: 50vw;
+      height: 50vw;
+      max-width: 400px;
+      max-height: 400px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 12px 0 24px;
+      animation: fadeInDown 0.6s ease-out;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      object-fit: contain;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+      background: white;
+      padding: 4px;
+    }
+
+    .brand-name {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      color: var(--primary);
+    }
+
+    /* Hero Card */
+    .hero-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 22px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      margin-bottom: 28px;
+      animation: fadeInUp 0.7s ease-out 0.1s both;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .hero-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .invoice-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 18px;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.35);
+    }
+
+    .invoice-icon svg {
+      width: 32px;
+      height: 32px;
+      color: white;
+    }
+
+    .hero-title {
+      font-family: 'Hind Siliguri', sans-serif;
+      font-weight: 700;
+      font-size: 1.55rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-desc {
+      font-family: 'Hind Siliguri', sans-serif;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      padding: 0 4px;
+    }
+
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      min-height: 52px;
+      padding: 14px 20px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: 'Inter', 'Hind Siliguri', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      box-shadow: 0 8px 28px rgba(59, 130, 246, 0.5);
+    }
+
+    .btn-primary.copied {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--primary);
+      border: 1.5px solid rgba(59, 130, 246, 0.3);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      background: #f0f7ff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.15);
+    }
+
+    .btn svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    /* Flow Visual */
+    .flow-section {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 16px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow);
+      animation: fadeInUp 0.7s ease-out 0.2s both;
+    }
+
+    .flow-title {
+      font-family: 'Hind Siliguri', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .flow-steps {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .flow-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 64px;
+    }
+
+    .flow-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #f1f5f9, #e2e8f0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+      transition: transform 0.2s ease;
+    }
+
+    .flow-item:hover .flow-icon {
+      transform: scale(1.08);
+    }
+
+    .flow-icon svg {
+      width: 22px;
+      height: 22px;
+      color: var(--accent);
+    }
+
+    .flow-label {
+      font-family: 'Hind Siliguri', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .flow-arrow {
+      color: #cbd5e1;
+      flex-shrink: 0;
+      margin-top: -18px;
+    }
+
+    .flow-arrow svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Instruction Steps */
+    .instructions {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 18px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow);
+      animation: fadeInUp 0.7s ease-out 0.3s both;
+    }
+
+    .instructions-title {
+      font-family: 'Hind Siliguri', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .step {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 18px;
+      align-items: flex-start;
+    }
+
+    .step:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-number {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .step-content h3 {
+      font-family: 'Hind Siliguri', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--primary);
+      margin-bottom: 3px;
+    }
+
+    .step-content p {
+      font-family: 'Hind Siliguri', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 16px 0 8px;
+      animation: fadeIn 0.8s ease-out 0.4s both;
+    }
+
+    .footer p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.01em;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--primary);
+      color: white;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-family: 'Hind Siliguri', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.35);
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: calc(100% - 32px);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: #34d399;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 400px) {
+      .container {
+        padding: 24px 20px 48px;
+      }
+
+      .hero-title {
+        font-size: 1.7rem;
+      }
+
+      .btn-group {
+        flex-direction: row;
+      }
+
+      .btn {
+        flex: 1;
+      }
+    }
+
+    @media (max-width: 340px) {
+      .hero-title {
+        font-size: 1.35rem;
+      }
+
+      .flow-label {
+        font-size: 0.65rem;
+      }
+
+      .flow-icon {
+        width: 38px;
+        height: 38px;
+      }
+    }
+
+    /* Focus styles for accessibility */
+    .btn:focus-visible {
+      outline: 3px solid rgba(59, 130, 246, 0.5);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <img src="https://seller.ghotimarket.com/logo.png" alt="GHOTI MARKET Logo" class="logo" width="42" height="42">
+      <span class="brand-name">GHOTI MARKET SELLER</span>
+    </header>
+
+    <!-- Hero Card -->
+    <section class="hero-card">
+      <div class="invoice-icon" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      </div>
+      
+      <h1 class="hero-title">Invoice তৈরি করুন সহজেই</h1>
+      <p class="hero-desc">Invoice তৈরি করতে নিচের Copy বাটনে ক্লিক করুন।</p>
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary" id="copyBtn" aria-label="Invoice Generator লিংক কপি করুন">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+          <span id="copyBtnText">Copy</span>
+        </button>
+
+        <button type="button" class="btn btn-secondary" id="openBtn" aria-label="Invoice Generator খুলুন">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+          <span>Open Invoice Generator</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Visual Flow -->
+    <section class="flow-section" aria-label="প্রক্রিয়ার ধাপসমূহ">
+      <p class="flow-title">সহজ ৪ ধাপ</p>
+      <div class="flow-steps">
+        <div class="flow-item">
+          <div class="flow-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <span class="flow-label">Copy</span>
+        </div>
+        
+        <div class="flow-arrow" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+
+        <div class="flow-item">
+          <div class="flow-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+            </svg>
+          </div>
+          <span class="flow-label">Browser</span>
+        </div>
+
+        <div class="flow-arrow" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+
+        <div class="flow-item">
+          <div class="flow-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+            </svg>
+          </div>
+          <span class="flow-label">Login</span>
+        </div>
+
+        <div class="flow-arrow" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+
+        <div class="flow-item">
+          <div class="flow-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <span class="flow-label">Invoice</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Numbered Instructions -->
+    <section class="instructions" aria-labelledby="instructions-heading">
+      <h2 class="instructions-title" id="instructions-heading">কিভাবে Invoice তৈরি করবেন</h2>
+
+      <div class="step">
+        <div class="step-number">01</div>
+        <div class="step-content">
+          <h3>Copy করুন</h3>
+          <p>Copy বাটনে ক্লিক করে Invoice Generator-এর লিংক কপি করুন।</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">02</div>
+        <div class="step-content">
+          <h3>Browser খুলুন</h3>
+          <p>আপনার ফোনের Chrome, Firefox, Edge অথবা অন্য যেকোনো Browser খুলুন।</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">03</div>
+        <div class="step-content">
+          <h3>Link Paste করুন</h3>
+          <p>Browser-এর Address Bar-এ কপি করা লিংকটি Paste করে Open করুন।</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">04</div>
+        <div class="step-content">
+          <h3>Login করুন</h3>
+          <p>Login চাইলে আপনার GHOTI MARKET SELLER Account দিয়ে Login করুন।</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">05</div>
+        <div class="step-content">
+          <h3>Invoice তৈরি করুন</h3>
+          <p>প্রয়োজনীয় তথ্য দিয়ে আপনার Professional Invoice তৈরি করুন।</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© GHOTI MARKET SELLER · Professional Seller Tools</p>
+    </footer>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+    </svg>
+    <span>Invoice Generator-এর লিংক কপি হয়েছে!</span>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // Target URL kept only in JS (never rendered as visible text)
+      const TARGET_URL = 'https://seller.ghotimarket.com/generate.html';
+
+      const copyBtn = document.getElementById('copyBtn');
+      const copyBtnText = document.getElementById('copyBtnText');
+      const openBtn = document.getElementById('openBtn');
+      const toast = document.getElementById('toast');
+
+      let isCopied = false;
+      let toastTimeout = null;
+
+      // Fallback copy method for older browsers / restricted contexts
+      function fallbackCopy(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'absolute';
+        textarea.style.left = '-9999px';
+        textarea.style.top = '0';
+        document.body.appendChild(textarea);
+        
+        const selected = document.getSelection().rangeCount > 0 
+          ? document.getSelection().getRangeAt(0) 
+          : false;
+        
+        textarea.select();
+        textarea.setSelectionRange(0, text.length);
+        
+        let success = false;
+        try {
+          success = document.execCommand('copy');
+        } catch (err) {
+          success = false;
+        }
+        
+        document.body.removeChild(textarea);
+        
+        if (selected) {
+          document.getSelection().removeAllRanges();
+          document.getSelection().addRange(selected);
+        }
+        
+        return success;
+      }
+
+      async function copyToClipboard(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          try {
+            await navigator.clipboard.writeText(text);
+            return true;
+          } catch (err) {
+            // Fall through to fallback
+          }
+        }
+        return fallbackCopy(text);
+      }
+
+      function showToast() {
+        if (toastTimeout) clearTimeout(toastTimeout);
+        toast.classList.add('show');
+        toastTimeout = setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2800);
+      }
+
+      function setCopiedState() {
+        if (isCopied) return;
+        isCopied = true;
+        copyBtn.classList.add('copied');
+        copyBtnText.textContent = 'Copied ✓';
+        showToast();
+
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyBtnText.textContent = 'Copy';
+          isCopied = false;
+        }, 2500);
+      }
+
+      // Copy Button Handler
+      copyBtn.addEventListener('click', async function () {
+        if (isCopied) return;
+        
+        const success = await copyToClipboard(TARGET_URL);
+        if (success) {
+          setCopiedState();
+        } else {
+          // Still give feedback even if copy failed (rare)
+          showToast();
+        }
+      });
+
+      // Open Button Handler
+      // Uses standard navigation so Android can show its native browser chooser
+      // when multiple browsers are installed and no default is set.
+      openBtn.addEventListener('click', function () {
+        // Prefer opening in a new context; on mobile this typically triggers
+        // the system browser / chooser behaviour without any custom modal.
+        const newWindow = window.open(TARGET_URL, '_blank');
+        
+        // Fallback if popup blocked (common on some browsers)
+        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+          // Last-resort same-tab navigation
+          window.location.href = TARGET_URL;
+        }
+      });
+
+      // Keyboard accessibility
+      copyBtn.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          copyBtn.click();
+        }
+      });
+
+      openBtn.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openBtn.click();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
