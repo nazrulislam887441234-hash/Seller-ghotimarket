@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Invoice Generator</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; padding: 15px; }
+        .box { background: white; padding: 25px; border-radius: 15px; max-width: 500px; margin: auto; box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .seller-info { background: #0e1b3a; color: #c5a059; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .item-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 5px; margin-bottom: 10px; }
+        .btn { background: #22c55e; color: white; width: 100%; padding: 14px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .btn-gen { background: #c5a059; color: #0e1b3a; }
+        h2 { text-align: center; color: #0e1b3a; }
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="seller-info" id="sellerBox">Loading Seller Info...</div>
+    <h2>ইনভয়েস তৈরি করুন</h2>
+    <input type="text" id="custName" placeholder="কাস্টমারের  নাম ইংরেজি">
+    <input type="text" id="custAddress" placeholder="কাস্টমারের ঠিকানা ইংরেজি">
+    <input type="Number" id="custPhone" placeholder="কাস্টমার ফোন নাম্বার">
+    <input type="email" id="customEmail" placeholder="আপনার ইমেইল এড্রেস">
+    <input type="text" id="qrText" placeholder="আপনার শপের লিংক">
+    <input type="number" id="deliveryCharge" placeholder="ডেলিভারি চার্জ (৳)">
+    
+    <div id="itemsContainer">
+        <div class="item-row">
+            <input type="text" class="desc" placeholder="পণ্যের নাম">
+            <input type="number" class="qty" placeholder="পরিমান">
+            <input type="number" class="price" placeholder="unit price">
+        </div>
+    </div>
+    <button class="btn" onclick="addItem()">+ Add Product</button>
+    <button class="btn btn-gen" onclick="saveAndGo()">Preview Invoice</button>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const app = initializeApp({ apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket" });
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    let sellerData = {};
+
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) window.location.href = "login.html";
+        else {
+            const snap = await getDoc(doc(db, "users", user.uid));
+            if (snap.exists()) {
+                sellerData = snap.data();
+                document.getElementById('sellerBox').innerHTML = `
+                    <img src="${sellerData.shopLogo}" width="50" style="border-radius:50%"><br>
+                    <strong>${sellerData.shopName}</strong><br>
+                    📞 ${sellerData.whatsapp || sellerData.phone}
+                `;
+            }
+        }
+    });
+
+    window.addItem = () => {
+        const div = document.createElement('div');
+        div.className = 'item-row';
+        div.innerHTML = `<input type="text" class="desc" placeholder="পণ্যের নাম"><input type="number" class="qty" placeholder="পরিমান"><input type="number" class="price" placeholder="unit price">`;
+        document.getElementById('itemsContainer').appendChild(div);
+    };
+
+    window.saveAndGo = () => {
+    const data = {
+        shopName: sellerData.shopName,
+        shopPhone: sellerData.whatsapp || sellerData.phone,
+        shopEmail: document.getElementById('customEmail').value,
+        custName: document.getElementById('custName').value,
+        custAddress: document.getElementById('custAddress').value,
+        custPhone: document.getElementById('custPhone').value,
+        qrText: document.getElementById('qrText').value,
+        deliveryCharge: Number(document.getElementById('deliveryCharge').value) || 0,
+        logo: sellerData.shopLogo,
+        items: Array.from(document.querySelectorAll('.item-row')).map(row => ({
+            desc: row.querySelector('.desc').value,
+            qty: row.querySelector('.qty').value,
+            price: row.querySelector('.price').value
+        }))
+    };
+
+    localStorage.setItem("invData", JSON.stringify(data));
+    window.location.href = "preview.html";
+};
+</script>
+</body>
+</html>
