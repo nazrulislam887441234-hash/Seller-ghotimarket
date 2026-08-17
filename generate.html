@@ -103,6 +103,93 @@
             height: 18px;
         }
 
+        /* Loading Screen State */
+        .loading-card {
+            text-align: center;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3.5px solid var(--primary-light);
+            border-top: 3.5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Inline Login Card UI */
+        .login-card {
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            padding: 24px 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .login-icon-badge {
+            width: 52px;
+            height: 52px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+        }
+        .login-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        .login-header p {
+            font-size: 13px;
+            color: var(--gray-600);
+            margin-top: 4px;
+        }
+
+        .login-error-alert {
+            background: var(--red-50);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--red-500);
+            padding: 10px 12px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .password-toggle-btn {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            color: var(--gray-600);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+        }
+        .password-toggle-btn:hover {
+            color: var(--dark);
+        }
+
         /* Seller Info Box */
         .seller-info {
             background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
@@ -153,7 +240,7 @@
 
         /* Input Controls */
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             display: flex;
             flex-direction: column;
             gap: 6px;
@@ -379,6 +466,11 @@
         .btn-gen:active {
             transform: translateY(0);
         }
+        .btn-gen:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
 
         /* Toast Message */
         #toast {
@@ -423,7 +515,7 @@
                 font-size: 12px;
                 padding: 8px 4px;
             }
-            .card {
+            .card, .login-card {
                 padding: 16px;
             }
         }
@@ -438,155 +530,224 @@
         <h1>Ghoti Market <span>Invoice</span></h1>
     </div>
 
-    <!-- SECTION 1: Seller Information Card -->
-    <div class="card seller-info" id="sellerBox">
-        <div class="seller-profile">
-            <div class="seller-avatar">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-            </div>
-            <div class="seller-name">বিক্রেতার তথ্য লোড হচ্ছে...</div>
-        </div>
+    <!-- STATE 0: Page Load Checking Screen -->
+    <div id="loadingBox" class="card loading-card">
+        <div class="spinner"></div>
+        <div style="font-size: 14px; font-weight: 600; color: var(--gray-700);">Account যাচাই করা হচ্ছে...</div>
     </div>
 
-    <!-- SECTION 2: Customer Information Card -->
-    <div class="card">
-        <div class="section-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            কাস্টমার তথ্য
-        </div>
-
-        <div class="form-group">
-            <label for="custName">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                কাস্টমারের নাম
-            </label>
-            <div class="input-wrapper">
-                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                <input type="text" id="custName" placeholder="কাস্টমারের পূর্ণ নাম লিখুন">
+    <!-- STATE 1: Inline Login UI (Unauthenticated) -->
+    <div id="loginCard" class="login-card" style="display: none;">
+        <div class="login-header">
+            <div class="login-icon-badge">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             </div>
+            <h2>Seller Login</h2>
+            <p>Invoice তৈরি করতে প্রথমে আপনার Seller Account-এ লগইন করুন।</p>
         </div>
 
-        <div class="form-group">
-            <label for="custAddress">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                কাস্টমারের ঠিকানা
-            </label>
-            <div class="input-wrapper">
-                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                <input type="text" id="custAddress" placeholder="রোড, বাসা, এলাকা, শহর লিখুন">
+        <div id="loginError" class="login-error-alert">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+            <span id="loginErrorText">লগইন সমস্যা হয়েছে।</span>
+        </div>
+
+        <form id="loginForm" onsubmit="event.preventDefault(); window.handleLogin();">
+            <div class="form-group">
+                <label for="loginEmail">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    ইমেইল অ্যাড্রেস
+                </label>
+                <div class="input-wrapper">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    <input type="email" id="loginEmail" placeholder="আপনার ইমেইল লিখুন" required>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label for="custPhone">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                কাস্টমার ফোন নম্বর
-            </label>
-            <div class="input-wrapper">
-                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                <input type="number" id="custPhone" placeholder="01XXXXXXXXX">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="customEmail">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                আপনার ইমেইল অ্যাড্রেস
-            </label>
-            <div class="input-wrapper">
-                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                <input type="email" id="customEmail" placeholder="yourmail@gmail.com">
-            </div>
-        </div>
-    </div>
-
-    <!-- SECTION 3: Shop Information Card (Auto Loaded Link) -->
-    <div class="card">
-        <div class="section-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-            শপ লিঙ্ক তথ্য
-        </div>
-
-        <div class="form-group">
-            <label for="qrText">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                আপনার শপের লিংক
-            </label>
-            <div class="input-wrapper">
-                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                
-                <input type="text" id="qrText" class="input-readonly" placeholder="শপ লিংক লোড হচ্ছে..." readonly aria-readonly="true" tabindex="-1">
-                
-                <div class="lock-badge">
-                    <button type="button" class="btn-copy" id="btnCopy" onclick="copyShopLink()" style="display:none;">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                        কপি
+            <div class="form-group">
+                <label for="loginPassword">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    পাসওয়ার্ড
+                </label>
+                <div class="input-wrapper">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <input type="password" id="loginPassword" placeholder="আপনার পাসওয়ার্ড লিখুন" required style="padding-right: 40px;">
+                    <button type="button" class="password-toggle-btn" onclick="window.togglePasswordVisibility()" aria-label="Toggle Password Visibility">
+                        <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
                     </button>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 </div>
             </div>
 
-            <div class="field-hint" id="linkHint">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                এই শপ লিংকটি আপনার Username অনুযায়ী স্বয়ংক্রিয়ভাবে তৈরি হয়েছে।
-            </div>
-
-            <!-- Username Missing Alert Block -->
-            <div id="usernameWarning" class="warning-box" style="display: none;">
-                <div class="warning-text">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
-                    আপনার Username সেট করা নেই
-                </div>
-                <a href="set-username.html" class="btn-warning-action">Username সেট করুন</a>
-            </div>
-        </div>
+            <button type="submit" class="btn btn-gen" id="btnLogin">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
+                <span>Login & Continue</span>
+            </button>
+        </form>
     </div>
 
-    <!-- SECTION 4: Order & Products Information Card -->
-    <div class="card">
-        <div class="section-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
-            অর্ডার ও পণ্য বিবরণ
+    <!-- STATE 2: Invoice Generator Form (Authenticated) -->
+    <div id="invoiceApp" style="display: none;" class="main-wrapper">
+
+        <!-- SECTION 1: Seller Information Card -->
+        <div class="card seller-info" id="sellerBox">
+            <div class="seller-profile">
+                <div class="seller-avatar">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                </div>
+                <div class="seller-name">বিক্রেতার তথ্য লোড হচ্ছে...</div>
+            </div>
         </div>
 
-        <div class="form-group" style="margin-bottom: 16px;">
-            <label for="deliveryCharge">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="1" height="1" x="1" y="1"/><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.24-4.04a1 1 0 0 0-.78-.34H15"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
-                ডেলিভারি চার্জ (৳)
+        <!-- SECTION 2: Customer Information Card -->
+        <div class="card">
+            <div class="section-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                কাস্টমার তথ্য
+            </div>
+
+            <div class="form-group">
+                <label for="custName">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    কাস্টমারের নাম
+                </label>
+                <div class="input-wrapper">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <input type="text" id="custName" placeholder="কাস্টমারের পূর্ণ নাম লিখুন">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="custAddress">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    কাস্টমারের ঠিকানা
+                </label>
+                <div class="input-wrapper">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <input type="text" id="custAddress" placeholder="রোড, বাসা, এলাকা, শহর লিখুন">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="custPhone">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    কাস্টমার ফোন নম্বর
+                </label>
+                <div class="input-wrapper">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <input type="number" id="custPhone" placeholder="01XXXXXXXXX">
+                </div>
+            </div>
+
+            <!-- Lock / Auto-populated Seller Email Field -->
+            <div class="form-group">
+                <label for="customEmail">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    আপনার ইমেইল অ্যাড্রেস
+                </label>
+                <div class="input-wrapper">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    
+                    <input type="email" id="customEmail" class="input-readonly" placeholder="আপনার ইমেইল লোড হচ্ছে..." readonly aria-readonly="true" tabindex="-1">
+                    
+                    <div class="lock-badge">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                </div>
+                <div class="field-hint">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                    আপনার Seller Account থেকে ইমেইলটি স্বয়ংক্রিয়ভাবে নেওয়া হয়েছে।
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: Shop Information Card (Auto Loaded Link) -->
+        <div class="card">
+            <div class="section-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                শপ লিঙ্ক তথ্য
+            </div>
+
+            <div class="form-group">
+                <label for="qrText">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    আপনার শপের লিংক
+                </label>
+                <div class="input-wrapper">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    
+                    <input type="text" id="qrText" class="input-readonly" placeholder="শপ লিংক লোড হচ্ছে..." readonly aria-readonly="true" tabindex="-1">
+                    
+                    <div class="lock-badge">
+                        <button type="button" class="btn-copy" id="btnCopy" onclick="copyShopLink()" style="display:none;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                            কপি
+                        </button>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                </div>
+
+                <div class="field-hint" id="linkHint">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                    এই শপ লিংকটি আপনার Username অনুযায়ী স্বয়ংক্রিয়ভাবে তৈরি হয়েছে।
+                </div>
+
+                <!-- Username Missing Alert Block -->
+                <div id="usernameWarning" class="warning-box" style="display: none;">
+                    <div class="warning-text">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+                        আপনার Username সেট করা নেই
+                    </div>
+                    <a href="set-username.html" class="btn-warning-action">Username সেট করুন</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: Order & Products Information Card -->
+        <div class="card">
+            <div class="section-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+                অর্ডার ও পণ্য বিবরণ
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+                <label for="deliveryCharge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="1" height="1" x="1" y="1"/><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.24-4.04a1 1 0 0 0-.78-.34H15"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+                    ডেলিভারি চার্জ (৳)
+                </label>
+                <div class="input-wrapper">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                    <input type="number" id="deliveryCharge" placeholder="যেমন: 60, 120">
+                </div>
+            </div>
+
+            <label style="margin-bottom: 8px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+                পণ্যের তালিকা
             </label>
-            <div class="input-wrapper">
-                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
-                <input type="number" id="deliveryCharge" placeholder="যেমন: 60, 120">
+
+            <div id="itemsContainer">
+                <div class="item-row">
+                    <input type="text" class="desc" placeholder="পণ্যের নাম">
+                    <input type="number" class="qty" placeholder="পরিমাণ">
+                    <input type="number" class="price" placeholder="একক মূল্য">
+                    <button type="button" class="btn-remove-row" style="visibility: hidden;" aria-label="Remove item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                    </button>
+                </div>
             </div>
+
+            <button type="button" class="btn btn-add" onclick="addItem()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                + Add Product
+            </button>
         </div>
 
-        <label style="margin-bottom: 8px;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
-            পণ্যের তালিকা
-        </label>
-
-        <div id="itemsContainer">
-            <div class="item-row">
-                <input type="text" class="desc" placeholder="পণ্যের নাম">
-                <input type="number" class="qty" placeholder="পরিমাণ">
-                <input type="number" class="price" placeholder="একক মূল্য">
-                <button type="button" class="btn-remove-row" style="visibility: hidden;" aria-label="Remove item">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-                </button>
-            </div>
-        </div>
-
-        <button type="button" class="btn btn-add" onclick="addItem()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-            + Add Product
+        <!-- SECTION 5: Invoice Actions -->
+        <button type="button" class="btn btn-gen" id="btnPreview" onclick="saveAndGo()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+            Preview Invoice
         </button>
-    </div>
 
-    <!-- SECTION 5: Invoice Actions -->
-    <button type="button" class="btn btn-gen" id="btnPreview" onclick="saveAndGo()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
-        Preview Invoice
-    </button>
+    </div>
 
 </div>
 
@@ -598,7 +759,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = { 
@@ -627,18 +788,109 @@
         }, 3000);
     };
 
-    // Firebase Auth & Seller Data Loading
-    onAuthStateChanged(auth, async (user) => {
-        if (!user) {
-            window.location.href = "login.html";
+    // Firebase Error Bangla Mapping
+    function getBanglaAuthErrorMessage(code) {
+        switch (code) {
+            case 'auth/invalid-credential':
+                return 'ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।';
+            case 'auth/user-not-found':
+                return 'এই ইমেইলে কোনো Seller Account পাওয়া যায়নি।';
+            case 'auth/wrong-password':
+                return 'পাসওয়ার্ড সঠিক নয়।';
+            case 'auth/invalid-email':
+                return 'সঠিক ইমেইল অ্যাড্রেস দিন।';
+            case 'auth/too-many-requests':
+                return 'অনেকবার চেষ্টা করা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।';
+            case 'auth/network-request-failed':
+                return 'ইন্টারনেট সংযোগ পরীক্ষা করুন।';
+            default:
+                return 'Login করা সম্ভব হয়নি। আবার চেষ্টা করুন।';
+        }
+    }
+
+    // Password Toggle Visibility
+    window.togglePasswordVisibility = () => {
+        const passInput = document.getElementById('loginPassword');
+        const eyeIcon = document.getElementById('eyeIcon');
+        
+        if (passInput.type === 'password') {
+            passInput.type = 'text';
+            eyeIcon.innerHTML = `<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/>`;
+        } else {
+            passInput.type = 'password';
+            eyeIcon.innerHTML = `<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>`;
+        }
+    };
+
+    // Inline Login Functionality
+    window.handleLogin = async () => {
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value.trim();
+        const errorAlert = document.getElementById('loginError');
+        const errorText = document.getElementById('loginErrorText');
+        const btnLogin = document.getElementById('btnLogin');
+
+        errorAlert.style.display = 'none';
+
+        if (!email || !password) {
+            errorText.innerText = "ইমেইল এবং পাসওয়ার্ড প্রদান করুন।";
+            errorAlert.style.display = 'flex';
             return;
         }
 
         try {
+            btnLogin.disabled = true;
+            btnLogin.innerHTML = `
+                <div class="spinner" style="width:18px; height:18px; border-width:2px; border-top-color:#fff;"></div>
+                <span>Login হচ্ছে...</span>
+            `;
+
+            await signInWithEmailAndPassword(auth, email, password);
+            // On success, onAuthStateChanged listener handles the UI transition smoothly!
+        } catch (error) {
+            console.error("Login Error:", error.code, error.message);
+            errorText.innerText = getBanglaAuthErrorMessage(error.code);
+            errorAlert.style.display = 'flex';
+            btnLogin.disabled = false;
+            btnLogin.innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
+                <span>Login & Continue</span>
+            `;
+        }
+    };
+
+    // Firebase Auth State Listener
+    onAuthStateChanged(auth, async (user) => {
+        const loadingBox = document.getElementById('loadingBox');
+        const loginCard = document.getElementById('loginCard');
+        const invoiceApp = document.getElementById('invoiceApp');
+
+        if (!user) {
+            // UNAUTHENTICATED STATE
+            loadingBox.style.display = 'none';
+            invoiceApp.style.display = 'none';
+            loginCard.style.display = 'block';
+            return;
+        }
+
+        // AUTHENTICATED STATE
+        try {
             const snap = await getDoc(doc(db, "users", user.uid));
             if (snap.exists()) {
                 sellerData = snap.data();
-                
+
+                // Priority Email Resolution: Firestore users/{uid}.email -> Auth user.email
+                const shopEmail = sellerData.email || user.email || "";
+
+                if (!shopEmail) {
+                    window.showToast("আপনার Seller Account-এ কোনো ইমেইল পাওয়া যায়নি।", "error");
+                }
+
+                // Auto Populate Readonly Seller Email
+                const emailInput = document.getElementById('customEmail');
+                emailInput.value = shopEmail;
+                if (shopEmail) emailInput.style.color = "var(--dark)";
+
                 // 1. Seller Header Info Display
                 const logoHtml = sellerData.shopLogo 
                     ? `<img src="${sellerData.shopLogo}" alt="Shop Logo" class="seller-avatar">`
@@ -655,7 +907,7 @@
                     </div>
                 `;
 
-                // 2. Username & Shop Link Processing
+                // 2. Username & Verified Shop Link Security Check
                 const rawUsername = sellerData.username ? String(sellerData.username).trim() : "";
                 
                 if (rawUsername && rawUsername.length > 0) {
@@ -679,12 +931,22 @@
                     document.getElementById("btnCopy").style.display = "none";
                     document.getElementById("usernameWarning").style.display = "flex";
                 }
+
+                // Reveal Invoice UI
+                loadingBox.style.display = 'none';
+                loginCard.style.display = 'none';
+                invoiceApp.style.display = 'flex';
+
             } else {
                 window.showToast("Seller Data পাওয়া যায়নি!", "error");
+                loadingBox.style.display = 'none';
+                loginCard.style.display = 'block';
             }
         } catch (error) {
             console.error("Firestore Error:", error);
             window.showToast("ডাটা লোড করতে সমস্যা হয়েছে!", "error");
+            loadingBox.style.display = 'none';
+            loginCard.style.display = 'block';
         }
     });
 
@@ -727,13 +989,25 @@
 
     // Save and Generate Preview
     window.saveAndGo = () => {
+        if (!auth.currentUser) {
+            window.showToast("অনুগ্ৰহ করে প্রথমে লগইন করুন।", "error");
+            return;
+        }
+
         const custName = document.getElementById('custName').value.trim();
         const custAddress = document.getElementById('custAddress').value.trim();
         const custPhone = document.getElementById('custPhone').value.trim();
-        const customEmail = document.getElementById('customEmail').value.trim();
         const deliveryCharge = Number(document.getElementById('deliveryCharge').value) || 0;
 
-        // Validation Checks
+        // Auto Email Check: Firestore email -> Auth email
+        const shopEmail = sellerData.email || auth.currentUser.email || "";
+
+        if (!shopEmail) {
+            window.showToast("আপনার Seller Account-এ কোনো ইমেইল পাওয়া যায়নি।", "error");
+            return;
+        }
+
+        // Customer Validation Checks
         if (!custName) {
             window.showToast("কাস্টমারের নাম লিখুন", "error");
             document.getElementById('custName').focus();
@@ -750,7 +1024,7 @@
             return;
         }
 
-        // Shop Username Validation
+        // Shop Username Security Validation
         if (!isUsernameValid || !verifiedShopUrl) {
             window.showToast("Invoice তৈরি করার আগে আপনার Username সেট করুন।", "error");
             return;
@@ -788,15 +1062,15 @@
         const btnGen = document.getElementById('btnPreview');
         btnGen.disabled = true;
         btnGen.innerHTML = `
-            <svg class="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-            Invoice প্রস্তুত হচ্ছে...
+            <div class="spinner" style="width:18px; height:18px; border-width:2px; border-top-color:#fff;"></div>
+            <span>Invoice প্রস্তুত হচ্ছে...</span>
         `;
 
-        // Store to localStorage with strictly verified Shop URL
+        // Store to localStorage with authenticated Seller Email & Secure Shop URL
         const data = {
             shopName: sellerData.shopName || "",
             shopPhone: sellerData.whatsapp || sellerData.phone || "",
-            shopEmail: customEmail,
+            shopEmail: shopEmail,
             custName: custName,
             custAddress: custAddress,
             custPhone: custPhone,
@@ -813,9 +1087,11 @@
         }, 300);
     };
 
-    // Extra Security: Prevent manual modification via inspect element on key down
+    // Extra Security: Prevent manual modification via inspect element on locked fields
     document.getElementById('qrText').addEventListener('keydown', (e) => e.preventDefault());
     document.getElementById('qrText').addEventListener('paste', (e) => e.preventDefault());
+    document.getElementById('customEmail').addEventListener('keydown', (e) => e.preventDefault());
+    document.getElementById('customEmail').addEventListener('paste', (e) => e.preventDefault());
 </script>
 
 </body>
