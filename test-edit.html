@@ -1,0 +1,822 @@
+<!DOCTYPE html>  
+<html lang="bn">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>পণ্য এডিট করুন | GHOTI MARKET</title>  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">  
+<style>  
+:root{  
+  --orange: #FF6A00; --orange-dark: #E55A00; --orange-light: #FFF4EC;  
+  --green: #22c55e; --red: #e11d48; --bg: #FFF8F3; --card: #fff;  
+  --text: #1a1a1a; --muted: #666; --border: #FFE3D1;  
+  --border-orange: #FFD2B3;  
+}  
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hind Siliguri',sans-serif;}  
+body{background:var(--bg);padding-bottom:100px;}  
+data{-webkit-tap-highlight-color: transparent;}  
+.container{max-width:600px;margin:0 auto;padding:15px;}  
+  
+/* Header */  
+.header{position:sticky;top:0;background:var(--bg);z-index:10;padding:15px 0;display:flex;justify-content:space-between;align-items:center;}  
+.header h2{color:var(--orange);font-size:20px;font-weight:800;display:flex;align-items:center;gap:8px;}  
+.back-btn{padding:10px 14px;border:none;border-radius:12px;background:var(--card);color:var(--orange);font-weight:700;cursor:pointer;border:1px solid var(--border);}  
+  
+/* Card */  
+.card{background:var(--card);border-radius:18px;padding:18px;margin-bottom:15px;border:1px solid var(--border);box-shadow:0 4px 20px rgba(255,106,0,0.08);}  
+.form-group{margin-bottom:18px;}  
+.form-group:last-child{margin-bottom:0;}  
+.form-group label{font-size:14px;font-weight:700;margin-bottom:8px;display:block;}  
+.form-group input, .form-group textarea, .form-group select{width:100%;padding:15px;border:1.5px solid var(--border);border-radius:12px;font-size:15px;background:#fff;outline:none;color:var(--text);}  
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,106,0,0.1);}  
+textarea{min-height:100px;resize:vertical;}  
+.price-row{display:flex;gap:10px;}  
+.price-row > div{flex:1;}  
+.discount-badge{background:var(--green);color:#fff;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:700;text-align:center;margin-top:10px;}  
+  
+/* Slug */  
+.slug-row{display:flex;gap:8px;align-items:center;}  
+.slug-row input{flex:1;}  
+.slug-btn{padding:15px;background:var(--orange);color:#fff;border:none;border-radius:12px;font-weight:700;cursor:pointer;}  
+  
+/* Keywords */  
+.kw-box{background:var(--orange-light);padding:15px;border-radius:14px;border:1px solid var(--border);}  
+.kw-input-row{display:flex;gap:8px;}  
+.kw-input-row button{background:var(--orange);color:#fff;border:none;padding:0 18px;border-radius:10px;font-weight:700;cursor:pointer;}  
+#kwList{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;}  
+.keyword-tag{background:var(--orange);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;}  
+.keyword-tag i{cursor:pointer;font-size:12px;}  
+  
+/* Variant System UI */  
+.variant-card {  
+    background: #ffffff;  
+    border: 1.5px solid var(--border);  
+    border-radius: 14px;  
+    padding: 16px;  
+    margin-bottom: 14px;  
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);  
+}  
+.variant-card-header {  
+    display: flex;  
+    justify-content: space-between;  
+    align-items: center;  
+    margin-bottom: 12px;  
+}  
+.variant-card-title {  
+    font-weight: 700;  
+    font-size: 13.5px;  
+    color: var(--text);  
+    display: flex;  
+    align-items: center;  
+    gap: 6px;  
+}  
+.btn-remove-variant {  
+    background: #FEF2F2;  
+    color: var(--red);  
+    border: 1px solid #FECACA;  
+    padding: 5px 10px;  
+    border-radius: 8px;  
+    font-size: 12px;  
+    font-weight: 700;  
+    cursor: pointer;  
+    display: flex;  
+    align-items: center;  
+    gap: 5px;  
+    transition: all 0.2s;  
+}  
+.btn-remove-variant:hover {  
+    background: var(--red);  
+    color: white;  
+}  
+.variant-values-container {  
+    margin-top: 8px;  
+    display: flex;  
+    flex-direction: column;  
+    gap: 8px;  
+}  
+.variant-value-row {  
+    display: grid;  
+    grid-template-columns: 1fr 110px 40px;  
+    gap: 8px;  
+    align-items: center;  
+}  
+.variant-value-row input {  
+    padding: 11px 12px !important;  
+    font-size: 14px !important;  
+}  
+.btn-remove-val {  
+    background: #FFF0F0;  
+    color: var(--red);  
+    border: 1px solid #FFD0D0;  
+    width: 40px;  
+    height: 43px;  
+    border-radius: 10px;  
+    display: flex;  
+    align-items: center;  
+    justify-content: center;  
+    cursor: pointer;  
+    transition: all 0.2s;  
+}  
+.btn-remove-val:hover {  
+    background: var(--red);  
+    color: white;  
+    border-color: var(--red);  
+}  
+.btn-add-value {  
+    background: var(--orange-light);  
+    color: var(--orange-dark);  
+    border: 1px dashed var(--orange);  
+    padding: 8px 14px;  
+    border-radius: 10px;  
+    font-size: 12.5px;  
+    font-weight: 700;  
+    cursor: pointer;  
+    margin-top: 10px;  
+    display: inline-flex;  
+    align-items: center;  
+    gap: 6px;  
+}  
+.btn-add-value:hover {  
+    background: var(--orange);  
+    color: white;  
+}  
+.btn-add-variant-main {  
+    background: var(--orange-light);  
+    color: var(--orange-dark);  
+    border: 1px solid var(--border-orange);  
+    padding: 9px 16px;  
+    border-radius: 10px;  
+    font-weight: 700;  
+    font-size: 13px;  
+    cursor: pointer;  
+    display: inline-flex;  
+    align-items: center;  
+    gap: 6px;  
+}  
+.btn-add-variant-main:hover {  
+    background: var(--orange);  
+    color: #ffffff;  
+}  
+
+/* Images */  
+.img-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}  
+.img-box{background:var(--orange-light);border:2px dashed var(--border);border-radius:14px;height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;color:var(--muted);font-size:12px;gap:5px;}  
+.img-box i{font-size:24px;color:var(--orange);}  
+.img-box input{position:absolute;opacity:0;inset:0;cursor:pointer;}  
+.img-box img{width:100%;height:100%;object-fit:cover;display:none;position:absolute;inset:0;}  
+.remove-btn{position:absolute;top:5px;right:5px;background:var(--red);color:#fff;border:none;border-radius:50%;width:24px;height:24px;display:none;align-items:center;justify-content:center;z-index:2;cursor:pointer;}  
+  
+/* Status */  
+.status-toggle{display:flex;align-items:center;justify-content:space-between;background:var(--orange-light);padding:15px;border-radius:12px;}  
+.switch{position:relative;display:inline-block;width:50px;height:28px;}  
+.switch input{opacity:0;width:0;height:0;}  
+.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;transition:.4s;border-radius:28px;}  
+.slider:before{position:absolute;content:"";height:20px;width:20px;left:4px;bottom:4px;background:white;transition:.4s;border-radius:50%;}  
+input:checked +.slider{background:var(--green);}  
+input:checked +.slider:before{transform:translateX(22px);}  
+  
+/* Buttons */  
+.btn{width:100%;padding:17px;border:none;border-radius:14px;background:var(--green);color:#fff;font-size:17px;font-weight:800;cursor:pointer;box-shadow:0 8px 25px rgba(34,197,94,0.25);display:flex;align-items:center;justify-content:center;gap:8px;}  
+.btn:disabled{opacity:0.6;}  
+  
+/* Loader & Popup */  
+.loader{position:fixed;inset:0;background:rgba(255,255,255,0.9);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;gap:10px;}  
+.spinner{border:4px solid #f3f3f3;border-top:4px solid var(--orange);border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;}  
+@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}  
+.popup{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;justify-content:center;align-items:center;z-index:999;padding:20px;}  
+.popup.show{display:flex;}  
+.popup-box{background:#fff;border-radius:20px;padding:30px;width:100%;max-width:380px;text-align:center;}  
+.popup-box i{font-size:60px;margin-bottom:15px;}  
+.popup-box h3{font-size:20px;margin-bottom:8px;}  
+.popup-btn{padding:14px 25px;border:none;border-radius:12px;background:var(--orange);color:#fff;font-weight:700;margin-top:15px;cursor:pointer;}  
+</style>  
+</head>  
+<body>  
+  
+<div class="loader" id="pageLoader">  
+  <div class="spinner"></div>  
+  <p>পণ্য লোড হচ্ছে...</p>  
+</div>  
+  
+<div class="container" id="mainContent" style="display:none;">  
+  <div class="header">  
+    <h2><i class="fas fa-pen-to-square"></i> পণ্য এডিট করুন</h2>  
+    <button class="back-btn" onclick="location.href='dashboard.html'"><i class="fas fa-arrow-left"></i> Back</button>  
+  </div>  
+  
+  <form id="editForm">  
+    <!-- 1. Name -->  
+    <div class="card">  
+      <div class="form-group">  
+        <label>পণ্যের নাম *</label>  
+        <input type="text" id="pName" placeholder="পণ্যের নাম লিখুন" required>  
+      </div>  
+    </div>  
+  
+    <!-- 2. Price -->  
+    <div class="card">  
+      <div class="price-row">  
+        <div class="form-group">  
+          <label>বর্তমান দাম ৳ *</label>  
+          <input type="number" id="pPrice" placeholder="450" min="1" required>  
+        </div>  
+        <div class="form-group">  
+          <label>আগের দাম ৳</label>  
+          <input type="number" id="oldPrice" placeholder="600" min="1">  
+        </div>  
+      </div>  
+      <div class="discount-badge" id="discountText" style="display:none;"></div>  
+    </div>  
+  
+    <!-- Affiliate Section -->  
+    <div class="card">  
+      <div class="form-group">  
+        <label>Affiliate Program</label>  
+        <select id="affiliate" onchange="toggleAffiliate()">  
+            <option value="off">Affiliate OFF</option>  
+            <option value="on">Affiliate ON</option>  
+        </select>  
+      </div>  
+      <div class="form-group" id="affiliateDiscountGroup" style="display: none; margin-bottom: 0;">  
+        <label>Affiliate Discount (৳)</label>  
+        <input type="number" id="affiliateDiscount" placeholder="যেমন ১০">  
+      </div>  
+    </div>  
+
+    <!-- Product Variants System Card -->    
+    <section class="card">    
+        <div class="card-head" style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 8px;">    
+            <div style="display: flex; align-items: center; gap: 10px;">    
+                <i class="fas fa-layer-group" style="color:var(--orange);"></i>    
+                <h3 style="font-size:16px;">Product Variants</h3>    
+            </div>    
+            <button type="button" class="btn-add-variant-main" onclick="addVariantCard()">    
+                <i class="fas fa-plus"></i> Add Variant    
+            </button>    
+        </div>    
+        <p style="font-size: 12px; color: var(--muted); margin-bottom: 14px;">    
+            পণ্যের সাইজ, কালার বা স্টোরেজ অনুযায়ী বিভিন্ন মূল্য যুক্ত করতে পারেন (ঐচ্ছিক)।    
+        </p>    
+        <div id="variantContainer"></div>    
+    </section>  
+  
+    <!-- 3. Category -->  
+    <div class="card">  
+      <div class="form-group">  
+        <label>ক্যাটাগরি *</label>  
+        <select id="pCategory" required>  
+          <option value="">ক্যাটাগরি সিলেক্ট করুন</option>  
+        </select>  
+      </div>  
+    </div>  
+  
+    <!-- 4. Description -->  
+    <div class="card">  
+      <div class="form-group">  
+        <label>বিস্তারিত বর্ণনা</label>  
+        <textarea id="pDesc" placeholder="পণ্য সম্পর্কে বিস্তারিত লিখুন"></textarea>  
+      </div>  
+    </div>  
+  
+    <!-- 5. Keywords -->  
+    <div class="card">  
+      <div class="form-group">  
+        <label>Keywords <span style="color:var(--muted);font-weight:400;">সার্চের জন্য</span></label>  
+        <div class="kw-box">  
+          <div class="kw-input-row">  
+            <input type="text" id="kwInput" placeholder="যেমন: পাঞ্জাবি">  
+            <button type="button" onclick="addKW()">Add</button>  
+          </div>  
+          <div id="kwList"></div>  
+        </div>  
+      </div>  
+    </div>  
+  
+    <!-- 6. Slug -->  
+    <div class="card">  
+      <div class="form-group">  
+        <label>Product Slug <span style="color:var(--muted);font-weight:400;">URL এর জন্য</span></label>  
+        <div class="slug-row">  
+          <input type="text" id="pSlug" placeholder="auto-generated-slug">  
+          <button type="button" class="slug-btn" onclick="generateSlugManually()">Auto</button>  
+        </div>  
+      </div>  
+    </div>  
+  
+    <!-- 7. Images -->  
+    <div class="card">  
+      <label style="font-weight:700;margin-bottom:12px;display:block;">পণ্যের ছবি <span style="color:var(--muted);font-weight:400;">সর্বোচ্চ ২টি</span></label>  
+      <div class="img-grid">  
+        <div class="img-box" id="box1">  
+          <i class="fas fa-camera"></i><span>ছবি ১</span>  
+          <img id="view1">  
+          <button type="button" class="remove-btn" id="remove1" onclick="removeImage(1)"><i class="fas fa-times"></i></button>  
+          <input type="file" id="img1" accept="image/*" onchange="previewImg(this, 1)">  
+        </div>  
+        <div class="img-box" id="box2">  
+          <i class="fas fa-camera"></i><span>ছবি ২</span>  
+          <img id="view2">  
+          <button type="button" class="remove-btn" id="remove2" onclick="removeImage(2)"><i class="fas fa-times"></i></button>  
+          <input type="file" id="img2" accept="image/*" onchange="previewImg(this, 2)">  
+        </div>  
+      </div>  
+    </div>  
+  
+    <!-- 8. Status -->  
+    <div class="card">  
+      <div class="status-toggle">  
+        <div>  
+          <b>Status</b>  
+          <p style="font-size:12px;color:var(--muted);">Inactive করলে সাইটে দেখাবে না</p>  
+        </div>  
+        <label class="switch">  
+          <input type="checkbox" id="pStatus">  
+          <span class="slider"></span>  
+        </label>  
+      </div>  
+    </div>  
+  
+    <button type="submit" class="btn" id="updateBtn"><i class="fas fa-cloud-arrow-up"></i> আপডেট করুন</button>  
+  </form>  
+</div>  
+  
+<!-- Success Popup -->  
+<div id="successPopup" class="popup">  
+  <div class="popup-box">  
+    <i class="fas fa-check-circle" style="color:var(--green);"></i>  
+    <h3>সফলভাবে আপডেট হয়েছে!</h3>  
+    <p>আপনার পণ্যটি সফলভাবে আপডেট করা হয়েছে।</p>  
+    <button class="popup-btn" onclick="location.href='dashboard.html'">Dashboard এ যান</button>  
+  </div>  
+</div>  
+  
+<!-- Error Popup -->  
+<div id="errorPopup" class="popup">  
+  <div class="popup-box">  
+    <i class="fas fa-circle-exclamation" style="color:var(--red);"></i>  
+    <h3>সমস্যা হয়েছে!</h3>  
+    <p id="errorMsg">আপডেট করতে সমস্যা হয়েছে।</p>  
+    <button class="popup-btn" style="background:#333;" onclick="closeError()">ঠিক আছে</button>  
+  </div>  
+</div>  
+  
+<script type="module">  
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";  
+import { getFirestore, doc, getDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";  
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";  
+  
+const firebaseConfig = {  
+  apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",  
+  authDomain: "ghotimarket.firebaseapp.com",  
+  projectId: "ghotimarket",  
+  storageBucket: "ghotimarket.firebasestorage.app",  
+  messagingSenderId: "481257644093",  
+  appId: "1:481257644093:web:0dfc3699d6b3c86afeca54"  
+};  
+const app = initializeApp(firebaseConfig);  
+const db = getFirestore(app);  
+const auth = getAuth(app);  
+  
+const imgbbKey = "e1da51b6d309ac3a5a235b5088ebc334";  
+const urlParams = new URLSearchParams(window.location.search);  
+const productId = urlParams.get('id');  
+  
+let productData = {};  
+let keywords = [];  
+let newImages = [null, null];   
+let oldImages = [];   
+let variantIdCounter = 0;  
+  
+if(!productId) window.location.href = "dashboard.html";  
+  
+window.toggleAffiliate = () => {  
+    const affiliateStatus = document.getElementById('affiliate').value;  
+    const discountGroup = document.getElementById('affiliateDiscountGroup');  
+    if (affiliateStatus === 'on') {  
+        discountGroup.style.display = 'block';  
+    } else {  
+        discountGroup.style.display = 'none';  
+        document.getElementById('affiliateDiscount').value = '';  
+    }  
+};  
+  
+// --- PRODUCT VARIANT DOM LOGIC ---  
+window.addVariantCard = (variantName = '', valuesArr = null) => {  
+    const container = document.getElementById('variantContainer');  
+    variantIdCounter++;  
+    const cardId = `variant_card_${variantIdCounter}`;  
+
+    const card = document.createElement('div');  
+    card.className = 'variant-card';  
+    card.id = cardId;  
+
+    card.innerHTML = `  
+        <div class="variant-card-header">  
+            <span class="variant-card-title"><i class="fas fa-tag" style="color:var(--orange);"></i> Variant</span>  
+            <button type="button" class="btn-remove-variant" onclick="removeVariantCard('${cardId}')">  
+                <i class="fas fa-trash-alt"></i> Remove Variant  
+            </button>  
+        </div>  
+        <div class="form-group" style="margin-bottom:12px;">  
+            <label>Variant Name</label>  
+            <input type="text" class="variant-name-input" placeholder="যেমন: Size, Color, Storage" value="${variantName}">  
+        </div>  
+        <label>Variant Values & Extra Price (কমপক্ষে ২টি)</label>  
+        <div class="variant-values-container"></div>  
+        <button type="button" class="btn-add-value" onclick="addValueRow('${cardId}')">  
+            <i class="fas fa-plus"></i> Add Value  
+        </button>  
+    `;  
+
+    container.appendChild(card);  
+
+    const valuesContainer = card.querySelector('.variant-values-container');  
+
+    if (valuesArr && Array.isArray(valuesArr) && valuesArr.length > 0) {  
+        valuesArr.forEach(v => {  
+            appendValueRow(valuesContainer, v.value || '', v.extraPrice !== undefined ? v.extraPrice : 0);  
+        });  
+    } else {  
+        appendValueRow(valuesContainer, '', 0);  
+        appendValueRow(valuesContainer, '', 0);  
+    }  
+};  
+
+window.removeVariantCard = (cardId) => {  
+    const card = document.getElementById(cardId);  
+    if (card) card.remove();  
+};  
+
+window.addValueRow = (cardId) => {  
+    const card = document.getElementById(cardId);  
+    if (!card) return;  
+    const valuesContainer = card.querySelector('.variant-values-container');  
+    appendValueRow(valuesContainer, '', 0);  
+};  
+
+function appendValueRow(container, val = '', extraPrice = 0) {  
+    const row = document.createElement('div');  
+    row.className = 'variant-value-row';  
+    row.innerHTML = `  
+        <input type="text" class="variant-val-input" placeholder="Value (উদা: S)" value="${val}">  
+        <input type="number" class="variant-extra-price-input" placeholder="Extra ৳" value="${extraPrice}" min="0" step="any">  
+        <button type="button" class="btn-remove-val" onclick="removeValueRow(this)"><i class="fas fa-times"></i></button>  
+    `;  
+    container.appendChild(row);  
+}  
+
+window.removeValueRow = (btn) => {  
+    const valuesContainer = btn.closest('.variant-values-container');  
+    if (!valuesContainer) return;  
+
+    const currentRows = valuesContainer.querySelectorAll('.variant-value-row');  
+    if (currentRows.length <= 2) {  
+        showError('প্রতিটি Variant-এ কমপক্ষে ২টি Value থাকতে হবে');  
+        return;  
+    }  
+
+    const row = btn.closest('.variant-value-row');  
+    if (row) row.remove();  
+};  
+
+function collectAndValidateVariants() {  
+    const variantCards = document.querySelectorAll('.variant-card');  
+    const variantsList = [];  
+    const variantNamesSet = new Set();  
+
+    for (let i = 0; i < variantCards.length; i++) {  
+        const card = variantCards[i];  
+        const nameInput = card.querySelector('.variant-name-input');  
+        const rawName = nameInput ? nameInput.value : '';  
+        const nameTrimmed = rawName.trim();  
+
+        if (!nameTrimmed) {  
+            return { error: 'দয়া করে Variant Name লিখুন' };  
+        }  
+
+        const lowerName = nameTrimmed.toLowerCase();  
+        if (variantNamesSet.has(lowerName)) {  
+            return { error: 'Variant Name অবশ্যই আলাদা হতে হবে' };  
+        }  
+        variantNamesSet.add(lowerName);  
+
+        const valRows = card.querySelectorAll('.variant-value-row');  
+
+        if (valRows.length < 2) {  
+            return { error: 'প্রতিটি Variant-এ কমপক্ষে ২টি Value থাকতে হবে' };  
+        }  
+
+        const valuesArr = [];  
+        const valSet = new Set();  
+
+        for (let j = 0; j < valRows.length; j++) {  
+            const row = valRows[j];  
+            const valInput = row.querySelector('.variant-val-input');  
+            const priceInput = row.querySelector('.variant-extra-price-input');  
+
+            const rawVal = valInput ? valInput.value : '';  
+            const trimmedVal = rawVal.trim();  
+
+            if (!trimmedVal) {  
+                return { error: 'দয়া করে সব Variant Value পূরণ করুন' };  
+            }  
+
+            const lowerVal = trimmedVal.toLowerCase();  
+            if (valSet.has(lowerVal)) {  
+                return { error: 'একই Variant-এর মধ্যে একই Value একাধিকবার দেওয়া যাবে না' };  
+            }  
+            valSet.add(lowerVal);  
+
+            let extraPriceNum = 0;  
+            const priceValStr = priceInput ? priceInput.value.trim() : '';  
+
+            if (priceValStr !== '') {  
+                extraPriceNum = Number(priceValStr);  
+                if (isNaN(extraPriceNum)) {  
+                    extraPriceNum = 0;  
+                }  
+            }  
+
+            if (extraPriceNum < 0) {  
+                return { error: 'Extra Price ০ টাকার কম হতে পারবে না' };  
+            }  
+
+            valuesArr.push({  
+                value: trimmedVal,  
+                extraPrice: extraPriceNum  
+            });  
+        }  
+
+        variantsList.push({  
+            name: nameTrimmed,  
+            values: valuesArr  
+        });  
+    }  
+
+    return { data: variantsList };  
+}  
+  
+// Login Check  
+onAuthStateChanged(auth, user => {  
+  if(user){ loadProduct(); }  
+  else{ location.href = "index.html"; }  
+});  
+  
+// Load Product Data  
+async function loadProduct(){  
+  try{  
+    const snap = await getDoc(doc(db, "products", productId));  
+    if(!snap.exists()){ showError("পণ্যটি পাওয়া যায়নি!"); return; }  
+  
+    productData = snap.data();  
+    if(productData.sellerId!== auth.currentUser.uid){ showError("আপনার অনুমতি নেই!"); return; }  
+  
+    document.getElementById('pName').value = productData.name || '';  
+    document.getElementById('pPrice').value = productData.price || '';  
+    document.getElementById('oldPrice').value = productData.oldPrice || '';  
+    document.getElementById('pDesc').value = productData.description || '';  
+    document.getElementById('pSlug').value = productData.slug || '';  
+    document.getElementById('pStatus').checked = productData.active!== false;  
+      
+    const affiliateSelect = document.getElementById('affiliate');  
+    const affiliateDiscountInput = document.getElementById('affiliateDiscount');  
+    const discountGroup = document.getElementById('affiliateDiscountGroup');  
+      
+    if (productData.affiliate === 'on') {  
+        affiliateSelect.value = 'on';  
+        discountGroup.style.display = 'block';  
+        affiliateDiscountInput.value = productData.discount !== undefined ? productData.discount : '';  
+    } else {  
+        affiliateSelect.value = 'off';  
+        discountGroup.style.display = 'none';  
+        affiliateDiscountInput.value = '';  
+    }  
+  
+    keywords = productData.keywords || [];  
+    oldImages = productData.images || [];  
+  
+    // Load Existing Variants into DOM  
+    const variantContainer = document.getElementById('variantContainer');  
+    variantContainer.innerHTML = '';  
+    if (productData.variants && Array.isArray(productData.variants) && productData.variants.length > 0) {  
+        productData.variants.forEach(variant => {  
+            addVariantCard(variant.name, variant.values);  
+        });  
+    }  
+
+    renderKeywords();  
+    calculateDiscount();  
+    loadCategories();   
+    loadOldImages();   
+  
+    document.getElementById('pageLoader').style.display = 'none';  
+    document.getElementById('mainContent').style.display = 'block';  
+  
+  }catch(e){ console.error(e); showError("ডাটা লোড করতে সমস্যা হয়েছে"); }  
+}  
+  
+// Load Categories from Firestore  
+async function loadCategories(){  
+  const catSnap = await getDocs(collection(db, "categories"));  
+  const select = document.getElementById('pCategory');  
+  catSnap.forEach(d => {  
+    const data = d.data();  
+    const option = document.createElement('option');  
+    option.value = data.slug;  
+    option.textContent = data.categoryName;  
+    if(data.slug === productData.categorySlug) option.selected = true;  
+    select.appendChild(option);  
+  });  
+}  
+  
+// Load Old Images  
+function loadOldImages(){  
+  oldImages.forEach((url, index) => {  
+    if(url){  
+      document.getElementById(`view${index+1}`).src = url;  
+      document.getElementById(`view${index+1}`).style.display = 'block';  
+      document.getElementById(`remove${index+1}`).style.display = 'flex';  
+      document.getElementById(`box${index+1}`).style.border = 'none';  
+    }  
+  });  
+}  
+  
+// Image Preview + Remove  
+window.previewImg = (input, index) => {  
+  const file = input.files[0];  
+  if(file){  
+    newImages[index-1] = file;   
+    const reader = new FileReader();  
+    reader.onload = e => {  
+      document.getElementById(`view${index}`).src = e.target.result;  
+      document.getElementById(`view${index}`).style.display = 'block';  
+      document.getElementById(`remove${index}`).style.display = 'flex';  
+      document.getElementById(`box${index}`).style.border = 'none';  
+    };  
+    reader.readAsDataURL(file);  
+  }  
+}  
+window.removeImage = (index) => {  
+  newImages[index-1] = 'REMOVE';   
+  document.getElementById(`view${index}`).src = '';  
+  document.getElementById(`view${index}`).style.display = 'none';  
+  document.getElementById(`remove${index}`).style.display = 'none';  
+  document.getElementById(`box${index}`).style.border = '2px dashed var(--border)';  
+  document.getElementById(`img${index}`).value = '';  
+}  
+  
+// Keywords Add/Remove  
+window.addKW = () => {  
+  const val = document.getElementById('kwInput').value.trim().toLowerCase();  
+  if(val && !keywords.includes(val) && keywords.length < 50){  
+    keywords.push(val); renderKeywords(); document.getElementById('kwInput').value = "";  
+  }  
+}  
+window.removeKW = (index) => { keywords.splice(index, 1); renderKeywords(); }  
+function renderKeywords(){  
+  document.getElementById('kwList').innerHTML = keywords.map((k, i) =>  
+    `<div class="keyword-tag">${k} <i class="fas fa-times" onclick="removeKW(${i})"></i></div>`  
+  ).join('');  
+}  
+  
+// Slug Generate  
+function generateSlug(name){  
+  const base = name.toLowerCase().trim().replace(/[^a-z0-9\u0980-\u09FF\s-]/g, "").replace(/\s+/g, "-");  
+  return `${base}-${Math.floor(Math.random()*90+10)}${Math.random().toString(36).substr(2,2)}`;  
+}  
+document.getElementById('pName').oninput = () => {  
+  if(!document.getElementById('pSlug').dataset.manual)   
+    document.getElementById('pSlug').value = generateSlug(document.getElementById('pName').value);  
+}  
+window.generateSlugManually = () => {  
+  document.getElementById('pSlug').value = generateSlug(document.getElementById('pName').value);  
+  document.getElementById('pSlug').dataset.manual = true;  
+}  
+  
+// Discount Calculate  
+function calculateDiscount(){  
+  const price = Number(document.getElementById('pPrice').value);  
+  const old = Number(document.getElementById('oldPrice').value);  
+  if(old > price){  
+    const percent = Math.round(((old - price) / old) * 100);  
+    document.getElementById('discountText').innerText = `${percent}% ছাড় চলছে`;  
+    document.getElementById('discountText').style.display = 'block';  
+  }else{  
+    document.getElementById('discountText').style.display = 'none';  
+  }  
+}  
+document.getElementById('pPrice').oninput = calculateDiscount;  
+document.getElementById('oldPrice').oninput = calculateDiscount;  
+  
+// Convert to WebP + Upload to ImgBB  
+const convertToWebP = (file) => {  
+  return new Promise((resolve) => {  
+    const reader = new FileReader();  
+    reader.readAsDataURL(file);  
+    reader.onload = (event) => {  
+      const img = new Image();  
+      img.src = event.target.result;  
+      img.onload = () => {  
+        const canvas = document.createElement('canvas');  
+        canvas.width = 1200; canvas.height = (img.height * 1200) / img.width;  
+        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height);  
+        canvas.toBlob((blob) => { resolve(new File([blob], "image.webp", { type: "image/webp" })); }, "image/webp", 0.8);  
+      };  
+    };  
+  });  
+};  
+async function uploadToImgBB(file){  
+  const webpFile = await convertToWebP(file);  
+  const formData = new FormData(); formData.append("image", webpFile);  
+  const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, { method: "POST", body: formData });  
+  const json = await res.json();  
+  return json.success? json.data.url : null;  
+}  
+  
+// Form Submit - Update Firestore  
+document.getElementById('editForm').onsubmit = async (e) => {  
+  e.preventDefault();  
+  const btn = document.getElementById('updateBtn');  
+  btn.disabled = true; btn.innerHTML = '<div class="spinner" style="width:20px;height:20px;"></div> আপডেট হচ্ছে...';  
+  
+  try{  
+    const name = document.getElementById('pName').value.trim();  
+    const price = Number(document.getElementById('pPrice').value);  
+    const categorySlug = document.getElementById('pCategory').value;  
+    if(!name || !price || !categorySlug || keywords.length === 0) throw new Error("সব * চিহ্নিত ঘর পূরণ করুন");  
+  
+    // Validate Variants  
+    const variantValidation = collectAndValidateVariants();  
+    if (variantValidation.error) {  
+        throw new Error(variantValidation.error);  
+    }  
+    const variantsData = variantValidation.data || [];  
+
+    const affiliateStatus = document.getElementById('affiliate').value;  
+    const affiliateDiscountInput = document.getElementById('affiliateDiscount').value;  
+  
+    if (affiliateStatus === 'on') {  
+        if (!affiliateDiscountInput) {  
+            throw new Error("অ্যাফিলিয়েট ডিসকাউন্ট অবশ্যই লিখতে হবে");  
+        }  
+        const discountVal = Number(affiliateDiscountInput);  
+        if (discountVal < 1) {  
+            throw new Error("ডিসকাউন্ট ১ টাকার কম হতে পারবে না");  
+        }  
+        if (discountVal >= price) {  
+            throw new Error("ডিসকাউন্ট প্রাইসের সমান বা বেশি হতে পারবে না");  
+        }  
+    }  
+  
+    const affiliateData = affiliateStatus === 'on' ? {  
+        affiliate: "on",  
+        discount: Number(affiliateDiscountInput)  
+    } : {  
+        affiliate: "off",  
+        discount: 0  
+    };  
+  
+    let finalImages = [...oldImages];  
+    for(let i=0; i<2; i++){  
+      if(newImages[i] === 'REMOVE'){ finalImages[i] = ''; }   
+      else if(newImages[i]){ finalImages[i] = await uploadToImgBB(newImages[i]); }   
+    }  
+    finalImages = finalImages.filter(img => img);   
+  
+    const categoryName = document.getElementById('pCategory').options[document.getElementById('pCategory').selectedIndex].text;  
+  
+    await updateDoc(doc(db, "products", productId), {  
+      name: name,  
+      price: price,  
+      oldPrice: Number(document.getElementById('oldPrice').value) || price,  
+      description: document.getElementById('pDesc').value.trim(),  
+      keywords: keywords,  
+      slug: document.getElementById('pSlug').value,  
+      active: document.getElementById('pStatus').checked,  
+      images: finalImages,  
+      categorySlug: categorySlug,  
+      categoryName: categoryName,  
+      updatedAt: Date.now(),   
+      ...affiliateData,  
+      variants: variantsData  
+    });  
+  
+    document.getElementById('successPopup').classList.add('show');  
+  
+  }catch(err){  
+    console.error(err);  
+    showError(err.message || "আপডেট করতে সমস্যা হয়েছে");  
+  }finally{  
+    btn.disabled = false; btn.innerHTML = '<i class="fas fa-cloud-arrow-up"></i> আপডেট করুন';  
+  }  
+}  
+  
+function showError(msg){  
+  document.getElementById('errorMsg').innerText = msg;  
+  document.getElementById('errorPopup').classList.add('show');  
+  document.getElementById('pageLoader').style.display = 'none';  
+}  
+window.closeError = () => document.getElementById('errorPopup').classList.remove('show');  
+</script>  
+</body>  
+</html>
