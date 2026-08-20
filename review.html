@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHOTI MARKET - সেলার রিভিউ প্যানেল</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary: #ff1744;
+            --primary-dark: #d50000;
+            --secondary: #0f172a;
+            --accent: #2563eb;
+            --bg: #f4f6f8;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-sub: #64748b;
+            --border: #e2e8f0;
+            --warning: #f59e0b;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding-bottom: 40px;
+        }
+
+        /* Header Navigation */
+        .top-nav {
+            padding: 14px 18px;
+            background: var(--card);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-back-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-back-btn i {
+            font-size: 18px;
+            color: var(--primary);
+        }
+
+        .nav-title-badge {
+            background: #ffe5e9;
+            color: var(--primary-dark);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* Unauthenticated & State Box */
+        .state-box {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            margin-top: 20px;
+        }
+
+        .state-box i {
+            font-size: 42px;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .state-box h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--secondary);
+        }
+
+        .state-box p {
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-bottom: 16px;
+        }
+
+        /* Summary Header Card */
+        .summary-card {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .summary-info h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .summary-info p {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .summary-badge {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .summary-badge .count {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ff4757;
+            display: block;
+            line-height: 1;
+        }
+
+        .summary-badge .label {
+            font-size: 11px;
+            color: #cbd5e1;
+            margin-top: 4px;
+            display: block;
+        }
+
+        /* Section Title */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--secondary);
+        }
+
+        /* Reviews Wrapper */
+        .reviews-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* Single Review Card */
+        .review-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 16px 18px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .review-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .star-container {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            color: var(--warning);
+            font-size: 14px;
+        }
+
+        .time-badge {
+            font-size: 11px;
+            background: #f1f5f9;
+            color: var(--text-sub);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .user-info-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .avatar-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #eff6ff;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .user-email {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .review-date-exact {
+            font-size: 11px;
+            color: var(--text-sub);
+            margin-top: 2px;
+        }
+
+        .message-box {
+            font-size: 14px;
+            color: #334155;
+            line-height: 1.6;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 10px;
+            border-left: 3px solid var(--primary);
+            margin-bottom: 12px;
+            word-wrap: break-word;
+        }
+
+        .card-footer-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed var(--border);
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        .meta-pill {
+            background: #f1f5f9;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            max-width: 48%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        /* Load More Button */
+        .load-more-btn {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            margin-top: 18px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .load-more-btn:hover {
+            background: #f8fafc;
+            border-color: var(--accent);
+        }
+
+        .load-more-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Index Error Direct Link Box Style */
+        .index-error-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 12px;
+            text-align: left;
+        }
+
+        .index-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent);
+            color: #ffffff;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 13px;
+            margin-top: 10px;
+            word-break: break-all;
+            transition: background 0.2s ease;
+        }
+
+        .index-link-btn:hover {
+            background: #1d4ed8;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <div class="top-nav">
+        <a href="javascript:history.back()" class="nav-back-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>সেলার প্যানেল</span>
+        </a>
+        <span class="nav-title-badge"><i class="fas fa-store"></i> সেলার রিভিউ</span>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Auth Checking / Loading State -->
+        <div id="authLoader" class="state-box">
+            <i class="fas fa-spinner loading-spinner"></i>
+            <h3>অথেন্টিকেশন যাচাই করা হচ্ছে...</h3>
+            <p>অনুগ্রহ করে অপেক্ষা করুন</p>
+        </div>
+
+        <!-- Unauthenticated State (User not logged in) -->
+        <div id="unauthBox" class="state-box" style="display: none;">
+            <i class="fas fa-user-lock" style="color: var(--primary);"></i>
+            <h3>আপনাকে প্রথমে লগইন করতে হবে</h3>
+            <p>সেলার রিভিউ প্যানেল এক্সেস করতে অনুগ্রহ করে আপনার সেলার অ্যাকাউন্টে সাইন ইন করুন।</p>
+        </div>
+
+        <!-- Main Content Area (Authenticated Seller) -->
+        <div id="mainContent" style="display: none;">
+
+            <!-- Summary Banner -->
+            <div class="summary-card">
+                <div class="summary-info">
+                    <h2>আপনার প্রোডাক্ট রিভিউ</h2>
+                    <p>গ্রাহকদের থেকে প্রাপ্ত সাম্প্রতিক প্রতিক্রিয়া</p>
+                </div>
+                <div class="summary-badge">
+                    <span id="totalReviewsCount" class="count">0</span>
+                    <span class="label">মোট লোডকৃত</span>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h3 class="section-title">
+                    <i class="fas fa-star" style="color: var(--warning);"></i>
+                    রিভিউ তালিকা
+                </h3>
+            </div>
+
+            <!-- Reviews Container -->
+            <div id="reviewsList" class="reviews-wrapper"></div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="state-box" style="display: none;">
+                <i class="far fa-comment-dots" style="color: var(--text-sub);"></i>
+                <h3>এখনো কোনো রিভিউ পাওয়া যায়নি</h3>
+                <p>আপনার কোনো পণ্যে নতুন রিভিউ আসলে তা এখানে দেখতে পাবেন।</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="state-box" style="display: none;">
+                <i class="fas fa-exclamation-triangle" style="color: var(--primary);"></i>
+                <h3>রিভিউ লোড করতে সমস্যা হয়েছে</h3>
+                <div id="errorMessage">অনুগ্রহ করে ইন্টারনেট কানেকশন চেক করে আবার চেষ্টা করুন।</div>
+            </div>
+
+            <!-- Load More Button -->
+            <button id="loadMoreBtn" class="load-more-btn" style="display: none;">
+                <i id="loadMoreSpinner" class="fas fa-spinner loading-spinner" style="display: none; margin-right: 6px;"></i>
+                আরও দেখুন (২০টি)
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- Firebase Modular SDK Setup -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            query, 
+            where, 
+            orderBy, 
+            limit, 
+            startAfter, 
+            getDocs 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Firebase Config
+        const firebaseConfig = {
+          apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+          authDomain: "ghotimarket.firebaseapp.com",
+          databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
+          projectId: "ghotimarket",
+          storageBucket: "ghotimarket.firebasestorage.app",
+          messagingSenderId: "481257644093",
+          appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
+          measurementId: "G-4SR8V2EKC1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // স্লো হওয়া রোধ করতে একবারে সর্বোচ্চ ২০ টি ডেটা লোড হবে
+        const PAGE_SIZE = 20;
+        let lastDocSnapshot = null;
+        let currentSellerUid = null;
+        let totalLoadedCount = 0;
+
+        const getEl = (id) => document.getElementById(id);
+
+        const safeNumber = (val, def = 0) => {
+            const num = Number(val);
+            return isNaN(num) ? def : num;
+        };
+
+        const escapeHtml = (text) => {
+            if (!text) return '';
+            return String(text)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        };
+
+        // Star UI Generator
+        const renderStarsHTML = (rating) => {
+            const starNum = Math.min(5, Math.max(1, safeNumber(rating, 5)));
+            let starsHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= starNum) {
+                    starsHTML += '<i class="fas fa-star"></i>';
+                } else {
+                    starsHTML += '<i class="far fa-star" style="color:#cbd5e1;"></i>';
+                }
+            }
+            return starsHTML;
+        };
+
+        // Bengali Date & Relative Time Formatter
+        const formatBanglaDate = (timestamp) => {
+            if (!timestamp || !timestamp.seconds) {
+                return { fullDate: 'অজানা তারিখ', relative: 'সাম্প্রতিক' };
+            }
+
+            const date = new Date(timestamp.seconds * 1000);
+            const now = new Date();
+            const diffSeconds = Math.floor((now - date) / 1000);
+
+            let relative = 'সাম্প্রতিক';
+            if (diffSeconds < 60) {
+                relative = 'কিছুক্ষণ আগে';
+            } else if (diffSeconds < 3600) {
+                const mins = Math.floor(diffSeconds / 60);
+                relative = `${mins.toLocaleString('bn-BD')} মিনিট আগে`;
+            } else if (diffSeconds < 86400) {
+                const hours = Math.floor(diffSeconds / 3600);
+                relative = `${hours.toLocaleString('bn-BD')} ঘণ্টা আগে`;
+            } else if (diffSeconds < 172800) {
+                relative = 'গতকাল';
+            } else if (diffSeconds < 2592000) {
+                const days = Math.floor(diffSeconds / 86400);
+                relative = `${days.toLocaleString('bn-BD')} দিন আগে`;
+            }
+
+            const dateStr = date.toLocaleDateString('bn-BD', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+
+            const timeStr = date.toLocaleTimeString('bn-BD', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            });
+
+            return {
+                fullDate: `${dateStr}, ${timeStr}`,
+                relative
+            };
+        };
+
+        // Append Cards to DOM Fast via DocumentFragment (UI lag রোধ করার জন্য)
+        const appendReviewCards = (docs) => {
+            const reviewsListEl = getEl("reviewsList");
+            const fragment = document.createDocumentFragment();
+
+            docs.forEach(docSnap => {
+                const r = docSnap.data();
+                const { fullDate, relative } = formatBanglaDate(r.createdAt);
+                const displayEmail = r.userEmail || 'অজানা গ্রাহক';
+                const pId = r.productId || 'N/A';
+                const uId = r.userId ? `${r.userId.substring(0, 6)}...` : 'N/A';
+
+                const card = document.createElement('div');
+                card.className = 'review-card';
+                card.innerHTML = `
+                    <div class="card-top">
+                        <div class="star-container">
+                            ${renderStarsHTML(r.star)}
+                        </div>
+                        <span class="time-badge"><i class="far fa-clock"></i> ${escapeHtml(relative)}</span>
+                    </div>
+
+                    <div class="user-info-row">
+                        <div class="avatar-circle">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-details">
+                            <span class="user-email" title="${escapeHtml(displayEmail)}">${escapeHtml(displayEmail)}</span>
+                            <span class="review-date-exact"><i class="far fa-calendar-alt"></i> ${escapeHtml(fullDate)}</span>
+                        </div>
+                    </div>
+
+                    <div class="message-box">
+                        ${escapeHtml(r.message || 'কোনো লিখিত মন্তব্য নেই।')}
+                    </div>
+
+                    <div class="card-footer-meta">
+                        <span class="meta-pill" title="Product ID: ${escapeHtml(pId)}">
+                            <i class="fas fa-box"></i> ID: ${escapeHtml(pId)}
+                        </span>
+                        <span class="meta-pill" title="User ID: ${escapeHtml(r.userId || '')}">
+                            <i class="fas fa-id-badge"></i> Buyer: ${escapeHtml(uId)}
+                        </span>
+                    </div>
+                `;
+                fragment.appendChild(card);
+            });
+
+            reviewsListEl.appendChild(fragment);
+        };
+
+        // Fetch Reviews with Batching & Index Link Display
+        const fetchReviews = async (isInitial = false) => {
+            const loadBtn = getEl("loadMoreBtn");
+            const loadSpinner = getEl("loadMoreSpinner");
+            const emptyState = getEl("emptyState");
+            const errorState = getEl("errorState");
+
+            if (!isInitial) {
+                loadBtn.disabled = true;
+                loadSpinner.style.display = "inline-block";
+            }
+
+            try {
+                let q;
+                if (isInitial) {
+                    q = query(
+                        collection(db, "product_reviews"),
+                        where("sellerId", "==", currentSellerUid),
+                        orderBy("createdAt", "desc"),
+                        limit(PAGE_SIZE)
+                    );
+                } else {
+                    q = query(
+                        collection(db, "product_reviews"),
+                        where("sellerId", "==", currentSellerUid),
+                        orderBy("createdAt", "desc"),
+                        startAfter(lastDocSnapshot),
+                        limit(PAGE_SIZE)
+                    );
+                }
+
+                const snap = await getDocs(q);
+
+                if (isInitial) {
+                    getEl("reviewsList").innerHTML = "";
+                    totalLoadedCount = 0;
+                }
+
+                if (snap.empty) {
+                    if (isInitial) {
+                        emptyState.style.display = "block";
+                        loadBtn.style.display = "none";
+                    } else {
+                        loadBtn.style.display = "none";
+                    }
+                } else {
+                    emptyState.style.display = "none";
+                    lastDocSnapshot = snap.docs[snap.docs.length - 1];
+                    totalLoadedCount += snap.docs.length;
+                    
+                    appendReviewCards(snap.docs);
+                    getEl("totalReviewsCount").innerText = totalLoadedCount;
+
+                    // ২০টির কম ডেটা আসলে ধরে নেওয়া হবে আর ডেটা নেই
+                    if (snap.docs.length < PAGE_SIZE) {
+                        loadBtn.style.display = "none";
+                    } else {
+                        loadBtn.style.display = "block";
+                    }
+                }
+
+                errorState.style.display = "none";
+
+            } catch (err) {
+                console.error("Firestore Error:", err);
+                errorState.style.display = "block";
+                
+                // Firestore Index missing link extraction
+                const indexUrlMatch = err.message ? err.message.match(/(https:\/\/console\.firebase\.google\.com[^\s"']+)/) : null;
+
+                if (indexUrlMatch && indexUrlMatch[0]) {
+                    const directIndexUrl = indexUrlMatch[0];
+                    getEl("errorMessage").innerHTML = `
+                        <p style="margin-bottom: 8px;"><strong>Firestore Composite Index প্রয়োজন!</strong></p>
+                        <p style="font-size: 13px; color: #475569;">এই পেজে ডেটা সাজিয়ে দেখানোর জন্য নিচে থেকে সরাসরি Index তৈরি করে নিন:</p>
+                        <div class="index-error-box">
+                            <a href="${directIndexUrl}" target="_blank" class="index-link-btn">
+                                <i class="fas fa-external-link-alt"></i> এখানে ক্লিক করে Firestore Index তৈরি করুন
+                            </a>
+                        </div>
+                    `;
+                } else if (err.message && err.message.includes("index")) {
+                    getEl("errorMessage").innerHTML = `
+                        <p>Firestore Index প্রয়োজন। অনুগ্রহ করে আপনার Firebase Console থেকে <strong>product_reviews</strong> কালেকশনে <code>sellerId (Ascending)</code> এবং <code>createdAt (Descending)</code> ইণ্ডেক্স তৈরি করে নিন।</p>
+                    `;
+                } else {
+                    getEl("errorMessage").innerText = "রিভিউ লোড করতে সমস্যা হয়েছে। অনুগ্রহ করে ইন্টারনেট কানেকশন চেক করে আবার চেষ্টা করুন।";
+                }
+            } finally {
+                if (!isInitial) {
+                    loadBtn.disabled = false;
+                    loadSpinner.style.display = "none";
+                }
+            }
+        };
+
+        // Auth Observer Logic
+        onAuthStateChanged(auth, (user) => {
+            getEl("authLoader").style.display = "none";
+
+            if (user) {
+                currentSellerUid = user.uid;
+                getEl("unauthBox").style.display = "none";
+                getEl("mainContent").style.display = "block";
+                fetchReviews(true);
+            } else {
+                getEl("mainContent").style.display = "none";
+                getEl("unauthBox").style.display = "block";
+            }
+        });
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            getEl("loadMoreBtn").addEventListener("click", () => fetchReviews(false));
+            
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>
