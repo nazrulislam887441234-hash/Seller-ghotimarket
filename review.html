@@ -5,24 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GHOTI MARKET - সেলার রিভিউ প্যানেল</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
 
         :root {
-            --primary: #ff1744;
-            --primary-dark: #d50000;
-            --secondary: #0f172a;
-            --accent: #2563eb;
-            --bg: #f4f6f8;
-            --card: #ffffff;
-            --text: #1e293b;
-            --text-sub: #64748b;
-            --border: #e2e8f0;
-            --warning: #f59e0b;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.06);
+            --primary: #FF6B35;
+            --primary-dark: #E85A1A;
+            --primary-light: #FFF0EB;
+            --secondary: #0F172A;
+            --bg: #FFF8F3;
+            --card: #FFFFFF;
+            --text: #1E293B;
+            --text-sub: #64748B;
+            --border: #FFE4D6;
+            --border-light: #F8E8E0;
+            --warning: #F59E0B;
+            --success: #10B981;
+            --shadow-sm: 0 2px 8px rgba(255, 107, 53, 0.05);
+            --shadow-md: 0 6px 18px rgba(255, 107, 53, 0.08);
+            --shadow-lg: 0 10px 25px rgba(15, 23, 42, 0.08);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
         }
 
         * {
@@ -35,12 +40,14 @@
             font-family: 'Hind Siliguri', sans-serif;
             background: var(--bg);
             color: var(--text);
-            padding-bottom: 40px;
+            padding-bottom: 50px;
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Header Navigation */
+        /* Top Header */
         .top-nav {
-            padding: 14px 18px;
+            padding: 14px 20px;
             background: var(--card);
             display: flex;
             align-items: center;
@@ -50,6 +57,8 @@
             top: 0;
             z-index: 100;
             border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
         }
 
         .nav-back-btn {
@@ -58,36 +67,52 @@
             gap: 10px;
             cursor: pointer;
             font-weight: 700;
-            font-size: 16px;
-            color: var(--text);
+            font-size: 15px;
+            color: var(--secondary);
             text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+
+        .nav-back-btn:active {
+            transform: scale(0.96);
         }
 
         .nav-back-btn i {
             font-size: 18px;
             color: var(--primary);
+            background: var(--primary-light);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .nav-title-badge {
-            background: #ffe5e9;
-            color: var(--primary-dark);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #ffffff;
             font-size: 12px;
             font-weight: 700;
-            padding: 4px 10px;
+            padding: 6px 14px;
             border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(255, 107, 53, 0.25);
         }
 
         .container {
-            max-width: 650px;
+            max-width: 680px;
             margin: 0 auto;
             padding: 16px;
         }
 
-        /* Unauthenticated & State Box */
+        /* State Cards */
         .state-box {
             background: var(--card);
-            border-radius: 16px;
-            padding: 40px 20px;
+            border-radius: var(--radius-lg);
+            padding: 40px 24px;
             text-align: center;
             border: 1px solid var(--border);
             box-shadow: var(--shadow-md);
@@ -95,69 +120,98 @@
         }
 
         .state-box i {
-            font-size: 42px;
-            margin-bottom: 12px;
+            font-size: 46px;
+            margin-bottom: 14px;
             color: var(--primary);
         }
 
         .state-box h3 {
-            font-size: 18px;
+            font-size: 19px;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             color: var(--secondary);
         }
 
         .state-box p {
             font-size: 14px;
             color: var(--text-sub);
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        /* Premium Summary Banner */
+        .summary-card {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: #ffffff;
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 140px;
+            height: 140px;
+            background: rgba(255, 107, 53, 0.15);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .summary-header {
             margin-bottom: 16px;
         }
 
-        /* Summary Header Card */
-        .summary-card {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: #ffffff;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-md);
+        .summary-header h2 {
+            font-size: 19px;
+            font-weight: 700;
+            color: #FFFFFF;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 8px;
         }
 
-        .summary-info h2 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .summary-info p {
+        .summary-header p {
             font-size: 13px;
-            color: #94a3b8;
+            color: #94A3B8;
+            margin-top: 2px;
         }
 
-        .summary-badge {
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px 16px;
-            border-radius: 12px;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 12px 10px;
+            border-radius: var(--radius-md);
             text-align: center;
+            backdrop-filter: blur(5px);
         }
 
-        .summary-badge .count {
-            font-size: 22px;
+        .stat-item .count {
+            font-size: 20px;
             font-weight: 800;
-            color: #ff4757;
+            color: #FF6B35;
             display: block;
-            line-height: 1;
+            line-height: 1.2;
         }
 
-        .summary-badge .label {
+        .stat-item .label {
             font-size: 11px;
-            color: #cbd5e1;
+            color: #CBD5E1;
             margin-top: 4px;
             display: block;
+            font-weight: 500;
         }
 
         /* Section Title */
@@ -166,10 +220,11 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 14px;
+            padding: 0 2px;
         }
 
         .section-title {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -177,18 +232,18 @@
             color: var(--secondary);
         }
 
-        /* Reviews Wrapper */
+        /* Review Cards Wrapper */
         .reviews-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 16px;
         }
 
-        /* Single Review Card */
+        /* Review Card UI */
         .review-card {
             background: var(--card);
-            border-radius: 16px;
-            padding: 16px 18px;
+            border-radius: var(--radius-lg);
+            padding: 18px;
             border: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -196,32 +251,130 @@
 
         .review-card:hover {
             box-shadow: var(--shadow-md);
+            border-color: var(--primary);
         }
 
         .card-top {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .rating-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #FFFBEB;
+            border: 1px solid #FDE68A;
+            padding: 4px 10px;
+            border-radius: 20px;
         }
 
         .star-container {
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 2px;
             color: var(--warning);
-            font-size: 14px;
+            font-size: 13px;
+        }
+
+        .rating-num {
+            font-size: 12px;
+            font-weight: 700;
+            color: #B45309;
         }
 
         .time-badge {
             font-size: 11px;
-            background: #f1f5f9;
+            background: var(--bg);
             color: var(--text-sub);
-            padding: 3px 8px;
-            border-radius: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
             font-weight: 600;
+            border: 1px solid var(--border-light);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
 
+        /* Product Preview Box Inside Review Card */
+        .product-preview-box {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 10px 12px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow: hidden;
+        }
+
+        .product-img-wrap {
+            width: 58px;
+            height: 58px;
+            border-radius: var(--radius-sm);
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-img-wrap i {
+            font-size: 22px;
+            color: var(--text-sub);
+        }
+
+        .product-info-wrap {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .product-name {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--secondary);
+            line-height: 1.35;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 4px;
+        }
+
+        .product-price-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .current-price {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        .old-price {
+            font-size: 12px;
+            color: var(--text-sub);
+            text-decoration: line-through;
+        }
+
+        /* Customer Info Row */
         .user-info-row {
             display: flex;
             align-items: center;
@@ -230,17 +383,18 @@
         }
 
         .avatar-circle {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: #eff6ff;
-            color: var(--accent);
+            background: var(--primary-light);
+            color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             flex-shrink: 0;
+            border: 1px solid var(--border);
         }
 
         .user-details {
@@ -261,58 +415,73 @@
         .review-date-exact {
             font-size: 11px;
             color: var(--text-sub);
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
+        /* Message Box */
         .message-box {
             font-size: 14px;
             color: #334155;
             line-height: 1.6;
-            background: #f8fafc;
-            padding: 12px;
-            border-radius: 10px;
+            background: #FFF0EB;
+            padding: 12px 14px;
+            border-radius: var(--radius-md);
             border-left: 3px solid var(--primary);
             margin-bottom: 12px;
             word-wrap: break-word;
+            position: relative;
         }
 
+        .message-box i.quote-icon {
+            font-size: 12px;
+            color: var(--primary);
+            margin-right: 4px;
+            opacity: 0.7;
+        }
+
+        /* Card Footer Meta */
         .card-footer-meta {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 8px;
-            padding-top: 8px;
+            padding-top: 10px;
             border-top: 1px dashed var(--border);
             font-size: 11px;
             color: var(--text-sub);
         }
 
         .meta-pill {
-            background: #f1f5f9;
-            padding: 4px 8px;
+            background: var(--bg);
+            border: 1px solid var(--border-light);
+            padding: 4px 10px;
             border-radius: 6px;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            max-width: 48%;
+            gap: 5px;
+            max-width: 49%;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
+        }
+
+        .meta-pill i {
+            color: var(--primary);
         }
 
         /* Load More Button */
         .load-more-btn {
             display: block;
             width: 100%;
-            padding: 13px;
-            margin-top: 18px;
+            padding: 14px;
+            margin-top: 20px;
             background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--accent);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius-md);
+            color: var(--primary);
             font-weight: 700;
-            font-size: 14px;
+            font-size: 15px;
             cursor: pointer;
             text-align: center;
             transition: all 0.2s ease;
@@ -320,13 +489,16 @@
         }
 
         .load-more-btn:hover {
-            background: #f8fafc;
-            border-color: var(--accent);
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: var(--shadow-md);
         }
 
         .load-more-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
+            background: var(--card);
+            color: var(--primary);
         }
 
         .loading-spinner {
@@ -334,13 +506,36 @@
             animation: spin 1s linear infinite;
         }
 
+        /* Skeleton Loader */
+        .skeleton-card {
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+            border: 1px solid var(--border);
+            margin-bottom: 14px;
+        }
+
+        .skeleton-line {
+            height: 14px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
         /* Index Error Direct Link Box Style */
         .index-error-box {
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            border-radius: 12px;
+            background: #FFF0EB;
+            border: 1px solid #FFD0B8;
+            border-radius: var(--radius-md);
             padding: 16px;
-            margin-top: 12px;
+            margin-top: 14px;
             text-align: left;
         }
 
@@ -348,25 +543,47 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--accent);
+            background: var(--primary);
             color: #ffffff;
-            padding: 10px 16px;
-            border-radius: 8px;
+            padding: 10px 18px;
+            border-radius: var(--radius-sm);
             font-weight: 700;
             text-decoration: none;
             font-size: 13px;
             margin-top: 10px;
             word-break: break-all;
             transition: background 0.2s ease;
+            box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
         }
 
         .index-link-btn:hover {
-            background: #1d4ed8;
+            background: var(--primary-dark);
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 12px;
+            }
+            .summary-card {
+                padding: 16px;
+            }
+            .stats-grid {
+                gap: 6px;
+            }
+            .stat-item {
+                padding: 10px 6px;
+            }
+            .stat-item .count {
+                font-size: 17px;
+            }
+            .stat-item .label {
+                font-size: 10px;
+            }
         }
     </style>
 </head>
@@ -378,7 +595,7 @@
             <i class="fas fa-arrow-left"></i>
             <span>সেলার প্যানেল</span>
         </a>
-        <span class="nav-title-badge"><i class="fas fa-store"></i> সেলার রিভিউ</span>
+        <span class="nav-title-badge"><i class="fas fa-store"></i> GHOTI MARKET</span>
     </div>
 
     <!-- Main Container -->
@@ -386,38 +603,62 @@
 
         <!-- Auth Checking / Loading State -->
         <div id="authLoader" class="state-box">
-            <i class="fas fa-spinner loading-spinner"></i>
-            <h3>অথেন্টিকেশন যাচাই করা হচ্ছে...</h3>
-            <p>অনুগ্রহ করে অপেক্ষা করুন</p>
+            <i class="fas fa-circle-notch loading-spinner"></i>
+            <h3>অ্যাকাউন্ট যাচাই করা হচ্ছে...</h3>
+            <p>অনুগ্রহ করে কিছু মুহূর্ত অপেক্ষা করুন</p>
         </div>
 
-        <!-- Unauthenticated State (User not logged in) -->
+        <!-- Unauthenticated State -->
         <div id="unauthBox" class="state-box" style="display: none;">
-            <i class="fas fa-user-lock" style="color: var(--primary);"></i>
+            <i class="fas fa-user-lock"></i>
             <h3>আপনাকে প্রথমে লগইন করতে হবে</h3>
             <p>সেলার রিভিউ প্যানেল এক্সেস করতে অনুগ্রহ করে আপনার সেলার অ্যাকাউন্টে সাইন ইন করুন।</p>
         </div>
 
-        <!-- Main Content Area (Authenticated Seller) -->
+        <!-- Main Content Area -->
         <div id="mainContent" style="display: none;">
 
             <!-- Summary Banner -->
             <div class="summary-card">
-                <div class="summary-info">
-                    <h2>আপনার প্রোডাক্ট রিভিউ</h2>
-                    <p>গ্রাহকদের থেকে প্রাপ্ত সাম্প্রতিক প্রতিক্রিয়া</p>
+                <div class="summary-header">
+                    <h2><i class="fas fa-star" style="color: #FFB800;"></i> আপনার প্রোডাক্ট রিভিউ</h2>
+                    <p>গ্রাহকদের সত্য মতামত ও মূল্যায়নের সারসংক্ষেপ</p>
                 </div>
-                <div class="summary-badge">
-                    <span id="totalReviewsCount" class="count">0</span>
-                    <span class="label">মোট লোডকৃত</span>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span id="totalReviewsCount" class="count">০</span>
+                        <span class="label">মোট রিভিউ</span>
+                    </div>
+                    <div class="stat-item">
+                        <span id="avgRatingScore" class="count">০.০</span>
+                        <span class="label">গড় রেটিং</span>
+                    </div>
+                    <div class="stat-item">
+                        <span id="fiveStarCount" class="count">০</span>
+                        <span class="label">৫-স্টার রিভিউ</span>
+                    </div>
                 </div>
             </div>
 
             <div class="section-header">
                 <h3 class="section-title">
-                    <i class="fas fa-star" style="color: var(--warning);"></i>
-                    রিভিউ তালিকা
+                    <i class="fas fa-comments" style="color: var(--primary);"></i>
+                    সাম্প্রতিক রিভিউসমূহ
                 </h3>
+            </div>
+
+            <!-- Skeleton Loaders -->
+            <div id="skeletonContainer" style="display: none;">
+                <div class="skeleton-card">
+                    <div class="skeleton-line" style="width: 40%;"></div>
+                    <div class="skeleton-line" style="width: 100%; height: 50px;"></div>
+                    <div class="skeleton-line" style="width: 70%;"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-line" style="width: 35%;"></div>
+                    <div class="skeleton-line" style="width: 100%; height: 50px;"></div>
+                    <div class="skeleton-line" style="width: 80%;"></div>
+                </div>
             </div>
 
             <!-- Reviews Container -->
@@ -427,19 +668,19 @@
             <div id="emptyState" class="state-box" style="display: none;">
                 <i class="far fa-comment-dots" style="color: var(--text-sub);"></i>
                 <h3>এখনো কোনো রিভিউ পাওয়া যায়নি</h3>
-                <p>আপনার কোনো পণ্যে নতুন রিভিউ আসলে তা এখানে দেখতে পাবেন।</p>
+                <p>আপনার পণ্যে গ্রাহক প্রতিক্রিয়া জানালে তা এখানে প্রদর্শিত হবে।</p>
             </div>
 
             <!-- Error State -->
             <div id="errorState" class="state-box" style="display: none;">
-                <i class="fas fa-exclamation-triangle" style="color: var(--primary);"></i>
+                <i class="fas fa-exclamation-triangle"></i>
                 <h3>রিভিউ লোড করতে সমস্যা হয়েছে</h3>
                 <div id="errorMessage">অনুগ্রহ করে ইন্টারনেট কানেকশন চেক করে আবার চেষ্টা করুন।</div>
             </div>
 
             <!-- Load More Button -->
             <button id="loadMoreBtn" class="load-more-btn" style="display: none;">
-                <i id="loadMoreSpinner" class="fas fa-spinner loading-spinner" style="display: none; margin-right: 6px;"></i>
+                <i id="loadMoreSpinner" class="fas fa-circle-notch loading-spinner" style="display: none; margin-right: 6px;"></i>
                 আরও দেখুন (২০টি)
             </button>
 
@@ -459,7 +700,9 @@
             orderBy, 
             limit, 
             startAfter, 
-            getDocs 
+            getDocs,
+            doc,
+            getDoc 
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         // Firebase Config
@@ -478,11 +721,14 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // স্লো হওয়া রোধ করতে একবারে সর্বোচ্চ ২০ টি ডেটা লোড হবে
+        // Constants & Pagination Variables
         const PAGE_SIZE = 20;
         let lastDocSnapshot = null;
         let currentSellerUid = null;
-        let totalLoadedCount = 0;
+        let loadedReviewsList = [];
+
+        // In-Memory Product Cache (Duplicate fetches রোধ করতে)
+        const productCache = new Map();
 
         const getEl = (id) => document.getElementById(id);
 
@@ -501,7 +747,12 @@
                 .replace(/'/g, "&#039;");
         };
 
-        // Star UI Generator
+        const toBanglaNum = (num) => {
+            const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+            return String(num).replace(/\d/g, (digit) => bnDigits[digit]);
+        };
+
+        // Star Rating Generator
         const renderStarsHTML = (rating) => {
             const starNum = Math.min(5, Math.max(1, safeNumber(rating, 5)));
             let starsHTML = '';
@@ -509,7 +760,7 @@
                 if (i <= starNum) {
                     starsHTML += '<i class="fas fa-star"></i>';
                 } else {
-                    starsHTML += '<i class="far fa-star" style="color:#cbd5e1;"></i>';
+                    starsHTML += '<i class="far fa-star" style="color:#CBD5E1;"></i>';
                 }
             }
             return starsHTML;
@@ -530,15 +781,15 @@
                 relative = 'কিছুক্ষণ আগে';
             } else if (diffSeconds < 3600) {
                 const mins = Math.floor(diffSeconds / 60);
-                relative = `${mins.toLocaleString('bn-BD')} মিনিট আগে`;
+                relative = `${toBanglaNum(mins)} মিনিট আগে`;
             } else if (diffSeconds < 86400) {
                 const hours = Math.floor(diffSeconds / 3600);
-                relative = `${hours.toLocaleString('bn-BD')} ঘণ্টা আগে`;
+                relative = `${toBanglaNum(hours)} ঘণ্টা আগে`;
             } else if (diffSeconds < 172800) {
                 relative = 'গতকাল';
             } else if (diffSeconds < 2592000) {
                 const days = Math.floor(diffSeconds / 86400);
-                relative = `${days.toLocaleString('bn-BD')} দিন আগে`;
+                relative = `${toBanglaNum(days)} দিন আগে`;
             }
 
             const dateStr = date.toLocaleDateString('bn-BD', {
@@ -559,27 +810,124 @@
             };
         };
 
-        // Append Cards to DOM Fast via DocumentFragment (UI lag রোধ করার জন্য)
+        // Efficient Batch Product Fetching with In-Memory Cache
+        const fetchBatchProducts = async (productIds) => {
+            const uniqueIds = [...new Set(productIds.filter(id => id && typeof id === 'string'))];
+            const missingIds = uniqueIds.filter(id => !productCache.has(id));
+
+            if (missingIds.length > 0) {
+                // Parallel fetching of missing product documents
+                await Promise.all(missingIds.map(async (pId) => {
+                    try {
+                        const pSnap = await getDoc(doc(db, "products", pId));
+                        if (pSnap.exists()) {
+                            productCache.set(pId, pSnap.data());
+                        } else {
+                            productCache.set(pId, null); // Marked as missing
+                        }
+                    } catch (err) {
+                        console.error(`Error fetching product ${pId}:`, err);
+                        productCache.set(pId, null);
+                    }
+                }));
+            }
+        };
+
+        // Render Product Section HTML inside Review Card
+        const renderProductPreview = (pId) => {
+            if (!pId) {
+                return `
+                    <div class="product-preview-box">
+                        <div class="product-img-wrap"><i class="fas fa-box"></i></div>
+                        <div class="product-info-wrap">
+                            <div class="product-name">প্রোডাক্ট আইডি অনুপস্থিত</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            const product = productCache.get(pId);
+
+            if (!product) {
+                return `
+                    <div class="product-preview-box">
+                        <div class="product-img-wrap"><i class="fas fa-exclamation-circle"></i></div>
+                        <div class="product-info-wrap">
+                            <div class="product-name" style="color: var(--text-sub);">প্রোডাক্ট তথ্য পাওয়া যায়নি</div>
+                            <div class="product-price-row">
+                                <span class="current-price" style="font-size:11px; font-weight:600; color:var(--text-sub);">ID: ${escapeHtml(pId)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            const pName = product.name || 'শিরোনামহীন প্রোডাক্ট';
+            const price = safeNumber(product.price, 0);
+            const oldPrice = safeNumber(product.oldPrice, 0);
+            
+            let imgUrl = '';
+            if (Array.isArray(product.images) && product.images.length > 0) {
+                imgUrl = product.images[0];
+            } else if (typeof product.images === 'string') {
+                imgUrl = product.images;
+            }
+
+            const imgHtml = imgUrl 
+                ? `<img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(pName)}" loading="lazy" decoding="async" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-image\\'></i>'">`
+                : `<i class="fas fa-image"></i>`;
+
+            const priceHtml = `৳${toBanglaNum(price)}`;
+            const oldPriceHtml = (oldPrice > price) 
+                ? `<span class="old-price">৳${toBanglaNum(oldPrice)}</span>` 
+                : '';
+
+            return `
+                <div class="product-preview-box">
+                    <div class="product-img-wrap">
+                        ${imgHtml}
+                    </div>
+                    <div class="product-info-wrap">
+                        <div class="product-name" title="${escapeHtml(pName)}">${escapeHtml(pName)}</div>
+                        <div class="product-price-row">
+                            <span class="current-price">${priceHtml}</span>
+                            ${oldPriceHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        // Render Review Cards
         const appendReviewCards = (docs) => {
             const reviewsListEl = getEl("reviewsList");
             const fragment = document.createDocumentFragment();
 
             docs.forEach(docSnap => {
                 const r = docSnap.data();
+                loadedReviewsList.push(r);
+
                 const { fullDate, relative } = formatBanglaDate(r.createdAt);
                 const displayEmail = r.userEmail || 'অজানা গ্রাহক';
-                const pId = r.productId || 'N/A';
-                const uId = r.userId ? `${r.userId.substring(0, 6)}...` : 'N/A';
+                const pId = r.productId || '';
+                const truncatedPid = pId ? `${pId.substring(0, 8)}...` : 'N/A';
+                const uId = r.userId ? `${r.userId.substring(0, 8)}...` : 'N/A';
+                const starVal = safeNumber(r.star, 5);
 
                 const card = document.createElement('div');
                 card.className = 'review-card';
                 card.innerHTML = `
                     <div class="card-top">
-                        <div class="star-container">
-                            ${renderStarsHTML(r.star)}
+                        <div class="rating-badge">
+                            <div class="star-container">
+                                ${renderStarsHTML(starVal)}
+                            </div>
+                            <span class="rating-num">${toBanglaNum(starVal)}.০/৫</span>
                         </div>
                         <span class="time-badge"><i class="far fa-clock"></i> ${escapeHtml(relative)}</span>
                     </div>
+
+                    ${renderProductPreview(pId)}
 
                     <div class="user-info-row">
                         <div class="avatar-circle">
@@ -592,14 +940,14 @@
                     </div>
 
                     <div class="message-box">
-                        ${escapeHtml(r.message || 'কোনো লিখিত মন্তব্য নেই।')}
+                        <i class="fas fa-quote-left quote-icon"></i>${escapeHtml(r.message || 'কোনো লিখিত মন্তব্য নেই।')}
                     </div>
 
                     <div class="card-footer-meta">
                         <span class="meta-pill" title="Product ID: ${escapeHtml(pId)}">
-                            <i class="fas fa-box"></i> ID: ${escapeHtml(pId)}
+                            <i class="fas fa-box"></i> ID: ${escapeHtml(truncatedPid)}
                         </span>
-                        <span class="meta-pill" title="User ID: ${escapeHtml(r.userId || '')}">
+                        <span class="meta-pill" title="Buyer ID: ${escapeHtml(r.userId || '')}">
                             <i class="fas fa-id-badge"></i> Buyer: ${escapeHtml(uId)}
                         </span>
                     </div>
@@ -608,16 +956,41 @@
             });
 
             reviewsListEl.appendChild(fragment);
+            updateSummaryStatistics();
         };
 
-        // Fetch Reviews with Batching & Index Link Display
+        // Update Banner Statistics Dynamic Calculation
+        const updateSummaryStatistics = () => {
+            const total = loadedReviewsList.length;
+            getEl("totalReviewsCount").innerText = toBanglaNum(total);
+
+            if (total === 0) {
+                getEl("avgRatingScore").innerText = toBanglaNum('০.০');
+                getEl("fiveStarCount").innerText = toBanglaNum(0);
+                return;
+            }
+
+            const totalStars = loadedReviewsList.reduce((sum, r) => sum + safeNumber(r.star, 5), 0);
+            const avg = (totalStars / total).toFixed(1);
+            const fiveStars = loadedReviewsList.filter(r => safeNumber(r.star, 0) === 5).length;
+
+            getEl("avgRatingScore").innerText = toBanglaNum(avg);
+            getEl("fiveStarCount").innerText = toBanglaNum(fiveStars);
+        };
+
+        // Main Fetch Reviews Logic
         const fetchReviews = async (isInitial = false) => {
             const loadBtn = getEl("loadMoreBtn");
             const loadSpinner = getEl("loadMoreSpinner");
             const emptyState = getEl("emptyState");
             const errorState = getEl("errorState");
+            const skeleton = getEl("skeletonContainer");
 
-            if (!isInitial) {
+            if (isInitial) {
+                skeleton.style.display = "block";
+                getEl("reviewsList").innerHTML = "";
+                loadedReviewsList = [];
+            } else {
                 loadBtn.disabled = true;
                 loadSpinner.style.display = "inline-block";
             }
@@ -643,11 +1016,6 @@
 
                 const snap = await getDocs(q);
 
-                if (isInitial) {
-                    getEl("reviewsList").innerHTML = "";
-                    totalLoadedCount = 0;
-                }
-
                 if (snap.empty) {
                     if (isInitial) {
                         emptyState.style.display = "block";
@@ -658,12 +1026,16 @@
                 } else {
                     emptyState.style.display = "none";
                     lastDocSnapshot = snap.docs[snap.docs.length - 1];
-                    totalLoadedCount += snap.docs.length;
-                    
-                    appendReviewCards(snap.docs);
-                    getEl("totalReviewsCount").innerText = totalLoadedCount;
 
-                    // ২০টির কম ডেটা আসলে ধরে নেওয়া হবে আর ডেটা নেই
+                    // 1. Collect product IDs from loaded reviews
+                    const productIds = snap.docs.map(d => d.data().productId);
+
+                    // 2. Efficient Batch Fetch Products into productCache
+                    await fetchBatchProducts(productIds);
+
+                    // 3. Render Cards
+                    appendReviewCards(snap.docs);
+
                     if (snap.docs.length < PAGE_SIZE) {
                         loadBtn.style.display = "none";
                     } else {
@@ -677,28 +1049,28 @@
                 console.error("Firestore Error:", err);
                 errorState.style.display = "block";
                 
-                // Firestore Index missing link extraction
                 const indexUrlMatch = err.message ? err.message.match(/(https:\/\/console\.firebase\.google\.com[^\s"']+)/) : null;
 
                 if (indexUrlMatch && indexUrlMatch[0]) {
                     const directIndexUrl = indexUrlMatch[0];
                     getEl("errorMessage").innerHTML = `
                         <p style="margin-bottom: 8px;"><strong>Firestore Composite Index প্রয়োজন!</strong></p>
-                        <p style="font-size: 13px; color: #475569;">এই পেজে ডেটা সাজিয়ে দেখানোর জন্য নিচে থেকে সরাসরি Index তৈরি করে নিন:</p>
+                        <p style="font-size: 13px; color: #475569;">ফলাফল সঠিকভাবে সাজাতে নিচে ক্লিক করে ১-ক্লিকে Index তৈরি করুন:</p>
                         <div class="index-error-box">
                             <a href="${directIndexUrl}" target="_blank" class="index-link-btn">
-                                <i class="fas fa-external-link-alt"></i> এখানে ক্লিক করে Firestore Index তৈরি করুন
+                                <i class="fas fa-external-link-alt"></i> Firestore Index তৈরি করুন
                             </a>
                         </div>
                     `;
                 } else if (err.message && err.message.includes("index")) {
                     getEl("errorMessage").innerHTML = `
-                        <p>Firestore Index প্রয়োজন। অনুগ্রহ করে আপনার Firebase Console থেকে <strong>product_reviews</strong> কালেকশনে <code>sellerId (Ascending)</code> এবং <code>createdAt (Descending)</code> ইণ্ডেক্স তৈরি করে নিন।</p>
+                        <p>Firestore Index প্রয়োজন। অনুগ্রহ করে Firebase Console থেকে <strong>product_reviews</strong> কালেকশনে <code>sellerId (Ascending)</code> এবং <code>createdAt (Descending)</code> ইণ্ডেক্স যুক্ত করুন।</p>
                     `;
                 } else {
-                    getEl("errorMessage").innerText = "রিভিউ লোড করতে সমস্যা হয়েছে। অনুগ্রহ করে ইন্টারনেট কানেকশন চেক করে আবার চেষ্টা করুন।";
+                    getEl("errorMessage").innerText = "রিভিউ তথ্য লোড করতে সমস্যা তৈরি হয়েছে। ইন্টারনেট সংযোগ পরীক্ষা করে পুনরায় চেষ্টা করুন।";
                 }
             } finally {
+                skeleton.style.display = "none";
                 if (!isInitial) {
                     loadBtn.disabled = false;
                     loadSpinner.style.display = "none";
@@ -721,13 +1093,9 @@
             }
         });
 
-        // Event Listeners
+        // DOM Ready Event Listeners
         document.addEventListener('DOMContentLoaded', () => {
             getEl("loadMoreBtn").addEventListener("click", () => fetchReviews(false));
-            
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
         });
     </script>
 </body>
