@@ -64,6 +64,7 @@ header{
 .status-Shipped{background:#FEE2E2;color:#991B1B;}
 .status-Delivered{background:#D1FAE5;color:#065F46;}
 .status-Cancelled{background:#F3F4F6;color:#374151;}
+.status-Returned{background:#FEE2E2;color:#7F1D1D;}
 .price{font-size:16px;font-weight:800;color:var(--primary);margin-top:8px;}
 .order-actions{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap;}
 .btn{padding:10px 16px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;}
@@ -136,6 +137,7 @@ header{
       <option>Shipped</option>
       <option>Delivered</option>
       <option>Cancelled</option>
+      <option>Returned</option>
     </select>
     <select id="sortFilter">
       <option value="desc">Newest First</option>
@@ -214,6 +216,18 @@ let allOrders = [];
 let confirmCallback = null;
 let isFirstLoad = true;
 
+// Bengali Status Mapping
+const statusBengali = {
+  'Pending': 'পেন্ডিং',
+  'Confirmed': 'কনফার্মড',
+  'Packaging': 'প্যাকেজিং',
+  'Processing': 'প্রসেসিং',
+  'Shipped': 'শিপড',
+  'Delivered': 'ডেলিভারড',
+  'Cancelled': 'বাতিল',
+  'Returned': 'রিটার্ন'
+};
+
 // Auth Check
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
@@ -285,6 +299,7 @@ function renderStats() {
     processing: allOrders.filter(o => ['Confirmed','Packaging','Processing','Shipped'].includes(o.orderStatus)).length,
     delivered: allOrders.filter(o => o.orderStatus === 'Delivered').length,
     cancelled: allOrders.filter(o => o.orderStatus === 'Cancelled').length,
+    returned: allOrders.filter(o => o.orderStatus === 'Returned').length,
   };
 
   document.getElementById('statsGrid').innerHTML = `
@@ -292,7 +307,7 @@ function renderStats() {
     <div class="stat-card"><h4>New Orders</h4><h2>${stats.new}</h2></div>
     <div class="stat-card"><h4>Processing</h4><h2>${stats.processing}</h2></div>
     <div class="stat-card"><h4>Delivered</h4><h2>${stats.delivered}</h2></div>
-    <div class="stat-card"><h4>Cancelled</h4><h2>${stats.cancelled}</h2></div>
+    <div class="stat-card"><h4>Cancelled/Returned</h4><h2>${stats.cancelled + stats.returned}</h2></div>
   `;
 }
 
@@ -327,6 +342,7 @@ function renderOrders() {
 
   document.getElementById('ordersList').innerHTML = filtered.map(o => {
     const date = o.createdAt?.toDate().toLocaleString('bn-BD') || 'N/A';
+    const displayStatus = statusBengali[o.orderStatus] || o.orderStatus;
     
     let affiliateHtml = '';
     if (o.affiliateApplied === true) {
@@ -351,7 +367,7 @@ function renderOrders() {
           <div class="meta"><b>Customer:</b> ${o.customerName} - ${o.customerPhone}</div>
           <div class="meta"><b>Qty:</b> ${o.quantity} pcs</div>
           <div class="meta"><b>Date:</b> ${date}</div>
-          <span class="status-badge status-${o.orderStatus}">${o.orderStatus}</span>
+          <span class="status-badge status-${o.orderStatus}">${displayStatus}</span>
           ${affiliateHtml}
           <div class="price">Total: ৳${o.grandTotal}</div>
         </div>
@@ -360,12 +376,13 @@ function renderOrders() {
         <button class="btn btn-primary" onclick="viewDetails('${o.id}')"><i class="fas fa-eye"></i> View Details</button>
         <select onchange="requestStatusUpdate('${o.id}', this.value)">
           <option>Update Status</option>
-          <option>Confirmed</option>
-          <option>Packaging</option>
-          <option>Processing</option>
-          <option>Shipped</option>
-          <option>Delivered</option>
-          <option>Cancelled</option>
+          <option value="Confirmed">Confirmed</option>
+          <option value="Packaging">Packaging</option>
+          <option value="Processing">Processing</option>
+          <option value="Shipped">Shipped</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Cancelled">Cancelled</option>
+          <option value="Returned">Returned</option>
         </select>
       </div>
     </div>
@@ -376,6 +393,7 @@ function renderOrders() {
 window.viewDetails = (id) => {
   const o = allOrders.find(x => x.id === id);
   const date = o.createdAt?.toDate().toLocaleString('bn-BD') || 'N/A';
+  const displayStatus = statusBengali[o.orderStatus] || o.orderStatus;
   
   let affiliateSectionHtml = '';
   if (o.affiliateApplied === true) {
@@ -417,8 +435,8 @@ window.viewDetails = (id) => {
       <h3><i class="fas fa-receipt"></i> Order Information</h3>
       <p>Quantity: ${o.quantity}<br>Subtotal: ৳${o.subtotal}<br>Delivery: ৳${o.deliveryCharge}<br><b>Grand Total: ৳${o.grandTotal}</b></p>
       <p>Payment: ${o.paymentMethod} - ${o.paymentStatus}</p>
-      <p>Delivery: ${o.deliveryStatus}</p>
-      <p>Status: ${o.orderStatus}</p>
+      <p>Delivery: ${statusBengali[o.deliveryStatus] || o.deliveryStatus}</p>
+      <p>Status: ${displayStatus}</p>
       <p>Date: ${date}</p>
       <p>Note: ${o.orderNote || 'None'}</p>
     </div>
@@ -431,8 +449,9 @@ window.closeModal = () => document.getElementById('detailsModal').classList.remo
 window.requestStatusUpdate = (id, status) => {
   if (status === 'Update Status') return;
 
+  const displayStatusTarget = statusBengali[status] || status;
   document.getElementById('confirmText').innerText =
-    `Are you sure to change status to "${status}"?`;
+    `Are you sure to change status to "${displayStatusTarget}"?`;
 
   document.getElementById('confirmModal').classList.add('show');
 
@@ -441,19 +460,11 @@ window.requestStatusUpdate = (id, status) => {
     if (!order) return;
 
     try {
-      await Promise.all([
-        updateDoc(doc(db, "orders", id), {
-          orderStatus: status,
-          deliveryStatus: status,
-          updatedAt: serverTimestamp()
-        }),
-
-        updateDoc(doc(db, "order_tracking", order.orderTrackId), {
-          orderStatus: status,
-          deliveryStatus: status,
-          updatedAt: serverTimestamp()
-        })
-      ]);
+      await updateDoc(doc(db, "orders", id), {
+        orderStatus: status,
+        deliveryStatus: status,
+        updatedAt: serverTimestamp()
+      });
 
       showToast("Status updated successfully!");
 
