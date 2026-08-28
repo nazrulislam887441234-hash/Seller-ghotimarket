@@ -129,15 +129,15 @@ header{
       <input type="text" id="searchInput" placeholder="Search by Track ID, Name, Phone, Product...">
     </div>
     <select id="statusFilter">
-      <option value="">All Status</option>
-      <option>Pending</option>
-      <option>Confirmed</option>
-      <option>Packaging</option>
-      <option>Processing</option>
-      <option>Shipped</option>
-      <option>Delivered</option>
-      <option>Cancelled</option>
-      <option>Returned</option>
+      <option value="">সকল স্ট্যাটাস</option>
+      <option value="Pending">পেন্ডিং এ আছে</option>
+      <option value="Confirmed">কনফার্ম করা হয়েছে</option>
+      <option value="Packaging">প্যাকেজিং করা হচ্ছে</option>
+      <option value="Processing">কোরিয়ারে দেওয়া হয়েছে</option>
+      <option value="Shipped">ডেলিভারি মেন এর কাছে রয়েছে</option>
+      <option value="Delivered">ডেলিভারি করা হয়েছে</option>
+      <option value="Cancelled">বাতিল করা হয়েছে</option>
+      <option value="Returned">রিটার্ন করা হয়েছে</option>
     </select>
     <select id="sortFilter">
       <option value="desc">Newest First</option>
@@ -218,14 +218,14 @@ let isFirstLoad = true;
 
 // Bengali Status Mapping
 const statusBengali = {
-  'Pending': 'পেন্ডিং',
-  'Confirmed': 'কনফার্মড',
-  'Packaging': 'প্যাকেজিং',
-  'Processing': 'প্রসেসিং',
-  'Shipped': 'শিপড',
-  'Delivered': 'ডেলিভারড',
-  'Cancelled': 'বাতিল',
-  'Returned': 'রিটার্ন'
+  'Pending': 'পেন্ডিং এ আছে',
+  'Confirmed': 'কনফার্ম করা হয়েছে',
+  'Packaging': 'প্যাকেজিং করা হচ্ছে ',
+  'Processing': 'কোরিয়ারে পাঠানো হয়েছে',
+  'Shipped': 'ডেলিভারি মেন এর কাছে রয়েছে',
+  'Delivered': 'ডেলিভারি হয়েছে',
+  'Cancelled': 'বাতিল করা হয়েছে',
+  'Returned': 'রিটার্ন করা হয়েছে'
 };
 
 // Auth Check
@@ -375,14 +375,14 @@ function renderOrders() {
       <div class="order-actions">
         <button class="btn btn-primary" onclick="viewDetails('${o.id}')"><i class="fas fa-eye"></i> View Details</button>
         <select onchange="requestStatusUpdate('${o.id}', this.value)">
-          <option>Update Status</option>
-          <option value="Confirmed">Confirmed</option>
-          <option value="Packaging">Packaging</option>
-          <option value="Processing">Processing</option>
-          <option value="Shipped">Shipped</option>
-          <option value="Delivered">Delivered</option>
-          <option value="Cancelled">Cancelled</option>
-          <option value="Returned">Returned</option>
+          <option>স্ট্যাটাস আপডেট করুন</option>
+          <option value="Confirmed">কনফার্ম করা হয়েছে</option>
+          <option value="Packaging">প্যাকেজিং করা হচ্ছে</option>
+          <option value="Processing">পকোরিয়ারে দেওয়া হয়েছে</option>
+          <option value="Shipped">ডেলিভারি মেন এর কাছে রয়েছে</option>
+          <option value="Delivered">ডেলিভারি করা হয়েছে</option>
+          <option value="Cancelled">বাতিল করা হয়েছে</option>
+          <option value="Returned">রিটার্ন করা হয়েছে</option>
         </select>
       </div>
     </div>
@@ -447,7 +447,7 @@ window.closeModal = () => document.getElementById('detailsModal').classList.remo
 
 // Update Status
 window.requestStatusUpdate = (id, status) => {
-  if (status === 'Update Status') return;
+  if (status === 'স্ট্যাটাস আপডেট করুন' || status === 'Update Status') return;
 
   const displayStatusTarget = statusBengali[status] || status;
   document.getElementById('confirmText').innerText =
