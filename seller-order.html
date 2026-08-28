@@ -4,96 +4,232 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Seller Dashboard | GHOTI MARKET</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
 :root{
   --primary:#FF6A00;
   --primary-dark:#E55A00;
-  --bg:#FFF8F3;
+  --primary-light:#FFF4EC;
+  --bg:#F8FAFC;
   --card:#FFFFFF;
-  --text:#1e293b;
-  --text-sub:#64748b;
-  --border:#FFE3D1;
-  --shadow:0 8px 30px rgba(255,106,0,0.08);
-  --radius:18px;
+  --text:#1E293B;
+  --text-sub:#64748B;
+  --border:#E2E8F0;
+  --border-orange:#FFE3D1;
+  --shadow:0 4px 20px rgba(0, 0, 0, 0.05);
+  --shadow-hover:0 10px 25px rgba(255, 106, 0, 0.1);
+  --radius:16px;
+  --radius-sm:10px;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Hind Siliguri','Inter',sans-serif;}
-body{background:var(--bg);color:var(--text);}
+body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;}
 
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:10px;}
+::-webkit-scrollbar-thumb:hover{background:var(--primary);}
+
+/* Header */
 header{
   background:var(--card);display:flex;justify-content:space-between;align-items:center;
-  padding:12px 20px;box-shadow:var(--shadow);position:sticky;top:0;z-index:100;
+  padding:12px 24px;box-shadow:0 1px 3px rgba(0,0,0,0.05);position:sticky;top:0;z-index:1000;
+  border-bottom:1px solid var(--border);
 }
-.header-left{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800;color:var(--primary);}
-.header-left img{width:40px;height:40px;}
-.header-right{display:flex;align-items:center;gap:15px;}
-.seller-info{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;}
-#newOrderBadge{display:none;background:#EF4444;color:#fff;padding:5px 12px;border-radius:50px;font-size:12px;font-weight:700;animation:pulse 1.5s infinite;}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-.btn-logout{background:var(--primary);color:#fff;border:none;padding:10px 16px;border-radius:10px;cursor:pointer;font-weight:700;}
-.btn-logout:hover{background:var(--primary-dark);}
+.header-left{display:flex;align-items:center;gap:12px;}
+.header-left img{width:42px;height:42px;object-fit:contain;}
+.brand-title{font-size:18px;font-weight:800;color:var(--primary);letter-spacing:-0.5px;display:flex;flex-direction:column;line-height:1.2;}
+.brand-subtitle{font-size:11px;font-weight:600;color:var(--text-sub);letter-spacing:0.5px;text-transform:uppercase;}
 
-.container{max-width:1300px;margin:0 auto;padding:20px 15px;}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:25px;}
-.stat-card{background:var(--card);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow);}
-.stat-card h4{font-size:13px;color:var(--text-sub);font-weight:600;}
-.stat-card h2{font-size:28px;color:var(--primary);margin-top:8px;font-weight:800;}
+.header-right{display:flex;align-items:center;gap:16px;position:relative;}
+.notification-bell{position:relative;background:#F1F5F9;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;transition:0.2s;}
+.notification-bell:hover{background:var(--primary-light);color:var(--primary);}
+#newOrderBadge{display:none;position:absolute;top:-2px;right:-2px;background:#EF4444;color:#fff;width:12px;height:12px;border-radius:50%;border:2px solid #fff;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
 
-.toolbar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
-.search-box{flex:1;min-width:250px;position:relative;}
-.search-box i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--text-sub);}
-.search-box input{width:100%;padding:14px 14px 14px 45px;border:1.5px solid var(--border);border-radius:12px;font-size:14px;}
-.toolbar select{padding:14px;border:1.5px solid var(--border);border-radius:12px;font-size:14px;background:#fff;min-width:160px;}
-.search-box input:focus,.toolbar select:focus{outline:none;border-color:var(--primary);}
+.seller-profile-container{position:relative;}
+.seller-profile-btn{display:flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;padding:6px 12px;border-radius:var(--radius-sm);transition:0.2s;background:#F8FAFC;border:1px solid var(--border);}
+.seller-profile-btn:hover{background:var(--primary-light);border-color:var(--border-orange);}
+.seller-avatar{width:32px;height:32px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;}
+.seller-name-text{font-size:14px;font-weight:600;color:var(--text);max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-.order-card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:15px;box-shadow:var(--shadow);transition:0.3s;}
-.order-card:hover{transform:translateY(-4px);}
-.order-card.new{animation:newOrderAnim 0.6s ease 2;}
-@keyframes newOrderAnim{0%{box-shadow:0 0 0 0 rgba(255,106,0,0.4)}100%{box-shadow:0 0 0 20px rgba(255,106,0,0)}}
-.order-top{display:flex;gap:15px;}
-.order-top img{width:90px;height:90px;border-radius:14px;object-fit:cover;flex-shrink:0;}
+/* Dropdown Menu */
+.profile-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:var(--card);width:220px;border-radius:var(--radius);box-shadow:var(--shadow-hover);border:1px solid var(--border);z-index:1100;overflow:hidden;animation:dropdownFade 0.2s ease;}
+.profile-dropdown.show{display:block;}
+@keyframes dropdownFade{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.dropdown-header{padding:16px;background:var(--primary-light);border-bottom:1px solid var(--border-orange);}
+.dropdown-header .d-name{font-weight:700;font-size:14px;color:var(--text);margin-bottom:2px;}
+.dropdown-header .d-role{font-size:12px;color:var(--text-sub);}
+.dropdown-body{padding:8px;}
+.dropdown-item{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:14px;color:var(--text);border-radius:8px;cursor:pointer;text-decoration:none;transition:0.2s;}
+.dropdown-item:hover{background:#F1F5F9;color:var(--primary);}
+.dropdown-item.logout{color:#EF4444;}
+.dropdown-item.logout:hover{background:#FEF2F2;color:#DC2626;}
+
+/* Main Layout Structure */
+.app-layout{display:flex;flex:1;max-width:1440px;width:100%;margin:0 auto;}
+
+/* Sidebar */
+aside{
+  width:260px;background:var(--card);border-right:1px solid var(--border);
+  padding:24px 16px;display:flex;flex-direction:column;justify-content:space-between;
+  position:sticky;top:67px;height:calc(100vh - 67px);transition:0.3s;z-index:900;
+}
+.sidebar-menu{display:flex;flex-direction:column;gap:6px;}
+.sidebar-item{
+  display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:var(--radius-sm);
+  color:var(--text-sub);font-weight:600;font-size:14px;text-decoration:none;transition:0.2s;cursor:pointer;
+}
+.sidebar-item i{font-size:16px;width:20px;text-align:center;}
+.sidebar-item:hover{background:var(--primary-light);color:var(--primary);}
+.sidebar-item.active{background:var(--primary);color:#fff;box-shadow:0 4px 12px rgba(255,106,0,0.25);}
+
+/* Main Content Area */
+main{flex:1;padding:24px;max-width:calc(100% - 260px);overflow-x:hidden;}
+
+/* Welcome Banner & Greeting */
+.welcome-banner{background:linear-gradient(135deg, #FF6A00 0%, #E55A00 100%);color:#fff;padding:24px 28px;border-radius:var(--radius);margin-bottom:24px;box-shadow:var(--shadow-hover);display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden;}
+.welcome-banner::after{content:'';position:absolute;right:-20px;bottom:-20px;width:150px;height:150px;background:rgba(255,255,255,0.1);border-radius:50%;pointer-events:none;}
+.welcome-text h1{font-size:22px;font-weight:700;margin-bottom:4px;}
+.welcome-text p{font-size:13px;opacity:0.9;font-weight:400;}
+
+/* Statistics Grid */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px;}
+.stat-card{background:var(--card);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);transition:0.3s;display:flex;flex-direction:column;justify-content:space-between;}
+.stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:var(--border-orange);}
+.stat-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.stat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.stat-icon.total{background:#E0F2FE;color:#0284C7;}
+.stat-icon.pending{background:#FEF3C7;color:#D97706;}
+.stat-icon.processing{background:#DBEAFE;color:#1D4ED8;}
+.stat-icon.delivered{background:#D1FAE5;color:#059669;}
+.stat-icon.cancelled{background:#FEE2E2;color:#DC2626;}
+.stat-card h4{font-size:12px;color:var(--text-sub);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+.stat-card h2{font-size:26px;color:var(--text);margin-top:4px;font-weight:800;letter-spacing:-0.5px;}
+
+/* Quick Status Visual Tracker */
+.status-tracker-container{background:var(--card);padding:16px 20px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:24px;overflow-x:auto;}
+.status-tracker-title{font-size:13px;font-weight:700;color:var(--text-sub);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;}
+.status-steps{display:flex;align-items:center;justify-content:space-between;min-width:600px;}
+.status-step-item{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--text-sub);}
+.status-step-item i{font-size:14px;color:var(--primary);}
+.status-step-divider{flex:1;height:2px;background:var(--border);margin:0 10px;}
+
+/* Toolbar / Filters */
+.toolbar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;background:var(--card);padding:16px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);align-items:center;}
+.search-box{flex:1;min-width:240px;position:relative;}
+.search-box i{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text-sub);font-size:14px;}
+.search-box input{width:100%;padding:12px 14px 12px 44px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;background:var(--bg);color:var(--text);transition:0.2s;}
+.search-box input:focus{outline:none;border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(255,106,0,0.1);}
+.toolbar select{padding:12px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;background:var(--bg);color:var(--text);min-width:160px;cursor:pointer;transition:0.2s;}
+.toolbar select:focus{outline:none;border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(255,106,0,0.1);}
+
+/* Orders Feed Container */
+#ordersList{display:flex;flex-direction:column;gap:16px;}
+.order-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border:1px solid var(--border);transition:0.3s;position:relative;overflow:hidden;}
+.order-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover);border-color:var(--border-orange);}
+.order-card.new{animation:newOrderAnim 0.8s ease 2;}
+@keyframes newOrderAnim{0%{box-shadow:0 0 0 0 rgba(255,106,0,0.6)}70%{box-shadow:0 0 0 15px rgba(255,106,0,0)}100%{box-shadow:0 0 0 0 rgba(255,106,0,0)}}
+
+.order-top{display:flex;gap:16px;align-items:flex-start;}
+.order-img-wrap{position:relative;width:80px;height:80px;border-radius:12px;overflow:hidden;flex-shrink:0;border:1px solid var(--border);background:#F1F5F9;}
+.order-img-wrap img{width:100%;height:100%;object-fit:cover;}
 .order-info{flex:1;}
-.order-info h3{font-size:15px;margin-bottom:5px;}
-.meta{font-size:12px;color:var(--text-sub);margin-bottom:3px;}
-.meta b{color:var(--text);}
-.status-badge{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;display:inline-block;margin-top:5px;}
-.status-Pending{background:#FEF3C7;color:#92400E;}
-.status-Processing{background:#DBEAFE;color:#1E40AF;}
-.status-Shipped{background:#FEE2E2;color:#991B1B;}
-.status-Delivered{background:#D1FAE5;color:#065F46;}
-.status-Cancelled{background:#F3F4F6;color:#374151;}
-.status-Returned{background:#FEE2E2;color:#7F1D1D;}
-.price{font-size:16px;font-weight:800;color:var(--primary);margin-top:8px;}
-.order-actions{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap;}
-.btn{padding:10px 16px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;}
+.order-info h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;}
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:4px 12px;margin-bottom:8px;}
+.meta{font-size:12px;color:var(--text-sub);}
+.meta b{color:var(--text);font-weight:600;}
+
+/* Status Badges */
+.status-badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:6px;margin-top:4px;}
+.status-Pending{background:#FEF3C7;color:#B45309;border:1px solid #FDE68A;}
+.status-Confirmed{background:#E0F2FE;color:#0369A1;border:1px solid #BAE6FD;}
+.status-Packaging{background:#F3E8FF;color:#7E22CE;border:1px solid #E9D5FF;}
+.status-Processing{background:#DBEAFE;color:#1E40AF;border:1px solid #BFDBFE;}
+.status-Shipped{background:#FFEDD5;color:#C2410C;border:1px solid #FED7AA;}
+.status-Delivered{background:#D1FAE5;color:#047857;border:1px solid #A7F3D0;}
+.status-Cancelled{background:#F1F5F9;color:#475569;border:1px solid #E2E8F0;}
+.status-Returned{background:#FEE2E2;color:#B91C1C;border:1px solid #FECACA;}
+
+.order-price-bar{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);}
+.price{font-size:16px;font-weight:800;color:var(--primary);}
+.order-actions{display:flex;gap:10px;align-items:center;}
+.btn{padding:8px 14px;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:0.2s;}
 .btn-primary{background:var(--primary);color:#fff;}
-.btn-outline{border:1.5px solid var(--primary);background:#fff;color:var(--primary);}
+.btn-primary:hover{background:var(--primary-dark);}
+.btn-outline{border:1px solid var(--border);background:#fff;color:var(--text);}
+.btn-outline:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary);}
 
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;justify-content:center;align-items:center;padding:20px;}
-.modal.show{display:flex;animation:fade .3s;}
-@keyframes fade{from{opacity:0}to{opacity:1}}
-.modal-content{background:#fff;border-radius:20px;width:100%;max-width:650px;max-height:90vh;overflow-y:auto;padding:25px;position:relative;}
-.close-btn{position:absolute;right:20px;top:15px;font-size:28px;cursor:pointer;color:#999;}
-.confirm-box{background:#fff;border-radius:20px;padding:30px;text-align:center;max-width:400px;}
-.confirm-box i{font-size:50px;color:var(--primary);margin-bottom:10px;}
-.confirm-btns{display:flex;gap:10px;margin-top:20px;}
-.btn-cancel{flex:1;padding:12px;border:none;border-radius:10px;background:#f1f5f9;font-weight:700;cursor:pointer;}
-.btn-confirm{flex:1;padding:12px;border:none;border-radius:10px;background:var(--primary);color:#fff;font-weight:700;cursor:pointer;}
+.order-select-status{padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;background:#fff;color:var(--text);font-weight:600;cursor:pointer;transition:0.2s;}
+.order-select-status:focus{outline:none;border-color:var(--primary);}
 
-#toast{position:fixed;bottom:20px;right:20px;background:#22c55e;color:#fff;padding:14px 20px;border-radius:12px;display:none;z-index:10000;font-weight:600;}
-#emptyState{display:none;text-align:center;padding:60px 20px;color:var(--text-sub);}
-#emptyState i{font-size:70px;margin-bottom:15px;color:#cbd5e1;}
+/* Affiliate Box inside Card */
+.affiliate-badge-box{background:var(--primary-light);border:1px solid var(--border-orange);padding:10px 12px;border-radius:10px;margin-top:10px;font-size:12px;}
+.affiliate-badge-box b{color:var(--primary);}
 
-.skeleton{background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:load 1.5s infinite;border-radius:var(--radius);}
+/* Modals */
+.modal{display:none;position:fixed;inset:0;background:rgba(15, 23, 42, 0.6);backdrop-filter:blur(4px);z-index:9999;justify-content:center;align-items:center;padding:16px;overflow-y:auto;}
+.modal.show{display:flex;animation:modalFade 0.25s cubic-bezier(0.16, 1, 0.3, 1);}
+@keyframes modalFade{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+.modal-content{background:#fff;border-radius:var(--radius);width:100%;max-width:650px;max-height:85vh;overflow-y:auto;padding:28px;position:relative;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);}
+.close-btn{position:absolute;right:20px;top:20px;width:32px;height:32px;border-radius:50%;background:#F1F5F9;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;color:var(--text-sub);transition:0.2s;}
+.close-btn:hover{background:#FEF2F2;color:#DC2626;}
+
+.confirm-box{background:#fff;border-radius:var(--radius);padding:30px;text-align:center;max-width:400px;width:100%;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);}
+.confirm-box i{font-size:48px;color:var(--primary);margin-bottom:14px;}
+.confirm-box h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+.confirm-box p{font-size:13px;color:var(--text-sub);margin-bottom:20px;}
+.confirm-btns{display:flex;gap:10px;}
+.btn-cancel{flex:1;padding:10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:#F1F5F9;font-weight:600;cursor:pointer;color:var(--text);}
+.btn-confirm{flex:1;padding:10px;border:none;border-radius:var(--radius-sm);background:var(--primary);color:#fff;font-weight:600;cursor:pointer;}
+.btn-confirm:hover{background:var(--primary-dark);}
+
+/* Toast Notification System */
+#toastContainer{position:fixed;bottom:24px;right:24px;z-index:10000;display:flex;flex-direction:column;gap:10px;}
+.toast{background:#1E293B;color:#fff;padding:12px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);display:flex;align-items:center;gap:10px;animation:toastIn 0.3s ease forwards;}
+.toast.success{background:#059669;}
+.toast.error{background:#DC2626;}
+.toast.warning{background:#D97706;}
+@keyframes toastIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* Empty State & Skeleton Loading */
+#emptyState{display:none;text-align:center;padding:60px 20px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);margin-top:20px;}
+#emptyState i{font-size:56px;margin-bottom:14px;color:#CBD5E1;}
+#emptyState h3{font-size:16px;font-weight:700;margin-bottom:6px;}
+#emptyState p{font-size:13px;color:var(--text-sub);}
+
+.skeleton{background:linear-gradient(90deg,#F1F5F9 25%,#E2E8F0 50%,#F1F5F9 75%);background-size:200% 100%;animation:load 1.5s infinite;border-radius:var(--radius-sm);}
 @keyframes load{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.stat-card.skeleton{height:90px;}
-.order-card.skeleton{height:200px;}
+.stat-card.skeleton{height:95px;}
+.order-card.skeleton{height:160px;}
+
+/* Mobile Bottom Navigation */
+.mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);padding:8px 16px;z-index:950;justify-content:space-around;align-items:center;}
+.mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--text-sub);text-decoration:none;font-weight:650;}
+.mobile-nav-item i{font-size:18px;}
+.mobile-nav-item.active{color:var(--primary);}
+
+/* Responsive Breakpoints */
+@media(max-width:1024px){
+  aside{display:none;}
+  main{max-width:100%;padding:16px;}
+  .mobile-bottom-nav{display:flex;}
+  body{padding-bottom:65px;}
+}
 
 @media(max-width:768px){
-  .header-right .seller-info span{display:none;}
-  .btn-logout span{display:none;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .toolbar{flex-direction:column;align-items:stretch;}
+  .toolbar select{width:100%;min-width:unset;}
+  .order-top{flex-direction:column;align-items:center;text-align:center;}
+  .order-price-bar{flex-direction:column;gap:12px;align-items:stretch;}
+  .order-actions{flex-direction:column;}
+  .order-actions button, .order-actions select{width:100%;text-align:center;}
 }
 </style>
 </head>
@@ -102,63 +238,130 @@ header{
 <header>
   <div class="header-left">
     <img src="https://i.ibb.co.com/RG2hrf3y/background-remove-ghoti-market.png" alt="Logo">
-    <span>GHOTI SELLER</span>
+    <div class="brand-title">
+      GHOTI SELLER
+      <span class="brand-subtitle">Portal</span>
+    </div>
   </div>
   <div class="header-right">
-    <div id="newOrderBadge">New Order!</div>
-    <div class="seller-info">
-      <i class="fas fa-user-circle"></i>
-      <span id="sellerName">Loading...</span>
+    <div class="notification-bell" id="notifBellBtn" title="Notifications">
+      <i class="fas fa-bell"></i>
+      <div id="newOrderBadge"></div>
     </div>
-    <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    <div class="seller-profile-container">
+      <button class="seller-profile-btn" id="profileDropdownBtn">
+        <div class="seller-avatar" id="sellerAvatarIcon">G</div>
+        <span class="seller-name-text" id="sellerName">লোড হচ্ছে...</span>
+        <i class="fas fa-chevron-down" style="font-size:10px;color:var(--text-sub);"></i>
+      </button>
+      <div class="profile-dropdown" id="profileDropdownMenu">
+        <div class="dropdown-header">
+          <div class="d-name" id="dropdownShopName">Shop Name</div>
+          <div class="d-role">ভেন্ডর অ্যাকাউন্ট</div>
+        </div>
+        <div class="dropdown-body">
+          <a href="#" class="dropdown-item" onclick="showToast('প্রোফাইল সেটিংস শীঘ্রই আসছে', 'info'); return false;"><i class="fas fa-user-gear"></i> প্রোফাইল সেটিংস</a>
+          <div style="height:1px;background:var(--border);margin:6px 0;"></div>
+          <a href="#" class="dropdown-item logout" id="logoutBtnDropdown"><i class="fas fa-right-from-bracket"></i> লগআউট</a>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
 
-<main class="container">
-  <div class="stats-grid" id="statsGrid">
-    <div class="stat-card skeleton"></div>
-    <div class="stat-card skeleton"></div>
-    <div class="stat-card skeleton"></div>
-    <div class="stat-card skeleton"></div>
-    <div class="stat-card skeleton"></div>
-  </div>
-
-  <div class="toolbar">
-    <div class="search-box">
-      <i class="fas fa-search"></i>
-      <input type="text" id="searchInput" placeholder="Search by Track ID, Name, Phone, Product...">
+<div class="app-layout">
+  <aside>
+    <div class="sidebar-menu">
+      <a href="#" class="sidebar-item active"><i class="fas fa-house"></i> ড্যাশবোর্ড</a>
+      <a href="#" class="sidebar-item" onclick="filterBySidebar('')"><i class="fas fa-box"></i> সকল অর্ডার</a>
+      <a href="#" class="sidebar-item" onclick="filterBySidebar('Pending')"><i class="fas fa-clock"></i> নতুন অর্ডার</a>
+      <a href="#" class="sidebar-item" onclick="filterBySidebar('Processing')"><i class="fas fa-rotate"></i> প্রসেসিং</a>
+      <a href="#" class="sidebar-item" onclick="filterBySidebar('Delivered')"><i class="fas fa-circle-check"></i> ডেলিভারড</a>
+      <a href="#" class="sidebar-item" onclick="filterBySidebar('Returned')"><i class="fas fa-rotate-left"></i> রিটার্ন</a>
+      <a href="#" class="sidebar-item" onclick="filterBySidebar('Cancelled')"><i class="fas fa-circle-xmark"></i> বাতিল</a>
     </div>
-    <select id="statusFilter">
-      <option value="">সকল স্ট্যাটাস</option>
-      <option value="Pending">পেন্ডিং এ আছে</option>
-      <option value="Confirmed">কনফার্ম করা হয়েছে</option>
-      <option value="Packaging">প্যাকেজিং করা হচ্ছে</option>
-      <option value="Processing">কোরিয়ারে দেওয়া হয়েছে</option>
-      <option value="Shipped">ডেলিভারি মেন এর কাছে রয়েছে</option>
-      <option value="Delivered">ডেলিভারি করা হয়েছে</option>
-      <option value="Cancelled">বাতিল করা হয়েছে</option>
-      <option value="Returned">রিটার্ন করা হয়েছে</option>
-    </select>
-    <select id="sortFilter">
-      <option value="desc">Newest First</option>
-      <option value="asc">Oldest First</option>
-    </select>
-  </div>
+    <div>
+      <a href="#" class="sidebar-item logout" id="logoutBtnSidebar" style="color:#DC2626;"><i class="fas fa-right-from-bracket"></i> লগআউট</a>
+    </div>
+  </aside>
 
-  <div id="loadingSkeleton">
-    <div class="order-card skeleton"></div>
-    <div class="order-card skeleton"></div>
-    <div class="order-card skeleton"></div>
-  </div>
+  <main>
+    <div class="welcome-banner">
+      <div class="welcome-text">
+        <h1 id="welcomeGreeting">স্বাগতম, ভেন্ডর</h1>
+        <p>আপনার অর্ডার ও বিক্রয় কার্যক্রমের রিয়েলটাইম সারসংক্ষেপ</p>
+      </div>
+      <i class="fas fa-store" style="font-size:48px;opacity:0.2;"></i>
+    </div>
 
-  <div id="ordersList"></div>
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card skeleton"></div>
+      <div class="stat-card skeleton"></div>
+      <div class="stat-card skeleton"></div>
+      <div class="stat-card skeleton"></div>
+      <div class="stat-card skeleton"></div>
+    </div>
 
-  <div id="emptyState">
-    <i class="fas fa-box-open"></i>
-    <h3>No Orders Found</h3>
-    <p>New orders will appear here automatically</p>
-  </div>
-</main>
+    <div class="status-tracker-container">
+      <div class="status-tracker-title">অর্ডার প্রসেসিং ফ্লো</div>
+      <div class="status-steps">
+        <div class="status-step-item"><i class="fas fa-clock"></i> পেন্ডিং</div>
+        <div class="status-step-divider"></div>
+        <div class="status-step-item"><i class="fas fa-circle-check"></i> কনফার্মড</div>
+        <div class="status-step-divider"></div>
+        <div class="status-step-item"><i class="fas fa-box-archive"></i> প্যাকেজিং</div>
+        <div class="status-step-divider"></div>
+        <div class="status-step-divider"></div>
+        <div class="status-step-item"><i class="fas fa-truck"></i> ডেলিভারি</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <i class="fas fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="অর্ডার খুঁজুন: Track ID, নাম, ফোন বা পণ্য...">
+      </div>
+      <select id="statusFilter">
+        <option value="">সকল অর্ডার</option>
+        <option value="Pending">পেন্ডিং এ আছে</option>
+        <option value="Confirmed">কনফার্ম করা হয়েছে</option>
+        <option value="Packaging">প্যাকেজিং করা হচ্ছে</option>
+        <option value="Processing">কুরিয়ারে দেওয়া হয়েছে</option>
+        <option value="Shipped">ডেলিভারি ম্যানের কাছে</option>
+        <option value="Delivered">ডেলিভারি সম্পন্ন</option>
+        <option value="Cancelled">বাতিল করা হয়েছে</option>
+        <option value="Returned">রিটার্ন করা হয়েছে</option>
+      </select>
+      <select id="sortFilter">
+        <option value="desc">নতুন অর্ডার আগে</option>
+        <option value="asc">পুরনো অর্ডার আগে</option>
+      </select>
+    </div>
+
+    <div id="loadingSkeleton">
+      <div class="order-card skeleton"></div>
+      <div class="order-card skeleton"></div>
+      <div class="order-card skeleton"></div>
+    </div>
+
+    <div id="ordersList"></div>
+
+    <div id="emptyState">
+      <i class="fas fa-box-open"></i>
+      <h3>কোনো অর্ডার পাওয়া যায়নি</h3>
+      <p id="emptySubText">নতুন অর্ডার এলে এখানে স্বয়ংক্রিয়ভাবে দেখা যাবে।</p>
+      <button class="btn btn-primary" id="resetFilterBtn" style="margin-top:14px;display:none;" onclick="resetFilters()">ফিল্টার রিসেট করুন</button>
+    </div>
+  </main>
+</div>
+
+<!-- Mobile Bottom Nav -->
+<div class="mobile-bottom-nav">
+  <a href="#" class="mobile-nav-item active"><i class="fas fa-house"></i> হোম</a>
+  <a href="#" class="mobile-nav-item" onclick="filterBySidebar('Pending'); return false;"><i class="fas fa-clock"></i> নতুন</a>
+  <a href="#" class="mobile-nav-item" onclick="filterBySidebar('Processing'); return false;"><i class="fas fa-rotate"></i> প্রসেসিং</a>
+  <a href="#" class="mobile-nav-item" onclick="filterBySidebar('Delivered'); return false;"><i class="fas fa-circle-check"></i> সম্পন্ন</a>
+</div>
 
 <div id="detailsModal" class="modal">
   <div class="modal-content">
@@ -169,17 +372,17 @@ header{
 
 <div id="confirmModal" class="modal">
   <div class="confirm-box">
-    <i class="fas fa-question-circle"></i>
-    <h3>Confirm Status Update</h3>
-    <p id="confirmText"></p>
+    <i class="fas fa-circle-question"></i>
+    <h3>স্ট্যাটাস পরিবর্তন নিশ্চিত করুন</h3>
+    <p id="confirmText">আপনি কি এই অর্ডারের স্ট্যাটাস পরিবর্তন করতে চান?</p>
     <div class="confirm-btns">
-      <button class="btn-cancel" onclick="closeConfirm()">Cancel</button>
-      <button class="btn-confirm" id="confirmUpdateBtn">Confirm</button>
+      <button class="btn-cancel" onclick="closeConfirm()">বাতিল</button>
+      <button class="btn-confirm" id="confirmUpdateBtn">নিশ্চিত করুন</button>
     </div>
   </div>
 </div>
 
-<div id="toast"></div>
+<div id="toastContainer"></div>
 <audio id="notifSound" src="https://cdn.freesound.org/previews/270/270404_5123851-lq.mp3" preload="auto"></audio>
 
 <script type="module">
@@ -196,7 +399,7 @@ import {
   updateDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-// ========== PASTE YOUR FIREBASE CONFIG HERE ==========
+
 const firebaseConfig = {
   apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
   authDomain: "ghotimarket.firebaseapp.com",
@@ -205,7 +408,6 @@ const firebaseConfig = {
   messagingSenderId: "481257644093",
   appId: "1:481257644093:web:0dfc3699d6b3c86afeca54"
 };
-// =====================================================
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -216,114 +418,208 @@ let allOrders = [];
 let confirmCallback = null;
 let isFirstLoad = true;
 
-// Bengali Status Mapping
 const statusBengali = {
   'Pending': 'পেন্ডিং এ আছে',
   'Confirmed': 'কনফার্ম করা হয়েছে',
-  'Packaging': 'প্যাকেজিং করা হচ্ছে ',
-  'Processing': 'কোরিয়ারে পাঠানো হয়েছে',
-  'Shipped': 'ডেলিভারি মেন এর কাছে রয়েছে',
-  'Delivered': 'ডেলিভারি হয়েছে',
+  'Packaging': 'প্যাকেজিং করা হচ্ছে',
+  'Processing': 'কুরিয়ারে দেওয়া হয়েছে',
+  'Shipped': 'ডেলিভারি ম্যানের কাছে',
+  'Delivered': 'ডেলিভারি সম্পন্ন',
   'Cancelled': 'বাতিল করা হয়েছে',
   'Returned': 'রিটার্ন করা হয়েছে'
 };
 
-// Auth Check
+const statusIcons = {
+  'Pending': 'fa-clock',
+  'Confirmed': 'fa-circle-check',
+  'Packaging': 'fa-box-archive',
+  'Processing': 'fa-rotate',
+  'Shipped': 'fa-truck',
+  'Delivered': 'fa-check-double',
+  'Cancelled': 'fa-circle-xmark',
+  'Returned': 'fa-rotate-left'
+};
+
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Profile Dropdown Toggle
+const dropdownBtn = document.getElementById('profileDropdownBtn');
+const dropdownMenu = document.getElementById('profileDropdownMenu');
+dropdownBtn.onclick = (e) => {
+  e.stopPropagation();
+  dropdownMenu.classList.toggle('show');
+};
+window.onclick = () => {
+  if (dropdownMenu.classList.contains('show')) {
+    dropdownMenu.classList.remove('show');
+  }
+};
+
+// Auth Guard
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
     window.location.href = "index.html";
     return;
   }
 
-  const userRef = doc(db, "users", user.uid);
-  const userSnap = await getDoc(userRef);
+  try {
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
 
-  if (!userSnap.exists()) {
-    window.location.href = "index.html";
-    return;
-  }
+    if (!userSnap.exists()) {
+      window.location.href = "index.html";
+      return;
+    }
 
-  const userData = userSnap.data();
+    const userData = userSnap.data();
 
-  if (
-      !userData.profileUnlockedUntil ||
-      userData.profileUnlockedUntil < Date.now()
-  ) {
+    if (!userData.profileUnlockedUntil || userData.profileUnlockedUntil < Date.now()) {
       window.location.href = "locked.html";
       return;
+    }
+
+    currentUser = user;
+    const shopName = userData.shopName || user.displayName || "ভেন্ডর";
+    document.getElementById("sellerName").innerText = shopName;
+    document.getElementById("dropdownShopName").innerText = shopName;
+    document.getElementById("sellerAvatarIcon").innerText = shopName.charAt(0).toUpperCase();
+    document.getElementById("welcomeGreeting").innerText = `স্বাগতম, ${shopName}`;
+
+    loadOrders();
+  } catch (err) {
+    console.error(err);
+    showToast("অ্যাকাউন্ট যাচাই করতে সমস্যা হয়েছে", "error");
   }
-
-  currentUser = user;
-  document.getElementById("sellerName").innerText =
-      userData.shopName || user.displayName || user.email;
-
-  loadOrders();
 });
 
-// Logout
-document.getElementById('logoutBtn').onclick = async () => {
-  await signOut(auth);
-  window.location.href = "index.html";
-};
+// Logout handlers
+async function handleLogout() {
+  try {
+    await signOut(auth);
+    window.location.href = "index.html";
+  } catch (err) {
+    console.error(err);
+    window.location.href = "index.html";
+  }
+}
+document.getElementById('logoutBtnDropdown').onclick = handleLogout;
+document.getElementById('logoutBtnSidebar').onclick = handleLogout;
 
 // Load Orders Realtime
 function loadOrders() {
-  const q = query(collection(db, "orders"), where("sellerId", "==", currentUser.uid));
-  
-  onSnapshot(q, (snapshot) => {
-    const changes = snapshot.docChanges();
+  try {
+    const q = query(collection(db, "orders"), where("sellerId", "==", currentUser.uid));
     
-    if (!isFirstLoad) {
-      const newOrders = changes.filter(c => c.type === 'added');
-      if (newOrders.length > 0) {
-        document.getElementById('notifSound').play().catch(()=>{});
-        document.getElementById('newOrderBadge').style.display = 'block';
-        setTimeout(() => document.getElementById('newOrderBadge').style.display = 'none', 5000);
+    onSnapshot(q, (snapshot) => {
+      const changes = snapshot.docChanges();
+      
+      if (!isFirstLoad) {
+        const newOrders = changes.filter(c => c.type === 'added');
+        if (newOrders.length > 0) {
+          try {
+            document.getElementById('notifSound').play().catch(()=>{});
+          } catch(e) {}
+          document.getElementById('newOrderBadge').style.display = 'block';
+          showToast("নতুন অর্ডার এসেছে!", "success");
+          setTimeout(() => {
+            const badge = document.getElementById('newOrderBadge');
+            if (badge) badge.style.display = 'none';
+          }, 6000);
+        }
       }
-    }
-    isFirstLoad = false;
+      isFirstLoad = false;
 
-    allOrders = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-    
-    document.getElementById('loadingSkeleton').style.display = 'none';
-    renderStats();
-    renderOrders();
-  });
+      allOrders = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      
+      const skeletonEl = document.getElementById('loadingSkeleton');
+      if (skeletonEl) skeletonEl.style.display = 'none';
+      
+      renderStats();
+      renderOrders();
+    }, (error) => {
+      console.error("Firestore error:", error);
+      showToast("অর্ডার লোড করতে সমস্যা হয়েছে", "error");
+    });
+  } catch (err) {
+    console.error(err);
+  }
 }
 
-// Render Stats
+// Render Statistics
 function renderStats() {
   const stats = {
     total: allOrders.length,
     new: allOrders.filter(o => o.orderStatus === 'Pending').length,
     processing: allOrders.filter(o => ['Confirmed','Packaging','Processing','Shipped'].includes(o.orderStatus)).length,
     delivered: allOrders.filter(o => o.orderStatus === 'Delivered').length,
-    cancelled: allOrders.filter(o => o.orderStatus === 'Cancelled').length,
-    returned: allOrders.filter(o => o.orderStatus === 'Returned').length,
+    cancelledOrReturned: allOrders.filter(o => ['Cancelled', 'Returned'].includes(o.orderStatus)).length,
   };
 
   document.getElementById('statsGrid').innerHTML = `
-    <div class="stat-card"><h4>Total Orders</h4><h2>${stats.total}</h2></div>
-    <div class="stat-card"><h4>New Orders</h4><h2>${stats.new}</h2></div>
-    <div class="stat-card"><h4>Processing</h4><h2>${stats.processing}</h2></div>
-    <div class="stat-card"><h4>Delivered</h4><h2>${stats.delivered}</h2></div>
-    <div class="stat-card"><h4>Cancelled/Returned</h4><h2>${stats.cancelled + stats.returned}</h2></div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <h4>মোট অর্ডার</h4>
+        <div class="stat-icon total"><i class="fas fa-box"></i></div>
+      </div>
+      <h2>${stats.total}</h2>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <h4>নতুন অর্ডার</h4>
+        <div class="stat-icon pending"><i class="fas fa-clock"></i></div>
+      </div>
+      <h2>${stats.new}</h2>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <h4>প্রসেসিং</h4>
+        <div class="stat-icon processing"><i class="fas fa-rotate"></i></div>
+      </div>
+      <h2>${stats.processing}</h2>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <h4>ডেলিভারি সম্পন্ন</h4>
+        <div class="stat-icon delivered"><i class="fas fa-circle-check"></i></div>
+      </div>
+      <h2>${stats.delivered}</h2>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <h4>বাতিল/রিটার্ন</h4>
+        <div class="stat-icon cancelled"><i class="fas fa-ban"></i></div>
+      </div>
+      <h2>${stats.cancelledOrReturned}</h2>
+    </div>
   `;
 }
 
-// Render Orders
+// Render Orders Grid
 function renderOrders() {
-  const search = document.getElementById('searchInput').value.toLowerCase();
-  const status = document.getElementById('statusFilter').value;
-  const sort = document.getElementById('sortFilter').value;
+  const searchInput = document.getElementById('searchInput');
+  const statusFilter = document.getElementById('statusFilter');
+  const sortFilter = document.getElementById('sortFilter');
+
+  const search = searchInput ? searchInput.value.toLowerCase().trim() : '';
+  const status = statusFilter ? statusFilter.value : '';
+  const sort = sortFilter ? sortFilter.value : 'desc';
 
   let filtered = allOrders.filter(o => {
-    const matchSearch = 
-      o.orderTrackId?.toLowerCase().includes(search) ||
-      o.customerName?.toLowerCase().includes(search) ||
-      o.customerPhone?.includes(search) ||
-      o.productName?.toLowerCase().includes(search);
-    const matchStatus = status ? o.orderStatus === status : true;
+    const trackId = (o.orderTrackId || '').toLowerCase();
+    const custName = (o.customerName || '').toLowerCase();
+    const custPhone = (o.customerPhone || '').toLowerCase();
+    const prodName = (o.productName || '').toLowerCase();
+
+    const matchSearch = !search || trackId.includes(search) || custName.includes(search) || custPhone.includes(search) || prodName.includes(search);
+    const matchStatus = !status || o.orderStatus === status;
     return matchSearch && matchStatus;
   });
 
@@ -333,67 +629,120 @@ function renderOrders() {
     return sort === 'desc' ? timeB - timeA : timeA - timeB;
   });
 
+  const ordersListEl = document.getElementById('ordersList');
+  const emptyStateEl = document.getElementById('emptyState');
+  const resetBtnEl = document.getElementById('resetFilterBtn');
+
   if (filtered.length === 0) {
-    document.getElementById('emptyState').style.display = 'block';
-    document.getElementById('ordersList').innerHTML = '';
+    if (emptyStateEl) emptyStateEl.style.display = 'block';
+    if (search || status) {
+      if (resetBtnEl) resetBtnEl.style.display = 'inline-flex';
+      document.getElementById('emptySubText').innerText = "আপনার অনুসন্ধানের সাথে কোনো অর্ডার পাওয়া যায়নি।";
+    } else {
+      if (resetBtnEl) resetBtnEl.style.display = 'none';
+      document.getElementById('emptySubText').innerText = "নতুন অর্ডার এলে এখানে স্বয়ংক্রিয়ভাবে দেখা যাবে।";
+    }
+    if (ordersListEl) ordersListEl.innerHTML = '';
     return;
   }
-  document.getElementById('emptyState').style.display = 'none';
 
-  document.getElementById('ordersList').innerHTML = filtered.map(o => {
-    const date = o.createdAt?.toDate().toLocaleString('bn-BD') || 'N/A';
-    const displayStatus = statusBengali[o.orderStatus] || o.orderStatus;
-    
-    let affiliateHtml = '';
-    if (o.affiliateApplied === true) {
-      affiliateHtml = `
-        <div style="background:#FFF4EC; border:1px solid var(--border); padding:10px; border-radius:10px; margin-top:8px; font-size:13px;">
-          <b>Affiliate Order</b><br>
-          <b>Promo Code:</b> ${o.affiliatePromoCode || 'N/A'}<br>
-          <b>Affiliate ID:</b> ${o.affiliateUserId || 'N/A'}<br>
-          <b>Discount:</b> ৳${o.affiliateDiscount || 0}<br>
-          <b>Customer Paid:</b> ৳${o.grandTotal || 0}
+  if (emptyStateEl) emptyStateEl.style.display = 'none';
+
+  if (ordersListEl) {
+    ordersListEl.innerHTML = filtered.map(o => {
+      const date = o.createdAt?.toDate ? o.createdAt.toDate().toLocaleString('bn-BD', {
+        day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+      }) : 'N/A';
+      
+      const rawStatus = o.orderStatus || 'Pending';
+      const displayStatus = statusBengali[rawStatus] || rawStatus;
+      const statusIconClass = statusIcons[rawStatus] || 'fa-clock';
+      
+      const safeImage = o.productImage || 'https://via.placeholder.com/80?text=No+Image';
+      const safeProductName = escapeHTML(o.productName || 'অজানা পণ্য');
+      const safeTrackId = escapeHTML(o.orderTrackId || 'N/A');
+      const safeCustName = escapeHTML(o.customerName || 'N/A');
+      const safeCustPhone = escapeHTML(o.customerPhone || 'N/A');
+      const qty = o.quantity || 1;
+      const grandTotal = o.grandTotal || 0;
+
+      let affiliateHtml = '';
+      if (o.affiliateApplied === true) {
+        affiliateHtml = `
+          <div class="affiliate-badge-box">
+            <b><i class="fas fa-tag"></i> অ্যাফিলিয়েট অর্ডার</b> | প্রোমো কোড: ${escapeHTML(o.affiliatePromoCode || 'N/A')} | ডিসকাউন্ট: ৳${o.affiliateDiscount || 0}
+          </div>
+        `;
+      }
+
+      return `
+      <div class="order-card">
+        <div class="order-top">
+          <div class="order-img-wrap">
+            <img src="${safeImage}" alt="Product" loading="lazy">
+          </div>
+          <div class="order-info">
+            <h3>${safeProductName}</h3>
+            <div class="meta-grid">
+              <div class="meta"><b>Track ID:</b> ${safeTrackId}</div>
+              <div class="meta"><b>গ্রাহক:</b> ${safeCustName}</div>
+              <div class="meta"><b>ফোন:</b> ${safeCustPhone}</div>
+              <div class="meta"><b>পরিমাণ:</b> ${qty} টি</div>
+              <div class="meta"><b>তারিখ:</b> ${date}</div>
+            </div>
+            <span class="status-badge status-${rawStatus}"><i class="fas ${statusIconClass}"></i> ${displayStatus}</span>
+            ${affiliateHtml}
+          </div>
         </div>
+        <div class="order-price-bar">
+          <div class="price">সর্বমোট: ৳${grandTotal}</div>
+          <div class="order-actions">
+            <button class="btn btn-outline" onclick="viewDetails('${o.id}')"><i class="fas fa-eye"></i> বিস্তারিত</button>
+            <select class="order-select-status" onchange="requestStatusUpdate('${o.id}', this)">
+              <option value="" disabled selected>স্ট্যাটাস পরিবর্তন</option>
+              <option value="Confirmed">কনফার্ম করা হয়েছে</option>
+              <option value="Packaging">প্যাকেজিং করা হচ্ছে</option>
+              <option value="Processing">কুরিয়ারে দেওয়া হয়েছে</option>
+              <option value="Shipped">ডেলিভারি ম্যানের কাছে</option>
+              <option value="Delivered">ডেলিভারি সম্পন্ন</option>
+              <option value="Cancelled">বাতিল করা হয়েছে</option>
+              <option value="Returned">রিটার্ন করা হয়েছে</option>
+            </select>
+          </div>
+        </div>
+      </div>
       `;
-    }
-
-    return `
-    <div class="order-card">
-      <div class="order-top">
-        <img src="${o.productImage}" alt="">
-        <div class="order-info">
-          <h3>${o.productName}</h3>
-          <div class="meta"><b>Track ID:</b> ${o.orderTrackId}</div>
-          <div class="meta"><b>Customer:</b> ${o.customerName} - ${o.customerPhone}</div>
-          <div class="meta"><b>Qty:</b> ${o.quantity} pcs</div>
-          <div class="meta"><b>Date:</b> ${date}</div>
-          <span class="status-badge status-${o.orderStatus}">${displayStatus}</span>
-          ${affiliateHtml}
-          <div class="price">Total: ৳${o.grandTotal}</div>
-        </div>
-      </div>
-      <div class="order-actions">
-        <button class="btn btn-primary" onclick="viewDetails('${o.id}')"><i class="fas fa-eye"></i> View Details</button>
-        <select onchange="requestStatusUpdate('${o.id}', this.value)">
-          <option>স্ট্যাটাস আপডেট করুন</option>
-          <option value="Confirmed">কনফার্ম করা হয়েছে</option>
-          <option value="Packaging">প্যাকেজিং করা হচ্ছে</option>
-          <option value="Processing">পকোরিয়ারে দেওয়া হয়েছে</option>
-          <option value="Shipped">ডেলিভারি মেন এর কাছে রয়েছে</option>
-          <option value="Delivered">ডেলিভারি করা হয়েছে</option>
-          <option value="Cancelled">বাতিল করা হয়েছে</option>
-          <option value="Returned">রিটার্ন করা হয়েছে</option>
-        </select>
-      </div>
-    </div>
-  `}).join('');
+    }).join('');
+  }
 }
+
+// Sidebar Filter helper
+window.filterBySidebar = (statusVal) => {
+  const statusFilterEl = document.getElementById('statusFilter');
+  if (statusFilterEl) {
+    statusFilterEl.value = statusVal;
+    renderOrders();
+  }
+};
+
+window.resetFilters = () => {
+  const searchInput = document.getElementById('searchInput');
+  const statusFilter = document.getElementById('statusFilter');
+  if (searchInput) searchInput.value = '';
+  if (statusFilter) statusFilter.value = '';
+  renderOrders();
+};
 
 // View Details Modal
 window.viewDetails = (id) => {
   const o = allOrders.find(x => x.id === id);
-  const date = o.createdAt?.toDate().toLocaleString('bn-BD') || 'N/A';
-  const displayStatus = statusBengali[o.orderStatus] || o.orderStatus;
+  if (!o) return;
+
+  const date = o.createdAt?.toDate ? o.createdAt.toDate().toLocaleString('bn-BD', {
+    day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+  }) : 'N/A';
+  const rawStatus = o.orderStatus || 'Pending';
+  const displayStatus = statusBengali[rawStatus] || rawStatus;
   
   let affiliateSectionHtml = '';
   if (o.affiliateApplied === true) {
@@ -401,63 +750,88 @@ window.viewDetails = (id) => {
     const discountedSub = o.discountedSubtotal !== undefined ? o.discountedSubtotal : (originalSub - (o.affiliateDiscount || 0));
     
     affiliateSectionHtml = `
-      <div style="background:#FFF4EC;padding:15px;border-radius:12px;margin:15px 0; border:1px solid var(--border);">
-        <h3 style="color:var(--primary);margin-bottom:8px;"><i class="fas fa-tag"></i> Affiliate Discount Details</h3>
-        <p><b>Promo Code:</b> ${o.affiliatePromoCode || 'N/A'}</p>
-        <p><b>Affiliate User ID:</b> ${o.affiliateUserId || 'N/A'}</p>
-        <p><b>Discount Amount:</b> -৳${o.affiliateDiscount || 0}</p>
-        <p><b>Original Subtotal:</b> ৳${originalSub}</p>
-        <p><b>After Discount Amount:</b> ৳${discountedSub}</p>
-        <p><b>Delivery Charge:</b> ৳${o.deliveryCharge || 0}</p>
-        <p style="margin-top:5px;"><b>Final Customer Payment:</b> ৳${o.grandTotal || 0}</p>
+      <div style="background:var(--primary-light);padding:16px;border-radius:12px;margin:16px 0; border:1px solid var(--border-orange);">
+        <h3 style="color:var(--primary);margin-bottom:10px;font-size:14px;"><i class="fas fa-tag"></i> অ্যাফিলিয়েট ডিসকাউন্ট বিবরণ</h3>
+        <p style="font-size:13px;margin-bottom:4px;"><b>প্রোমো কোড:</b> ${escapeHTML(o.affiliatePromoCode || 'N/A')}</p>
+        <p style="font-size:13px;margin-bottom:4px;"><b>অ্যাফিলিয়েট আইডি:</b> ${escapeHTML(o.affiliateUserId || 'N/A')}</p>
+        <p style="font-size:13px;margin-bottom:4px;"><b>ডিসকাউন্ট পরিমাণ:</b> -৳${o.affiliateDiscount || 0}</p>
+        <p style="font-size:13px;margin-bottom:4px;"><b>মূল সাবটোটাল:</b> ৳${originalSub}</p>
+        <p style="font-size:13px;margin-bottom:4px;"><b>ডিসকাউন্টের পর:</b> ৳${discountedSub}</p>
+        <p style="font-size:13px;margin-bottom:4px;"><b>ডেলিভারি চার্জ:</b> ৳${o.deliveryCharge || 0}</p>
+        <p style="font-size:13px;margin-top:6px;font-weight:700;"><b>গ্রাহকের পরিশোধিত মোট:</b> ৳${o.grandTotal || 0}</p>
       </div>
     `;
   }
 
-  document.getElementById('modalBody').innerHTML = `
-    <img src="${o.productImage}" style="width:100%;border-radius:15px;margin-bottom:15px;">
-    <h2>${o.productName}</h2>
-    <p><b>Track ID:</b> ${o.orderTrackId}</p>
+  const modalBody = document.getElementById('modalBody');
+  modalBody.innerHTML = `
+    <div style="display:flex;gap:16px;align-items:center;margin-bottom:20px;">
+      <img src="${o.productImage || ''}" style="width:70px;height:70px;border-radius:10px;object-fit:cover;border:1px solid var(--border);">
+      <div>
+        <h2 style="font-size:16px;font-weight:700;margin-bottom:4px;">${escapeHTML(o.productName)}</h2>
+        <p style="font-size:13px;color:var(--text-sub);"><b>Track ID:</b> ${escapeHTML(o.orderTrackId)}</p>
+      </div>
+    </div>
     
-    <div style="background:#FFF4EC;padding:15px;border-radius:12px;margin:15px 0;">
-      <h3><i class="fas fa-user"></i> Customer Information</h3>
-      <p>Name: ${o.customerName}<br>Phone: ${o.customerPhone}</p>
+    <div style="background:#F8FAFC;padding:16px;border-radius:12px;margin:14px 0;border:1px solid var(--border);">
+      <h3 style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--text);"><i class="fas fa-user"></i> গ্রাহকের তথ্য</h3>
+      <p style="font-size:13px;margin-bottom:4px;"><b>নাম:</b> ${escapeHTML(o.customerName)}</p>
+      <p style="font-size:13px;"><b>ফোন:</b> ${escapeHTML(o.customerPhone)}</p>
     </div>
 
-    <div style="background:#FFF4EC;padding:15px;border-radius:12px;margin:15px 0;">
-      <h3><i class="fas fa-location-dot"></i> Shipping Address</h3>
-      <p>${o.division}, ${o.district}, ${o.upazila}</p>
+    <div style="background:#F8FAFC;padding:16px;border-radius:12px;margin:14px 0;border:1px solid var(--border);">
+      <h3 style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--text);"><i class="fas fa-location-dot"></i> শিপিং ঠিকানা</h3>
+      <p style="font-size:13px;">${escapeHTML(o.division || '')}, ${escapeHTML(o.district || '')}, ${escapeHTML(o.upazila || '')}</p>
     </div>
 
     ${affiliateSectionHtml}
 
-    <div style="background:#FFF4EC;padding:15px;border-radius:12px;margin:15px 0;">
-      <h3><i class="fas fa-receipt"></i> Order Information</h3>
-      <p>Quantity: ${o.quantity}<br>Subtotal: ৳${o.subtotal}<br>Delivery: ৳${o.deliveryCharge}<br><b>Grand Total: ৳${o.grandTotal}</b></p>
-      <p>Payment: ${o.paymentMethod} - ${o.paymentStatus}</p>
-      <p>Delivery: ${statusBengali[o.deliveryStatus] || o.deliveryStatus}</p>
-      <p>Status: ${displayStatus}</p>
-      <p>Date: ${date}</p>
-      <p>Note: ${o.orderNote || 'None'}</p>
+    <div style="background:#F8FAFC;padding:16px;border-radius:12px;margin:14px 0;border:1px solid var(--border);">
+      <h3 style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--text);"><i class="fas fa-receipt"></i> অর্ডারের সারসংক্ষেপ</h3>
+      <p style="font-size:13px;margin-bottom:4px;"><b>পরিমাণ:</b> ${o.quantity} টি</p>
+      <p style="font-size:13px;margin-bottom:4px;"><b>সাবটোটাল:</b> ৳${o.subtotal}</p>
+      <p style="font-size:13px;margin-bottom:4px;"><b>ডেলিভারি চার্জ:</b> ৳${o.deliveryCharge}</p>
+      <p style="font-size:14px;margin-top:6px;font-weight:700;color:var(--primary);">সর্বমোট: ৳${o.grandTotal}</p>
+      <hr style="border:0;border-top:1px solid var(--border);margin:10px 0;">
+      <p style="font-size:13px;margin-bottom:4px;"><b>পেমেন্ট মাধ্যম:</b> ${escapeHTML(o.paymentMethod || 'COD')} (${escapeHTML(o.paymentStatus || 'Pending')})</p>
+      <p style="font-size:13px;margin-bottom:4px;"><b>স্ট্যাটাস:</b> ${displayStatus}</p>
+      <p style="font-size:13px;margin-bottom:4px;"><b>তারিখ:</b> ${date}</p>
+      <p style="font-size:13px;"><b>নোট:</b> ${escapeHTML(o.orderNote || 'কোনো নোট নেই')}</p>
     </div>
   `;
-  document.getElementById('detailsModal').classList.add('show');
-}
-window.closeModal = () => document.getElementById('detailsModal').classList.remove('show');
 
-// Update Status
-window.requestStatusUpdate = (id, status) => {
-  if (status === 'স্ট্যাটাস আপডেট করুন' || status === 'Update Status') return;
+  document.getElementById('detailsModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeModal = () => {
+  document.getElementById('detailsModal').classList.remove('show');
+  document.body.style.overflow = 'auto';
+};
+
+// Update Status Modal Flow
+window.requestStatusUpdate = (id, selectEl) => {
+  const status = selectEl.value;
+  if (!status) return;
 
   const displayStatusTarget = statusBengali[status] || status;
-  document.getElementById('confirmText').innerText =
-    `Are you sure to change status to "${displayStatusTarget}"?`;
+  document.getElementById('confirmText').innerText = `আপনি কি এই অর্ডারের স্ট্যাটাস পরিবর্তন করে "${displayStatusTarget}" করতে চান?`;
 
   document.getElementById('confirmModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
 
-  confirmCallback = async () => {
+  // Prevent duplicate execution by clearing previous onclick
+  const confirmBtn = document.getElementById('confirmUpdateBtn');
+  const newConfirmBtn = confirmBtn.cloneNode(true);
+  confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+
+  document.getElementById('confirmUpdateBtn').onclick = async () => {
+    closeConfirm();
     const order = allOrders.find(o => o.id === id);
-    if (!order) return;
+    if (!order) {
+      selectEl.value = "";
+      return;
+    }
 
     try {
       await updateDoc(doc(db, "orders", id), {
@@ -466,30 +840,75 @@ window.requestStatusUpdate = (id, status) => {
         updatedAt: serverTimestamp()
       });
 
-      showToast("Status updated successfully!");
-
+      showToast("অর্ডারের স্ট্যাটাস সফলভাবে আপডেট হয়েছে", "success");
+      selectEl.value = "";
     } catch (e) {
       console.error(e);
-      alert(e.message);
+      showToast("স্ট্যাটাস আপডেট করতে সমস্যা হয়েছে", "error");
+      selectEl.value = "";
     }
+  };
+
+  // Reset dropdown if cancelled
+  window.closeConfirm = () => {
+    document.getElementById('confirmModal').classList.remove('show');
+    document.body.style.overflow = 'auto';
+    selectEl.value = "";
   };
 };
 
-window.closeConfirm = () => document.getElementById('confirmModal').classList.remove('show');
-document.getElementById('confirmUpdateBtn').onclick = () => { confirmCallback(); closeConfirm(); };
+window.closeConfirm = () => {
+  document.getElementById('confirmModal').classList.remove('show');
+  document.body.style.overflow = 'auto';
+};
 
-// Toast
-function showToast(msg){
-  const toast = document.getElementById('toast');
-  toast.innerText = msg;
-  toast.style.display = 'block';
-  setTimeout(()=>toast.style.display='none', 3000);
+// Escape key listener for modals
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeModal();
+    closeConfirm();
+  }
+});
+
+// Click outside modal to close
+document.querySelectorAll('.modal').forEach(modal => {
+  modal.onclick = (e) => {
+    if (e.target === modal) {
+      closeModal();
+      closeConfirm();
+    }
+  };
+});
+
+// Toast System
+function showToast(msg, type = 'success') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  
+  let icon = "fa-circle-check";
+  if (type === 'error') icon = "fa-circle-exclamation";
+  if (type === 'warning') icon = "fa-triangle-exclamation";
+  if (type === 'info') icon = "fa-circle-info";
+
+  toast.innerHTML = `<i class="fas ${icon}"></i> <span>${msg}</span>`;
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(20px)';
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
 }
 
-// Event Listeners
-document.getElementById('searchInput').oninput = renderOrders;
-document.getElementById('statusFilter').onchange = renderOrders;
-document.getElementById('sortFilter').onchange = renderOrders;
+// Event Listeners for search & filters
+const searchInput = document.getElementById('searchInput');
+const statusFilter = document.getElementById('statusFilter');
+const sortFilter = document.getElementById('sortFilter');
+
+if (searchInput) searchInput.oninput = renderOrders;
+if (statusFilter) statusFilter.onchange = renderOrders;
+if (sortFilter) sortFilter.onchange = renderOrders;
 </script>
 </body>
 </html>
