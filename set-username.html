@@ -3,638 +3,876 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Username সেট করুন - GHOTI MARKET</title>
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+    <title>Username Management - GHOTI MARKET</title>
+    <!-- Google Fonts: Hind Siliguri -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase App (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <!-- Firebase Auth (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <!-- Firebase Firestore (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
+    <style>
         :root {
             --primary-orange: #ff6b00;
-            --dark-bg: #0f172a;
-            --glass-bg: rgba(255, 255, 255, 0.08);
+            --secondary-orange: #ff8533;
+            --light-orange: #fff4ec;
+            --dark-orange: #e85d04;
+            --bg-dark: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 107, 0, 0.2);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success-color: #10b981;
+            --error-color: #ef4444;
         }
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
         }
 
         body {
-            font-family: 'Hind Siliguri', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
-            color: #f8fafc;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 520px;
-            margin: 0 auto;
-            padding: 20px;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 107, 0, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(232, 93, 4, 0.15) 0%, transparent 40%);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            padding: 20px 15px;
         }
 
+        /* Header */
         header {
+            width: 100%;
+            max-width: 600px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 16px 0 24px;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 10px 5px;
         }
 
         .logo {
-            font-size: 26px;
+            font-size: 1.25rem;
             font-weight: 700;
-            color: var(--primary-orange);
+            color: var(--text-main);
+            text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 107, 0, 0.25);
-            border-radius: 28px;
-            padding: 40px 32px;
-            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
-            flex: 1;
+        .logo span {
+            color: var(--primary-orange);
+        }
+
+        .dashboard-btn {
+            background: rgba(255, 107, 0, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--secondary-orange);
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 6px;
         }
 
-        h1 {
-            font-size: 28px;
+        .dashboard-btn:hover {
+            background: var(--primary-orange);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.4);
+        }
+
+        /* Card Container */
+        .card {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 107, 0, 0.1);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-title {
+            font-size: 1.5rem;
             font-weight: 700;
-            text-align: center;
             margin-bottom: 6px;
-            background: linear-gradient(90deg, #ff6b00, #ffb366);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #fff;
         }
 
-        .subtitle {
-            text-align: center;
-            color: #94a3b8;
-            font-size: 15.5px;
-            margin-bottom: 32px;
+        .card-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 25px;
         }
 
-        .shop-info {
-            background: rgba(255, 107, 0, 0.12);
-            border: 1px solid rgba(255, 107, 0, 0.35);
-            border-radius: 18px;
-            padding: 18px;
-            margin-bottom: 28px;
+        /* Shop Info Display */
+        .shop-info-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
         }
 
-        .input-group {
+        .shop-info-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .shop-info-name {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--secondary-orange);
+        }
+
+        /* Form Controls */
+        .form-group {
             margin-bottom: 20px;
         }
 
-        label {
+        .input-label {
             display: block;
-            margin-bottom: 10px;
-            color: #cbd5e1;
-            font-weight: 500;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
         }
 
         .input-wrapper {
             position: relative;
-        }
-
-        .input-wrapper .prefix {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #64748b;
-            font-weight: 700;
-            font-size: 18px;
-        }
-
-        #usernameInput {
-            width: 100%;
-            padding: 18px 20px 18px 52px;
-            background: rgba(15, 23, 42, 0.85);
-            border: 2px solid rgba(255, 107, 0, 0.4);
-            border-radius: 18px;
-            color: white;
-            font-size: 19px;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        #usernameInput:focus {
-            outline: none;
-            border-color: #ff6b00;
-            box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.25);
-        }
-
-        #availabilityStatus {
-            min-height: 28px;
-            margin-top: 10px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 15px;
+        }
+
+        .input-prefix {
+            position: absolute;
+            left: 15px;
+            color: var(--text-muted);
             font-weight: 500;
+            font-size: 1rem;
+            user-select: none;
         }
 
-        .preview-box {
-            background: rgba(15, 23, 42, 0.7);
-            border: 2px dashed rgba(255, 107, 0, 0.5);
-            border-radius: 18px;
-            padding: 24px;
-            text-align: center;
-            margin: 28px 0;
+        .form-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 15px 12px 38px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
 
-        .preview-label {
-            color: #94a3b8;
-            font-size: 14px;
-            margin-bottom: 6px;
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
         }
 
-        #urlPreview {
-            font-size: 17px;
-            font-weight: 600;
-            color: #ff6b00;
+        /* Status Messages */
+        .status-msg {
+            font-size: 0.85rem;
+            margin-top: 6px;
+            min-height: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-msg.available { color: var(--success-color); }
+        .status-msg.taken { color: var(--error-color); }
+        .status-msg.error { color: var(--error-color); }
+        .status-msg.neutral { color: var(--text-muted); }
+
+        /* URL Preview */
+        .url-preview {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 25px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
             word-break: break-all;
         }
 
-        .btn {
-            padding: 18px 28px;
-            border-radius: 18px;
-            font-size: 17px;
+        .url-preview span {
+            color: var(--secondary-orange);
+            font-weight: 500;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-orange), var(--dark-orange));
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            width: 100%;
-            margin-top: 8px;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
         }
 
-        .btn-primary {
-            background: linear-gradient(to right, #ff6b00, #ff8533);
-            color: white;
-            border: none;
-            box-shadow: 0 10px 20px -5px rgb(255 107 0 / 0.4);
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 0, 0.5);
         }
 
-        .btn-primary:disabled {
-            opacity: 0.6;
+        .submit-btn:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.3);
             cursor: not-allowed;
+            box-shadow: none;
             transform: none;
         }
 
-        .btn-secondary {
-            background: transparent;
-            color: #cbd5e1;
-            border: 2px solid rgba(203, 213, 225, 0.4);
-        }
-
-        .status-box {
-            padding: 20px;
-            border-radius: 18px;
-            text-align: center;
-            font-size: 17px;
-            font-weight: 600;
-            display: none;
-            align-items: center;
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
             justify-content: center;
-            gap: 12px;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
         }
 
-        .status-set {
-            background: rgba(16, 185, 129, 0.15);
-            color: #4ade80;
-            border: 1px solid #4ade80;
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
+        .modal-card {
+            background: #1e293b;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            transform: scale(0.9);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            color: var(--primary-orange);
+            margin-bottom: 15px;
+        }
+
+        .modal-icon.success {
+            color: var(--success-color);
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .modal-text {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .modal-details {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .modal-details div {
+            margin-bottom: 5px;
+        }
+
+        .modal-details div:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .modal-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .modal-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .modal-btn.primary {
+            background: var(--primary-orange);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
+        }
+
+        .modal-btn.primary:hover {
+            background: var(--dark-orange);
+        }
+
+        /* Fullscreen Loader */
         .loader-overlay {
             position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.95);
-            display: none;
-            align-items: center;
-            justify-content: center;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
             flex-direction: column;
-            z-index: 9999;
-            gap: 24px;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .loader-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         .spinner {
-            width: 56px;
-            height: 56px;
-            border: 5px solid rgba(255,107,0,0.2);
-            border-top-color: #ff6b00;
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 107, 0, 0.2);
+            border-top-color: var(--primary-orange);
             border-radius: 50%;
-            animation: spin 0.9s linear infinite;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 15px;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
+        .loader-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 350px;
+            width: calc(100% - 40px);
+        }
+
         .toast {
-            position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1e2937;
-            border: 1px solid #ff6b00;
-            color: #f1f5f9;
-            padding: 16px 28px;
-            border-radius: 9999px;
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.4);
-            display: none;
+            background: #1e293b;
+            border-left: 4px solid var(--primary-orange);
+            border-radius: 10px;
+            padding: 12px 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            display: flex;
             align-items: center;
-            gap: 14px;
-            z-index: 10000;
-            font-weight: 500;
-            max-width: 90%;
+            justify-content: space-between;
+            animation: slideIn 0.3s ease-out forwards;
+            font-size: 0.9rem;
         }
 
-        .success-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.8);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 11000;
+        .toast.success { border-left-color: var(--success-color); }
+        .toast.error { border-left-color: var(--error-color); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
-        .success-content {
-            text-align: center;
-            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        @keyframes slideOut {
+            to { transform: translateX(100%); opacity: 0; }
         }
 
-        @keyframes popIn {
-            0% { transform: scale(0.6); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .footer {
-            margin-top: auto;
-            padding: 30px 0 20px;
-            text-align: center;
-            color: #64748b;
-            font-size: 13.5px;
+        /* Responsive Fixes */
+        @media (max-width: 480px) {
+            body { padding: 10px 8px; }
+            .card { padding: 20px 15px; border-radius: 15px; }
+            .card-title { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <i class="fas fa-fish"></i>
-                GHOTI MARKET
-            </div>
-            <a href="dashboard.html" style="color:#94a3b8; text-decoration:none; font-size:15px; display:flex; align-items:center; gap:6px;">
-                <i class="fas fa-arrow-left"></i> ড্যাশবোর্ড
-            </a>
-        </header>
 
-        <div class="glass-card" id="mainCard">
-            <h1>ইউজারনেম সেট করুন</h1>
-            <p class="subtitle">আপনার শপের জন্য একটি অনন্য ইউজারনেম তৈরি করুন</p>
+    <!-- Header -->
+    <header>
+        <a href="dashboard.html" class="logo">
+            <i class="fa-solid fa-store" style="color: var(--primary-orange);"></i> GHOTI <span>MARKET</span>
+        </a>
+        <a href="dashboard.html" class="dashboard-btn">
+            <i class="fa-solid fa-arrow-left"></i> ড্যাশবোর্ড
+        </a>
+    </header>
 
-            <!-- Shop Info -->
-            <div id="shopInfo" class="shop-info" style="display: none;">
-                <div style="display:flex; align-items:center; gap:16px;">
-                    <i class="fas fa-store fa-2x" style="color:#ff6b00;"></i>
-                    <div style="flex:1;">
-                        <div style="font-size:13px; color:#94a3b8;">আপনার শপের নাম</div>
-                        <div id="shopNameDisplay" style="font-size:19px; font-weight:600;"></div>
-                    </div>
-                </div>
-            </div>
+    <!-- Main Card -->
+    <div class="card">
+        <h1 class="card-title">ইউজারনেম ম্যানেজ করুন</h1>
+        <p class="card-subtitle">আপনার শপের জন্য একটি অনন্য ইউজারনেম সেট বা পরিবর্তন করুন</p>
 
-            <!-- Already Set Status -->
-            <div id="alreadySetStatus" class="status-box status-set"></div>
-
-            <!-- Setup Form -->
-            <div id="setupForm">
-                <div class="preview-box">
-                    <div class="preview-label">আপনার শপ লিংক হবে</div>
-                    <div id="urlPreview" style="font-size:17px; font-weight:600;">https://ghotimarket.com/@username</div>
-                </div>
-
-                <div class="input-group">
-                    <label for="usernameInput">ইউজারনেম</label>
-                    <div class="input-wrapper">
-                        <span class="prefix">@</span>
-                        <input type="text" id="usernameInput" maxlength="30" placeholder="yourshopname" autocomplete="off">
-                    </div>
-                    <div id="availabilityStatus"></div>
-                </div>
-
-                <button id="setupBtn" class="btn btn-primary">
-                    <i class="fas fa-user-check"></i>
-                    ইউজারনেম সেট করুন
-                </button>
-
-                <button id="cancelBtn" class="btn btn-secondary">
-                    <i class="fas fa-times"></i>
-                    বাতিল
-                </button>
-            </div>
+        <!-- Shop Information Section -->
+        <div class="shop-info-box">
+            <div class="shop-info-label">আপনার শপের নাম</div>
+            <div class="shop-info-name" id="shopNameDisplay">লোড হচ্ছে...</div>
         </div>
 
-        <div class="footer">
-            © ২০২৬ GHOTI MARKET • সর্বস্বত্ব সংরক্ষিত
-        </div>
+        <!-- Username Form -->
+        <form id="usernameForm" onsubmit="return false;">
+            <div class="form-group">
+                <label class="input-label" for="usernameInput">ইউজারনেম</label>
+                <div class="input-wrapper">
+                    <span class="input-prefix">@</span>
+                    <input type="text" id="usernameInput" class="form-input" placeholder="shopname" autocomplete="off" spellcheck="false">
+                </div>
+                <div class="status-msg neutral" id="statusMsg">কমপক্ষে ৩ অক্ষর দিন</div>
+            </div>
+
+            <!-- URL Preview -->
+            <div class="url-preview">
+                লিংক প্রিভিউ: <span id="urlPreview">https://ghotimarket.com/seller?@username</span>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submitBtn" class="submit-btn" disabled>ইউজারনেম সেট করুন</button>
+        </form>
     </div>
 
-    <!-- Loader -->
-    <div id="loaderOverlay" class="loader-overlay">
-        <div class="spinner"></div>
-        <div style="color:#cbd5e1; font-weight:500;">প্রসেসিং হচ্ছে...</div>
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-card">
+            <div class="modal-icon">
+                <i class="fa-solid fa-circle-exclamation"></i>
+            </div>
+            <h3 class="modal-title">ইউজারনেম পরিবর্তন করবেন?</h3>
+            <p class="modal-text">আপনি কি নিশ্চিতভাবে আপনার শপের ইউজারনেম পরিবর্তন করতে চান?</p>
+            <div class="modal-details" id="modalDetails">
+                <div>বর্তমান: <strong id="modalOldUsername" style="color: var(--error-color);">@old</strong></div>
+                <div>নতুন: <strong id="modalNewUsername" style="color: var(--success-color);">@new</strong></div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="modal-btn secondary" id="modalCancelBtn">না, ফিরে যান</button>
+                <button type="button" class="modal-btn primary" id="modalConfirmBtn">হ্যাঁ, পরিবর্তন করুন</button>
+            </div>
+        </div>
     </div>
 
     <!-- Success Modal -->
-    <div id="successModal" class="success-modal">
-        <div class="success-content">
-            <svg width="110" height="110" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:20px;">
-                <circle cx="60" cy="60" r="54" stroke="#4ade80" stroke-width="10"/>
-                <path id="successCheck" d="M38 62 L54 78 L88 42" stroke="#4ade80" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-            <h2 style="color:#4ade80; margin-bottom:8px;">সফল হয়েছে!</h2>
-            <p id="successText" style="color:#e2e8f0;">Username সেট করা হয়েছে</p>
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-card">
+            <div class="modal-icon success">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="modal-title">সফল!</h3>
+            <p class="modal-text" id="successModalText">ইউজারনেম সফলভাবে আপডেট হয়েছে!</p>
         </div>
     </div>
 
-    <!-- Toast -->
-    <div id="toast" class="toast">
-        <i id="toastIcon" class="fas fa-check-circle" style="color:#4ade80;"></i>
-        <span id="toastMessage"></span>
+    <!-- Fullscreen Loader -->
+    <div class="loader-overlay" id="loaderOverlay">
+        <div class="spinner"></div>
+        <div class="loader-text" id="loaderText">ইউজারনেম আপডেট করা হচ্ছে...</div>
     </div>
 
-    <script>
-        // Firebase Configuration - REPLACE WITH YOUR OWN
-        const firebaseConfig = {
-  apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
-  authDomain: "ghotimarket.firebaseapp.com",
-  databaseURL: "https://ghotimarket-default-rtdb.firebaseio.com",
-  projectId: "ghotimarket",
-  storageBucket: "ghotimarket.firebasestorage.app",
-  messagingSenderId: "481257644093",
-  appId: "1:481257644093:web:0dfc3699d6b3c86afeca54",
-  measurementId: "G-4SR8V2EKC1"
-};
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+    <!-- Firebase Script Initialization -->
+    <script>
+        // Use existing Firebase configuration or initialize compat
+        const firebaseConfig = {
+            apiKey: "AIzaSyD-EXAMPLE-KEY-CHANGE-ME",
+            authDomain: "ghotimarket.firebaseapp.com",
+            projectId: "ghotimarket",
+            storageBucket: "ghotimarket.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:abcdef"
+        };
+
+        // Initialize Firebase if not already initialized
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // State variables
         let currentUserUID = null;
-        let shopNameGlobal = "";
-        let isUsernameSet = false;
-
-        function showLoader(show) {
-            document.getElementById('loaderOverlay').style.display = show ? 'flex' : 'none';
-        }
-
-        function showToast(msg, isError = false) {
-            const toast = document.getElementById('toast');
-            const icon = document.getElementById('toastIcon');
-            const message = document.getElementById('toastMessage');
-            
-            message.textContent = msg;
-            icon.className = isError ? "fas fa-exclamation-circle" : "fas fa-check-circle";
-            icon.style.color = isError ? "#f87171" : "#4ade80";
-            toast.style.display = 'flex';
-            
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3200);
-        }
-
-        function sanitizeForUsername(text) {
-            if (!text) return "shop";
-            return text
-                .toLowerCase()
-                .replace(/[^a-z0-9]/g, '')
-                .replace(/_/g, '')
-                .trim() || "shop";
-        }
-
-        async function isUsernameTaken(username) {
-            if (!username) return true;
-            try {
-                const q = db.collection("users").where("usernameLower", "==", username.toLowerCase());
-                const snap = await q.get();
-                return !snap.empty;
-            } catch (e) {
-                console.error("Availability check failed", e);
-                return true;
-            }
-        }
-
-        async function generateUniqueUsername(base) {
-            let username = base;
-            let counter = 1;
-            
-            while (await isUsernameTaken(username)) {
-                username = `\( {base} \){counter}`;
-                counter++;
-                if (counter > 100) break; // safety
-            }
-            return username;
-        }
-
-        async function loadUserProfile() {
-            showLoader(true);
-            
-            try {
-                const userDoc = await db.collection("users").doc(currentUserUID).get();
-                
-                if (!userDoc.exists) {
-                    showToast("প্রোফাইল পাওয়া যায়নি।", true);
-                    showLoader(false);
-                    return;
-                }
-                
-                const data = userDoc.data();
-                shopNameGlobal = data.shopName || "My Shop";
-                
-                document.getElementById('shopNameDisplay').textContent = shopNameGlobal;
-                document.getElementById('shopInfo').style.display = 'block';
-                
-                const existingUsername = data.username;
-                
-                if (existingUsername) {
-                    // Already configured
-                    isUsernameSet = true;
-                    document.getElementById('setupForm').style.display = 'none';
-                    const statusEl = document.getElementById('alreadySetStatus');
-                    statusEl.innerHTML = `
-                        <i class="fas fa-check-circle"></i>
-                        ইউজারনেম ইতিমধ্যে সেট করা আছে<br>
-                        <span style="font-size:15px; font-weight:400; margin-top:8px; display:block;">@${existingUsername}</span>
-                    `;
-                    statusEl.style.display = 'flex';
-                    
-                    document.getElementById('urlPreview').textContent = `https://ghotimarket.com/@${existingUsername}`;
-                } else {
-                    // Generate new
-                    const base = sanitizeForUsername(shopNameGlobal);
-                    const uniqueName = await generateUniqueUsername(base);
-                    
-                    const input = document.getElementById('usernameInput');
-                    input.value = uniqueName;
-                    updateURLPreview();
-                    checkLiveAvailability();
-                }
-            } catch (err) {
-                console.error(err);
-                showToast("ডেটা লোড করতে সমস্যা হয়েছে", true);
-            } finally {
-                showLoader(false);
-            }
-        }
-
-        function updateURLPreview() {
-            const val = document.getElementById('usernameInput').value.trim();
-            const preview = document.getElementById('urlPreview');
-            preview.textContent = val ? `https://ghotimarket.com/seller?@${val}` : "https://ghotimarket.com/seller?@username";
-        }
-
+        let originalUsername = "";
+        let shopName = "My Shop";
+        let isAvailable = false;
         let debounceTimer = null;
+        let isEditMode = false;
 
-        async function checkLiveAvailability() {
-            const statusEl = document.getElementById('availabilityStatus');
-            const username = document.getElementById('usernameInput').value.trim();
-            
-            if (username.length < 3) {
-                statusEl.innerHTML = `<span style="color:#94a3b8;">কমপক্ষে ৩ অক্ষর দিন</span>`;
+        // DOM Elements
+        const shopNameDisplay = document.getElementById('shopNameDisplay');
+        const usernameInput = document.getElementById('usernameInput');
+        const statusMsg = document.getElementById('statusMsg');
+        const urlPreview = document.getElementById('urlPreview');
+        const submitBtn = document.getElementById('submitBtn');
+        const usernameForm = document.getElementById('usernameForm');
+        
+        const confirmModal = document.getElementById('confirmModal');
+        const modalOldUsername = document.getElementById('modalOldUsername');
+        const modalNewUsername = document.getElementById('modalNewUsername');
+        const modalCancelBtn = document.getElementById('modalCancelBtn');
+        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+        
+        const successModal = document.getElementById('successModal');
+        const loaderOverlay = document.getElementById('loaderOverlay');
+        const loaderText = document.getElementById('loaderText');
+        const toastContainer = document.getElementById('toastContainer');
+
+        // Authentication State Observer
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = 'https://seller.ghotimarket.com';
                 return;
             }
-            
-            statusEl.innerHTML = `<span style="color:#94a3b8;">চেক করা হচ্ছে...</span>`;
-            
-            const taken = await isUsernameTaken(username);
-            
-            if (taken) {
-                statusEl.innerHTML = `<i class="fas fa-times" style="color:#ef4444"></i><span style="color:#ef4444;">নেওয়া হয়েছে</span>`;
-            } else {
-                statusEl.innerHTML = `<i class="fas fa-check" style="color:#22c55e"></i><span style="color:#22c55e;">উপলব্ধ</span>`;
+            currentUserUID = user.uid;
+            loadUserData();
+        });
+
+        // Load User Data from Firestore
+        async function loadUserData() {
+            showLoader("ডাটা লোড হচ্ছে...");
+            try {
+                const userDocRef = db.collection("users").doc(currentUserUID);
+                const doc = await userDocRef.get();
+
+                if (doc.exists) {
+                    const data = doc.data();
+                    shopName = data.shopName || "My Shop";
+                    shopNameDisplay.textContent = shopName;
+
+                    if (data.username) {
+                        originalUsername = data.username.toLowerCase();
+                        usernameInput.value = originalUsername;
+                        isEditMode = true;
+                        submitBtn.textContent = "ইউজারনেম আপডেট করুন";
+                        updateUrlPreview(originalUsername);
+                        setStatus("✓ আপনার বর্তমান ইউজারনেম", "available");
+                        isAvailable = true; // Current is always valid for self
+                        submitBtn.disabled = true; // Unchanged initially
+                    } else {
+                        // Generate suggestion from shopName
+                        const suggested = generateSlug(shopName);
+                        await checkAndSetSuggestion(suggested);
+                    }
+                } else {
+                    shopNameDisplay.textContent = "My Shop";
+                    const suggested = generateSlug("My Shop");
+                    await checkAndSetSuggestion(suggested);
+                }
+            } catch (error) {
+                console.error("Error loading user data:", error);
+                showToast("ডেটা লোড করতে সমস্যা হয়েছে", "error");
+                shopNameDisplay.textContent = "My Shop";
+            } finally {
+                hideLoader();
             }
         }
 
-        async function saveUsername() {
-            const usernameRaw = document.getElementById('usernameInput').value.trim();
-            if (!usernameRaw || usernameRaw.length < 3) {
-                showToast("ইউজারনেম কমপক্ষে ৩ অক্ষরের হতে হবে", true);
-                return;
-            }
-            
-            const username = usernameRaw.toLowerCase();
-            
-            if (!/^[a-z0-9]+$/.test(username)) {
-                showToast("শুধু ইংরেজি ছোট হাতের অক্ষর ও সংখ্যা ব্যবহার করুন", true);
-                return;
-            }
-            
-            showLoader(true);
-            
-            try {
-                const taken = await isUsernameTaken(username);
-                if (taken) {
-                    const newSuggestion = await generateUniqueUsername(username.replace(/\d+$/, ''));
-                    document.getElementById('usernameInput').value = newSuggestion;
-                    updateURLPreview();
-                    showToast(`নতুন সাজেশন: ${newSuggestion}`, false);
-                    showLoader(false);
-                    return;
+        // Slug / Username generator from shop name
+        function generateSlug(name) {
+            let slug = name.toLowerCase()
+                .replace(/[^a-z0-9]/g, '');
+            return slug.length >= 3 ? slug : (slug + "shop").substring(0, 30);
+        }
+
+        // Generate unique suggestion if taken
+        async function checkAndSetSuggestion(base) {
+            let candidate = base;
+            let counter = 1;
+            let foundUnique = false;
+            let attempts = 0;
+
+            while (!foundUnique && attempts < 20) {
+                const querySnapshot = await db.collection("users")
+                    .where("usernameLower", "==", candidate)
+                    .get();
+
+                let isTakenByOther = false;
+                querySnapshot.forEach(doc => {
+                    if (doc.id !== currentUserUID) {
+                        isTakenByOther = true;
+                    }
+                });
+
+                if (!isTakenByOther) {
+                    foundUnique = true;
+                } else {
+                    candidate = `${base}${counter}`;
+                    counter++;
                 }
+                attempts++;
+            }
+
+            usernameInput.value = candidate;
+            updateUrlPreview(candidate);
+            validateAndCheckUsername(candidate);
+        }
+
+        // Input Event Listener with Debounce
+        usernameInput.addEventListener('input', (e) => {
+            let val = e.target.value.toLowerCase().replace(/[^a-z0-9]/g, '');
+            if (e.target.value !== val) {
+                usernameInput.value = val;
+            }
+
+            updateUrlPreview(val);
+
+            clearTimeout(debounceTimer);
+
+            if (val.length === 0) {
+                setStatus("কমপক্ষে ৩ অক্ষর দিন", "neutral");
+                isAvailable = false;
+                submitBtn.disabled = true;
+                return;
+            }
+
+            if (val.length < 3) {
+                setStatus("কমপক্ষে ৩ অক্ষর দিন", "error");
+                isAvailable = false;
+                submitBtn.disabled = true;
+                return;
+            }
+
+            if (!/^[a-z0-9]+$/.test(val)) {
+                setStatus("শুধু ইংরেজি ছোট হাতের অক্ষর ও সংখ্যা ব্যবহার করুন", "error");
+                isAvailable = false;
+                submitBtn.disabled = true;
+                return;
+            }
+
+            setStatus("যাচাই করা হচ্ছে...", "neutral");
+            
+            debounceTimer = setTimeout(() => {
+                checkUsernameAvailability(val);
+            }, 450);
+        });
+
+        // Update URL Preview
+        function updateUrlPreview(username) {
+            const cleanVal = username.trim();
+            if (cleanVal) {
+                urlPreview.textContent = `https://ghotimarket.com/seller?@${cleanVal}`;
+            } else {
+                urlPreview.textContent = `https://ghotimarket.com/seller?@username`;
+            }
+        }
+
+        // Set Status Helper
+        function setStatus(text, type) {
+            statusMsg.textContent = text;
+            statusMsg.className = `status-msg ${type}`;
+        }
+
+        // Check Username Availability via Firestore
+        async function checkUsernameAvailability(username) {
+            try {
+                const querySnapshot = await db.collection("users")
+                    .where("usernameLower", "==", username)
+                    .get();
+
+                let takenBySomeoneElse = false;
+                querySnapshot.forEach(doc => {
+                    if (doc.id !== currentUserUID) {
+                        takenBySomeoneElse = true;
+                    }
+                });
+
+                if (username === originalUsername && originalUsername !== "") {
+                    setStatus("✓ আপনার বর্তমান ইউজারনেম", "available");
+                    isAvailable = true;
+                    submitBtn.disabled = true; // No changes made
+                } else if (takenBySomeoneElse) {
+                    setStatus("✕ ইউজারনেম নেওয়া হয়েছে", "taken");
+                    isAvailable = false;
+                    submitBtn.disabled = true;
+                } else {
+                    setStatus("✓ ইউজারনেম উপলব্ধ", "available");
+                    isAvailable = true;
+                    submitBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error("Availability check error:", error);
+                setStatus("নেটওয়ার্ক ত্রুটি, আবার চেষ্টা করুন", "error");
+                isAvailable = false;
+                submitBtn.disabled = true;
+            }
+        }
+
+        // Form Submit Handler
+        submitBtn.addEventListener('click', () => {
+            const newUsername = usernameInput.value.trim().toLowerCase();
+            
+            if (!isAvailable || newUsername.length < 3) return;
+
+            if (originalUsername !== "" && originalUsername !== newUsername) {
+                // Show Confirmation Modal for changes
+                modalOldUsername.textContent = `@${originalUsername}`;
+                modalNewUsername.textContent = `@${newUsername}`;
+                confirmModal.classList.add('active');
+            } else if (originalUsername === "") {
+                // Direct update if setting for the first time
+                executeUsernameUpdate(newUsername);
+            }
+        });
+
+        // Modal Action Listeners
+        modalCancelBtn.addEventListener('click', () => {
+            confirmModal.classList.remove('active');
+        });
+
+        confirmModal.addEventListener('click', (e) => {
+            if (e.target === confirmModal) {
+                confirmModal.classList.remove('active');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                confirmModal.classList.remove('active');
+            }
+        });
+
+        modalConfirmBtn.addEventListener('click', () => {
+            confirmModal.classList.remove('active');
+            const newUsername = usernameInput.value.trim().toLowerCase();
+            executeUsernameUpdate(newUsername);
+        });
+
+        // Execute Update to Firestore
+        async function executeUsernameUpdate(username) {
+            showLoader("ইউজারনেম আপডেট করা হচ্ছে...");
+            try {
+                const userDocRef = db.collection("users").doc(currentUserUID);
                 
-                // Save to Firestore
-                await db.collection("users").doc(currentUserUID).update({
+                await userDocRef.update({
                     username: username,
                     usernameLower: username,
                     usernameCreatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                
-                // Show success
-                showSuccessScreen();
-                
+
+                hideLoader();
+                showSuccessModal();
+                showToast("ইউজারনেম সফলভাবে আপডেট হয়েছে", "success");
+
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1800);
+
             } catch (error) {
-                console.error(error);
-                showToast("সংরক্ষণ করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।", true);
-            } finally {
-                showLoader(false);
+                console.error("Update error:", error);
+                hideLoader();
+                showToast("ইউজারনেম আপডেট করা সম্ভব হয়নি", "error");
             }
         }
 
-        function showSuccessScreen() {
-            const modal = document.getElementById('successModal');
-            const check = document.getElementById('successCheck');
-            
-            modal.style.display = 'flex';
-            
-            // Animate checkmark
-            setTimeout(() => {
-                check.style.strokeDasharray = "80";
-                check.style.strokeDashoffset = "80";
-                check.style.transition = "stroke-dashoffset 700ms ease";
-                check.style.strokeDashoffset = "0";
-            }, 300);
-            
-            setTimeout(() => {
-                window.location.href = "dashboard.html";
-            }, 1850);
+        // Validation helper for immediate checks
+        function validateAndCheckUsername(val) {
+            if (val.length >= 3 && /^[a-z0-9]+$/.test(val)) {
+                checkUsernameAvailability(val);
+            }
         }
 
-        // Main initialization
-        function initializePage() {
-            // Auth state listener
-            auth.onAuthStateChanged(async (user) => {
-                if (!user) {
-                    window.location.href = "login.html";
-                    return;
-                }
-                
-                currentUserUID = user.uid;
-                await loadUserProfile();
-            });
-            
-            // Input listeners
-            const usernameInput = document.getElementById('usernameInput');
-            usernameInput.addEventListener('input', () => {
-                updateURLPreview();
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(checkLiveAvailability, 450);
-            });
-            
-            // Buttons
-            document.getElementById('setupBtn').addEventListener('click', saveUsername);
-            document.getElementById('cancelBtn').addEventListener('click', () => {
-                window.location.href = "dashboard.html";
-            });
-            
-            // Prevent form submit on enter
-            document.getElementById('usernameInput').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    saveUsername();
-                }
-            });
+        // UI Helpers
+        function showLoader(text) {
+            loaderText.textContent = text;
+            loaderOverlay.classList.add('active');
         }
 
-        // Start the app
-        window.onload = initializePage;
+        function hideLoader() {
+            loaderOverlay.classList.remove('active');
+        }
+
+        function showSuccessModal() {
+            successModal.classList.add('active');
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span>${message}</span>
+                <i class="fa-solid ${type === 'success' ? 'fa-check-circle' : 'fa-triangle-exclamation'}" style="color: ${type === 'success' ? 'var(--success-color)' : 'var(--error-color)'};"></i>
+            `;
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease-in forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
     </script>
 </body>
 </html>
