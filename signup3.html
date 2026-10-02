@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1.0"
+>
+
+<title>Personal Verification — GHOTI MARKET</title>
+
+<link
+    rel="icon"
+    href="https://seller.ghotimarket.com/logo.png"
+>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    min-height:100vh;
+
+    font-family:
+        "Hind Siliguri",
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            #ffeadc,
+            transparent 32%
+        ),
+        linear-gradient(
+            135deg,
+            #fff,
+            #fff8f4
+        );
+
+    color:#171717;
+}
+
+.wrapper{
+    width:100%;
+    max-width:700px;
+
+    margin:auto;
+
+    padding:
+        30px
+        16px
+        55px;
+}
+
+.top{
+    text-align:center;
+
+    margin-bottom:25px;
+}
+
+.logo{
+    width:64px;
+    height:64px;
+
+    padding:9px;
+
+    background:#fff2e9;
+
+    border-radius:18px;
+
+    margin:
+        0
+        auto
+        16px;
+}
+
+.logo img{
+    width:100%;
+    height:100%;
+
+    object-fit:contain;
+}
+
+.progress{
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:8px;
+
+    margin-bottom:22px;
+}
+
+.step{
+    width:35px;
+    height:35px;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#ffe7d8;
+
+    color:#ff6a00;
+
+    font-weight:700;
+}
+
+.step.active{
+    background:#ff6a00;
+    color:white;
+}
+
+.line{
+    width:45px;
+    height:3px;
+
+    background:#ffe0cc;
+
+    border-radius:10px;
+}
+
+h1{
+    font-size:28px;
+}
+
+.subtitle{
+    margin-top:6px;
+
+    color:#777;
+
+    font-size:14px;
+}
+
+.card{
+    background:#fff;
+
+    border:
+        1px solid
+        #ffe2d0;
+
+    border-radius:25px;
+
+    padding:27px;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.07);
+}
+
+.info{
+    display:flex;
+
+    gap:11px;
+
+    padding:14px;
+
+    margin-bottom:22px;
+
+    border-radius:14px;
+
+    background:#fff7f2;
+
+    color:#777;
+
+    font-size:13px;
+
+    line-height:1.7;
+}
+
+.info svg{
+    width:20px;
+    min-width:20px;
+
+    color:#ff6a00;
+}
+
+.field{
+    margin-bottom:21px;
+}
+
+label{
+    display:block;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    margin-bottom:8px;
+}
+
+.upload{
+    border:
+        1.5px dashed
+        #ffc6a5;
+
+    background:#fff9f5;
+
+    border-radius:19px;
+
+    padding:18px;
+}
+
+.upload-head{
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin-bottom:14px;
+}
+
+.icon{
+    width:45px;
+    height:45px;
+
+    border-radius:13px;
+
+    background:#fff0e6;
+
+    color:#ff6a00;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+}
+
+.icon svg{
+    width:23px;
+    height:23px;
+}
+
+.title{
+    font-weight:700;
+}
+
+.desc{
+    color:#888;
+    font-size:12px;
+}
+
+.file{
+    display:none;
+}
+
+.choose{
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    width:100%;
+
+    min-height:48px;
+
+    border-radius:12px;
+
+    background:#ff6a00;
+
+    color:white;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+.status{
+    text-align:center;
+
+    margin-top:9px;
+
+    font-size:12px;
+
+    color:#777;
+}
+
+.complete{
+    width:100%;
+
+    height:55px;
+
+    border:0;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff7a18,
+            #ff6a00
+        );
+
+    color:#fff;
+
+    font-family:inherit;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 12px 25px
+        rgba(255,106,0,.2);
+
+    transition:.2s;
+}
+
+.complete:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
+
+.modal-bg{
+    position:fixed;
+
+    inset:0;
+
+    z-index:100;
+
+    background:
+        rgba(0,0,0,.45);
+
+    backdrop-filter:blur(7px);
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:.2s;
+}
+
+.modal-bg.show{
+    opacity:1;
+    visibility:visible;
+}
+
+.modal{
+    width:100%;
+    max-width:390px;
+
+    background:#fff;
+
+    border-radius:23px;
+
+    padding:27px;
+
+    text-align:center;
+}
+
+.modal-icon{
+    width:56px;
+    height:56px;
+
+    margin:auto;
+
+    border-radius:17px;
+
+    background:#fff1e8;
+
+    color:#ff6a00;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+}
+
+.modal-icon svg{
+    width:27px;
+    height:27px;
+}
+
+.modal h2{
+    margin-top:15px;
+
+    font-size:21px;
+}
+
+.modal p{
+    margin-top:7px;
+
+    color:#777;
+
+    font-size:14px;
+
+    line-height:1.7;
+}
+
+.modal button{
+    width:100%;
+
+    height:47px;
+
+    margin-top:20px;
+
+    border:0;
+
+    border-radius:12px;
+
+    background:#ff6a00;
+
+    color:white;
+
+    font-family:inherit;
+
+    font-weight:700;
+}
+
+.loading{
+    position:fixed;
+
+    inset:0;
+
+    z-index:200;
+
+    background:
+        rgba(255,255,255,.82);
+
+    backdrop-filter:blur(8px);
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+}
+
+.loading.show{
+    display:flex;
+}
+
+.loading-box{
+    background:#fff;
+
+    padding:
+        28px
+        35px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.12);
+}
+
+.spinner{
+    width:37px;
+    height:37px;
+
+    border:
+        4px solid
+        #ffe0cc;
+
+    border-top-color:
+        #ff6a00;
+
+    border-radius:50%;
+
+    animation:
+        spin .8s linear infinite;
+
+    margin:auto;
+}
+
+.loading p{
+    margin-top:13px;
+
+    font-size:14px;
+
+    font-weight:600;
+}
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+@media(max-width:500px){
+
+    .wrapper{
+        padding:
+            25px
+            15px
+            40px;
+    }
+
+    .card{
+        padding:20px;
+
+        border-radius:20px;
+    }
+
+    h1{
+        font-size:25px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<div class="wrapper">
+
+
+<div class="top">
+
+    <div class="logo">
+
+        <img
+            src="https://seller.ghotimarket.com/logo.png"
+            alt="GHOTI MARKET"
+        >
+
+    </div>
+
+
+    <div class="progress">
+
+        <div class="step">1</div>
+
+        <div class="line"></div>
+
+        <div class="step">2</div>
+
+        <div class="line"></div>
+
+        <div class="step active">3</div>
+
+    </div>
+
+
+    <h1>
+        Personal Information
+    </h1>
+
+
+    <div class="subtitle">
+        আপনার পরিচয় যাচাইয়ের তথ্য দিন
+    </div>
+
+</div>
+
+
+
+<div class="card">
+
+
+<div class="info">
+
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+    >
+        <circle
+            cx="12"
+            cy="12"
+            r="9"
+        />
+
+        <path d="M12 11v5"/>
+
+        <path d="M12 8h.01"/>
+
+    </svg>
+
+
+    <div>
+
+        আপনার NID-এর ছবি পরিষ্কারভাবে আপলোড করুন।
+        NID ছবিতে কোনো পরিবর্তন বা compression
+        করা হবে না।
+
+    </div>
+
+</div>
+
+
+
+<!-- NID FRONT -->
+
+<div class="field">
+
+
+<label>
+    NID সামনের সাইট
+</label>
+
+
+<div class="upload">
+
+
+<div class="upload-head">
+
+
+<div class="icon">
+
+<svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+>
+
+    <rect
+        x="3"
+        y="5"
+        width="18"
+        height="14"
+        rx="2"
+    />
+
+    <circle
+        cx="8"
+        cy="10"
+        r="2"
+    />
+
+    <path d="M13 10h5"/>
+
+    <path d="M13 14h5"/>
+
+    <path d="M6 15h4"/>
+
+</svg>
+
+</div>
+
+
+<div>
+
+<div class="title">
+    NID Front
+</div>
+
+<div class="desc">
+    Original file • No compression
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<input
+    class="file"
+    type="file"
+    id="nidFrontInput"
+    accept="image/*"
+>
+
+
+<label
+    class="choose"
+    for="nidFrontInput"
+>
+    NID Front নির্বাচন করুন
+</label>
+
+
+<div
+    class="status"
+    id="nidFrontStatus"
+>
+    এখনো কোনো ফাইল নির্বাচন করা হয়নি
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<!-- NID BACK -->
+
+<div class="field">
+
+
+<label>
+    NID পিছনের সাইট
+</label>
+
+
+<div class="upload">
+
+
+<div class="upload-head">
+
+
+<div class="icon">
+
+<svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+>
+
+    <rect
+        x="3"
+        y="5"
+        width="18"
+        height="14"
+        rx="2"
+    />
+
+    <path d="M7 9h10"/>
+
+    <path d="M7 13h10"/>
+
+    <path d="M7 17h6"/>
+
+</svg>
+
+</div>
+
+
+<div>
+
+<div class="title">
+    NID Back
+</div>
+
+<div class="desc">
+    Original file • No compression
+</div>
+
+</div>
+
+
+</div>
+
+
+<input
+    class="file"
+    type="file"
+    id="nidBackInput"
+    accept="image/*"
+>
+
+
+<label
+    class="choose"
+    for="nidBackInput"
+>
+    NID Back নির্বাচন করুন
+</label>
+
+
+<div
+    class="status"
+    id="nidBackStatus"
+>
+    এখনো কোনো ফাইল নির্বাচন করা হয়নি
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<button
+    class="complete"
+    id="completeBtn"
+>
+    একাউন্ট কমপ্লিট করুন
+</button>
+
+
+</div>
+
+</div>
+
+
+
+<!-- MODAL -->
+
+<div
+    class="modal-bg"
+    id="modal"
+>
+
+<div class="modal">
+
+
+<div class="modal-icon">
+
+<svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+>
+
+<circle
+    cx="12"
+    cy="12"
+    r="9"
+/>
+
+<path d="M12 8v4"/>
+
+<path d="M12 16h.01"/>
+
+</svg>
+
+</div>
+
+
+<h2 id="modalTitle">
+    তথ্য প্রয়োজন
+</h2>
+
+
+<p id="modalText">
+    অনুগ্রহ করে প্রয়োজনীয় তথ্য দিন।
+</p>
+
+
+<button onclick="closeModal()">
+    ঠিক আছে
+</button>
+
+
+</div>
+
+</div>
+
+
+
+<!-- LOADING -->
+
+<div
+    class="loading"
+    id="loading"
+>
+
+<div class="loading-box">
+
+<div class="spinner"></div>
+
+<p id="loadingText">
+    প্রস্তুত করা হচ্ছে...
+</p>
+
+</div>
+
+</div>
+
+
+
+<script type="module">
+
+
+import {
+    initializeApp
+} from
+"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+
+import {
+    getAuth,
+    onAuthStateChanged
+} from
+"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    serverTimestamp
+} from
+"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+
+const firebaseConfig={
+
+    apiKey:
+        "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+
+    authDomain:
+        "ghotimarket.firebaseapp.com",
+
+    projectId:
+        "ghotimarket"
+
+};
+
+
+const app=
+    initializeApp(firebaseConfig);
+
+
+const auth=
+    getAuth(app);
+
+
+const db=
+    getFirestore(app);
+
+
+
+const NID_WORKER=
+    "https://image.ghotimarket.com/upload";
+
+
+const NOTIFICATION_WORKER=
+    "https://notification.ghotimarket.com";
+
+
+
+let currentUser=null;
+
+
+
+/* =========================
+   AUTH CHECK
+========================= */
+
+
+onAuthStateChanged(
+auth,
+async(user)=>{
+
+    if(!user){
+
+        location.replace("/signup");
+
+        return;
+
+    }
+
+
+    currentUser=user;
+
+
+    try{
+
+        const snap=
+            await getDoc(
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                )
+            );
+
+
+        if(snap.exists()){
+
+            location.replace("/dashboard");
+
+            return;
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+});
+
+
+
+/* =========================
+   LOCAL STORAGE
+========================= */
+
+
+function getRequiredData(){
+
+    return {
+
+        fullName:
+            localStorage.getItem(
+                "fullName"
+            ),
+
+        whatsapp:
+            localStorage.getItem(
+                "whatsapp"
+            ),
+
+        shopName:
+            localStorage.getItem(
+                "shopName"
+            ),
+
+        shopDescription:
+            localStorage.getItem(
+                "shopDescription"
+            ),
+
+        shopLogo:
+            localStorage.getItem(
+                "shopLogo"
+            ),
+
+        shopBanner:
+            localStorage.getItem(
+                "shopBanner"
+            )
+
+    };
+
+}
+
+
+
+/* =========================
+   NID UPLOAD
+   NO COMPRESSION
+========================= */
+
+
+async function uploadNID(file){
+
+    if(!file){
+
+        throw new Error(
+            "NID file পাওয়া যায়নি।"
+        );
+
+    }
+
+
+    if(
+        !file.type.startsWith(
+            "image/"
+        )
+    ){
+
+        throw new Error(
+            "শুধুমাত্র NID image upload করা যাবে।"
+        );
+
+    }
+
+
+    const formData=
+        new FormData();
+
+
+    formData.append(
+        "file",
+        file,
+        file.name
+    );
+
+
+    const response=
+        await fetch(
+            NID_WORKER,
+            {
+                method:"POST",
+                body:formData
+            }
+        );
+
+
+    let data;
+
+
+    try{
+
+        data=
+            await response.json();
+
+    }catch{
+
+        throw new Error(
+            "NID upload server থেকে সঠিক response পাওয়া যায়নি।"
+        );
+
+    }
+
+
+    if(
+        !response.ok ||
+        !data.url
+    ){
+
+        throw new Error(
+            data.message ||
+            "NID upload করা যায়নি।"
+        );
+
+    }
+
+
+    return data.url;
+
+}
+
+
+
+/* =========================
+   FILE STATES
+========================= */
+
+
+let nidFrontFile=null;
+let nidBackFile=null;
+
+
+
+document
+.getElementById("nidFrontInput")
+.addEventListener(
+"change",
+(e)=>{
+
+    const file=
+        e.target.files[0];
+
+    if(!file)return;
+
+
+    nidFrontFile=file;
+
+
+    document
+    .getElementById(
+        "nidFrontStatus"
+    )
+    .textContent=
+        `নির্বাচিত: ${file.name}`;
+
+});
+
+
+
+document
+.getElementById("nidBackInput")
+.addEventListener(
+"change",
+(e)=>{
+
+    const file=
+        e.target.files[0];
+
+    if(!file)return;
+
+
+    nidBackFile=file;
+
+
+    document
+    .getElementById(
+        "nidBackStatus"
+    )
+    .textContent=
+        `নির্বাচিত: ${file.name}`;
+
+});
+
+
+
+/* =========================
+   COMPLETE
+========================= */
+
+
+document
+.getElementById("completeBtn")
+.addEventListener(
+"click",
+async()=>{
+
+
+    if(!currentUser){
+
+        showModal(
+            "Login প্রয়োজন",
+            "আপনার login session পাওয়া যায়নি।"
+        );
+
+        return;
+
+    }
+
+
+    const data=
+        getRequiredData();
+
+
+    /* Required local data */
+
+    const missing=[];
+
+
+    if(!data.fullName)
+        missing.push("Full Name");
+
+    if(!data.whatsapp)
+        missing.push("WhatsApp");
+
+    if(!data.shopName)
+        missing.push("Shop Name");
+
+    if(!data.shopDescription)
+        missing.push("Shop Description");
+
+    if(!data.shopLogo)
+        missing.push("Shop Logo");
+
+    if(!data.shopBanner)
+        missing.push("Shop Banner");
+
+
+    if(missing.length){
+
+        showModal(
+            "আগের ধাপ অসম্পূর্ণ",
+            "প্রথমে আগের ধাপগুলোর তথ্য সম্পূর্ণ করুন।"
+        );
+
+        return;
+
+    }
+
+
+    if(!nidFrontFile){
+
+        showModal(
+            "NID Front প্রয়োজন",
+            "অনুগ্রহ করে NID-এর সামনের অংশ নির্বাচন করুন।"
+        );
+
+        return;
+
+    }
+
+
+    if(!nidBackFile){
+
+        showModal(
+            "NID Back প্রয়োজন",
+            "অনুগ্রহ করে NID-এর পিছনের অংশ নির্বাচন করুন।"
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+
+        setLoading(
+            true,
+            "NID Front আপলোড করা হচ্ছে..."
+        );
+
+
+        const nidFrontUrl=
+            await uploadNID(
+                nidFrontFile
+            );
+
+
+        setLoading(
+            true,
+            "NID Back আপলোড করা হচ্ছে..."
+        );
+
+
+        const nidBackUrl=
+            await uploadNID(
+                nidBackFile
+            );
+
+
+        /* =========================
+           FIRESTORE DOCUMENT
+        ========================= */
+
+
+        setLoading(
+            true,
+            "আপনার অ্যাকাউন্ট তৈরি করা হচ্ছে..."
+        );
+
+
+        const userRef=
+            doc(
+                db,
+                "users",
+                currentUser.uid
+            );
+
+
+        const userData={
+
+            active:false,
+
+            verified:false,
+
+            createdAt:
+                serverTimestamp(),
+
+            uid:
+                currentUser.uid,
+
+            profileUnlockedUntil:0,
+
+            email:
+                currentUser.email,
+
+            fullName:
+                data.fullName,
+
+            whatsapp:
+                data.whatsapp,
+
+            shopName:
+                data.shopName,
+
+            shopDescription:
+                data.shopDescription,
+
+            shopLogo:
+                data.shopLogo,
+
+            shopBanner:
+                data.shopBanner,
+
+            nidFront:
+                nidFrontUrl,
+
+            nidBack:
+                nidBackUrl
+
+        };
+
+
+        await setDoc(
+            userRef,
+            userData
+        );
+
+
+        /* =========================
+           TELEGRAM NOTIFICATION
+        ========================= */
+
+
+        setLoading(
+            true,
+            "Account verification request পাঠানো হচ্ছে..."
+        );
+
+
+        try{
+
+            await fetch(
+                NOTIFICATION_WORKER,
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+
+                        type:
+                            "new_seller",
+
+                        uid:
+                            currentUser.uid,
+
+                        email:
+                            currentUser.email,
+
+                        fullName:
+                            data.fullName,
+
+                        whatsapp:
+                            data.whatsapp,
+
+                        shopName:
+                            data.shopName
+
+                    })
+
+                }
+            );
+
+        }catch(notificationError){
+
+            /*
+             * Notification ব্যর্থ হলেও
+             * account creation ব্যর্থ করা হচ্ছে না।
+             */
+
+            console.error(
+                "Notification Error:",
+                notificationError
+            );
+
+        }
+
+
+        /* =========================
+           CLEAN LOCAL STORAGE
+        ========================= */
+
+
+        localStorage.removeItem(
+            "fullName"
+        );
+
+        localStorage.removeItem(
+            "whatsapp"
+        );
+
+        localStorage.removeItem(
+            "shopName"
+        );
+
+        localStorage.removeItem(
+            "shopDescription"
+        );
+
+        localStorage.removeItem(
+            "shopLogo"
+        );
+
+        localStorage.removeItem(
+            "shopBanner"
+        );
+
+
+        location.replace(
+            "/verification-notice"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+
+        showModal(
+            "Account তৈরি করা যায়নি",
+            error.message ||
+            "কিছু সমস্যা হয়েছে। আবার চেষ্টা করুন।"
+        );
+
+
+    }finally{
+
+        setLoading(false);
+
+    }
+
+});
+
+
+
+/* =========================
+   LOADING
+========================= */
+
+
+function setLoading(
+    state,
+    text="প্রস্তুত করা হচ্ছে..."
+){
+
+    const loading=
+        document.getElementById(
+            "loading"
+        );
+
+
+    document
+    .getElementById(
+        "loadingText"
+    )
+    .textContent=text;
+
+
+    if(state){
+
+        loading.classList.add(
+            "show"
+        );
+
+    }else{
+
+        loading.classList.remove(
+            "show"
+        );
+
+    }
+
+}
+
+
+
+/* =========================
+   MODAL
+========================= */
+
+
+window.showModal=
+(
+    title,
+    text
+)=>{
+
+    document
+    .getElementById(
+        "modalTitle"
+    )
+    .textContent=title;
+
+
+    document
+    .getElementById(
+        "modalText"
+    )
+    .textContent=text;
+
+
+    document
+    .getElementById(
+        "modal"
+    )
+    .classList.add(
+        "show"
+    );
+
+};
+
+
+
+window.closeModal=()=>{
+
+    document
+    .getElementById(
+        "modal"
+    )
+    .classList.remove(
+        "show"
+    );
+
+};
+
+
+</script>
+
+</body>
+</html>
