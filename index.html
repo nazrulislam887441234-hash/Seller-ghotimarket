@@ -1,169 +1,4194 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login | GHOTI MARKET</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <!-- Open Graph / Facebook / WhatsApp Preview -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://seller.ghotimarket.com">
-    <meta property="og:title" content="GHOTI MARKET - Seller Login">
-    <meta property="og:description" content="আপনার শপ ম্যানেজ করতে এখনই লগইন করুন। অর্ডার, প্রোডাক্ট এবং আয় এক জায়গায়।">
-    <meta property="og:image" content="https://seller.ghotimarket.com/logo.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:locale" content="bn_BD">
-    <meta name="keywords" content="ghoti market login, seller login, ghotimarket, বিক্রেতা লগইন, seller dashboard, online marketplace bangladesh">
-    <meta name="author" content="GHOTI MARKET">
-    <meta name="robots" content="index, follow">
-    <meta name="description" content="GHOTI MARKET Seller Portal এ লগইন করুন। আপনার শপ, অর্ডার এবং আয় ম্যানেজ করুন। বাংলাদেশের সবচেয়ে দ্রুত বর্ধনশীল মার্কেটপ্লেস।">
-    <!-- Twitter / X Preview -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://seller.ghotimarket.com">
-    <meta property="twitter:title" content="GHOTI MARKET - Seller Login">
-    <meta property="twitter:description" content="আপনার শপ ম্যানেজ করতে এখনই লগইন করুন। অর্ডার, প্রোডাক্ট এবং আয় এক জায়গায়।">
-    <meta property="twitter:image" content="https://seller.ghotimarket.com/logo.png">
-    <!-- Favicon & App Icons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="https://seller.ghotimarket.com/logo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://seller.ghotimarket.com/logo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://seller.ghotimarket.com/logo.png">
-    <link rel="shortcut icon" href="https://seller.ghotimarket.com/logo.png">
-    <meta name="theme-color" content="#3498db">
-    <meta name="msapplication-navbutton-color" content="#3498db">
-    <meta name="apple-mobile-web-app-status-bar-style" content="#3498db">
-    <style>
-        :root { --gm-dark: #2c3e50; --gm-blue: #3498db; --bg: #f4f7f6; }
-        * { box-sizing: border-box; }
-        body { font-family: 'Hind Siliguri', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: linear-gradient(135deg, #2c3e50, #4ca1af); padding: 20px; }
-        .box { background: white; padding: 40px 30px; border-radius: 20px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.25); border-top: 4px solid var(--gm-blue); }
-        .logo-img { width: 80px; height: auto; margin-bottom: 15px; }
-        h2 { margin: 0 0 5px; color: #333; font-size: 24px; font-weight: 700; }
-        .subtitle { color: #777; margin-bottom: 20px; font-size: 15px; }
-        .input-group { position: relative; margin-bottom: 15px; text-align: left; }
-        .input-group i { position: absolute; left: 15px; top: 14px; color: var(--gm-blue); }
-        input { width: 100%; padding: 12px 15px 12px 45px; border: 2px solid #eee; border-radius: 10px; font-size: 16px; }
-        input:focus { outline: none; border-color: var(--gm-blue); }
-        button.main-btn { background: linear-gradient(90deg, var(--gm-dark), var(--gm-blue)); color: white; border: none; width: 100%; padding: 14px; border-radius: 10px; cursor: pointer; font-weight: 600; margin-top: 10px; font-size: 16px; transition: 0.3s; }
-        button.main-btn:hover { transform: translateY(-2px); }
-        .linkBtn { background: none; color: var(--gm-blue); border: none; margin-top: 10px; cursor: pointer; display: block; width: 100%; font-size: 14px; font-weight: 600; text-decoration: none; }
-        .linkBtn:hover { text-decoration: underline; }
-        #pageLoader { position: fixed; inset: 0; background: white; display: flex; justify-content: center; align-items: center; z-index: 9999; font-weight: bold; color: var(--gm-dark); }
 
-        /* GHOTI MARKET Custom Popup */
-        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(44,62,80,0.7); display: none; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(5px); }
-        .popup { background: white; padding: 30px 25px; border-radius: 20px; max-width: 350px; width: 90%; text-align: center; border-top: 4px solid var(--gm-blue); animation: popIn 0.3s ease; }
-        @keyframes popIn { from {transform: scale(0.8); opacity: 0;} to {transform: scale(1); opacity: 1;} }
-        .popup-icon { font-size: 50px; margin-bottom: 12px; }
-        .popup.success { border-top-color: #27ae60; }
-        .popup.success .popup-icon { color: #27ae60; }
-        .popup.error { border-top-color: #e74c3c; }
-        .popup.error .popup-icon { color: #e74c3c; }
-        .popup.warning { border-top-color: #f39c12; }
-        .popup.warning .popup-icon { color: #f39c12; }
-        .popup h2 { margin: 0 0 10px; font-size: 20px; color: var(--gm-dark); }
-        .popup p { margin: 0 0 20px; color: #555; font-size: 14px; }
-        .popup-btn { padding: 12px 30px; border: none; border-radius: 10px; background: linear-gradient(90deg, var(--gm-dark), var(--gm-blue)); color: white; font-weight: bold; cursor: pointer; }
-    </style>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+  >
+
+  <title>
+    GHOTI MARKET Seller — পণ্য বিক্রি করুন অনলাইনে
+  </title>
+
+  <meta
+    name="description"
+    content="GHOTI MARKET Seller Account তৈরি করে নিজের পণ্য অনলাইনে বিক্রি করুন। নিজের Shop Profile তৈরি করুন, পণ্য প্রকাশ করুন এবং অনলাইন ব্যবসা পরিচালনা করুন।"
+  >
+
+  <meta
+    name="keywords"
+    content="GHOTI MARKET Seller, Seller Account, Online Selling Bangladesh, পণ্য বিক্রি, সেলার একাউন্ট"
+  >
+
+  <link
+    rel="canonical"
+    href="https://seller.ghotimarket.com/"
+  >
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="https://seller.ghotimarket.com/logo.png"
+  >
+
+  <link
+    rel="apple-touch-icon"
+    href="https://seller.ghotimarket.com/logo.png"
+  >
+
+  <!-- Open Graph -->
+
+  <meta
+    property="og:type"
+    content="website"
+  >
+
+  <meta
+    property="og:url"
+    content="https://seller.ghotimarket.com/"
+  >
+
+  <meta
+    property="og:title"
+    content="GHOTI MARKET Seller — পণ্য বিক্রি করুন অনলাইনে"
+  >
+
+  <meta
+    property="og:description"
+    content="GHOTI MARKET-এ Seller Account তৈরি করে নিজের পণ্য অনলাইনে বিক্রি শুরু করুন।"
+  >
+
+  <meta
+    property="og:image"
+    content="https://seller.ghotimarket.com/preview.png"
+  >
+
+  <!-- Twitter -->
+
+  <meta
+    name="twitter:card"
+    content="summary_large_image"
+  >
+
+  <meta
+    name="twitter:title"
+    content="GHOTI MARKET Seller"
+  >
+
+  <meta
+    name="twitter:description"
+    content="GHOTI MARKET-এ Seller Account তৈরি করে অনলাইনে পণ্য বিক্রি শুরু করুন।"
+  >
+
+  <meta
+    name="twitter:image"
+    content="https://seller.ghotimarket.com/preview.png"
+  >
+
+  <!-- Fonts -->
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Preload -->
+
+  <link
+    rel="preload"
+    as="image"
+    href="https://seller.ghotimarket.com/loading.gif"
+  >
+
+  <style>
+
+    /* =========================================================
+       ROOT
+    ========================================================= */
+
+    :root{
+
+      --orange:#ff6a00;
+      --orange-dark:#e85f00;
+      --orange-light:#fff1e6;
+
+      --black:#101828;
+      --text:#172033;
+      --muted:#667085;
+
+      --white:#ffffff;
+
+      --green:#16a34a;
+
+      --border:#f2dfd1;
+
+      --cream:#fff9f4;
+
+      --shadow:
+        0 25px 70px rgba(255,106,0,.12);
+
+      --radius:24px;
+
+    }
+
+
+    /* =========================================================
+       RESET
+    ========================================================= */
+
+    *,
+    *::before,
+    *::after{
+      box-sizing:border-box;
+    }
+
+
+    html{
+      scroll-behavior:smooth;
+      width:100%;
+      overflow-x:hidden;
+    }
+
+
+    body{
+
+      margin:0;
+
+      width:100%;
+      max-width:100%;
+
+      overflow-x:hidden;
+
+      font-family:
+        "Hind Siliguri",
+        sans-serif;
+
+      color:var(--text);
+
+      background:#fff;
+
+      line-height:1.7;
+
+    }
+
+
+    body.loading{
+      overflow:hidden;
+    }
+
+
+    img{
+      display:block;
+      max-width:100%;
+    }
+
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+
+    button{
+      font-family:inherit;
+    }
+
+
+    section{
+      width:100%;
+    }
+
+
+    .container{
+
+      width:
+        min(
+          calc(100% - 40px),
+          1180px
+        );
+
+      margin-left:auto;
+      margin-right:auto;
+
+    }
+
+
+    /* =========================================================
+       LOADING SCREEN
+    ========================================================= */
+
+    #loadingScreen{
+
+      position:fixed;
+
+      inset:0;
+
+      z-index:999999;
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:center;
+
+      flex-direction:column;
+
+      width:100vw;
+      height:100dvh;
+
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(255,106,0,.10),
+          transparent 42%
+        ),
+        #ffffff;
+
+      transition:
+        opacity .4s ease,
+        visibility .4s ease;
+
+    }
+
+
+    #loadingScreen.hide{
+
+      opacity:0;
+
+      visibility:hidden;
+
+      pointer-events:none;
+
+    }
+
+
+    .loader-logo{
+
+      width:78px;
+      height:78px;
+
+      object-fit:contain;
+
+      border-radius:20px;
+
+      margin-bottom:18px;
+
+      box-shadow:
+        0 18px 50px
+        rgba(255,106,0,.18);
+
+    }
+
+
+    .loader-gif{
+
+      width:70px;
+      height:70px;
+
+      object-fit:contain;
+
+    }
+
+
+    .loader-text{
+
+      margin-top:14px;
+
+      color:var(--muted);
+
+      font-size:15px;
+
+      font-weight:600;
+
+    }
+
+
+    /* =========================================================
+       WEBSITE HIDDEN DURING AUTH CHECK
+    ========================================================= */
+
+    #website{
+      visibility:hidden;
+      width:100%;
+    }
+
+
+    /* =========================================================
+       HEADER
+    ========================================================= */
+
+    header{
+
+      position:fixed;
+
+      left:0;
+      right:0;
+      top:0;
+
+      z-index:9000;
+
+      width:100%;
+
+      background:
+        rgba(255,255,255,.90);
+
+      backdrop-filter:
+        blur(18px);
+
+      -webkit-backdrop-filter:
+        blur(18px);
+
+      border-bottom:
+        1px solid
+        rgba(255,106,0,.10);
+
+    }
+
+
+    .nav{
+
+      min-height:76px;
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:space-between;
+
+      gap:18px;
+
+    }
+
+
+    .brand{
+
+      display:flex;
+
+      align-items:center;
+
+      gap:10px;
+
+      min-width:0;
+
+      flex-shrink:1;
+
+    }
+
+
+    .brand img{
+
+      width:46px;
+      height:46px;
+
+      flex-shrink:0;
+
+      object-fit:contain;
+
+      border-radius:13px;
+
+      box-shadow:
+        0 8px 24px
+        rgba(255,106,0,.15);
+
+    }
+
+
+    .brand-name{
+
+      font-size:19px;
+
+      font-weight:700;
+
+      white-space:nowrap;
+
+      color:var(--black);
+
+    }
+
+
+    .nav-links{
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:center;
+
+      gap:27px;
+
+      flex:1;
+
+    }
+
+
+    .nav-links a{
+
+      color:#475467;
+
+      font-size:15px;
+
+      font-weight:600;
+
+      white-space:nowrap;
+
+      transition:.2s ease;
+
+    }
+
+
+    .nav-links a:hover{
+      color:var(--orange);
+    }
+
+
+    .nav-actions{
+
+      display:flex;
+
+      align-items:center;
+
+      gap:8px;
+
+      flex-shrink:0;
+
+    }
+
+
+    /* =========================================================
+       BUTTONS
+    ========================================================= */
+
+    .btn{
+
+      min-height:46px;
+
+      padding:
+        0
+        18px;
+
+      border-radius:13px;
+
+      border:0;
+
+      display:inline-flex;
+
+      align-items:center;
+
+      justify-content:center;
+
+      gap:8px;
+
+      font-size:15px;
+
+      font-weight:700;
+
+      cursor:pointer;
+
+      white-space:nowrap;
+
+      transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+
+    }
+
+
+    .btn-primary{
+
+      color:#fff;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ff6500,
+          #ff8a18
+        );
+
+      box-shadow:
+        0 10px 26px
+        rgba(255,106,0,.22);
+
+    }
+
+
+    .btn-primary:hover{
+
+      transform:translateY(-2px);
+
+      box-shadow:
+        0 16px 34px
+        rgba(255,106,0,.30);
+
+    }
+
+
+    .btn-outline{
+
+      color:var(--orange);
+
+      background:#fff;
+
+      border:
+        1.5px solid
+        #ffc49f;
+
+    }
+
+
+    .btn-outline:hover{
+
+      background:#fff5ed;
+
+      transform:translateY(-2px);
+
+    }
+
+
+    /* =========================================================
+       MOBILE MENU BUTTON
+    ========================================================= */
+
+    .mobile-menu-button{
+
+      display:none;
+
+      width:44px;
+      height:44px;
+
+      padding:0;
+
+      align-items:center;
+      justify-content:center;
+
+      border:
+        1px solid
+        #ffd1b5;
+
+      border-radius:12px;
+
+      background:#fff;
+
+      color:var(--orange);
+
+      cursor:pointer;
+
+      flex-shrink:0;
+
+    }
+
+
+    .mobile-menu{
+
+      display:none;
+
+      position:absolute;
+
+      top:74px;
+
+      left:15px;
+      right:15px;
+
+      padding:10px;
+
+      background:#fff;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:18px;
+
+      box-shadow:
+        0 20px 55px
+        rgba(0,0,0,.12);
+
+    }
+
+
+    .mobile-menu.open{
+      display:block;
+    }
+
+
+    .mobile-menu a{
+
+      display:block;
+
+      padding:12px 14px;
+
+      border-radius:11px;
+
+      color:#475467;
+
+      font-weight:600;
+
+    }
+
+
+    .mobile-menu a:hover{
+
+      background:#fff4eb;
+
+      color:var(--orange);
+
+    }
+
+
+    /* =========================================================
+       HERO
+    ========================================================= */
+
+    .hero{
+
+      position:relative;
+
+      width:100%;
+
+      overflow:hidden;
+
+      padding:
+        155px
+        0
+        90px;
+
+      background:
+
+        radial-gradient(
+          circle at 85% 15%,
+          rgba(255,106,0,.16),
+          transparent 30%
+        ),
+
+        radial-gradient(
+          circle at 5% 80%,
+          rgba(255,106,0,.08),
+          transparent 28%
+        ),
+
+        linear-gradient(
+          180deg,
+          #fff8f2,
+          #fff
+        );
+
+    }
+
+
+    .hero-grid{
+
+      display:grid;
+
+      grid-template-columns:
+        minmax(0,1fr)
+        minmax(0,1fr);
+
+      align-items:center;
+
+      gap:55px;
+
+    }
+
+
+    .hero-content{
+
+      width:100%;
+
+      min-width:0;
+
+    }
+
+
+    .badge{
+
+      display:inline-flex;
+
+      align-items:center;
+
+      gap:9px;
+
+      max-width:100%;
+
+      padding:
+        7px
+        14px;
+
+      border-radius:999px;
+
+      background:#fff0e5;
+
+      border:
+        1px solid
+        #ffd6bd;
+
+      color:var(--orange);
+
+      font-size:14px;
+
+      font-weight:700;
+
+      margin-bottom:20px;
+
+    }
+
+
+    .badge-dot{
+
+      width:8px;
+      height:8px;
+
+      flex-shrink:0;
+
+      border-radius:50%;
+
+      background:var(--orange);
+
+      box-shadow:
+        0 0 0 5px
+        rgba(255,106,0,.10);
+
+    }
+
+
+    .hero h1{
+
+      margin:
+        0
+        0
+        20px;
+
+      max-width:650px;
+
+      font-size:
+        clamp(
+          40px,
+          5vw,
+          66px
+        );
+
+      line-height:1.12;
+
+      letter-spacing:-1.4px;
+
+      overflow-wrap:anywhere;
+
+    }
+
+
+    .hero h1 span{
+
+      display:block;
+
+      color:var(--orange);
+
+    }
+
+
+    .hero-description{
+
+      max-width:620px;
+
+      margin:
+        0
+        0
+        27px;
+
+      color:var(--muted);
+
+      font-size:18px;
+
+      overflow-wrap:anywhere;
+
+    }
+
+
+    .hero-actions{
+
+      width:100%;
+
+      display:flex;
+
+      flex-wrap:wrap;
+
+      gap:10px;
+
+    }
+
+
+    .hero-note{
+
+      display:flex;
+
+      align-items:flex-start;
+
+      gap:8px;
+
+      margin-top:20px;
+
+      color:#667085;
+
+      font-size:14px;
+
+      overflow-wrap:anywhere;
+
+    }
+
+
+    .hero-note svg{
+
+      flex-shrink:0;
+
+      color:var(--green);
+
+      margin-top:3px;
+
+    }
+
+
+    /* =========================================================
+       PREVIEW
+    ========================================================= */
+
+    .preview-area{
+
+      position:relative;
+
+      width:100%;
+
+      min-width:0;
+
+      padding:14px;
+
+    }
+
+
+    .preview-glow{
+
+      position:absolute;
+
+      left:12%;
+      top:12%;
+
+      width:76%;
+      height:76%;
+
+      border-radius:50%;
+
+      background:
+        rgba(255,106,0,.18);
+
+      filter:blur(55px);
+
+    }
+
+
+    .preview-card{
+
+      position:relative;
+
+      z-index:2;
+
+      width:100%;
+
+      min-width:0;
+
+      padding:13px;
+
+      background:#fff;
+
+      border:
+        1px solid
+        rgba(255,255,255,.95);
+
+      border-radius:26px;
+
+      box-shadow:
+        0 30px 80px
+        rgba(255,106,0,.14),
+
+        0 10px 35px
+        rgba(0,0,0,.07);
+
+    }
+
+
+    .preview-header{
+
+      width:100%;
+
+      min-width:0;
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:space-between;
+
+      gap:10px;
+
+      padding:
+        4px
+        4px
+        13px;
+
+    }
+
+
+    .preview-title{
+
+      display:flex;
+
+      align-items:center;
+
+      gap:9px;
+
+      min-width:0;
+
+      color:#344054;
+
+      font-size:14px;
+
+      font-weight:700;
+
+    }
+
+
+    .preview-title span:last-child{
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+
+    .preview-dot{
+
+      width:10px;
+      height:10px;
+
+      flex-shrink:0;
+
+      border-radius:50%;
+
+      background:var(--orange);
+
+      box-shadow:
+        0 0 0 5px
+        #fff0e4;
+
+    }
+
+
+    .preview-status{
+
+      flex-shrink:0;
+
+      padding:
+        4px
+        9px;
+
+      border-radius:999px;
+
+      background:#ecfdf3;
+
+      color:#15803d;
+
+      border:
+        1px solid
+        #bbf7d0;
+
+      font-size:11px;
+
+      font-weight:700;
+
+    }
+
+
+    /*
+      IMPORTANT
+
+      Preview image is EXACTLY 1200 × 630 ratio.
+
+      The wrapper controls the ratio.
+      The image fills the wrapper.
+    */
+
+    .preview-media{
+
+      position:relative;
+
+      width:100%;
+
+      aspect-ratio:
+        1200 / 630;
+
+      overflow:hidden;
+
+      border-radius:19px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #fff5ed,
+          #ffe9d8
+        );
+
+    }
+
+
+    .preview-media img{
+
+      position:absolute;
+
+      inset:0;
+
+      width:100%;
+
+      height:100%;
+
+      display:block;
+
+      object-fit:cover;
+
+      object-position:center;
+
+    }
+
+
+    /*
+      যদি preview.png load না হয়,
+      তাহলে broken-image icon/alt text দিয়ে
+      layout আর ভাঙবে না।
+    */
+
+    .preview-media img.broken{
+      display:none;
+    }
+
+
+    .preview-fallback{
+
+      position:absolute;
+
+      inset:0;
+
+      display:none;
+
+      align-items:center;
+
+      justify-content:center;
+
+      flex-direction:column;
+
+      text-align:center;
+
+      padding:20px;
+
+      color:#98a2b3;
+
+    }
+
+
+    .preview-fallback.show{
+      display:flex;
+    }
+
+
+    .preview-fallback strong{
+
+      color:#667085;
+
+      font-size:17px;
+
+      margin-bottom:3px;
+
+    }
+
+
+    .preview-fallback span{
+
+      font-size:13px;
+
+    }
+
+
+    .preview-bottom{
+
+      display:grid;
+
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap:9px;
+
+      margin-top:10px;
+
+    }
+
+
+    .preview-mini{
+
+      min-width:0;
+
+      padding:
+        9px
+        11px;
+
+      border-radius:13px;
+
+      background:#fff8f2;
+
+      border:
+        1px solid
+        #ffe2cd;
+
+      color:#667085;
+
+      font-size:12px;
+
+      overflow:hidden;
+
+    }
+
+
+    .preview-mini strong{
+
+      display:block;
+
+      color:#172033;
+
+      font-size:14px;
+
+      white-space:nowrap;
+
+      overflow:hidden;
+
+      text-overflow:ellipsis;
+
+    }
+
+
+    /* =========================================================
+       FLOATING LABELS
+    ========================================================= */
+
+    .floating{
+
+      position:absolute;
+
+      z-index:5;
+
+      display:flex;
+
+      align-items:center;
+
+      gap:8px;
+
+      padding:
+        9px
+        13px;
+
+      background:
+        rgba(255,255,255,.96);
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:13px;
+
+      box-shadow:
+        0 15px 35px
+        rgba(0,0,0,.10);
+
+      color:#344054;
+
+      font-size:13px;
+
+      font-weight:700;
+
+    }
+
+
+    .floating svg{
+      color:var(--green);
+      flex-shrink:0;
+    }
+
+
+    .float-one{
+
+      left:-2px;
+      bottom:45px;
+
+    }
+
+
+    .float-two{
+
+      right:-2px;
+      top:35px;
+
+    }
+
+
+    /* =========================================================
+       COMMON SECTIONS
+    ========================================================= */
+
+    section:not(.hero){
+
+      padding:
+        85px
+        0;
+
+    }
+
+
+    .section-head{
+
+      max-width:720px;
+
+      margin:
+        0
+        auto
+        42px;
+
+      text-align:center;
+
+    }
+
+
+    .section-head h2{
+
+      margin:
+        0
+        0
+        10px;
+
+      font-size:
+        clamp(
+          30px,
+          4vw,
+          44px
+        );
+
+      line-height:1.25;
+
+      letter-spacing:-.6px;
+
+    }
+
+
+    .section-head p{
+
+      margin:0;
+
+      color:var(--muted);
+
+      font-size:16px;
+
+    }
+
+
+    /* =========================================================
+       STEPS
+    ========================================================= */
+
+    .steps-section{
+
+      background:#fff9f4;
+
+    }
+
+
+    .step-grid{
+
+      display:grid;
+
+      grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+      gap:20px;
+
+    }
+
+
+    .step-card{
+
+      position:relative;
+
+      min-width:0;
+
+      padding:29px;
+
+      background:#fff;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:22px;
+
+      box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.035);
+
+      transition:.25s ease;
+
+    }
+
+
+    .step-card:hover{
+
+      transform:translateY(-6px);
+
+      border-color:#ffc7a2;
+
+      box-shadow:
+        0 20px 50px
+        rgba(255,106,0,.09);
+
+    }
+
+
+    .step-number{
+
+      position:absolute;
+
+      top:18px;
+      right:20px;
+
+      color:#ffd9c2;
+
+      font-size:30px;
+
+      font-weight:700;
+
+    }
+
+
+    .icon{
+
+      width:56px;
+      height:56px;
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:center;
+
+      margin-bottom:17px;
+
+      border-radius:16px;
+
+      background:#fff0e4;
+
+      color:var(--orange);
+
+    }
+
+
+    .icon svg{
+
+      width:27px;
+      height:27px;
+
+    }
+
+
+    .step-card h3{
+
+      margin:
+        0
+        0
+        6px;
+
+      font-size:20px;
+
+    }
+
+
+    .step-card p{
+
+      margin:0;
+
+      color:var(--muted);
+
+    }
+
+
+    /* =========================================================
+       VIDEO
+    ========================================================= */
+
+    .video-section{
+
+      color:#fff;
+
+      background:#101828;
+
+    }
+
+
+    .video-section .section-head p{
+      color:#aeb7c6;
+    }
+
+
+    .video-wrapper{
+
+      width:100%;
+
+      max-width:920px;
+
+      margin:auto;
+
+      padding:8px;
+
+      border-radius:25px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ff6500,
+          #ff9a3c
+        );
+
+      box-shadow:
+        0 30px 80px
+        rgba(0,0,0,.30);
+
+    }
+
+
+    .video-inner{
+
+      position:relative;
+
+      width:100%;
+
+      aspect-ratio:16/9;
+
+      overflow:hidden;
+
+      border-radius:18px;
+
+      background:#000;
+
+    }
+
+
+    .video-inner iframe{
+
+      position:absolute;
+
+      inset:0;
+
+      width:100%;
+      height:100%;
+
+      border:0;
+
+    }
+
+
+    /* =========================================================
+       FEATURES
+    ========================================================= */
+
+    .feature-grid{
+
+      display:grid;
+
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap:18px;
+
+    }
+
+
+    .feature{
+
+      min-width:0;
+
+      display:flex;
+
+      align-items:flex-start;
+
+      gap:16px;
+
+      padding:24px;
+
+      background:#fff;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:21px;
+
+      transition:.25s ease;
+
+    }
+
+
+    .feature:hover{
+
+      transform:translateY(-4px);
+
+      border-color:#ffc7a2;
+
+      box-shadow:
+        0 18px 45px
+        rgba(255,106,0,.08);
+
+    }
+
+
+    .feature .icon{
+
+      flex-shrink:0;
+
+      margin:0;
+
+    }
+
+
+    .feature h3{
+
+      margin:
+        0
+        0
+        5px;
+
+      font-size:19px;
+
+    }
+
+
+    .feature p{
+
+      margin:0;
+
+      color:var(--muted);
+
+    }
+
+
+    /* =========================================================
+       VERIFY
+    ========================================================= */
+
+    .verify-section{
+
+      background:
+        linear-gradient(
+          135deg,
+          #fff7f0,
+          #fff
+        );
+
+    }
+
+
+    .verify-box{
+
+      display:grid;
+
+      grid-template-columns:
+        minmax(0,1.1fr)
+        minmax(0,.9fr);
+
+      align-items:center;
+
+      gap:40px;
+
+      padding:44px;
+
+      background:#fff;
+
+      border:
+        1px solid
+        #ffe0ca;
+
+      border-radius:28px;
+
+      box-shadow:var(--shadow);
+
+    }
+
+
+    .verify-box h2{
+
+      margin:
+        0
+        13px;
+
+      font-size:
+        clamp(
+          30px,
+          4vw,
+          42px
+        );
+
+      line-height:1.25;
+
+    }
+
+
+    .verify-box > div > p{
+
+      color:var(--muted);
+
+      margin:
+        0
+        20px;
+
+    }
+
+
+    .check-list{
+
+      display:grid;
+
+      gap:10px;
+
+    }
+
+
+    .check{
+
+      display:flex;
+
+      align-items:flex-start;
+
+      gap:9px;
+
+      font-weight:600;
+
+    }
+
+
+    .check svg{
+
+      flex-shrink:0;
+
+      margin-top:5px;
+
+      color:var(--green);
+
+    }
+
+
+    .legal-card{
+
+      min-width:0;
+
+      padding:26px;
+
+      border-radius:21px;
+
+      background:#fff8f2;
+
+      border:
+        1px solid
+        #ffe0ca;
+
+    }
+
+
+    .legal-card h3{
+
+      margin:
+        0
+        7px;
+
+      font-size:21px;
+
+    }
+
+
+    .legal-card p{
+
+      margin:
+        0
+        16px;
+
+      color:var(--muted);
+
+    }
+
+
+    .legal-links{
+
+      display:flex;
+
+      flex-wrap:wrap;
+
+      gap:8px;
+
+    }
+
+
+    .legal-links a{
+
+      padding:
+        8px
+        11px;
+
+      border-radius:9px;
+
+      background:#fff;
+
+      border:
+        1px solid
+        #ffd2b2;
+
+      color:var(--orange);
+
+      font-size:13px;
+
+      font-weight:700;
+
+    }
+
+
+    /* =========================================================
+       CTA
+    ========================================================= */
+
+    .cta-section{
+
+      padding-top:20px !important;
+
+    }
+
+
+    .cta-box{
+
+      position:relative;
+
+      overflow:hidden;
+
+      padding:
+        70px
+        25px;
+
+      text-align:center;
+
+      color:#fff;
+
+      border-radius:30px;
+
+      background:
+        radial-gradient(
+          circle at 15% 20%,
+          rgba(255,255,255,.15),
+          transparent 25%
+        ),
+
+        linear-gradient(
+          135deg,
+          #ff6200,
+          #ff9b35
+        );
+
+      box-shadow:
+        0 25px 70px
+        rgba(255,106,0,.23);
+
+    }
+
+
+    .cta-box h2{
+
+      position:relative;
+      z-index:2;
+
+      margin:
+        0
+        10px;
+
+      font-size:
+        clamp(
+          31px,
+          4vw,
+          48px
+        );
+
+      line-height:1.2;
+
+    }
+
+
+    .cta-box p{
+
+      position:relative;
+      z-index:2;
+
+      max-width:650px;
+
+      margin:
+        0
+        auto
+        24px;
+
+      font-size:17px;
+
+    }
+
+
+    .cta-box .btn{
+
+      position:relative;
+      z-index:2;
+
+      color:var(--orange);
+
+      background:#fff;
+
+      box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.12);
+
+    }
+
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+
+    footer{
+
+      width:100%;
+
+      padding:
+        55px
+        0
+        22px;
+
+      color:#cbd5e1;
+
+      background:#0b1220;
+
+    }
+
+
+    .footer-grid{
+
+      display:grid;
+
+      grid-template-columns:
+        minmax(0,1.5fr)
+        minmax(0,1fr)
+        minmax(0,1fr);
+
+      gap:40px;
+
+    }
+
+
+    .footer-brand{
+
+      display:flex;
+
+      align-items:center;
+
+      gap:10px;
+
+      margin-bottom:12px;
+
+      color:#fff;
+
+      font-size:20px;
+
+      font-weight:700;
+
+    }
+
+
+    .footer-brand img{
+
+      width:43px;
+      height:43px;
+
+      border-radius:11px;
+
+      object-fit:contain;
+
+    }
+
+
+    .footer-description{
+
+      max-width:430px;
+
+      margin:0;
+
+      color:#98a2b3;
+
+    }
+
+
+    footer h3{
+
+      margin:
+        0
+        10px;
+
+      color:#fff;
+
+      font-size:17px;
+
+    }
+
+
+    footer a{
+
+      display:block;
+
+      margin:7px 0;
+
+      color:#cbd5e1;
+
+      font-size:14px;
+
+      transition:.2s;
+
+    }
+
+
+    footer a:hover{
+
+      color:#ff8a00;
+
+    }
+
+
+    .copyright{
+
+      margin-top:40px;
+
+      padding-top:18px;
+
+      border-top:
+        1px solid
+        rgba(255,255,255,.08);
+
+      text-align:center;
+
+      color:#98a2b3;
+
+      font-size:13px;
+
+    }
+
+
+    /* =========================================================
+       TABLET
+    ========================================================= */
+
+    @media(max-width:1000px){
+
+      .nav-links{
+        display:none;
+      }
+
+
+      .mobile-menu-button{
+        display:flex;
+      }
+
+
+      .hero-grid{
+
+        grid-template-columns:
+          minmax(0,1fr);
+
+        gap:40px;
+
+      }
+
+
+      .hero-content{
+
+        max-width:760px;
+
+        margin:auto;
+
+        text-align:center;
+
+      }
+
+
+      .badge{
+        margin-left:auto;
+        margin-right:auto;
+      }
+
+
+      .hero-description{
+        margin-left:auto;
+        margin-right:auto;
+      }
+
+
+      .hero-actions{
+        justify-content:center;
+      }
+
+
+      .hero-note{
+        justify-content:center;
+      }
+
+
+      .preview-area{
+
+        width:
+          min(
+            100%,
+            700px
+          );
+
+        margin:auto;
+
+      }
+
+
+      .step-grid{
+
+        grid-template-columns:
+          repeat(3,minmax(0,1fr));
+
+      }
+
+
+      .verify-box{
+
+        grid-template-columns:
+          minmax(0,1fr);
+
+      }
+
+
+      .footer-grid{
+
+        grid-template-columns:
+          repeat(2,minmax(0,1fr));
+
+      }
+
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media(max-width:700px){
+
+      .container{
+
+        width:
+          calc(100% - 28px);
+
+      }
+
+
+      .nav{
+
+        min-height:66px;
+
+        gap:7px;
+
+      }
+
+
+      .brand{
+
+        flex:1;
+
+        min-width:0;
+
+      }
+
+
+      .brand img{
+
+        width:40px;
+        height:40px;
+
+      }
+
+
+      .brand-name{
+
+        font-size:16px;
+
+        overflow:hidden;
+
+        text-overflow:ellipsis;
+
+      }
+
+
+      .nav-actions{
+
+        gap:6px;
+
+      }
+
+
+      .nav-actions .btn-outline{
+        display:none;
+      }
+
+
+      .nav-actions .btn-primary{
+
+        min-height:42px;
+
+        padding:
+          0
+          13px;
+
+        border-radius:11px;
+
+        font-size:13px;
+
+      }
+
+
+      .mobile-menu-button{
+
+        width:42px;
+        height:42px;
+
+      }
+
+
+      .hero{
+
+        padding:
+          112px
+          0
+          58px;
+
+      }
+
+
+      .hero-grid{
+
+        gap:35px;
+
+      }
+
+
+      .hero h1{
+
+        font-size:
+          clamp(
+            36px,
+            11vw,
+            48px
+          );
+
+        line-height:1.14;
+
+        letter-spacing:-.7px;
+
+      }
+
+
+      .hero-description{
+
+        font-size:16px;
+
+        line-height:1.75;
+
+      }
+
+
+      .hero-actions{
+
+        flex-direction:column;
+
+        width:100%;
+
+      }
+
+
+      .hero-actions .btn{
+
+        width:100%;
+
+        min-height:50px;
+
+      }
+
+
+      .hero-note{
+
+        justify-content:flex-start;
+
+        text-align:left;
+
+        font-size:13px;
+
+      }
+
+
+      .preview-area{
+
+        padding:0;
+
+      }
+
+
+      .preview-card{
+
+        padding:9px;
+
+        border-radius:21px;
+
+      }
+
+
+      .preview-header{
+
+        padding:
+          4px
+          3px
+          11px;
+
+      }
+
+
+      .preview-title{
+
+        font-size:12px;
+
+      }
+
+
+      .preview-status{
+
+        font-size:9px;
+
+        padding:
+          3px
+          7px;
+
+      }
+
+
+      .preview-media{
+
+        border-radius:15px;
+
+        /*
+          ALWAYS 1200:630
+          ratio maintained on mobile
+        */
+
+        aspect-ratio:
+          1200 / 630;
+
+      }
+
+
+      .preview-bottom{
+
+        grid-template-columns:
+          repeat(2,minmax(0,1fr));
+
+        gap:6px;
+
+      }
+
+
+      .preview-mini{
+
+        padding:
+          8px;
+
+        font-size:10px;
+
+      }
+
+
+      .preview-mini strong{
+
+        font-size:12px;
+
+      }
+
+
+      .floating{
+
+        display:none;
+
+      }
+
+
+      section:not(.hero){
+
+        padding:
+          60px
+          0;
+
+      }
+
+
+      .section-head{
+
+        margin-bottom:30px;
+
+      }
+
+
+      .section-head h2{
+
+        font-size:29px;
+
+        line-height:1.3;
+
+      }
+
+
+      .section-head p{
+
+        font-size:15px;
+
+      }
+
+
+      .step-grid{
+
+        grid-template-columns:
+          minmax(0,1fr);
+
+        gap:13px;
+
+      }
+
+
+      .step-card{
+
+        padding:23px;
+
+        border-radius:19px;
+
+      }
+
+
+      .feature-grid{
+
+        grid-template-columns:
+          minmax(0,1fr);
+
+        gap:13px;
+
+      }
+
+
+      .feature{
+
+        padding:20px;
+
+        gap:13px;
+
+        border-radius:18px;
+
+      }
+
+
+      .feature .icon{
+
+        width:50px;
+        height:50px;
+
+        border-radius:14px;
+
+      }
+
+
+      .feature h3{
+
+        font-size:18px;
+
+      }
+
+
+      .feature p{
+
+        font-size:14px;
+
+      }
+
+
+      .verify-box{
+
+        padding:22px;
+
+        border-radius:22px;
+
+        gap:25px;
+
+      }
+
+
+      .verify-box h2{
+
+        font-size:29px;
+
+      }
+
+
+      .legal-card{
+
+        padding:20px;
+
+      }
+
+
+      .cta-section{
+
+        padding:
+          15px
+          0
+          60px !important;
+
+      }
+
+
+      .cta-box{
+
+        padding:
+          50px
+          18px;
+
+        border-radius:23px;
+
+      }
+
+
+      .cta-box h2{
+
+        font-size:30px;
+
+      }
+
+
+      .cta-box p{
+
+        font-size:15px;
+
+      }
+
+
+      .cta-box .btn{
+
+        width:100%;
+
+      }
+
+
+      footer{
+
+        padding-top:45px;
+
+      }
+
+
+      .footer-grid{
+
+        grid-template-columns:
+          minmax(0,1fr);
+
+        gap:28px;
+
+      }
+
+
+      .copyright{
+
+        margin-top:32px;
+
+      }
+
+    }
+
+
+    /* =========================================================
+       VERY SMALL PHONE
+    ========================================================= */
+
+    @media(max-width:380px){
+
+      .container{
+
+        width:
+          calc(100% - 22px);
+
+      }
+
+
+      .brand-name{
+
+        display:none;
+
+      }
+
+
+      .nav-actions .btn-primary{
+
+        padding:
+          0
+          10px;
+
+        font-size:12px;
+
+      }
+
+
+      .hero h1{
+
+        font-size:34px;
+
+      }
+
+
+      .badge{
+
+        font-size:12px;
+
+        padding:
+          6px
+          11px;
+
+      }
+
+
+      .preview-card{
+
+        padding:7px;
+
+      }
+
+
+      .preview-title{
+
+        font-size:11px;
+
+      }
+
+
+      .preview-status{
+
+        display:none;
+
+      }
+
+
+      .preview-mini{
+
+        padding:7px;
+
+        font-size:9px;
+
+      }
+
+
+      .preview-mini strong{
+
+        font-size:11px;
+
+      }
+
+    }
+
+
+    /* =========================================================
+       ACCESSIBILITY
+    ========================================================= */
+
+    @media(prefers-reduced-motion:reduce){
+
+      *,
+      *::before,
+      *::after{
+
+        scroll-behavior:auto !important;
+
+        transition:none !important;
+
+        animation:none !important;
+
+      }
+
+    }
+
+  </style>
+
 </head>
-<body>
-    <div id="pageLoader">অপেক্ষা করুন...</div>
 
-    <div class="box">
-        <img src="https://seller.ghotimarket.com/logo.png" alt="Ghoti Market Seller Logo" class="logo-img" />
-        <h2>GHOTI MARKET</h2>
-        <p class="subtitle">Seller Login</p>
-        <div class="input-group">
-            <i class="fas fa-envelope"></i>
-            <input type="email" id="email" placeholder="আপনার ইমেইল" />
-        </div>
-        <div class="input-group">
-            <i class="fas fa-lock"></i>
-            <input type="password" id="pass" placeholder="পাসওয়ার্ড" />
-        </div>
-        <button id="loginBtn" class="main-btn">প্রবেশ করুন</button>
-        <button id="resetBtn" class="linkBtn">পাসওয়ার্ড ভুলে গেছেন?</button>
-        <a href="signup.html" style="text-decoration:none;">
-            <button class="main-btn" style="background:#27ae60;">সেলার একাউন্ট খুলুন</button>
+
+<body class="loading">
+
+
+  <!-- =========================================================
+       LOADING SCREEN
+  ========================================================= -->
+
+  <div id="loadingScreen">
+
+    <img
+      class="loader-logo"
+      src="https://seller.ghotimarket.com/logo.png"
+      alt="GHOTI MARKET"
+    >
+
+    <img
+      class="loader-gif"
+      src="https://seller.ghotimarket.com/loading.gif"
+      alt="Loading"
+    >
+
+    <div class="loader-text">
+      আপনার অ্যাকাউন্ট যাচাই করা হচ্ছে...
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       WEBSITE
+  ========================================================= -->
+
+  <div id="website">
+
+
+    <!-- =======================================================
+         HEADER
+    ======================================================= -->
+
+    <header>
+
+      <div class="container nav">
+
+
+        <a
+          href="https://ghotimarket.com"
+          class="brand"
+        >
+
+          <img
+            src="https://seller.ghotimarket.com/logo.png"
+            alt="GHOTI MARKET Logo"
+          >
+
+          <span class="brand-name">
+            GHOTI MARKET
+          </span>
+
         </a>
-    </div>
 
-    <!-- Custom Popup -->
-    <div class="popup-overlay" id="popupOverlay" onclick="closePopup()">
-        <div class="popup" id="popupBox" onclick="event.stopPropagation()">
-            <div class="popup-icon" id="popupIcon"></div>
-            <h2 id="popupTitle"></h2>
-            <p id="popupMsg"></p>
-            <button class="popup-btn" onclick="closePopup()">ঠিক আছে</button>
+
+        <nav class="nav-links">
+
+          <a href="#how">
+            কীভাবে কাজ করে
+          </a>
+
+          <a href="#video">
+            ভিডিও
+          </a>
+
+          <a href="#features">
+            সুবিধা
+          </a>
+
+          <a href="#verify">
+            নীতিমালা
+          </a>
+
+        </nav>
+
+
+        <div class="nav-actions">
+
+          <a
+            class="btn btn-outline"
+            href="https://seller.ghotimarket.com/login"
+          >
+            লগইন
+          </a>
+
+
+          <a
+            class="btn btn-primary"
+            href="https://seller.ghotimarket.com/signup"
+          >
+            সাইনআপ
+          </a>
+
+
+          <button
+            type="button"
+            class="mobile-menu-button"
+            id="mobileMenuButton"
+            aria-label="Menu"
+            aria-expanded="false"
+          >
+
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
+
+              <path d="M4 6h16"/>
+              <path d="M4 12h16"/>
+              <path d="M4 18h16"/>
+
+            </svg>
+
+          </button>
+
         </div>
-    </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+      </div>
 
-        const firebaseConfig = { apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", projectId: "ghotimarket", authDomain: "ghotimarket.firebaseapp.com" };
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
 
-        setPersistence(auth, browserLocalPersistence);
+      <!-- MOBILE MENU -->
 
-        function showPopup(type, title, msg) {
-            const popupBox = document.getElementById('popupBox');
-            popupBox.className = `popup ${type}`;
-            document.getElementById('popupIcon').innerHTML = 
-                type === 'success' ? '<i class="fas fa-check-circle"></i>' : 
-                type === 'warning' ? '<i class="fas fa-exclamation-triangle"></i>' : 
-                '<i class="fas fa-times-circle"></i>';
-            document.getElementById('popupTitle').innerText = title;
-            document.getElementById('popupMsg').innerText = msg;
-            document.getElementById('popupOverlay').style.display = 'flex';
+      <div
+        class="mobile-menu"
+        id="mobileMenu"
+      >
+
+        <a href="#how">
+          কীভাবে কাজ করে
+        </a>
+
+        <a href="#video">
+          Seller ভিডিও
+        </a>
+
+        <a href="#features">
+          সুবিধাসমূহ
+        </a>
+
+        <a href="#verify">
+          নীতিমালা
+        </a>
+
+        <a href="https://seller.ghotimarket.com/login">
+          Seller Login
+        </a>
+
+      </div>
+
+    </header>
+
+
+    <!-- =======================================================
+         MAIN
+    ======================================================= -->
+
+    <main>
+
+
+      <!-- =====================================================
+           HERO
+      ===================================================== -->
+
+      <section class="hero">
+
+        <div class="container hero-grid">
+
+
+          <div class="hero-content">
+
+
+            <div class="badge">
+
+              <span class="badge-dot"></span>
+
+              GHOTI MARKET Seller Platform
+
+            </div>
+
+
+            <h1>
+
+              আপনার পণ্য বিক্রি করুন
+
+              <span>
+                অনলাইনে
+              </span>
+
+            </h1>
+
+
+            <p class="hero-description">
+
+              GHOTI MARKET-এ Seller Account তৈরি করে
+              নিজের Shop Profile তৈরি করুন, পণ্য প্রকাশ করুন
+              এবং অনলাইনে ক্রেতাদের কাছে আপনার পণ্য পৌঁছে দিন।
+
+            </p>
+
+
+         <div class="hero-actions">
+
+  <!-- SIGNUP -->
+  <a
+    class="btn btn-primary"
+    href="https://seller.ghotimarket.com/signup"
+  >
+
+    সেলার একাউন্ট খুলুন
+
+    <svg
+      width="19"
+      height="19"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M5 12h14"/>
+      <path d="m13 6 6 6-6 6"/>
+    </svg>
+
+  </a>
+
+
+  <!-- LOGIN -->
+  <a
+    class="btn btn-outline"
+    href="https://seller.ghotimarket.com/login"
+  >
+
+    লগিন করুন
+
+    <svg
+      width="19"
+      height="19"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+      <path d="m10 17 5-5-5-5"/>
+      <path d="M15 12H3"/>
+    </svg>
+
+  </a>
+
+
+  <!-- VIDEO -->
+  <a
+    class="btn btn-outline"
+    href="#video"
+  >
+
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path d="M8 5v14l11-7L8 5z"/>
+    </svg>
+
+    আগে ভিডিও দেখুন
+
+  </a>
+
+</div>
+
+
+            <div class="hero-note">
+
+              <svg
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                />
+
+                <path d="m8 12 3 3 5-6"/>
+
+              </svg>
+
+              <span>
+                Seller Account তৈরির আগে প্রয়োজনীয় তথ্য জেনে নিন
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+          <!-- =================================================
+               PREVIEW
+          ================================================= -->
+
+          <div class="preview-area">
+
+
+            <div class="preview-glow"></div>
+
+
+            <div class="preview-card">
+
+
+              <div class="preview-header">
+
+                <div class="preview-title">
+
+                  <span class="preview-dot"></span>
+
+                  <span>
+                    Seller Platform
+                  </span>
+
+                </div>
+
+
+                <span class="preview-status">
+                  Active
+                </span>
+
+              </div>
+
+
+              <!--
+                EXACT IMAGE RATIO:
+                1200 × 630
+              -->
+
+              <div class="preview-media">
+
+
+                <img
+                  id="previewImage"
+                  src="https://seller.ghotimarket.com/preview.png"
+                  alt="GHOTI MARKET Seller Platform Preview"
+                  width="1200"
+                  height="630"
+                  loading="eager"
+                  decoding="async"
+                >
+
+
+                <div
+                  class="preview-fallback"
+                  id="previewFallback"
+                >
+
+                  <strong>
+                    GHOTI MARKET Seller
+                  </strong>
+
+                  <span>
+                    Preview image পাওয়া যাচ্ছে না
+                  </span>
+
+                </div>
+
+
+              </div>
+
+
+              <div class="preview-bottom">
+
+
+                <div class="preview-mini">
+
+                  <strong>
+                    Seller Profile
+                  </strong>
+
+                  নিজের Shop
+
+                </div>
+
+
+                <div class="preview-mini">
+
+                  <strong>
+                    Online Selling
+                  </strong>
+
+                  পণ্য বিক্রির সুবিধা
+
+                </div>
+
+
+              </div>
+
+
+            </div>
+
+
+            <div class="floating float-one">
+
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                />
+
+                <path d="m8 12 3 3 5-6"/>
+
+              </svg>
+
+              Seller Profile
+
+            </div>
+
+
+            <div class="floating float-two">
+
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                />
+
+                <path d="m8 12 3 3 5-6"/>
+
+              </svg>
+
+              Online Selling
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           HOW IT WORKS
+      ===================================================== -->
+
+      <section
+        class="steps-section"
+        id="how"
+      >
+
+        <div class="container">
+
+
+          <div class="section-head">
+
+            <h2>
+              Seller হিসেবে শুরু করবেন যেভাবে
+            </h2>
+
+            <p>
+              কয়েকটি সহজ ধাপে আপনার অনলাইন বিক্রির যাত্রা শুরু করুন।
+            </p>
+
+          </div>
+
+
+          <div class="step-grid">
+
+
+            <div class="step-card">
+
+              <span class="step-number">
+                01
+              </span>
+
+
+              <div class="icon">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+
+                  <path
+                    d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+                  />
+
+                  <circle
+                    cx="9"
+                    cy="7"
+                    r="4"
+                  />
+
+                  <path d="M19 8v6"/>
+                  <path d="M22 11h-6"/>
+
+                </svg>
+
+              </div>
+
+
+              <h3>
+                একাউন্ট তৈরি করুন
+              </h3>
+
+
+              <p>
+                প্রয়োজনীয় তথ্য দিয়ে আপনার GHOTI MARKET Seller Account তৈরি করুন।
+              </p>
+
+            </div>
+
+
+            <div class="step-card">
+
+              <span class="step-number">
+                02
+              </span>
+
+
+              <div class="icon">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+
+                  <path d="M3 7h18"/>
+                  <path d="M5 7l1-3h12l1 3"/>
+                  <path d="M5 7v13h14V7"/>
+                  <path d="M9 11h6"/>
+
+                </svg>
+
+              </div>
+
+
+              <h3>
+                Shop তৈরি করুন
+              </h3>
+
+
+              <p>
+                আপনার Shop-এর নাম, Logo, Banner ও প্রয়োজনীয় তথ্য যুক্ত করুন।
+              </p>
+
+            </div>
+
+
+            <div class="step-card">
+
+              <span class="step-number">
+                03
+              </span>
+
+
+              <div class="icon">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+
+                  <path d="M3 3h18l-2 13H5L3 3z"/>
+                  <path d="M5 16h12"/>
+                  <circle cx="8" cy="20" r="1"/>
+                  <circle cx="17" cy="20" r="1"/>
+
+                </svg>
+
+              </div>
+
+
+              <h3>
+                পণ্য বিক্রি শুরু করুন
+              </h3>
+
+
+              <p>
+                পণ্য প্রকাশ করে GHOTI MARKET-এর মাধ্যমে অনলাইনে বিক্রির কার্যক্রম শুরু করুন।
+              </p>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           VIDEO
+      ===================================================== -->
+
+      <section
+        class="video-section"
+        id="video"
+      >
+
+        <div class="container">
+
+
+          <div class="section-head">
+
+            <h2>
+              একাউন্ট খোলার আগে ভিডিওটি দেখুন
+            </h2>
+
+            <p>
+              Seller হিসেবে কীভাবে শুরু করবেন এবং প্ল্যাটফর্মটি কীভাবে ব্যবহার করবেন,
+              তা বুঝতে ভিডিওটি দেখুন।
+            </p>
+
+          </div>
+
+
+          <div class="video-wrapper">
+
+            <div class="video-inner">
+
+              <iframe
+                src="https://www.youtube.com/embed/t7AIDtW9cpk"
+                title="GHOTI MARKET Seller Guide"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           FEATURES
+      ===================================================== -->
+
+      <section id="features">
+
+        <div class="container">
+
+
+          <div class="section-head">
+
+            <h2>
+              Seller হিসেবে কী কী করতে পারবেন?
+            </h2>
+
+            <p>
+              আপনার অনলাইন ব্যবসা পরিচালনার প্রয়োজনীয় সুবিধাগুলো এক জায়গায়।
+            </p>
+
+          </div>
+
+
+          <div class="feature-grid">
+
+
+            <div class="feature">
+
+              <div class="icon">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+
+                  <rect
+                    x="3"
+                    y="3"
+                    width="18"
+                    height="18"
+                    rx="2"
+                  />
+
+                  <path d="M7 7h10"/>
+                  <path d="M7 11h10"/>
+                  <path d="M7 15h6"/>
+
+                </svg>
+
+              </div>
+
+
+              <div>
+
+                <h3>
+                  নিজের Shop Profile
+                </h3>
+
+                <p>
+                  আপনার ব্র্যান্ডের নামে নিজের Shop Profile তৈরি করুন।
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div class="feature">
+
+              <div class="icon">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+
+                  <path d="M3 3h18v14H3z"/>
+                  <path d="M8 21h8"/>
+                  <path d="M12 17v4"/>
+
+                </svg>
+
+              </div>
+
+
+              <div>
+
+                <h3>
+                  পণ্য প্রকাশ
+                </h3>
+
+                <p>
+                  পণ্যের ছবি, বিবরণ ও মূল্য দিয়ে আপনার পণ্য প্রকাশ করুন।
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div class="feature">
+
+              <div class="icon">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="9"
+                  />
+
+                  <path d="M3 12h18"/>
+                  <path d="M12 3c3 3 4 6 4 9s-1 6-4 9"/>
+
+                </svg>
+
+              </div>
+
+
+              <div>
+
+                <h3>
+                  অনলাইন উপস্থিতি
+                </h3>
+
+                <p>
+                  আপনার পণ্য GHOTI MARKET-এর অনলাইন মার্কেটপ্লেসে প্রদর্শন করুন।
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div class="feature">
+
+              <div class="icon">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+
+                  <path
+                    d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+                  />
+
+                </svg>
+
+              </div>
+
+
+              <div>
+
+                <h3>
+                  অর্ডার পরিচালনা
+                </h3>
+
+                <p>
+                  আপনার Shop-এর বিক্রয় কার্যক্রম ও অর্ডার পরিচালনা করুন।
+                </p>
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           VERIFY
+      ===================================================== -->
+
+      <section
+        class="verify-section"
+        id="verify"
+      >
+
+        <div class="container">
+
+
+          <div class="verify-box">
+
+
+            <div>
+
+              <div class="badge">
+                আগে যাচাই করুন
+              </div>
+
+
+              <h2>
+                একাউন্ট খোলার আগে সবকিছু জেনে নিন
+              </h2>
+
+
+              <p>
+                Seller Account তৈরি করার আগে GHOTI MARKET-এর
+                Terms & Conditions এবং Privacy Policy পড়ে নিন।
+              </p>
+
+
+              <div class="check-list">
+
+
+                <div class="check">
+
+                  <svg
+                    width="21"
+                    height="21"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="9"
+                    />
+
+                    <path d="m8 12 3 3 5-6"/>
+
+                  </svg>
+
+                  <span>
+                    Seller-এর দায়িত্ব ও নিয়মগুলো বুঝুন
+                  </span>
+
+                </div>
+
+
+                <div class="check">
+
+                  <svg
+                    width="21"
+                    height="21"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="9"
+                    />
+
+                    <path d="m8 12 3 3 5-6"/>
+
+                  </svg>
+
+                  <span>
+                    Privacy Policy সম্পর্কে জানুন
+                  </span>
+
+                </div>
+
+
+                <div class="check">
+
+                  <svg
+                    width="21"
+                    height="21"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="9"
+                    />
+
+                    <path d="m8 12 3 3 5-6"/>
+
+                  </svg>
+
+                  <span>
+                    Seller Policy পড়ে তারপর একাউন্ট তৈরি করুন
+                  </span>
+
+                </div>
+
+
+              </div>
+
+            </div>
+
+
+            <div class="legal-card">
+
+              <h3>
+                গুরুত্বপূর্ণ নীতিমালা
+              </h3>
+
+
+              <p>
+                একাউন্ট তৈরি করার আগে নিচের পেজগুলো পড়ে নেওয়ার অনুরোধ করা হচ্ছে।
+              </p>
+
+
+              <div class="legal-links">
+
+                <a
+                  href="https://ghotimarket.com/termsandcondition"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Terms & Conditions
+                </a>
+
+
+                <a
+                  href="https://ghotimarket.com/privacy-policy"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Privacy Policy
+                </a>
+
+
+                <a href="#video">
+                  Seller Video
+                </a>
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           CTA
+      ===================================================== -->
+
+      <section class="cta-section">
+
+        <div class="container">
+
+
+          <div class="cta-box">
+
+            <h2>
+              Seller হিসেবে শুরু করতে প্রস্তুত?
+            </h2>
+
+
+            <p>
+              প্রয়োজনীয় তথ্য যাচাই করুন, ভিডিও দেখুন এবং প্রস্তুত থাকলে
+              GHOTI MARKET Seller Account তৈরি করুন।
+            </p>
+
+
+            <a
+              class="btn"
+              href="https://seller.ghotimarket.com/signup"
+            >
+
+              এখনই Seller Account খুলুন
+
+              <svg
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+
+                <path d="M5 12h14"/>
+                <path d="m13 6 6 6-6 6"/>
+
+              </svg>
+
+            </a>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+    </main>
+
+
+    <!-- =======================================================
+         FOOTER
+    ======================================================= -->
+
+    <footer>
+
+      <div class="container">
+
+
+        <div class="footer-grid">
+
+
+          <div>
+
+            <div class="footer-brand">
+
+              <img
+                src="https://seller.ghotimarket.com/logo.png"
+                alt="GHOTI MARKET"
+              >
+
+              <span>
+                GHOTI MARKET
+              </span>
+
+            </div>
+
+
+            <p class="footer-description">
+
+              GHOTI MARKET Seller Platform-এর মাধ্যমে আপনার
+              পণ্য অনলাইনে বিক্রির কার্যক্রম পরিচালনা করুন।
+
+            </p>
+
+          </div>
+
+
+          <div>
+
+            <h3>
+              দ্রুত লিংক
+            </h3>
+
+
+            <a
+              href="https://ghotimarket.com"
+              target="_blank"
+              rel="noopener"
+            >
+              GHOTI MARKET ভিজিট করুন
+            </a>
+
+
+            <a href="https://seller.ghotimarket.com/login">
+              Seller Login
+            </a>
+
+
+            <a href="https://seller.ghotimarket.com/signup">
+              Seller Signup
+            </a>
+
+          </div>
+
+
+          <div>
+
+            <h3>
+              আইনি তথ্য
+            </h3>
+
+
+            <a
+              href="https://ghotimarket.com/termsandcondition"
+              target="_blank"
+              rel="noopener"
+            >
+              Terms & Conditions
+            </a>
+
+
+            <a
+              href="https://ghotimarket.com/privacy-policy"
+              target="_blank"
+              rel="noopener"
+            >
+              Privacy Policy
+            </a>
+
+
+            <a href="#video">
+              Seller Guide Video
+            </a>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="copyright">
+
+          © 2026 GHOTI MARKET. সর্বস্বত্ব সংরক্ষিত।
+
+        </div>
+
+
+      </div>
+
+    </footer>
+
+
+  </div>
+
+
+  <!-- =========================================================
+       FIREBASE
+  ========================================================= -->
+
+  <script type="module">
+
+    import {
+      initializeApp
+    } from
+      "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+
+
+    import {
+      getAuth,
+      onAuthStateChanged
+    } from
+      "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+
+    import {
+      getFirestore,
+      doc,
+      getDoc
+    } from
+      "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+
+    /* =========================================================
+       FIREBASE CONFIG
+    ========================================================= */
+
+    const firebaseConfig = { 
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
+            authDomain: "ghotimarket.firebaseapp.com", 
+            projectId: "ghotimarket", 
+            storageBucket: "ghotimarket.firebasestorage.app", 
+            messagingSenderId: "481257644093", 
+            appId: "1:481257644093:web:0dfc3699d6b3c86afeca54" 
+        };
+
+
+    /* =========================================================
+       INITIALIZE
+    ========================================================= */
+
+    const app =
+      initializeApp(firebaseConfig);
+
+
+    const auth =
+      getAuth(app);
+
+
+    const db =
+      getFirestore(app);
+
+
+    /* =========================================================
+       ELEMENTS
+    ========================================================= */
+
+    const loadingScreen =
+      document.getElementById("loadingScreen");
+
+
+    const website =
+      document.getElementById("website");
+
+
+    /* =========================================================
+       SHOW WEBSITE
+    ========================================================= */
+
+    function showWebsite(){
+
+      website.style.visibility =
+        "visible";
+
+      requestAnimationFrame(() => {
+
+        loadingScreen.classList.add("hide");
+
+        document.body.classList.remove("loading");
+
+      });
+
+    }
+
+
+    /* =========================================================
+       REDIRECT
+    ========================================================= */
+
+    function redirectTo(path){
+
+      window.location.replace(path);
+
+    }
+
+
+    /* =========================================================
+       FIREBASE AUTH CHECK
+    ========================================================= */
+
+    onAuthStateChanged(
+  auth,
+  async (user) => {
+
+    try {
+
+      /*
+       * USER NOT LOGGED IN
+       *
+       * → Landing page দেখাবে
+       */
+
+      if (!user) {
+
+        showWebsite();
+
+        return;
+
+      }
+
+
+      /*
+       * USER LOGGED IN
+       *
+       * Check:
+       *
+       * users/{uid}
+       */
+
+      const userRef = doc(
+        db,
+        "users",
+        user.uid
+      );
+
+
+      const userSnapshot = await getDoc(
+        userRef
+      );
+
+
+      /*
+       * users/{uid} EXISTS
+       *
+       * → Dashboard
+       */
+
+      if (userSnapshot.exists()) {
+
+        redirectTo(
+          "/dashboard"
+        );
+
+        return;
+
+      }
+
+
+      /*
+       * USER LOGGED IN
+       * BUT users/{uid} DOES NOT EXIST
+       *
+       * → কোনো redirect হবে না
+       * → Landing page দেখাবে
+       */
+
+      showWebsite();
+
+    }
+
+
+    catch (error) {
+
+      console.error(
+        "Firebase authentication check failed:",
+        error
+      );
+
+
+      /*
+       * Firebase check করতে সমস্যা হলে
+       * Landing page দেখানো হবে।
+       */
+
+      showWebsite();
+
+    }
+
+  }
+);
+
+    /* =========================================================
+       PREVIEW IMAGE ERROR HANDLING
+    ========================================================= */
+
+    const previewImage =
+      document.getElementById(
+        "previewImage"
+      );
+
+
+    const previewFallback =
+      document.getElementById(
+        "previewFallback"
+      );
+
+
+    previewImage.addEventListener(
+      "error",
+      () => {
+
+        previewImage.classList.add(
+          "broken"
+        );
+
+        previewFallback.classList.add(
+          "show"
+        );
+
+      }
+    );
+
+
+    /* =========================================================
+       MOBILE MENU
+    ========================================================= */
+
+    const mobileMenuButton =
+      document.getElementById(
+        "mobileMenuButton"
+      );
+
+
+    const mobileMenu =
+      document.getElementById(
+        "mobileMenu"
+      );
+
+
+    mobileMenuButton.addEventListener(
+      "click",
+      () => {
+
+        const isOpen =
+          mobileMenu.classList.toggle(
+            "open"
+          );
+
+
+        mobileMenuButton.setAttribute(
+          "aria-expanded",
+          isOpen ? "true" : "false"
+        );
+
+      }
+    );
+
+
+    /* =========================================================
+       CLOSE MOBILE MENU
+    ========================================================= */
+
+    mobileMenu
+      .querySelectorAll("a")
+      .forEach((link) => {
+
+        link.addEventListener(
+          "click",
+          () => {
+
+            mobileMenu.classList.remove(
+              "open"
+            );
+
+            mobileMenuButton.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+
+          }
+        );
+
+      });
+
+
+    /* =========================================================
+       CLOSE MENU WHEN CLICKING OUTSIDE
+    ========================================================= */
+
+    document.addEventListener(
+      "click",
+      (event) => {
+
+        if(
+          !mobileMenu.contains(
+            event.target
+          ) &&
+          !mobileMenuButton.contains(
+            event.target
+          )
+        ){
+
+          mobileMenu.classList.remove(
+            "open"
+          );
+
+          mobileMenuButton.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
         }
-        
-        window.closePopup = function() {
-            document.getElementById('popupOverlay').style.display = 'none';
-        }
 
-        // ইউজার চেক
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                window.location.href = "dashboard.html";
-            } else {
-                document.getElementById('pageLoader').style.display = 'none';
-            }
-        });
+      }
+    );
 
-        // Login Button
-        document.getElementById('loginBtn').addEventListener('click', async () => {
-            const e = document.getElementById('email').value.trim();
-            const p = document.getElementById('pass').value;
-            if(!e || !p) {
-                showPopup("warning", "তথ্য দিন!", "ইমেইল এবং পাসওয়ার্ড উভয়ই দিন!");
-                return;
-            }
+  </script>
 
-            document.getElementById('loginBtn').disabled = true;
-            document.getElementById('loginBtn').innerText = "লগইন হচ্ছে...";
 
-            try {
-                await signInWithEmailAndPassword(auth, e, p);
-                showPopup("success", "স্বাগতম!", "লগইন সফল হয়েছে।");
-                setTimeout(() => { window.location.href = "dashboard.html"; }, 1500);
-            } catch (err) {
-                showPopup("error", "লগইন ব্যর্থ!", "ভুল ইমেইল অথবা পাসওয়ার্ড দিয়েছেন।");
-            } finally {
-                document.getElementById('loginBtn').disabled = false;
-                document.getElementById('loginBtn').innerText = "প্রবেশ করুন";
-            }
-        });
-
-        // Password Reset Button -> অন্য পেজে পাঠাবে
-        document.getElementById('resetBtn').addEventListener('click', () => {
-            window.location.href = "https://seller.ghotimarket.com/forgot-password"; // এখানে আপনার রিসেট পেজের লিংক
-        });
-    </script>
 </body>
 </html>
