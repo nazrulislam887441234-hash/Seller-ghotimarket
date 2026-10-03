@@ -1,960 +1,980 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Seller Dashboard | Ghoti Market</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* ===== CSS VARIABLES & RESET ===== */
-        :root {
-            --primary: #f85606;
-            --primary-dark: #d84300;
-            --primary-light: #fff0eb;
-            --bg: #f4f4f5;
-            --card: #ffffff;
-            --text-dark: #1f2937;
-            --text-muted: #6b7280;
-            --border: #e5e7eb;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 24px;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
+<!DOCTYPE html> 
+ <html lang="bn">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">  
+    <title>Seller Dashboard | Ghoti Market</title>  
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">  
+    <style>  
+        /* ===== CSS VARIABLES & RESET ===== */  
+        :root {  
+            --primary: #f85606;  
+            --primary-dark: #d84300;  
+            --primary-light: #fff0eb;  
+            --bg: #f4f4f5;  
+            --card: #ffffff;  
+            --text-dark: #1f2937;  
+            --text-muted: #6b7280;  
+            --border: #e5e7eb;  
+            --success: #10b981;  
+            --danger: #ef4444;  
+            --warning: #f59e0b;  
+            --radius-md: 12px;  
+            --radius-lg: 16px;  
+            --radius-xl: 24px;  
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);  
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);  
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);  
+        }  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; -webkit-tap-highlight-color: transparent; }  
+    body { background-color: var(--bg); color: var(--text-dark); padding-bottom: 90px; padding-bottom: calc(90px + env(safe-area-inset-bottom)); }  
+    button { cursor: pointer; outline: none; border: none; font-family: inherit; }  
+    a { text-decoration: none; color: inherit; }  
+    .hidden { display: none !important; }  
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg); color: var(--text-dark); padding-bottom: 90px; padding-bottom: calc(90px + env(safe-area-inset-bottom)); }
-        button { cursor: pointer; outline: none; border: none; font-family: inherit; }
-        a { text-decoration: none; color: inherit; }
-        .hidden { display: none !important; }
+    /* ===== HEADER ===== */  
+    .header { background: var(--card); padding: 16px 20px; padding-top: calc(16px + env(safe-area-inset-top)); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 40; box-shadow: var(--shadow-sm); gap: 10px; }  
+    .header-profile { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }  
+      
+    .header-avatar {   
+        width: 44px;   
+        height: 44px;   
+        min-width: 44px;   
+        border-radius: 50%;   
+        overflow: hidden;   
+        background: var(--primary-light);   
+        border: 2px solid rgba(248, 86, 6, 0.2);   
+        display: flex;   
+        align-items: center;   
+        justify-content: center;   
+        color: var(--primary);   
+        box-shadow: 0 3px 10px rgba(0,0,0,.08);   
+        cursor: pointer;  
+        padding: 0;  
+        transition: transform 0.2s ease;  
+        flex-shrink: 0;  
+    }  
+    .header-avatar:active { transform: scale(0.92); }  
+    .header-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }  
+      
+    .header-info { min-width: 0; flex: 1; }  
+    .header-info h2 { font-size: 17px; font-weight: 700; color: var(--text-dark); margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }  
+    .header-info p { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }  
+      
+    .header-actions { display: flex; gap: 8px; flex-shrink: 0; align-items: center; }  
+    .icon-btn { width: 38px; height: 38px; border-radius: 50%; background: var(--bg); display: flex; align-items: center; justify-content: center; color: var(--text-dark); transition: background 0.2s; position: relative; }  
+    .icon-btn:active { background: #e5e7eb; }  
 
-        /* ===== HEADER ===== */
-        .header { background: var(--card); padding: 16px 20px; padding-top: calc(16px + env(safe-area-inset-top)); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 40; box-shadow: var(--shadow-sm); gap: 10px; }
-        .header-profile { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
-        
-        .header-avatar { 
-            width: 44px; 
-            height: 44px; 
-            min-width: 44px; 
-            border-radius: 50%; 
-            overflow: hidden; 
-            background: var(--primary-light); 
-            border: 2px solid rgba(248, 86, 6, 0.2); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: var(--primary); 
-            box-shadow: 0 3px 10px rgba(0,0,0,.08); 
-            cursor: pointer;
-            padding: 0;
-            transition: transform 0.2s ease;
-            flex-shrink: 0;
-        }
-        .header-avatar:active { transform: scale(0.92); }
-        .header-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
-        
-        .header-info { min-width: 0; flex: 1; }
-        .header-info h2 { font-size: 17px; font-weight: 700; color: var(--text-dark); margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .header-info p { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        
-        .header-actions { display: flex; gap: 8px; flex-shrink: 0; align-items: center; }
-        .icon-btn { width: 38px; height: 38px; border-radius: 50%; background: var(--bg); display: flex; align-items: center; justify-content: center; color: var(--text-dark); transition: background 0.2s; position: relative; }
-        .icon-btn:active { background: #e5e7eb; }
+    /* NOTIFICATION BADGE & ANIMATION */  
+    .notification-badge {  
+        position: absolute;  
+        top: 8px;  
+        right: 8px;  
+        width: 9px;  
+        height: 9px;  
+        background: var(--danger);  
+        border-radius: 50%;  
+        border: 2px solid var(--card);  
+        animation: notificationPulse 1.5s infinite;  
+    }  
+    @keyframes notificationPulse {  
+        0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }  
+        50% { transform: scale(1.15); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }  
+    }  
 
-        /* NOTIFICATION BADGE & ANIMATION */
-        .notification-badge {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 9px;
-            height: 9px;
-            background: var(--danger);
-            border-radius: 50%;
-            border: 2px solid var(--card);
-            animation: notificationPulse 1.5s infinite;
-        }
-        @keyframes notificationPulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-            50% { transform: scale(1.15); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
-        }
+    @media (max-width: 360px) {  
+        .header { padding: 14px 15px; }  
+        .header-info h2 { font-size: 15px; }  
+    }  
 
-        @media (max-width: 360px) {
-            .header { padding: 14px 15px; }
-            .header-info h2 { font-size: 15px; }
-        }
+    /* ===== SHOP LINK BOX ===== */  
+    .shop-link-container { margin: 16px 20px 12px; padding: 12px 16px; background: var(--primary-light); border-radius: var(--radius-md); border: 1px dashed rgba(248, 86, 6, 0.3); display: flex; justify-content: space-between; align-items: center; }  
+    .shop-url { font-size: 14px; font-weight: 600; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%; }  
+    .copy-link-btn { background: var(--primary); color: white; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; display: flex; gap: 6px; align-items: center; }  
+    .copy-link-btn:active { background: var(--primary-dark); }  
+    .username-alert { margin: 16px 20px 12px; background: #fff3cd; color: #856404; padding: 12px 16px; border-radius: var(--radius-md); font-size: 14px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #ffeeba; }  
+    .username-btn { background: #856404; color: white; padding: 6px 12px; border-radius: 8px; font-size: 13px; }  
 
-        /* ===== SHOP LINK BOX ===== */
-        .shop-link-container { margin: 16px 20px 12px; padding: 12px 16px; background: var(--primary-light); border-radius: var(--radius-md); border: 1px dashed rgba(248, 86, 6, 0.3); display: flex; justify-content: space-between; align-items: center; }
-        .shop-url { font-size: 14px; font-weight: 600; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%; }
-        .copy-link-btn { background: var(--primary); color: white; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; display: flex; gap: 6px; align-items: center; }
-        .copy-link-btn:active { background: var(--primary-dark); }
-        .username-alert { margin: 16px 20px 12px; background: #fff3cd; color: #856404; padding: 12px 16px; border-radius: var(--radius-md); font-size: 14px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #ffeeba; }
-        .username-btn { background: #856404; color: white; padding: 6px 12px; border-radius: 8px; font-size: 13px; }
+    /* ===== BIKASH-STYLE BALANCE CARD ===== */  
+    .balance-card-container { margin: 16px 20px; }  
+    .balance-card {  
+        background: linear-gradient(135deg, var(--primary) 0%, #d84300 100%);  
+        color: white;  
+        border-radius: var(--radius-lg);  
+        padding: 16px 20px;  
+        box-shadow: 0 8px 20px rgba(248, 86, 6, 0.25);  
+        display: flex;  
+        align-items: center;  
+        justify-content: space-between;  
+        position: relative;  
+        overflow: hidden;  
+    }  
+    .balance-card::after {  
+        content: '';  
+        position: absolute;  
+        right: -20px;  
+        bottom: -20px;  
+        width: 100px;  
+        height: 100px;  
+        background: rgba(255, 255, 255, 0.08);  
+        border-radius: 50%;  
+        pointer-events: none;  
+    }  
+    .balance-info { display: flex; flex-direction: column; gap: 4px; }  
+    .balance-label { font-size: 13px; font-weight: 500; opacity: 0.95; display: flex; align-items: center; gap: 6px; }  
+    .balance-amount { font-size: 24px; font-weight: 700; letter-spacing: 0.5px; }  
+    .balance-toggle-btn {  
+        background: rgba(255, 255, 255, 0.2);  
+        border: 1px solid rgba(255, 255, 255, 0.35);  
+        color: white;  
+        padding: 8px 14px;  
+        border-radius: 20px;  
+        font-size: 13px;  
+        font-weight: 600;  
+        display: flex;  
+        align-items: center;  
+        gap: 6px;  
+        backdrop-filter: blur(4px);  
+        transition: all 0.2s ease;  
+        cursor: pointer;  
+        z-index: 1;  
+    }  
+    .balance-toggle-btn:active { transform: scale(0.95); background: rgba(255, 255, 255, 0.3); }  
 
-        /* ===== BIKASH-STYLE BALANCE CARD ===== */
-        .balance-card-container { margin: 16px 20px; }
-        .balance-card {
-            background: linear-gradient(135deg, var(--primary) 0%, #d84300 100%);
-            color: white;
-            border-radius: var(--radius-lg);
-            padding: 16px 20px;
-            box-shadow: 0 8px 20px rgba(248, 86, 6, 0.25);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-        }
-        .balance-card::after {
-            content: '';
-            position: absolute;
-            right: -20px;
-            bottom: -20px;
-            width: 100px;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-        .balance-info { display: flex; flex-direction: column; gap: 4px; }
-        .balance-label { font-size: 13px; font-weight: 500; opacity: 0.95; display: flex; align-items: center; gap: 6px; }
-        .balance-amount { font-size: 24px; font-weight: 700; letter-spacing: 0.5px; }
-        .balance-toggle-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            color: white;
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            backdrop-filter: blur(4px);
-            transition: all 0.2s ease;
-            cursor: pointer;
-            z-index: 1;
-        }
-        .balance-toggle-btn:active { transform: scale(0.95); background: rgba(255, 255, 255, 0.3); }
+    /* ===== STATS SECTION ===== */  
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 20px 20px; }  
+    .stat-card { background: var(--card); padding: 16px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 8px; }  
+    .stat-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }  
+    .stat-icon.orange { background: var(--primary-light); color: var(--primary); }  
+    .stat-icon.green { background: #dcfce7; color: var(--success); }  
+    .stat-value { font-size: 22px; font-weight: 700; color: var(--text-dark); }  
+    .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }  
 
-        /* ===== STATS SECTION ===== */
-        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 20px 20px; }
-        .stat-card { background: var(--card); padding: 16px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 8px; }
-        .stat-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-        .stat-icon.orange { background: var(--primary-light); color: var(--primary); }
-        .stat-icon.green { background: #dcfce7; color: var(--success); }
-        .stat-value { font-size: 22px; font-weight: 700; color: var(--text-dark); }
-        .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+    /* ===== QUICK ACTIONS ===== */  
+    .quick-actions { padding: 0 20px 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }  
+    .action-card { background: var(--card); padding: 16px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-dark); transition: transform 0.1s; border: 1px solid var(--border); }  
+    .action-card:active { transform: scale(0.97); }  
+    .action-card svg { width: 24px; height: 24px; color: var(--primary); flex-shrink: 0; }  
+    .action-card span { font-size: 14px; font-weight: 600; line-height: 1.2; }  
 
-        /* ===== QUICK ACTIONS ===== */
-        .quick-actions { padding: 0 20px 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .action-card { background: var(--card); padding: 16px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-dark); transition: transform 0.1s; border: 1px solid var(--border); }
-        .action-card:active { transform: scale(0.97); }
-        .action-card svg { width: 24px; height: 24px; color: var(--primary); flex-shrink: 0; }
-        .action-card span { font-size: 14px; font-weight: 600; line-height: 1.2; }
+    /* ===== BANNER SLIDER ===== */  
+    .seller-banner { padding: 0 20px 20px; }  
+    .banner-wrapper { position: relative; width: 100%; aspect-ratio: 981 / 363; border-radius: var(--radius-xl); overflow: hidden; background: var(--border); box-shadow: var(--shadow-md); }  
+    .banner-slider { display: flex; height: 100%; transition: transform 0.4s ease-in-out; }  
+    .banner-item { flex: 0 0 100%; max-width: 100%; position: relative; }  
+    .banner-item img { width: 100%; height: 100%; object-fit: cover; display: block; }  
+    .banner-dots { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }  
+    .banner-dot { width: 6px; height: 6px; border-radius: 50%; background: #d1d5db; transition: 0.3s; }  
+    .banner-dot.active { width: 18px; border-radius: 4px; background: var(--primary); }  
 
-        /* ===== BANNER SLIDER ===== */
-        .seller-banner { padding: 0 20px 20px; }
-        .banner-wrapper { position: relative; width: 100%; aspect-ratio: 981 / 363; border-radius: var(--radius-xl); overflow: hidden; background: var(--border); box-shadow: var(--shadow-md); }
-        .banner-slider { display: flex; height: 100%; transition: transform 0.4s ease-in-out; }
-        .banner-item { flex: 0 0 100%; max-width: 100%; position: relative; }
-        .banner-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .banner-dots { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }
-        .banner-dot { width: 6px; height: 6px; border-radius: 50%; background: #d1d5db; transition: 0.3s; }
-        .banner-dot.active { width: 18px; border-radius: 4px; background: var(--primary); }
+    /* ===== PRODUCT SECTION ===== */  
+    .section-header { padding: 0 20px 12px; display: flex; justify-content: space-between; align-items: center; }  
+    .section-title { font-size: 18px; font-weight: 700; }  
+    .upload-btn-header {  
+        background: var(--primary);  
+        color: white;  
+        padding: 8px 14px;  
+        border-radius: var(--radius-md);  
+        font-size: 13px;  
+        font-weight: 600;  
+        display: flex;  
+        align-items: center;  
+        gap: 6px;  
+        box-shadow: 0 2px 6px rgba(248, 86, 6, 0.3);  
+        transition: all 0.2s ease;  
+    }  
+    .upload-btn-header:active { transform: scale(0.95); background: var(--primary-dark); }  
+      
+    .search-container { padding: 0 20px 16px; }  
+    .search-box { display: flex; align-items: center; background: var(--card); border-radius: var(--radius-md); padding: 10px 16px; border: 1px solid var(--border); }  
+    .search-box input { border: none; width: 100%; font-size: 15px; margin-left: 12px; outline: none; background: transparent; }  
+    .search-box svg { width: 20px; height: 20px; color: var(--text-muted); }  
+      
+    .product-list { padding: 0 20px 20px; display: flex; flex-direction: column; gap: 12px; }  
+    .product-card { background: var(--card); border-radius: var(--radius-lg); padding: 12px; display: flex; gap: 12px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); align-items: center; }  
+    .product-img { width: 72px; height: 72px; border-radius: var(--radius-md); object-fit: cover; background: var(--bg); flex-shrink: 0; }  
+    .product-info { flex: 1; overflow: hidden; }  
+    .product-title { font-size: 15px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }  
+    .product-price { font-size: 16px; font-weight: 700; color: var(--primary); }  
+    .product-status { font-size: 12px; font-weight: 600; padding: 2px 6px; border-radius: 4px; background: #dcfce7; color: var(--success); display: inline-block; margin-left: 8px; vertical-align: middle; }  
+    .product-status.inactive { background: #fee2e2; color: var(--danger); }  
+    .product-actions { display: flex; gap: 8px; flex-shrink: 0; }  
+    .p-btn { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }  
+    .p-btn svg { width: 18px; height: 18px; }  
+    .btn-edit { background: #f3f4f6; color: var(--text-dark); }  
+    .btn-copy { background: #e0f2fe; color: #0284c7; }  
+    .btn-del { background: #fee2e2; color: var(--danger); }  
+    .p-btn:active { transform: scale(0.9); }  
 
-        /* ===== PRODUCT SECTION ===== */
-        .section-header { padding: 0 20px 12px; display: flex; justify-content: space-between; align-items: center; }
-        .section-title { font-size: 18px; font-weight: 700; }
-        .upload-btn-header {
-            background: var(--primary);
-            color: white;
-            padding: 8px 14px;
-            border-radius: var(--radius-md);
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 2px 6px rgba(248, 86, 6, 0.3);
-            transition: all 0.2s ease;
-        }
-        .upload-btn-header:active { transform: scale(0.95); background: var(--primary-dark); }
-        
-        .search-container { padding: 0 20px 16px; }
-        .search-box { display: flex; align-items: center; background: var(--card); border-radius: var(--radius-md); padding: 10px 16px; border: 1px solid var(--border); }
-        .search-box input { border: none; width: 100%; font-size: 15px; margin-left: 12px; outline: none; background: transparent; }
-        .search-box svg { width: 20px; height: 20px; color: var(--text-muted); }
-        
-        .product-list { padding: 0 20px 20px; display: flex; flex-direction: column; gap: 12px; }
-        .product-card { background: var(--card); border-radius: var(--radius-lg); padding: 12px; display: flex; gap: 12px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); align-items: center; }
-        .product-img { width: 72px; height: 72px; border-radius: var(--radius-md); object-fit: cover; background: var(--bg); flex-shrink: 0; }
-        .product-info { flex: 1; overflow: hidden; }
-        .product-title { font-size: 15px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .product-price { font-size: 16px; font-weight: 700; color: var(--primary); }
-        .product-status { font-size: 12px; font-weight: 600; padding: 2px 6px; border-radius: 4px; background: #dcfce7; color: var(--success); display: inline-block; margin-left: 8px; vertical-align: middle; }
-        .product-status.inactive { background: #fee2e2; color: var(--danger); }
-        .product-actions { display: flex; gap: 8px; flex-shrink: 0; }
-        .p-btn { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .p-btn svg { width: 18px; height: 18px; }
-        .btn-edit { background: #f3f4f6; color: var(--text-dark); }
-        .btn-copy { background: #e0f2fe; color: #0284c7; }
-        .btn-del { background: #fee2e2; color: var(--danger); }
-        .p-btn:active { transform: scale(0.9); }
+    /* ===== BOTTOM NAVIGATION (FIXED) ===== */  
+    .bottom-nav {   
+        position: fixed;   
+        bottom: 0;   
+        left: 0;   
+        right: 0;   
+        background: var(--card);   
+        display: flex;   
+        justify-content: space-around;   
+        align-items: center;   
+        padding: 10px 0 calc(10px + env(safe-area-inset-bottom));   
+        border-top: 1px solid var(--border);   
+        box-shadow: 0 -4px 10px rgba(0,0,0,0.03);   
+        z-index: 40;   
+    }  
+    .nav-item {   
+        flex: 1;   
+        display: flex;   
+        flex-direction: column;   
+        align-items: center;   
+        justify-content: center;   
+        gap: 4px;   
+        color: var(--text-muted);   
+        font-size: 11px;   
+        font-weight: 500;   
+        cursor: pointer;   
+        transition: 0.2s;   
+        text-align: center;  
+    }  
+    .nav-item svg { width: 22px; height: 22px; stroke-width: 1.5px; }  
+    .nav-item.active { color: var(--primary); }  
+    .nav-item.active svg { stroke-width: 2px; }  
 
-        /* ===== BOTTOM NAVIGATION (FIXED) ===== */
-        .bottom-nav { 
-            position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            right: 0; 
-            background: var(--card); 
-            display: flex; 
-            justify-content: space-around; 
-            align-items: center; 
-            padding: 10px 0 calc(10px + env(safe-area-inset-bottom)); 
-            border-top: 1px solid var(--border); 
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.03); 
-            z-index: 40; 
-        }
-        .nav-item { 
-            flex: 1; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 4px; 
-            color: var(--text-muted); 
-            font-size: 11px; 
-            font-weight: 500; 
-            cursor: pointer; 
-            transition: 0.2s; 
-            text-align: center;
-        }
-        .nav-item svg { width: 22px; height: 22px; stroke-width: 1.5px; }
-        .nav-item.active { color: var(--primary); }
-        .nav-item.active svg { stroke-width: 2px; }
+    /* ===== MODALS & BOTTOM SHEET ===== */  
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(2px); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s ease; }  
+    .modal-overlay.show { opacity: 1; visibility: visible; }  
+      
+    .modal-box { background: var(--card); width: 90%; max-width: 400px; border-radius: var(--radius-xl); overflow: hidden; transform: scale(0.95); transition: 0.3s ease; box-shadow: var(--shadow-lg); }  
+    .modal-overlay.show .modal-box { transform: scale(1); }  
+    .modal-header { padding: 20px; text-align: center; border-bottom: 1px solid var(--border); position: relative; }  
+    .modal-header.orange-top { border-top: 6px solid var(--primary); }  
+    .modal-icon { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }  
+    .modal-icon.warning { background: #fef3c7; color: var(--warning); }  
+    .modal-icon.info { background: #e0f2fe; color: #0284c7; }  
+    .modal-icon.danger { background: #fee2e2; color: var(--danger); }  
+    .modal-icon svg { width: 28px; height: 28px; }  
+    .modal-title { font-size: 20px; font-weight: 700; color: var(--text-dark); }  
+    .modal-body { padding: 20px; font-size: 15px; color: var(--text-muted); line-height: 1.6; text-align: center; }  
+    .modal-body ul { text-align: left; margin: 12px 0 0 24px; }  
+    .modal-body li { margin-bottom: 6px; }  
+    .modal-footer { padding: 16px 20px; display: flex; gap: 12px; background: #f9fafb; }  
+    .btn-modal { flex: 1; padding: 12px; border-radius: var(--radius-md); font-size: 15px; font-weight: 600; transition: 0.2s; display: flex; align-items: center; justify-content: center; }  
+    .btn-primary { background: var(--primary); color: white; }  
+    .btn-primary:active { background: var(--primary-dark); }  
+    .btn-secondary { background: white; border: 1px solid var(--border); color: var(--text-dark); }  
+    .btn-secondary:active { background: var(--border); }  
+    .btn-danger { background: var(--danger); color: white; }  
 
-        /* ===== MODALS & BOTTOM SHEET ===== */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(2px); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s ease; }
-        .modal-overlay.show { opacity: 1; visibility: visible; }
-        
-        .modal-box { background: var(--card); width: 90%; max-width: 400px; border-radius: var(--radius-xl); overflow: hidden; transform: scale(0.95); transition: 0.3s ease; box-shadow: var(--shadow-lg); }
-        .modal-overlay.show .modal-box { transform: scale(1); }
-        .modal-header { padding: 20px; text-align: center; border-bottom: 1px solid var(--border); position: relative; }
-        .modal-header.orange-top { border-top: 6px solid var(--primary); }
-        .modal-icon { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
-        .modal-icon.warning { background: #fef3c7; color: var(--warning); }
-        .modal-icon.info { background: #e0f2fe; color: #0284c7; }
-        .modal-icon.danger { background: #fee2e2; color: var(--danger); }
-        .modal-icon svg { width: 28px; height: 28px; }
-        .modal-title { font-size: 20px; font-weight: 700; color: var(--text-dark); }
-        .modal-body { padding: 20px; font-size: 15px; color: var(--text-muted); line-height: 1.6; text-align: center; }
-        .modal-body ul { text-align: left; margin: 12px 0 0 24px; }
-        .modal-body li { margin-bottom: 6px; }
-        .modal-footer { padding: 16px 20px; display: flex; gap: 12px; background: #f9fafb; }
-        .btn-modal { flex: 1; padding: 12px; border-radius: var(--radius-md); font-size: 15px; font-weight: 600; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:active { background: var(--primary-dark); }
-        .btn-secondary { background: white; border: 1px solid var(--border); color: var(--text-dark); }
-        .btn-secondary:active { background: var(--border); }
-        .btn-danger { background: var(--danger); color: white; }
+    /* Bottom Sheet */  
+    .bottom-sheet { background: var(--card); width: 100%; max-width: 600px; border-radius: 24px 24px 0 0; position: absolute; bottom: 0; padding-bottom: env(safe-area-inset-bottom); transform: translateY(100%); transition: 0.3s cubic-bezier(0.1, 0.9, 0.2, 1); display: flex; flex-direction: column; }  
+    .modal-overlay.show .bottom-sheet { transform: translateY(0); }  
+    .sheet-handle { width: 40px; height: 4px; background: #d1d5db; border-radius: 2px; margin: 12px auto; }  
+    .menu-list { padding: 10px 20px 20px; display: flex; flex-direction: column; }  
+    .menu-item { display: flex; align-items: center; gap: 16px; padding: 16px; border-bottom: 1px solid var(--border); color: var(--text-dark); font-size: 16px; font-weight: 500; text-decoration: none; transition: background 0.2s; }  
+    .menu-item:last-child { border-bottom: none; }  
+    .menu-item:active { background: var(--bg); border-radius: var(--radius-md); }  
+    .menu-item svg { width: 24px; height: 24px; color: var(--text-muted); }  
+    .menu-item.logout { color: var(--danger); }  
+    .menu-item.logout svg { color: var(--danger); }  
 
-        /* Bottom Sheet */
-        .bottom-sheet { background: var(--card); width: 100%; max-width: 600px; border-radius: 24px 24px 0 0; position: absolute; bottom: 0; padding-bottom: env(safe-area-inset-bottom); transform: translateY(100%); transition: 0.3s cubic-bezier(0.1, 0.9, 0.2, 1); display: flex; flex-direction: column; }
-        .modal-overlay.show .bottom-sheet { transform: translateY(0); }
-        .sheet-handle { width: 40px; height: 4px; background: #d1d5db; border-radius: 2px; margin: 12px auto; }
-        .menu-list { padding: 10px 20px 20px; display: flex; flex-direction: column; }
-        .menu-item { display: flex; align-items: center; gap: 16px; padding: 16px; border-bottom: 1px solid var(--border); color: var(--text-dark); font-size: 16px; font-weight: 500; text-decoration: none; transition: background 0.2s; }
-        .menu-item:last-child { border-bottom: none; }
-        .menu-item:active { background: var(--bg); border-radius: var(--radius-md); }
-        .menu-item svg { width: 24px; height: 24px; color: var(--text-muted); }
-        .menu-item.logout { color: var(--danger); }
-        .menu-item.logout svg { color: var(--danger); }
+    /* ===== TOAST ===== */  
+    .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 200; display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 400px; pointer-events: none; }  
+    .toast { background: white; padding: 14px 16px; border-radius: var(--radius-md); display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); animation: toastFadeIn 0.3s cubic-bezier(0.1, 0.9, 0.2, 1); pointer-events: auto; }  
+    .toast.success .t-icon { color: var(--success); }  
+    .toast.error .t-icon { color: var(--danger); }  
+    .toast.info .t-icon { color: #3b82f6; }  
+    .toast-msg { font-size: 14px; font-weight: 500; color: var(--text-dark); flex: 1; }  
+    @keyframes toastFadeIn { from { transform: translateY(-20px) scale(0.9); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }  
+    @keyframes toastFadeOut { to { transform: translateY(-20px) scale(0.9); opacity: 0; } }  
 
-        /* ===== TOAST ===== */
-        .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 200; display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 400px; pointer-events: none; }
-        .toast { background: white; padding: 14px 16px; border-radius: var(--radius-md); display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); animation: toastFadeIn 0.3s cubic-bezier(0.1, 0.9, 0.2, 1); pointer-events: auto; }
-        .toast.success .t-icon { color: var(--success); }
-        .toast.error .t-icon { color: var(--danger); }
-        .toast.info .t-icon { color: #3b82f6; }
-        .toast-msg { font-size: 14px; font-weight: 500; color: var(--text-dark); flex: 1; }
-        @keyframes toastFadeIn { from { transform: translateY(-20px) scale(0.9); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
-        @keyframes toastFadeOut { to { transform: translateY(-20px) scale(0.9); opacity: 0; } }
+    /* ===== SKELETON ===== */  
+    .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; }  
+    @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }  
+    .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }  
+    .empty-state svg { width: 64px; height: 64px; margin-bottom: 16px; opacity: 0.5; color: var(--primary); }  
+/* ===== USERNAME EDIT BUTTON ===== */
+.username-edit-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    width: fit-content;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 8px;
+    background: rgba(248, 86, 6, 0.08);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
 
-        /* ===== SKELETON ===== */
-        .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 4px; }
-        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }
-        .empty-state svg { width: 64px; height: 64px; margin-bottom: 16px; opacity: 0.5; color: var(--primary); }
-    </style>
-</head>
-<body>
+.username-edit-link:active {
+    transform: scale(0.95);
+    background: rgba(248, 86, 6, 0.15);
+}
 
-    <!-- HEADER -->
-    <header class="header">
-        <div class="header-profile">
-            <button class="header-avatar" id="shopAvatar" onclick="goToShopBranding()" aria-label="শপের লোগো ও ব্যানার সেট করুন">
-                <div class="skeleton" style="width:100%;height:100%;border-radius:50%;"></div>
-            </button>
-            <div class="header-info">
-                <h2 id="sName"><div class="skeleton" style="width:100px;height:18px;"></div></h2>
-                <p id="uidDisplay">লোড হচ্ছে...</p>
-            </div>
-        </div>
-        <div class="header-actions">
-            <!-- SETTINGS ICON -->
-            <button class="icon-btn" onclick="location.href='settings.html'" aria-label="সেটিংস">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-                    <circle cx="12" cy="12" r="3"/>
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                </svg>
-            </button>
-            <!-- FEATURE: NOTIFICATION BELL -->
-            <button class="icon-btn" onclick="location.href='modification.html'" aria-label="নোটিফিকেশন">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                </svg>
-                <span class="notification-badge"></span>
-            </button>
-            <button class="icon-btn" onclick="openMenu()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
-                    <circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>
-                </svg>
-            </button>
-        </div>
-    </header>
+.username-edit-link svg {
+    flex-shrink: 0;
+}
+</style>
 
-    <!-- SHOP LINK -->
-    <div id="shopLinkBox" class="shop-link-container hidden">
-        <span class="shop-url" id="shopLink">https://ghotimarket.com/seller?@...</span>
-        <button class="copy-link-btn" id="copyShopBtn" onclick="copyShopLink()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            কপি
-        </button>
+</head>  
+<body> 
+ <!-- HEADER -->  
+<header class="header">  
+    <div class="header-profile">  
+        <button class="header-avatar" id="shopAvatar" onclick="goToShopBranding()" aria-label="শপের লোগো ও ব্যানার সেট করুন">  
+            <div class="skeleton" style="width:100%;height:100%;border-radius:50%;"></div>  
+        </button>  
+        <div class="header-info">  
+            <h2 id="sName"><div class="skeleton" style="width:100px;height:18px;"></div></h2>  
+            <p id="uidDisplay">লোড হচ্ছে...</p>  
+        </div>  
+    </div>  
+    <div class="header-actions">  
+        <!-- SETTINGS ICON -->  
+        <button class="icon-btn" onclick="location.href='/settings'" aria-label="সেটিংস">  
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">  
+                <circle cx="12" cy="12" r="3"/>  
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>  
+            </svg>  
+        </button>  
+        <!-- FEATURE: NOTIFICATION BELL -->  
+        <button class="icon-btn" onclick="location.href='modification.html'" aria-label="নোটিফিকেশন">  
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">  
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>  
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>  
+            </svg>  
+            <span class="notification-badge"></span>  
+        </button>  
+        <button class="icon-btn" onclick="openMenu()">  
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">  
+                <circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>  
+            </svg>  
+        </button>  
+    </div>  
+</header>  
+
+<!-- SHOP LINK -->
+<div id="shopLinkBox" class="shop-link-container hidden">
+    <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1;">
+        <span class="shop-url" id="shopLink">
+            https://ghotimarket.com/seller?@...
+        </span>
+
+        <a href="/set-username"
+           class="username-edit-link"
+           aria-label="Username Edit">
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 width="15"
+                 height="15">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+            </svg>
+            Username Edit
+        </a>
     </div>
-    <div id="usernameBox" class="username-alert hidden">
-        <span>আপনার শপের লিংক তৈরি করতে Username সেট করুন।</span>
-        <a href="set-username.html" class="username-btn">সেট করুন</a>
-    </div>
 
-    <!-- BIKASH-STYLE BALANCE CARD -->
-    <div class="balance-card-container">
-        <div class="balance-card">
-            <div class="balance-info">
-                <span class="balance-label">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
-                    Available Balance
-                </span>
-                <div class="balance-amount" id="balanceDisplay">৳ ••••••</div>
-            </div>
-            <button class="balance-toggle-btn" id="toggleBalanceBtn" onclick="toggleBalance()">
-                <span id="eyeIcon" style="display:flex;align-items:center;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                </span>
-                <span id="toggleText">Balance দেখুন</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- STATS -->
-    <section class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon orange">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-            </div>
-            <div class="stat-value" id="totalProducts">0</div>
-            <div class="stat-label">মোট পণ্য</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon green">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            </div>
-            <div class="stat-value" id="activeProducts">0</div>
-            <div class="stat-label">অ্যাকটিভ পণ্য</div>
-        </div>
-    </section>
-
- <!-- QUICK ACTIONS -->
-<section class="quick-actions">
-
-    <a href="seller-order.html" class="action-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="9" cy="21" r="1"/>
-            <circle cx="20" cy="21" r="1"/>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+    <button class="copy-link-btn"
+            id="copyShopBtn"
+            onclick="copyShopLink()">
+        <svg viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="2"
+             width="16"
+             height="16">
+            <rect x="9" y="9" width="13" height="13" rx="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
         </svg>
+        কপি
+    </button>
+</div>
+
+<div id="usernameBox" class="username-alert hidden">
+    <span>আপনার শপের লিংক তৈরি করতে Username সেট করুন।</span>
+
+    <a href="/set-username" class="username-btn">
+        সেট করুন
+    </a>
+</div>
+<!-- BIKASH-STYLE BALANCE CARD -->  
+<div class="balance-card-container">  
+    <div class="balance-card">  
+        <div class="balance-info">  
+            <span class="balance-label">  
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>  
+                Available Balance  
+            </span>  
+            <div class="balance-amount" id="balanceDisplay">৳ ••••••</div>  
+        </div>  
+        <button class="balance-toggle-btn" id="toggleBalanceBtn" onclick="toggleBalance()">  
+            <span id="eyeIcon" style="display:flex;align-items:center;">  
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>  
+            </span>  
+            <span id="toggleText">Balance দেখুন</span>  
+        </button>  
+    </div>  
+</div>  
+
+<!-- STATS -->  
+<section class="stats-grid">  
+    <div class="stat-card">  
+        <div class="stat-icon orange">  
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>  
+        </div>  
+        <div class="stat-value" id="totalProducts">0</div>  
+        <div class="stat-label">মোট পণ্য</div>  
+    </div>  
+    <div class="stat-card">  
+        <div class="stat-icon green">  
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>  
+        </div>  
+        <div class="stat-value" id="activeProducts">0</div>  
+        <div class="stat-label">অ্যাকটিভ পণ্য</div>  
+    </div>  
+</section>  
+<!-- QUICK ACTIONS -->
+<section class="quick-actions">
+    <a href="/seller-order" class="action-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
         <span>আমার অর্ডার</span>
     </a>
-
-    <a href="hishab.html" class="action-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="2" y="6" width="20" height="12" rx="2"/>
-            <circle cx="12" cy="12" r="2"/>
-            <path d="M6 12h.01M18 12h.01"/>
-        </svg>
+    <a href="/hishab" class="action-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
         <span>টোটাল হিসাব</span>
     </a>
-
-    <a href="review.html" class="action-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-        </svg>
+    <a href="/review" class="action-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         <span>পণ্য রিভিউ</span>
     </a>
-
-    <a href="add-balance.html" class="action-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="16"/>
-            <line x1="6" y1="12" x2="18" y2="12"/>
-        </svg>
+    <a href="/add-balance" class="action-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
         <span>Add Balance</span>
     </a>
-
-    <a href="invoice.html" class="action-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-            <line x1="10" y1="9" x2="9" y2="9"/>
-        </svg>
+    <a href="/invoice" class="action-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
         <span>Invoice Generate</span>
     </a>
-
-    <a href="mybalance.html" class="action-card">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-            <polyline points="10 9 9 9 8 9"/>
-        </svg>
+    <a href="/mybalance" class="action-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         <span>Transaction History</span>
     </a>
-
 </section>
+<!-- BANNER SLIDER -->  
+<section class="seller-banner hidden" id="bannerContainer">  
+    <div class="banner-wrapper">  
+        <div class="banner-slider" id="bannerSlider"></div>  
+    </div>  
+    <div class="banner-dots" id="bannerDots"></div>  
+</section>  
 
-    <!-- BANNER SLIDER -->
-    <section class="seller-banner hidden" id="bannerContainer">
-        <div class="banner-wrapper">
-            <div class="banner-slider" id="bannerSlider"></div>
-        </div>
-        <div class="banner-dots" id="bannerDots"></div>
-    </section>
+<!-- PRODUCTS -->  
+<div class="section-header">  
+    <div class="section-title">আপনার পণ্যসমূহ</div>  
+    <!-- UPLOAD PRODUCT BUTTON (Replaces Floating FAB) -->  
+    <button class="upload-btn-header" onclick="checkLock()">  
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>  
+        পণ্য আপলোড  
+    </button>  
+</div>  
+<div class="search-container">  
+    <div class="search-box">  
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>  
+        <input type="text" id="searchInput" placeholder="পণ্য বা কিওয়ার্ড দিয়ে খুঁজুন..." oninput="searchProducts()">  
+    </div>  
+</div>  
+<div class="product-list" id="productList">  
+    <div class="product-card">  
+        <div class="skeleton" style="width:72px;height:72px;border-radius:12px;"></div>  
+        <div class="product-info" style="display:flex;flex-direction:column;gap:8px;">  
+            <div class="skeleton" style="width:80%;height:16px;"></div>  
+            <div class="skeleton" style="width:40%;height:16px;"></div>  
+        </div>  
+    </div>  
+</div>  
 
-    <!-- PRODUCTS -->
-    <div class="section-header">
-        <div class="section-title">আপনার পণ্যসমূহ</div>
-        <!-- UPLOAD PRODUCT BUTTON (Replaces Floating FAB) -->
-        <button class="upload-btn-header" onclick="checkLock()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            পণ্য আপলোড
-        </button>
-    </div>
-    <div class="search-container">
-        <div class="search-box">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="searchInput" placeholder="পণ্য বা কিওয়ার্ড দিয়ে খুঁজুন..." oninput="searchProducts()">
-        </div>
-    </div>
-    <div class="product-list" id="productList">
-        <div class="product-card">
-            <div class="skeleton" style="width:72px;height:72px;border-radius:12px;"></div>
-            <div class="product-info" style="display:flex;flex-direction:column;gap:8px;">
-                <div class="skeleton" style="width:80%;height:16px;"></div>
-                <div class="skeleton" style="width:40%;height:16px;"></div>
-            </div>
-        </div>
-    </div>
+<!-- BOTTOM NAV -->  
+<nav class="bottom-nav">  
+    <div class="nav-item active">  
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>  
+        <span>হোম</span>  
+    </div>  
+    <div class="nav-item" onclick="window.scrollTo({top: document.getElementById('productList').offsetTop - 100, behavior: 'smooth'})">  
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>  
+        <span>পণ্য</span>  
+    </div>  
+    <div class="nav-item" onclick="location.href='/seller-order'">  
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>  
+        <span>অর্ডার</span>  
+    </div>  
+    <div class="nav-item" onclick="location.href='/hishab'">  
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>  
+        <span>হিসাব</span>  
+    </div>  
+    <div class="nav-item" onclick="openMenu()">  
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>  
+        <span>মেনু</span>  
+    </div>  
+</nav>  
 
-    <!-- BOTTOM NAV -->
-    <nav class="bottom-nav">
-        <div class="nav-item active">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <span>হোম</span>
-        </div>
-        <div class="nav-item" onclick="window.scrollTo({top: document.getElementById('productList').offsetTop - 100, behavior: 'smooth'})">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-            <span>পণ্য</span>
-        </div>
-        <div class="nav-item" onclick="location.href='seller-order.html'">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-            <span>অর্ডার</span>
-        </div>
-        <div class="nav-item" onclick="location.href='hishab.html'">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
-            <span>হিসাব</span>
-        </div>
-        <div class="nav-item" onclick="openMenu()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-            <span>মেনু</span>
-        </div>
-    </nav>
+<!-- MODALS & BOTTOM SHEET CONTAINER -->  
+<div id="modalOverlay" class="modal-overlay" onclick="handleOverlayClick(event)">  
+      
+    <!-- Notice Modal 1 -->  
+    <div id="noticeModal1" class="modal-box hidden">  
+        <div class="modal-header orange-top">  
+            <div class="modal-icon warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>  
+            <div class="modal-title">গুরুত্বপূর্ণ নির্দেশনা</div>  
+        </div>  
+        <div class="modal-body">  
+            <ul>  
+                <li>১. ডেলিভারি চার্জ আগে নেওয়া যাবে না</li>  
+                <li>২. প্রোডাক্ট রিটার্ন পলিসি ক্লিয়ার থাকতে হবে</li>  
+                <li>৩. ফেইক অর্ডার কমানোর জন্য কনফার্মেশন কল বাধ্যতামূলক</li>  
+                <li>৪. ক্যাশ অন ডেলিভারিতে পণ্য বিক্রি করতে হবে</li>  
+            </ul>  
+        </div>  
+        <div class="modal-footer">  
+            <button class="btn-modal btn-primary" onclick="closeNotice1()">আমি বুঝেছি</button>  
+        </div>  
+    </div>  
 
-    <!-- MODALS & BOTTOM SHEET CONTAINER -->
-    <div id="modalOverlay" class="modal-overlay" onclick="handleOverlayClick(event)">
-        
-        <!-- Notice Modal 1 -->
-        <div id="noticeModal1" class="modal-box hidden">
-            <div class="modal-header orange-top">
-                <div class="modal-icon warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-                <div class="modal-title">গুরুত্বপূর্ণ নির্দেশনা</div>
-            </div>
-            <div class="modal-body">
-                <ul>
-                    <li>১. ডেলিভারি চার্জ আগে নেওয়া যাবে না</li>
-                    <li>২. প্রোডাক্ট রিটার্ন পলিসি ক্লিয়ার থাকতে হবে</li>
-                    <li>৩. ফেইক অর্ডার কমানোর জন্য কনফার্মেশন কল বাধ্যতামূলক</li>
-                    <li>৪. ক্যাশ অন ডেলিভারিতে পণ্য বিক্রি করতে হবে</li>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal btn-primary" onclick="closeNotice1()">আমি বুঝেছি</button>
-            </div>
-        </div>
+    <!-- Notice Modal 2 -->  
+    <div id="noticeModal2" class="modal-box hidden">  
+        <div class="modal-header orange-top">  
+            <div class="modal-icon info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>  
+            <div class="modal-title">সবাই মার্কেটিং শুরু করুন</div>  
+        </div>  
+        <div class="modal-body">  
+            সবাই নিজেদের পণ্য ফেইসবুক এ পোস্ট দেন। সম্ভব হলে বুস্ট করেন আর বাটনে আপনার পণ্যের লিংক দিয়ে দিবেন অর্ডার করার জন্য। আর আপনারা মার্কেটিং শুরু করুন সবাই।  
+        </div>  
+        <div class="modal-footer">  
+            <button class="btn-modal btn-primary" onclick="closeNotice2()">আমি বুঝেছি</button>  
+        </div>  
+    </div>  
 
-        <!-- Notice Modal 2 -->
-        <div id="noticeModal2" class="modal-box hidden">
-            <div class="modal-header orange-top">
-                <div class="modal-icon info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
-                <div class="modal-title">সবাই মার্কেটিং শুরু করুন</div>
-            </div>
-            <div class="modal-body">
-                সবাই নিজেদের পণ্য ফেইসবুক এ পোস্ট দেন। সম্ভব হলে বুস্ট করেন আর বাটনে আপনার পণ্যের লিংক দিয়ে দিবেন অর্ডার করার জন্য। আর আপনারা মার্কেটিং শুরু করুন সবাই।
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal btn-primary" onclick="closeNotice2()">আমি বুঝেছি</button>
-            </div>
-        </div>
+    <!-- Delete Confirm Modal -->  
+    <div id="deleteModal" class="modal-box hidden">  
+        <div class="modal-header">  
+            <div class="modal-icon danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></div>  
+            <div class="modal-title">পণ্য মুছে ফেলবেন?</div>  
+        </div>  
+        <div class="modal-body">  
+            এই পণ্যটি মুছে ফেললে পরে এটি আর ফিরে পাওয়া যাবে না।  
+        </div>  
+        <div class="modal-footer">  
+            <button class="btn-modal btn-secondary" onclick="closeModal('deleteModal')">বাতিল</button>  
+            <button class="btn-modal btn-danger" onclick="confirmDelete()">মুছে ফেলুন</button>  
+        </div>  
+    </div>  
 
-        <!-- Delete Confirm Modal -->
-        <div id="deleteModal" class="modal-box hidden">
-            <div class="modal-header">
-                <div class="modal-icon danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></div>
-                <div class="modal-title">পণ্য মুছে ফেলবেন?</div>
-            </div>
-            <div class="modal-body">
-                এই পণ্যটি মুছে ফেললে পরে এটি আর ফিরে পাওয়া যাবে না।
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal btn-secondary" onclick="closeModal('deleteModal')">বাতিল</button>
-                <button class="btn-modal btn-danger" onclick="confirmDelete()">মুছে ফেলুন</button>
-            </div>
-        </div>
+    <!-- Logout Confirm Modal -->  
+    <div id="logoutModal" class="modal-box hidden">  
+        <div class="modal-header">  
+            <div class="modal-icon warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>  
+            <div class="modal-title">লগআউট করবেন?</div>  
+        </div>  
+        <div class="modal-body">  
+            আপনি কি আপনার অ্যাকাউন্ট থেকে লগআউট করতে চান?  
+        </div>  
+        <div class="modal-footer">  
+            <button class="btn-modal btn-secondary" onclick="closeModal('logoutModal')">বাতিল</button>  
+            <button class="btn-modal btn-primary" onclick="confirmLogout()">লগআউট</button>  
+        </div>  
+    </div>  
 
-        <!-- Logout Confirm Modal -->
-        <div id="logoutModal" class="modal-box hidden">
-            <div class="modal-header">
-                <div class="modal-icon warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
-                <div class="modal-title">লগআউট করবেন?</div>
-            </div>
-            <div class="modal-body">
-                আপনি কি আপনার অ্যাকাউন্ট থেকে লগআউট করতে চান?
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal btn-secondary" onclick="closeModal('logoutModal')">বাতিল</button>
-                <button class="btn-modal btn-primary" onclick="confirmLogout()">লগআউট</button>
-            </div>
-        </div>
+    <!-- Menu Bottom Sheet -->  
+    <div id="menuSheet" class="bottom-sheet hidden" onclick="event.stopPropagation()">  
+        <div class="sheet-handle"></div>  
+        <div class="menu-list">  
+            <!-- FEATURE: SUBSCRIPTION OPTION -->  
+            <a href="locked.html" class="menu-item">  
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>  
+                 সাবস্ক্রিপশন  
+            </a>  
+            <a href="settings.html" class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>সেটিংস</a>  
+            <a href="change-password.html" class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>পাসওয়ার্ড পরিবর্তন</a>  
+            <a href="termsandcondition.html" class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>শর্তাবলী</a>  
+            <a href="https://www.ghotimarket.com/privacy-policy.html" class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>গোপনীয়তা নীতি</a>  
+            <a href="https://www.ghotimarket.com/contact.html" class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>যোগাযোগ করুন</a>  
+            <button class="menu-item logout" onclick="triggerLogout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>লগআউট</button>  
+        </div>  
+    </div>  
 
-        <!-- Menu Bottom Sheet -->
-        <div id="menuSheet" class="bottom-sheet hidden" onclick="event.stopPropagation()">
-            <div class="sheet-handle"></div>
-            <div class="menu-list">
-                <!-- FEATURE: SUBSCRIPTION OPTION -->
-                <a href="locked.html" class="menu-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                     সাবস্ক্রিপশন
-                </a>
-                <a href="settings.html" class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>সেটিংস</a>
-                <a href="change-password.html" class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>পাসওয়ার্ড পরিবর্তন</a>
-                <a href="termsandcondition.html" class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>শর্তাবলী</a>
-                <a href="https://www.ghotimarket.com/privacy-policy.html" class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>গোপনীয়তা নীতি</a>
-                <a href="https://www.ghotimarket.com/contact.html" class="menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>যোগাযোগ করুন</a>
-                <button class="menu-item logout" onclick="triggerLogout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>লগআউট</button>
-            </div>
-        </div>
+</div>  
 
-    </div>
+<!-- TOAST CONTAINER -->  
+<div id="toastContainer" class="toast-container"></div>  
 
-    <!-- TOAST CONTAINER -->
-    <div id="toastContainer" class="toast-container"></div>
+<script type="module">  
+    // ===== FIREBASE =====  
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";  
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";  
+    import { getFirestore, doc, getDoc, collection, query, where, orderBy, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";  
 
-    <script type="module">
-        // ===== FIREBASE =====
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, collection, query, where, orderBy, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    const firebaseConfig = {   
+        apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",   
+        authDomain: "ghotimarket.firebaseapp.com",  
+        projectId: "ghotimarket"   
+    };  
+    const app = initializeApp(firebaseConfig);  
+    const auth = getAuth(app);  
+    const db = getFirestore(app);  
 
-        const firebaseConfig = { 
-            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
-            authDomain: "ghotimarket.firebaseapp.com",
-            projectId: "ghotimarket" 
-        };
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+    // ===== STATE & VARIABLES =====  
+    let currentUser = null;  
+    let userData = null;  
+    let allProducts = [];  
+    let productDeleteId = null;  
+    let isBalanceShown = false;  
 
-        // ===== STATE & VARIABLES =====
-        let currentUser = null;
-        let userData = null;
-        let allProducts = [];
-        let productDeleteId = null;
-        let isBalanceShown = false;
+    // ===== BALANCE TOGGLE SYSTEM =====  
+    window.toggleBalance = () => {  
+        isBalanceShown = !isBalanceShown;  
+        updateBalanceDisplay();  
+    };  
 
-        // ===== BALANCE TOGGLE SYSTEM =====
-        window.toggleBalance = () => {
-            isBalanceShown = !isBalanceShown;
-            updateBalanceDisplay();
-        };
+    function updateBalanceDisplay() {  
+        const displayEl = document.getElementById("balanceDisplay");  
+        const toggleText = document.getElementById("toggleText");  
+        const eyeIcon = document.getElementById("eyeIcon");  
+        if (!displayEl) return;  
 
-        function updateBalanceDisplay() {
-            const displayEl = document.getElementById("balanceDisplay");
-            const toggleText = document.getElementById("toggleText");
-            const eyeIcon = document.getElementById("eyeIcon");
-            if (!displayEl) return;
+        let val = 0;  
+        if (userData) {  
+            if (userData.balance !== undefined && userData.balance !== null) {  
+                val = Number(userData.balance) || 0;  
+            } else if (userData.walletBalance !== undefined && userData.walletBalance !== null) {  
+                val = Number(userData.walletBalance) || 0;  
+            }  
+        }  
 
-            let val = 0;
-            if (userData) {
-                if (userData.balance !== undefined && userData.balance !== null) {
-                    val = Number(userData.balance) || 0;
-                } else if (userData.walletBalance !== undefined && userData.walletBalance !== null) {
-                    val = Number(userData.walletBalance) || 0;
-                }
-            }
+        if (isBalanceShown) {  
+            displayEl.textContent = `৳ ${val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;  
+            toggleText.textContent = "Balance লুকান";  
+            eyeIcon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;  
+        } else {  
+            displayEl.textContent = "৳ ••••••";  
+            toggleText.textContent = "Balance দেখুন";  
+            eyeIcon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;  
+        }  
+    }  
 
-            if (isBalanceShown) {
-                displayEl.textContent = `৳ ${val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                toggleText.textContent = "Balance লুকান";
-                eyeIcon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
-            } else {
-                displayEl.textContent = "৳ ••••••";
-                toggleText.textContent = "Balance দেখুন";
-                eyeIcon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
-            }
-        }
+    // ===== SHOP BRANDING REDIRECT =====  
+    window.goToShopBranding = () => {  
+        window.location.href = "/upload-banner-logo";  
+    };  
 
-        // ===== SHOP BRANDING REDIRECT =====
-        window.goToShopBranding = () => {
-            window.location.href = "upload-banner-logo.html";
-        };
+    const PLUS_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;  
 
-        const PLUS_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
+    const updateShopAvatar = (logoUrl) => {  
+        const avatarBtn = document.getElementById("shopAvatar");  
+        if (!avatarBtn) return;  
+        if (logoUrl && typeof logoUrl === 'string' && logoUrl.trim() !== "") {  
+            const img = document.createElement("img");  
+            img.src = logoUrl.trim();  
+            img.alt = "Shop Logo";  
+            img.onerror = () => { avatarBtn.innerHTML = PLUS_SVG; };  
+            avatarBtn.innerHTML = "";  
+            avatarBtn.appendChild(img);  
+        } else {  
+            avatarBtn.innerHTML = PLUS_SVG;  
+        }  
+    };  
 
-        const updateShopAvatar = (logoUrl) => {
-            const avatarBtn = document.getElementById("shopAvatar");
-            if (!avatarBtn) return;
-            if (logoUrl && typeof logoUrl === 'string' && logoUrl.trim() !== "") {
-                const img = document.createElement("img");
-                img.src = logoUrl.trim();
-                img.alt = "Shop Logo";
-                img.onerror = () => { avatarBtn.innerHTML = PLUS_SVG; };
-                avatarBtn.innerHTML = "";
-                avatarBtn.appendChild(img);
-            } else {
-                avatarBtn.innerHTML = PLUS_SVG;
-            }
-        };
+    // ===== UTILS =====  
+    const escapeHTML = (str) => {  
+        if (!str) return "";  
+        return str.toString().replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));  
+    };  
 
-        // ===== UTILS =====
-        const escapeHTML = (str) => {
-            if (!str) return "";
-            return str.toString().replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
-        };
+    const isSafeUrl = (url) => {  
+        if (!url) return false;  
+        try {  
+            const parsed = new URL(url, window.location.origin);  
+            return ['http:', 'https:'].includes(parsed.protocol);  
+        } catch { return false; }  
+    };  
 
-        const isSafeUrl = (url) => {
-            if (!url) return false;
-            try {
-                const parsed = new URL(url, window.location.origin);
-                return ['http:', 'https:'].includes(parsed.protocol);
-            } catch { return false; }
-        };
+    window.openBannerLink = (url) => {  
+        if (isSafeUrl(url)) {  
+            window.open(url, '_blank');  
+        }  
+    };  
 
-        window.openBannerLink = (url) => {
-            if (isSafeUrl(url)) {
-                window.open(url, '_blank');
-            }
-        };
+    // ===== TOAST SYSTEM =====  
+    window.showToast = (msg, type = 'success') => {  
+        const container = document.getElementById('toastContainer');  
+        const toast = document.createElement('div');  
+        toast.className = `toast ${type}`;  
+        let iconSvg = '';  
+        if(type === 'success') iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';  
+        else if(type === 'error') iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';  
+        else iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';  
+        toast.innerHTML = `<div class="t-icon">${iconSvg}</div><div class="toast-msg">${escapeHTML(msg)}</div>`;  
+        container.appendChild(toast);  
+        setTimeout(() => {  
+            toast.style.animation = 'toastFadeOut 0.3s forwards';  
+            setTimeout(() => toast.remove(), 300);  
+        }, 3000);  
+    };  
 
-        // ===== TOAST SYSTEM =====
-        window.showToast = (msg, type = 'success') => {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            let iconSvg = '';
-            if(type === 'success') iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
-            else if(type === 'error') iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
-            else iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
-            toast.innerHTML = `<div class="t-icon">${iconSvg}</div><div class="toast-msg">${escapeHTML(msg)}</div>`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.animation = 'toastFadeOut 0.3s forwards';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        };
+    // ===== MODAL SYSTEM =====  
+    const overlay = document.getElementById('modalOverlay');  
+    window.openModal = (id) => {  
+        document.querySelectorAll('.modal-box, .bottom-sheet').forEach(el => el.classList.add('hidden'));  
+        document.getElementById(id).classList.remove('hidden');  
+        overlay.classList.add('show');  
+        document.body.style.overflow = 'hidden';  
+    };  
+    window.closeModal = (id) => {  
+        overlay.classList.remove('show');  
+        document.body.style.overflow = '';  
+        setTimeout(() => {  
+            if(id) document.getElementById(id).classList.add('hidden');  
+            else document.querySelectorAll('.modal-box, .bottom-sheet').forEach(el => el.classList.add('hidden'));  
+        }, 300);  
+    };  
+    window.handleOverlayClick = (e) => {  
+        if(e.target === overlay) {  
+            if(!document.getElementById('noticeModal1').classList.contains('hidden') || !document.getElementById('noticeModal2').classList.contains('hidden')) return;  
+            closeModal();  
+        }  
+    };  
+    window.openMenu = () => openModal('menuSheet');  
 
-        // ===== MODAL SYSTEM =====
-        const overlay = document.getElementById('modalOverlay');
-        window.openModal = (id) => {
-            document.querySelectorAll('.modal-box, .bottom-sheet').forEach(el => el.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-            overlay.classList.add('show');
-            document.body.style.overflow = 'hidden';
-        };
-        window.closeModal = (id) => {
-            overlay.classList.remove('show');
-            document.body.style.overflow = '';
-            setTimeout(() => {
-                if(id) document.getElementById(id).classList.add('hidden');
-                else document.querySelectorAll('.modal-box, .bottom-sheet').forEach(el => el.classList.add('hidden'));
-            }, 300);
-        };
-        window.handleOverlayClick = (e) => {
-            if(e.target === overlay) {
-                if(!document.getElementById('noticeModal1').classList.contains('hidden') || !document.getElementById('noticeModal2').classList.contains('hidden')) return;
-                closeModal();
-            }
-        };
-        window.openMenu = () => openModal('menuSheet');
+    const initNoticeSystem = () => {  
+        setTimeout(() => {  
+            const notice1Seen = localStorage.getItem("ghoti_notice_1_seen");  
+            const notice2Seen = localStorage.getItem("ghoti_notice_2_seen");  
+            if (!notice1Seen) openModal('noticeModal1');  
+            else if (!notice2Seen) openModal('noticeModal2');  
+        }, 500);  
+    };  
 
-        const initNoticeSystem = () => {
-            setTimeout(() => {
-                const notice1Seen = localStorage.getItem("ghoti_notice_1_seen");
-                const notice2Seen = localStorage.getItem("ghoti_notice_2_seen");
-                if (!notice1Seen) openModal('noticeModal1');
-                else if (!notice2Seen) openModal('noticeModal2');
-            }, 500);
-        };
+    window.closeNotice1 = () => {  
+        localStorage.setItem("ghoti_notice_1_seen", "true");  
+        closeModal('noticeModal1');  
+        setTimeout(() => { if(!localStorage.getItem("ghoti_notice_2_seen")) openModal('noticeModal2'); }, 400);  
+    };  
 
-        window.closeNotice1 = () => {
-            localStorage.setItem("ghoti_notice_1_seen", "true");
-            closeModal('noticeModal1');
-            setTimeout(() => { if(!localStorage.getItem("ghoti_notice_2_seen")) openModal('noticeModal2'); }, 400);
-        };
+    window.closeNotice2 = () => {  
+        localStorage.setItem("ghoti_notice_2_seen", "true");  
+        closeModal('noticeModal2');  
+    };  
 
-        window.closeNotice2 = () => {
-            localStorage.setItem("ghoti_notice_2_seen", "true");
-            closeModal('noticeModal2');
-        };
+    // ===== AUTHENTICATION & USER DATA =====  
+    onAuthStateChanged(auth, async user => {  
+        if (user) {  
+            currentUser = user;  
+            document.getElementById('uidDisplay').textContent = `UID: ${user.uid}`;  
+            try {  
+                const userSnap = await getDoc(doc(db, "users", user.uid));  
+                if (userSnap.exists()) {  
+                    userData = userSnap.data();  
+                    document.getElementById("sName").textContent = escapeHTML(userData.shopName || "Shop Name");  
+                    updateShopAvatar(userData.shopLogo);  
+                    updateBalanceDisplay();  
+                    if (userData.username && userData.username.trim() !== "") {  
+                        document.getElementById("usernameBox").classList.add("hidden");  
+                        const linkBox = document.getElementById("shopLinkBox");  
+                        linkBox.classList.remove("hidden");  
+                        const shopUrl = `https://ghotimarket.com/seller?@${userData.username}`;  
+                        document.getElementById("shopLink").textContent = shopUrl;  
+                        document.getElementById("shopLink").href = shopUrl;  
+                    } else {  
+                        document.getElementById("usernameBox").classList.remove("hidden");  
+                        document.getElementById("shopLinkBox").classList.add("hidden");  
+                    }  
+                } else {  
+                    updateShopAvatar(null);  
+                    updateBalanceDisplay();  
+                }  
+                initNoticeSystem();  
+                loadSellerBanner();  
+                loadProducts();  
+            } catch (err) {  
+                console.error(err);  
+                updateShopAvatar(null);  
+                updateBalanceDisplay();  
+                showToast("ডাটা লোড করতে সমস্যা হয়েছে", "error");  
+            }  
+        } else { window.location.href = "/login"; }  
+    });  
 
-        // ===== AUTHENTICATION & USER DATA =====
-        onAuthStateChanged(auth, async user => {
-            if (user) {
-                currentUser = user;
-                document.getElementById('uidDisplay').textContent = `UID: ${user.uid}`;
-                try {
-                    const userSnap = await getDoc(doc(db, "users", user.uid));
-                    if (userSnap.exists()) {
-                        userData = userSnap.data();
-                        document.getElementById("sName").textContent = escapeHTML(userData.shopName || "Shop Name");
-                        updateShopAvatar(userData.shopLogo);
-                        updateBalanceDisplay();
-                        if (userData.username && userData.username.trim() !== "") {
-                            document.getElementById("usernameBox").classList.add("hidden");
-                            const linkBox = document.getElementById("shopLinkBox");
-                            linkBox.classList.remove("hidden");
-                            const shopUrl = `https://ghotimarket.com/seller?@${userData.username}`;
-                            document.getElementById("shopLink").textContent = shopUrl;
-                            document.getElementById("shopLink").href = shopUrl;
-                        } else {
-                            document.getElementById("usernameBox").classList.remove("hidden");
-                            document.getElementById("shopLinkBox").classList.add("hidden");
-                        }
-                    } else {
-                        updateShopAvatar(null);
-                        updateBalanceDisplay();
-                    }
-                    initNoticeSystem();
-                    loadSellerBanner();
-                    loadProducts();
-                } catch (err) {
-                    console.error(err);
-                    updateShopAvatar(null);
-                    updateBalanceDisplay();
-                    showToast("ডাটা লোড করতে সমস্যা হয়েছে", "error");
-                }
-            } else { window.location.href = "login.html"; }
-        });
+    window.copyShopLink = async () => {  
+        const url = document.getElementById("shopLink").textContent;  
+        try {  
+            await navigator.clipboard.writeText(url);  
+            const btn = document.getElementById("copyShopBtn");  
+            const originalHtml = btn.innerHTML;  
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg> কপি হয়েছে';  
+            showToast("শপের লিংক কপি করা হয়েছে", "success");  
+            setTimeout(() => { btn.innerHTML = originalHtml; }, 2000);  
+        } catch (e) { showToast("লিংক কপি করা যায়নি", "error"); }  
+    };  
 
-        window.copyShopLink = async () => {
-            const url = document.getElementById("shopLink").textContent;
-            try {
-                await navigator.clipboard.writeText(url);
-                const btn = document.getElementById("copyShopBtn");
-                const originalHtml = btn.innerHTML;
-                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg> কপি হয়েছে';
-                showToast("শপের লিংক কপি করা হয়েছে", "success");
-                setTimeout(() => { btn.innerHTML = originalHtml; }, 2000);
-            } catch (e) { showToast("লিংক কপি করা যায়নি", "error"); }
-        };
+    window.copyProductLink = async (id, slug, btn) => {  
+        const productUrl = slug ? `https://ghotimarket.com/product?${slug}` : `https://ghotimarket.com/product?id=${id}`;  
+        try {  
+            await navigator.clipboard.writeText(productUrl);  
+            const originalHtml = btn.innerHTML;  
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';  
+            showToast("পণ্য সফলভাবে কপি হয়েছে", "success");  
+            setTimeout(() => { btn.innerHTML = originalHtml; }, 2000);  
+        } catch (e) { showToast("লিংক কপি করা যায়নি", "error"); }  
+    };  
 
-        window.copyProductLink = async (id, slug, btn) => {
-            const productUrl = slug ? `https://ghotimarket.com/product?${slug}` : `https://ghotimarket.com/product?id=${id}`;
-            try {
-                await navigator.clipboard.writeText(productUrl);
-                const originalHtml = btn.innerHTML;
-                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
-                showToast("পণ্য সফলভাবে কপি হয়েছে", "success");
-                setTimeout(() => { btn.innerHTML = originalHtml; }, 2000);
-            } catch (e) { showToast("লিংক কপি করা যায়নি", "error"); }
-        };
+    // ===== FEATURE: CLICKABLE BANNER SYSTEM =====  
+    let banners = [];  
+    let currentSlide = 0;  
+    let slideTimer = null;  
 
-        // ===== FEATURE: CLICKABLE BANNER SYSTEM =====
-        let banners = [];
-        let currentSlide = 0;
-        let slideTimer = null;
+    const loadSellerBanner = () => {  
+        const q = query(collection(db, "seller_banner"), orderBy("order", "asc"));  
+        onSnapshot(q, (snap) => {  
+            banners = [];  
+            snap.forEach(doc => banners.push(doc.data()));  
+            renderBanner();  
+        });  
+    };  
 
-        const loadSellerBanner = () => {
-            const q = query(collection(db, "seller_banner"), orderBy("order", "asc"));
-            onSnapshot(q, (snap) => {
-                banners = [];
-                snap.forEach(doc => banners.push(doc.data()));
-                renderBanner();
-            });
-        };
+    const renderBanner = () => {  
+        const container = document.getElementById('bannerContainer');  
+        const slider = document.getElementById('bannerSlider');  
+        const dots = document.getElementById('bannerDots');  
+        clearInterval(slideTimer);  
+        if (banners.length === 0) { container.classList.add('hidden'); return; }  
+        container.classList.remove('hidden');  
+          
+        slider.innerHTML = banners.map(b => {  
+            const bLink = b.link || b.url || b.clickUrl || "";  
+            const isClickable = isSafeUrl(bLink);  
+            return `  
+            <div class="banner-item" ${isClickable ? `onclick="openBannerLink('${escapeHTML(bLink)}')" style="cursor:pointer;"` : ''}>  
+                <img src="${escapeHTML(b.image || '')}" alt="Banner" onerror="this.src='https://via.placeholder.com/981x363/f5f5f5/999?text=No+Image'">  
+            </div>`;  
+        }).join('');  
+          
+        if (banners.length > 1) {  
+            dots.innerHTML = banners.map((_, i) => `<div class="banner-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`).join('');  
+            startAutoSlide();  
+            setupBannerTouch();  
+        } else { dots.innerHTML = ''; }  
+        currentSlide = 0;  
+        updateSlider();  
+    };  
 
-        const renderBanner = () => {
-            const container = document.getElementById('bannerContainer');
-            const slider = document.getElementById('bannerSlider');
-            const dots = document.getElementById('bannerDots');
-            clearInterval(slideTimer);
-            if (banners.length === 0) { container.classList.add('hidden'); return; }
-            container.classList.remove('hidden');
-            
-            slider.innerHTML = banners.map(b => {
-                const bLink = b.link || b.url || b.clickUrl || "";
-                const isClickable = isSafeUrl(bLink);
-                return `
-                <div class="banner-item" ${isClickable ? `onclick="openBannerLink('${escapeHTML(bLink)}')" style="cursor:pointer;"` : ''}>
-                    <img src="${escapeHTML(b.image || '')}" alt="Banner" onerror="this.src='https://via.placeholder.com/981x363/f5f5f5/999?text=No+Image'">
-                </div>`;
-            }).join('');
-            
-            if (banners.length > 1) {
-                dots.innerHTML = banners.map((_, i) => `<div class="banner-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`).join('');
-                startAutoSlide();
-                setupBannerTouch();
-            } else { dots.innerHTML = ''; }
-            currentSlide = 0;
-            updateSlider();
-        };
+    const startAutoSlide = () => {  
+        clearInterval(slideTimer);  
+        slideTimer = setInterval(() => {  
+            currentSlide = (currentSlide + 1) % banners.length;  
+            updateSlider();  
+        }, 4000);  
+    };  
 
-        const startAutoSlide = () => {
-            clearInterval(slideTimer);
-            slideTimer = setInterval(() => {
-                currentSlide = (currentSlide + 1) % banners.length;
-                updateSlider();
-            }, 4000);
-        };
+    const updateSlider = () => {  
+        const slider = document.getElementById('bannerSlider');  
+        if (slider) slider.style.transform = `translateX(-${currentSlide * 100}%)`;  
+        document.querySelectorAll('.banner-dot').forEach((dot, index) => {  
+            dot.classList.toggle('active', index === currentSlide);  
+        });  
+    };  
 
-        const updateSlider = () => {
-            const slider = document.getElementById('bannerSlider');
-            if (slider) slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-            document.querySelectorAll('.banner-dot').forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentSlide);
-            });
-        };
+    window.goToSlide = (i) => { currentSlide = i; updateSlider(); startAutoSlide(); };  
 
-        window.goToSlide = (i) => { currentSlide = i; updateSlider(); startAutoSlide(); };
+    const setupBannerTouch = () => {  
+        const wrapper = document.querySelector('.banner-wrapper');  
+        let startX = 0;  
+        wrapper.addEventListener('touchstart', e => startX = e.changedTouches[0].screenX, {passive: true});  
+        wrapper.addEventListener('touchend', e => {  
+            let endX = e.changedTouches[0].screenX;  
+            if(startX - endX > 40) goToSlide((currentSlide + 1) % banners.length);  
+            else if(endX - startX > 40) goToSlide((currentSlide - 1 + banners.length) % banners.length);  
+        }, {passive: true});  
+    };  
 
-        const setupBannerTouch = () => {
-            const wrapper = document.querySelector('.banner-wrapper');
-            let startX = 0;
-            wrapper.addEventListener('touchstart', e => startX = e.changedTouches[0].screenX, {passive: true});
-            wrapper.addEventListener('touchend', e => {
-                let endX = e.changedTouches[0].screenX;
-                if(startX - endX > 40) goToSlide((currentSlide + 1) % banners.length);
-                else if(endX - startX > 40) goToSlide((currentSlide - 1 + banners.length) % banners.length);
-            }, {passive: true});
-        };
+    // ===== PRODUCT SYSTEM =====  
+    const loadProducts = () => {  
+        if(!currentUser) return;  
+        const q = query(collection(db, "products"), where("sellerId", "==", currentUser.uid));  
+        onSnapshot(q, (snapshot) => {  
+            allProducts = [];  
+            let activeCount = 0;  
+            snapshot.forEach(d => {  
+                const data = d.data();  
+                allProducts.push({id: d.id, ...data});  
+                if(data.status !== 'inactive' && data.active !== false) activeCount++;  
+            });  
+            document.getElementById('totalProducts').textContent = allProducts.length;  
+            document.getElementById('activeProducts').textContent = activeCount;  
+            renderProductList(allProducts);  
+        });  
+    };  
 
-        // ===== PRODUCT SYSTEM =====
-        const loadProducts = () => {
-            if(!currentUser) return;
-            const q = query(collection(db, "products"), where("sellerId", "==", currentUser.uid));
-            onSnapshot(q, (snapshot) => {
-                allProducts = [];
-                let activeCount = 0;
-                snapshot.forEach(d => {
-                    const data = d.data();
-                    allProducts.push({id: d.id, ...data});
-                    if(data.status !== 'inactive' && data.active !== false) activeCount++;
-                });
-                document.getElementById('totalProducts').textContent = allProducts.length;
-                document.getElementById('activeProducts').textContent = activeCount;
-                renderProductList(allProducts);
-            });
-        };
+    const renderProductList = (products) => {  
+        const listDiv = document.getElementById('productList');  
+        if (products.length === 0) {  
+            listDiv.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg><p>এখনো কোনো পণ্য যোগ করা হয়নি।</p></div>`;  
+            return;  
+        }  
+        listDiv.innerHTML = products.map(p => {  
+            const imgUrl = (p.images && p.images[0]) ? p.images[0] : 'https://via.placeholder.com/150';  
+            const isActive = p.status !== 'inactive' && p.active !== false;  
+            return `<div class="product-card">  
+                <img src="${escapeHTML(imgUrl)}" alt="Product" class="product-img">  
+                <div class="product-info">  
+                    <div class="product-title">${escapeHTML(p.name)} ${isActive ? `<span class="product-status">Active</span>` : `<span class="product-status inactive">Inactive</span>`}</div>  
+                    <div class="product-price">৳ ${escapeHTML(p.price)}</div>  
+                </div>  
+                <div class="product-actions">  
+                    <button class="p-btn btn-edit" onclick="editProduct('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>  
+                    <button class="p-btn btn-copy" onclick="copyProductLink('${p.id}', '${p.slug || ''}', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>  
+                    <button class="p-btn btn-del" onclick="triggerDelete('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>  
+                </div>  
+            </div>`;  
+        }).join('');  
+    };  
 
-        const renderProductList = (products) => {
-            const listDiv = document.getElementById('productList');
-            if (products.length === 0) {
-                listDiv.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg><p>এখনো কোনো পণ্য যোগ করা হয়নি।</p></div>`;
-                return;
-            }
-            listDiv.innerHTML = products.map(p => {
-                const imgUrl = (p.images && p.images[0]) ? p.images[0] : 'https://via.placeholder.com/150';
-                const isActive = p.status !== 'inactive' && p.active !== false;
-                return `<div class="product-card">
-                    <img src="${escapeHTML(imgUrl)}" alt="Product" class="product-img">
-                    <div class="product-info">
-                        <div class="product-title">${escapeHTML(p.name)} ${isActive ? `<span class="product-status">Active</span>` : `<span class="product-status inactive">Inactive</span>`}</div>
-                        <div class="product-price">৳ ${escapeHTML(p.price)}</div>
-                    </div>
-                    <div class="product-actions">
-                        <button class="p-btn btn-edit" onclick="editProduct('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-                        <button class="p-btn btn-copy" onclick="copyProductLink('${p.id}', '${p.slug || ''}', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-                        <button class="p-btn btn-del" onclick="triggerDelete('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
-                    </div>
-                </div>`;
-            }).join('');
-        };
+    window.searchProducts = () => {  
+        const term = document.getElementById('searchInput').value.toLowerCase();  
+        const filtered = allProducts.filter(p => {  
+            const nameMatch = p.name && p.name.toLowerCase().includes(term);  
+            let kwMatch = false;  
+            if(p.keywords) {  
+                const kws = Array.isArray(p.keywords) ? p.keywords.join(" ") : p.keywords;  
+                kwMatch = kws.toLowerCase().includes(term);  
+            }  
+            return nameMatch || kwMatch;  
+        });  
+        renderProductList(filtered);  
+    };  
 
-        window.searchProducts = () => {
-            const term = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = allProducts.filter(p => {
-                const nameMatch = p.name && p.name.toLowerCase().includes(term);
-                let kwMatch = false;
-                if(p.keywords) {
-                    const kws = Array.isArray(p.keywords) ? p.keywords.join(" ") : p.keywords;
-                    kwMatch = kws.toLowerCase().includes(term);
-                }
-                return nameMatch || kwMatch;
-            });
-            renderProductList(filtered);
-        };
+    window.editProduct = (id) => { window.location.href = `edit.html?id=${id}`; };  
+    window.triggerDelete = (id) => { productDeleteId = id; openModal('deleteModal'); };  
+    window.confirmDelete = async () => {  
+        if(!productDeleteId) return;  
+        try {  
+            await deleteDoc(doc(db, "products", productDeleteId));  
+            showToast("পণ্য মুছে ফেলা হয়েছে", "success");  
+            closeModal('deleteModal');  
+        } catch (err) { showToast("মুছে ফেলা সম্ভব হয়নি", "error"); }  
+    };  
 
-        window.editProduct = (id) => { window.location.href = `edit.html?id=${id}`; };
-        window.triggerDelete = (id) => { productDeleteId = id; openModal('deleteModal'); };
-        window.confirmDelete = async () => {
-            if(!productDeleteId) return;
-            try {
-                await deleteDoc(doc(db, "products", productDeleteId));
-                showToast("পণ্য মুছে ফেলা হয়েছে", "success");
-                closeModal('deleteModal');
-            } catch (err) { showToast("মুছে ফেলা সম্ভব হয়নি", "error"); }
-        };
+    window.checkLock = () => {  
+        if(!userData) return;  
+        if(!userData.profileUnlockedUntil || userData.profileUnlockedUntil < Date.now()) {  
+            window.location.href = "/locked";  
+        } else { window.location.href = "/upload"; }  
+    };  
 
-        window.checkLock = () => {
-            if(!userData) return;
-            if(!userData.profileUnlockedUntil || userData.profileUnlockedUntil < Date.now()) {
-                window.location.href = "locked.html";
-            } else { window.location.href = "upload.html"; }
-        };
+    window.triggerLogout = () => { closeModal('menuSheet'); setTimeout(() => openModal('logoutModal'), 300); };  
+    window.confirmLogout = async () => {  
+        try { await signOut(auth); window.location.href = "/login"; }   
+        catch (error) { showToast("লগআউট করা যায়নি", "error"); }  
+    };  
+</script>
 
-        window.triggerLogout = () => { closeModal('menuSheet'); setTimeout(() => openModal('logoutModal'), 300); };
-        window.confirmLogout = async () => {
-            try { await signOut(auth); window.location.href = "login.html"; } 
-            catch (error) { showToast("লগআউট করা যায়নি", "error"); }
-        };
-    </script>
-</body>
-</html>
+</body>  
+</html>  
