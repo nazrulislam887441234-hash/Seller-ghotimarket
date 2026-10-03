@@ -65,6 +65,7 @@
 
     body {
       font-family: "Hind Siliguri", sans-serif;
+
       background:
         radial-gradient(
           circle at top left,
@@ -77,11 +78,15 @@
           #ffffff 55%,
           #fff5ee
         );
+
       color: var(--text);
+
       min-height: 100vh;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       padding: 22px;
     }
 
@@ -96,6 +101,7 @@
       min-height: 650px;
 
       background: rgba(255, 255, 255, 0.92);
+
       border: 1px solid rgba(255, 106, 0, 0.10);
 
       border-radius: 30px;
@@ -109,6 +115,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
     }
+
 
     /* =========================
        LEFT
@@ -210,6 +217,7 @@
       line-height: 1.12;
 
       font-weight: 700;
+
       letter-spacing: -1px;
     }
 
@@ -229,12 +237,14 @@
 
       display: flex;
       flex-direction: column;
+
       gap: 15px;
     }
 
     .feature {
       display: flex;
       align-items: center;
+
       gap: 12px;
 
       font-size: 15px;
@@ -265,6 +275,7 @@
       color: rgba(255, 255, 255, 0.75);
     }
 
+
     /* =========================
        LOGIN
     ========================= */
@@ -290,6 +301,7 @@
 
     .login-title {
       font-size: 32px;
+
       font-weight: 700;
 
       line-height: 1.25;
@@ -391,6 +403,7 @@
       transform: translateY(-50%);
 
       border: 0;
+
       background: transparent;
 
       color: #888;
@@ -469,6 +482,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+
       gap: 9px;
     }
 
@@ -483,6 +497,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
       gap: 7px;
 
       color: #8a8a8a;
@@ -493,8 +508,10 @@
     .secure-note svg {
       width: 15px;
       height: 15px;
+
       color: var(--orange);
     }
+
 
     /* =========================
        MODAL
@@ -546,13 +563,18 @@
       box-shadow:
         0 30px 80px rgba(0, 0, 0, 0.18);
 
-      transform: translateY(15px) scale(.97);
+      transform:
+        translateY(15px)
+        scale(.97);
 
-      transition: transform .22s ease;
+      transition:
+        transform .22s ease;
     }
 
     .modal-overlay.show .modal {
-      transform: translateY(0) scale(1);
+      transform:
+        translateY(0)
+        scale(1);
     }
 
     .modal-icon {
@@ -561,7 +583,8 @@
 
       border-radius: 18px;
 
-      margin: 0 auto 17px;
+      margin:
+        0 auto 17px;
 
       display: flex;
       align-items: center;
@@ -617,6 +640,7 @@
       cursor: pointer;
     }
 
+
     /* =========================
        LOADING
     ========================= */
@@ -668,9 +692,11 @@
       border-radius: 50%;
 
       border: 4px solid #ffe2d0;
+
       border-top-color: var(--orange);
 
-      animation: spin .8s linear infinite;
+      animation:
+        spin .8s linear infinite;
 
       margin: auto;
     }
@@ -688,6 +714,7 @@
       }
     }
 
+
     /* =========================
        RESPONSIVE
     ========================= */
@@ -700,6 +727,7 @@
 
       .page {
         max-width: 560px;
+
         min-height: auto;
 
         display: block;
@@ -712,7 +740,10 @@
       }
 
       .login-section {
-        padding: 38px 25px 30px;
+        padding:
+          38px
+          25px
+          30px;
       }
 
       .mobile-logo {
@@ -733,6 +764,7 @@
       .mobile-logo img {
         width: 100%;
         height: 100%;
+
         object-fit: contain;
       }
 
@@ -740,6 +772,7 @@
         font-size: 29px;
       }
     }
+
 
     @media (max-width: 430px) {
 
@@ -753,6 +786,7 @@
         min-height: 100vh;
 
         border: 0;
+
         border-radius: 0;
 
         box-shadow: none;
@@ -800,21 +834,26 @@
       <div class="brand-content">
 
         <div class="logo-box">
+
           <img
             src="https://seller.ghotimarket.com/logo.png"
             alt="GHOTI MARKET"
           >
+
         </div>
+
 
         <h1 class="brand-title">
           GHOTI MARKET
         </h1>
+
 
         <p class="brand-description">
           আপনার অনলাইন ব্যবসা শুরু করার জন্য
           একটি সহজ, দ্রুত এবং প্রফেশনাল
           প্ল্যাটফর্ম।
         </p>
+
 
         <div class="feature-list">
 
@@ -828,8 +867,15 @@
                 stroke="currentColor"
                 stroke-width="2"
               >
-                <path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/>
-                <path d="M9 12l2 2 4-4"/>
+
+                <path
+                  d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"
+                />
+
+                <path
+                  d="M9 12l2 2 4-4"
+                />
+
               </svg>
 
             </span>
@@ -849,8 +895,13 @@
                 stroke="currentColor"
                 stroke-width="2"
               >
+
                 <path d="M12 2v20"/>
-                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H7"/>
+
+                <path
+                  d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H7"
+                />
+
               </svg>
 
             </span>
@@ -870,12 +921,15 @@
                 stroke="currentColor"
                 stroke-width="2"
               >
+
                 <path d="M20 7h-9"/>
                 <path d="M20 12h-9"/>
                 <path d="M20 17h-9"/>
+
                 <path d="M4 7h.01"/>
                 <path d="M4 12h.01"/>
                 <path d="M4 17h.01"/>
+
               </svg>
 
             </span>
@@ -903,15 +957,19 @@
       <div class="login-box">
 
         <div class="mobile-logo">
+
           <img
             src="https://seller.ghotimarket.com/logo.png"
             alt="GHOTI MARKET"
           >
+
         </div>
+
 
         <h2 class="login-title">
           স্বাগতম
         </h2>
+
 
         <p class="login-subtitle">
           আপনার Email এবং Password দিয়ে
@@ -936,6 +994,7 @@
               Email Address
             </label>
 
+
             <div class="input-wrapper">
 
               <span class="input-icon">
@@ -946,6 +1005,7 @@
                   stroke="currentColor"
                   stroke-width="2"
                 >
+
                   <rect
                     x="3"
                     y="5"
@@ -953,10 +1013,13 @@
                     height="14"
                     rx="2"
                   />
+
                   <path d="m3 7 9 6 9-6"/>
+
                 </svg>
 
               </span>
+
 
               <input
                 id="email"
@@ -983,6 +1046,7 @@
               Password
             </label>
 
+
             <div class="input-wrapper">
 
               <span class="input-icon">
@@ -993,6 +1057,7 @@
                   stroke="currentColor"
                   stroke-width="2"
                 >
+
                   <rect
                     x="4"
                     y="10"
@@ -1001,7 +1066,10 @@
                     rx="2"
                   />
 
-                  <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                  <path
+                    d="M8 10V7a4 4 0 0 1 8 0v3"
+                  />
+
                 </svg>
 
               </span>
@@ -1032,12 +1100,17 @@
                   stroke="currentColor"
                   stroke-width="2"
                 >
-                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/>
+
+                  <path
+                    d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"
+                  />
+
                   <circle
                     cx="12"
                     cy="12"
                     r="3"
                   />
+
                 </svg>
 
               </button>
@@ -1046,6 +1119,8 @@
 
           </div>
 
+
+          <!-- SUBMIT -->
 
           <button
             type="submit"
@@ -1061,10 +1136,21 @@
                 stroke="currentColor"
                 stroke-width="2"
               >
-                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-                <path d="m10 17 5-5-5-5"/>
-                <path d="M15 12H3"/>
+
+                <path
+                  d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"
+                />
+
+                <path
+                  d="m10 17 5-5-5-5"
+                />
+
+                <path
+                  d="M15 12H3"
+                />
+
               </svg>
+
 
               <span>
                 Login / Continue
@@ -1085,6 +1171,7 @@
             stroke="currentColor"
             stroke-width="2"
           >
+
             <rect
               x="4"
               y="10"
@@ -1092,8 +1179,13 @@
               height="11"
               rx="2"
             />
-            <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+
+            <path
+              d="M8 10V7a4 4 0 0 1 8 0v3"
+            />
+
           </svg>
+
 
           আপনার তথ্য Firebase দ্বারা নিরাপদভাবে সংরক্ষিত
 
@@ -1127,16 +1219,21 @@
           stroke="currentColor"
           stroke-width="2"
         >
+
           <circle
             cx="12"
             cy="12"
             r="9"
           />
+
           <path d="M12 8v4"/>
+
           <path d="M12 16h.01"/>
+
         </svg>
 
       </div>
+
 
       <h3
         class="modal-title"
@@ -1145,12 +1242,14 @@
         কিছু একটা সমস্যা হয়েছে
       </h3>
 
+
       <p
         class="modal-message"
         id="modalMessage"
       >
         অনুগ্রহ করে আবার চেষ্টা করুন।
       </p>
+
 
       <button
         class="modal-button"
@@ -1174,6 +1273,7 @@
     <div class="loading-box">
 
       <div class="spinner"></div>
+
 
       <div
         class="loading-text"
@@ -1250,38 +1350,50 @@
     const loginForm =
       document.getElementById("loginForm");
 
+
     const emailInput =
       document.getElementById("email");
+
 
     const passwordInput =
       document.getElementById("password");
 
+
     const submitBtn =
       document.getElementById("submitBtn");
+
 
     const passwordToggle =
       document.getElementById("passwordToggle");
 
+
     const loadingOverlay =
       document.getElementById("loadingOverlay");
+
 
     const loadingText =
       document.getElementById("loadingText");
 
+
     const modalOverlay =
       document.getElementById("modalOverlay");
+
 
     const modalTitle =
       document.getElementById("modalTitle");
 
+
     const modalMessage =
       document.getElementById("modalMessage");
+
 
     const modalButton =
       document.getElementById("modalButton");
 
+
     const modalIcon =
       document.getElementById("modalIcon");
+
 
     const modalIconSvg =
       document.getElementById("modalIconSvg");
@@ -1297,9 +1409,11 @@
       type = "error"
     ) {
 
-      modalTitle.textContent = title;
+      modalTitle.textContent =
+        title;
 
-      modalMessage.textContent = message;
+      modalMessage.textContent =
+        message;
 
 
       modalIcon.className =
@@ -1309,39 +1423,54 @@
       if (type === "success") {
 
         modalIconSvg.innerHTML = `
+
           <circle
             cx="12"
             cy="12"
             r="9"
           ></circle>
 
-          <path d="m8 12 2.5 2.5L16 9"></path>
+          <path
+            d="m8 12 2.5 2.5L16 9"
+          ></path>
+
         `;
 
       } else {
 
         modalIconSvg.innerHTML = `
+
           <circle
             cx="12"
             cy="12"
             r="9"
           ></circle>
 
-          <path d="M12 8v4"></path>
+          <path
+            d="M12 8v4"
+          ></path>
 
-          <path d="M12 16h.01"></path>
+          <path
+            d="M12 16h.01"
+          ></path>
+
         `;
 
       }
 
 
-      modalOverlay.classList.add("show");
+      modalOverlay.classList.add(
+        "show"
+      );
+
     }
 
 
     function hideModal() {
 
-      modalOverlay.classList.remove("show");
+      modalOverlay.classList.remove(
+        "show"
+      );
 
     }
 
@@ -1359,7 +1488,9 @@
         if (
           event.target === modalOverlay
         ) {
+
           hideModal();
+
         }
 
       }
@@ -1380,11 +1511,14 @@
         loadingText.textContent =
           message;
 
+
         loadingOverlay.classList.add(
           "show"
         );
 
-        submitBtn.disabled = true;
+
+        submitBtn.disabled =
+          true;
 
       } else {
 
@@ -1392,7 +1526,9 @@
           "show"
         );
 
-        submitBtn.disabled = false;
+
+        submitBtn.disabled =
+          false;
 
       }
 
@@ -1420,35 +1556,57 @@
         if (isPassword) {
 
           passwordToggle.innerHTML = `
+
             <svg
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="2"
             >
-              <path d="M3 3l18 18"></path>
-              <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
-              <path d="M9.9 4.3A10.6 10.6 0 0 1 12 4c6.5 0 10 8 10 8a17.4 17.4 0 0 1-3.1 4.3"></path>
-              <path d="M6.2 6.2C3.5 8.2 2 12 2 12s3.5 8 10 8a10.5 10.5 0 0 0 4.1-.8"></path>
+
+              <path
+                d="M3 3l18 18"
+              ></path>
+
+              <path
+                d="M10.6 10.6a2 2 0 0 0 2.8 2.8"
+              ></path>
+
+              <path
+                d="M9.9 4.3A10.6 10.6 0 0 1 12 4c6.5 0 10 8 10 8a17.4 17.4 0 0 1-3.1 4.3"
+              ></path>
+
+              <path
+                d="M6.2 6.2C3.5 8.2 2 12 2 12s3.5 8 10 8a10.5 10.5 0 0 0 4.1-.8"
+              ></path>
+
             </svg>
+
           `;
 
         } else {
 
           passwordToggle.innerHTML = `
+
             <svg
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="2"
             >
-              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path>
+
+              <path
+                d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"
+              ></path>
+
               <circle
                 cx="12"
                 cy="12"
                 r="3"
               ></circle>
+
             </svg>
+
           `;
 
         }
@@ -1513,6 +1671,112 @@
 
 
     /* =========================
+       CREATE NEW ACCOUNT
+    ========================= */
+
+    async function createNewAccount(
+      email,
+      password
+    ) {
+
+      try {
+
+        setLoading(
+          true,
+          "নতুন অ্যাকাউন্ট তৈরি করা হচ্ছে..."
+        );
+
+
+        const credential =
+          await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+
+
+        if (
+          credential &&
+          credential.user
+        ) {
+
+          goNext();
+
+        }
+
+      } catch (createError) {
+
+        console.error(
+          "Create Account Error:",
+          createError
+        );
+
+
+        /*
+         * Email আগে থেকেই Firebase-এ
+         * থাকলে এখানে email-already-in-use
+         * আসবে।
+         *
+         * এর অর্থ:
+         * Login password সঠিক নয়।
+         */
+
+        if (
+          createError.code ===
+          "auth/email-already-in-use"
+        ) {
+
+          throw new Error(
+            "Email অথবা Password সঠিক নয়।"
+          );
+
+        }
+
+
+        if (
+          createError.code ===
+          "auth/operation-not-allowed"
+        ) {
+
+          throw new Error(
+            "Firebase Authentication-এ Email/Password Login চালু নেই। Firebase Console থেকে Email/Password চালু করুন।"
+          );
+
+        }
+
+
+        if (
+          createError.code ===
+          "auth/weak-password"
+        ) {
+
+          throw new Error(
+            "Password আরও শক্তিশালী হতে হবে।"
+          );
+
+        }
+
+
+        if (
+          createError.code ===
+          "auth/invalid-email"
+        ) {
+
+          throw new Error(
+            "Email Address সঠিক নয়।"
+          );
+
+        }
+
+
+        throw createError;
+
+      }
+
+    }
+
+
+    /* =========================
        LOGIN / CREATE
     ========================= */
 
@@ -1533,7 +1797,9 @@
           passwordInput.value;
 
 
-        /* Email validation */
+        /* =========================
+           EMAIL VALIDATION
+        ========================= */
 
         if (!email) {
 
@@ -1545,6 +1811,7 @@
           emailInput.focus();
 
           return;
+
         }
 
 
@@ -1558,10 +1825,13 @@
           emailInput.focus();
 
           return;
+
         }
 
 
-        /* Password validation */
+        /* =========================
+           PASSWORD VALIDATION
+        ========================= */
 
         if (!password) {
 
@@ -1573,6 +1843,7 @@
           passwordInput.focus();
 
           return;
+
         }
 
 
@@ -1586,6 +1857,7 @@
           passwordInput.focus();
 
           return;
+
         }
 
 
@@ -1631,14 +1903,26 @@
             ================================= */
 
             const exists =
-              await checkUserDocument(uid);
+              await checkUserDocument(
+                uid
+              );
 
 
             if (exists) {
 
+              /*
+               * Firebase Auth account আছে
+               * এবং users/{uid} document-ও আছে
+               */
+
               goDashboard();
 
             } else {
+
+              /*
+               * Firebase Auth account আছে
+               * কিন্তু users/{uid} নেই
+               */
 
               goNext();
 
@@ -1649,44 +1933,37 @@
 
           } catch (loginError) {
 
+            console.error(
+              "Login Attempt:",
+              loginError
+            );
+
 
             /* =================================
-               USER DOES NOT EXIST
-               CREATE NEW ACCOUNT
+               IMPORTANT FIX
+
+               Firebase নতুন security behavior-এর
+               কারণে অনেক সময় user-not-found-এর
+               বদলে invalid-credential দেয়।
+
+               তাই invalid-credential অথবা
+               user-not-found হলে আমরা
+               create account চেষ্টা করবো।
             ================================= */
+
 
             if (
               loginError.code ===
-              "auth/user-not-found"
+              "auth/user-not-found" ||
+
+              loginError.code ===
+              "auth/invalid-credential"
             ) {
 
-              setLoading(
-                true,
-                "নতুন অ্যাকাউন্ট তৈরি করা হচ্ছে..."
+              await createNewAccount(
+                email,
+                password
               );
-
-
-              const credential =
-                await createUserWithEmailAndPassword(
-                  auth,
-                  email,
-                  password
-                );
-
-
-              /*
-               * নতুন Firebase Authentication
-               * account তৈরি হয়েছে।
-               *
-               * users/{uid} এখনো না থাকায়
-               * সরাসরি /next
-               */
-
-              if (credential.user) {
-
-                goNext();
-
-              }
 
               return;
 
@@ -1709,11 +1986,16 @@
             }
 
 
-            /* Firebase newer error */
+            /* =================================
+               EMAIL ALREADY EXISTS
+
+               কিছু Firebase configuration-এ
+               login error আলাদাভাবে আসতে পারে।
+            ================================= */
 
             if (
               loginError.code ===
-              "auth/invalid-credential"
+              "auth/email-already-in-use"
             ) {
 
               throw new Error(
@@ -1722,6 +2004,10 @@
 
             }
 
+
+            /* =================================
+               INVALID EMAIL
+            ================================= */
 
             if (
               loginError.code ===
@@ -1735,6 +2021,10 @@
             }
 
 
+            /* =================================
+               TOO MANY REQUESTS
+            ================================= */
+
             if (
               loginError.code ===
               "auth/too-many-requests"
@@ -1742,6 +2032,22 @@
 
               throw new Error(
                 "অনেকবার চেষ্টা করা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।"
+              );
+
+            }
+
+
+            /* =================================
+               OPERATION NOT ALLOWED
+            ================================= */
+
+            if (
+              loginError.code ===
+              "auth/operation-not-allowed"
+            ) {
+
+              throw new Error(
+                "Firebase Authentication-এ Email/Password Login চালু নেই।"
               );
 
             }
@@ -1764,6 +2070,7 @@
 
 
           if (
+            error &&
             error.message
           ) {
 
@@ -1777,7 +2084,6 @@
             "লগইন করা যায়নি",
             message
           );
-
 
         } finally {
 
