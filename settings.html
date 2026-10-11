@@ -1,140 +1,202 @@
-<!DOCTYPE html>  
-<html lang="bn">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>Edit Profile | Ghoti Market</title>  
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">  
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  
-    <style>  
-        :root {  
-            --primary: #2563eb;  
-            --primary-dark: #1d4ed8;  
-            --primary-light: #eff6ff;  
-            --accent: #3b82f6;  
-            --dark: #0f172a;  
-            --bg: #f8fafc;  
-            --card-bg: #ffffff;  
-            --text-main: #1e293b;  
-            --text-muted: #64748b;  
-            --border: #e2e8f0;  
-            --border-focus: #93c5fd;  
-            --danger: #dc2626;  
-            --danger-bg: #fef2f2;  
-            --success: #16a34a;  
-            --success-bg: #f0fdf4;  
-            --warning: #d97706;  
-            --warning-bg: #fffbebfb;  
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);  
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);  
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);  
-            --radius-lg: 20px;  
-            --radius-md: 12px;  
-            --radius-sm: 8px;  
-            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);  
-        }  
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FF6B35">
+    <meta name="description" content="GHOTI MARKET সেলার প্রোফাইল এডিট পেজ">
+    <title>Edit Profile | GHOTI MARKET</title>
 
-        * {  
-            box-sizing: border-box;  
-            margin: 0;  
-            padding: 0;  
-        }  
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-        body {  
-            font-family: 'Hind Siliguri', sans-serif;  
-            background-color: var(--bg);  
-            color: var(--text-main);  
-            min-height: 100vh;  
-            display: flex;  
-            justify-content: center;  
-            align-items: center;  
-            padding: 24px 16px;  
-            line-height: 1.5;  
-        }  
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E85420;
+            --primary-light: #FFF1E9;
+            --accent: #FFA500;
+            --dark: #23170F;
+            --bg: #FFF8F3;
+            --card-bg: #FFFFFF;
+            --text-main: #29211D;
+            --text-muted: #81756D;
+            --border: #F0DED2;
+            --danger: #DC2626;
+            --danger-bg: #FEF2F2;
+            --success: #15803D;
+            --success-bg: #F0FDF4;
+            --warning: #B45309;
+            --warning-bg: #FFFBEB;
+            --shadow-sm: 0 2px 5px rgba(75, 35, 10, .05);
+            --shadow-md: 0 6px 18px rgba(75, 35, 10, .09);
+            --shadow-lg: 0 20px 55px rgba(100, 45, 10, .12);
+            --radius-lg: 24px;
+            --radius-md: 14px;
+            --radius-sm: 9px;
+            --transition: all .25s ease;
+        }
 
-        /* Skeleton Loader Styles */  
-        .skeleton-container {  
-            width: 100%;  
-            max-width: 680px;  
-            background: var(--card-bg);  
-            border-radius: var(--radius-lg);  
-            overflow: hidden;  
-            box-shadow: var(--shadow-lg);  
-            border: 1px solid var(--border);  
-            padding: 24px;  
-        }  
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        .skeleton-pulse {  
-            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);  
-            background-size: 200% 100%;  
-            animation: skeleton-loading 1.5s infinite;  
-            border-radius: var(--radius-sm);  
-        }  
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background:
+                radial-gradient(ellipse at top left, rgba(255,165,0,.10), transparent 35%),
+                var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px 14px;
+            line-height: 1.5;
+        }
 
-        @keyframes skeleton-loading {  
-            0% { background-position: 200% 0; }  
-            100% { background-position: -200% 0; }  
-        }  
+        button, input, textarea, a {
+            font-family: inherit;
+        }
 
-        .skeleton-header { height: 160px; border-radius: var(--radius-md); margin-bottom: 24px; }  
-        .skeleton-title { height: 28px; width: 40%; margin-bottom: 16px; }  
-        .skeleton-input { height: 48px; width: 100%; margin-bottom: 20px; border-radius: var(--radius-md); }  
-        .skeleton-button { height: 52px; width: 100%; border-radius: var(--radius-md); margin-top: 12px; }  
+        button:focus-visible, a:focus-visible,
+        input:focus-visible, textarea:focus-visible {
+            outline: 3px solid rgba(255,107,53,.3);
+            outline-offset: 3px;
+        }
 
-        /* Main Container */  
-        .profile-container {  
-            width: 100%;  
-            max-width: 680px;  
-            background: var(--card-bg);  
-            border-radius: var(--radius-lg);  
-            overflow: hidden;  
-            box-shadow: var(--shadow-lg);  
-            border: 1px solid var(--border);  
-            animation: fadeIn 0.4s ease-out forwards;  
-        }  
+        /* Loading skeleton */
+        .skeleton-container {
+            width: 100%;
+            max-width: 680px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-lg);
+        }
 
-        @keyframes fadeIn {  
-            from { opacity: 0; transform: translateY(10px); }  
-            to { opacity: 1; transform: translateY(0); }  
-        }  
+        .skeleton-pulse {
+            background: linear-gradient(
+                90deg, #FFF1E9 25%, #FFE0CF 50%, #FFF1E9 75%
+            );
+            background-size: 200% 100%;
+            animation: skeletonLoading 1.4s infinite;
+            border-radius: var(--radius-sm);
+        }
 
-        /* Header Design */  
-        .profile-header {  
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%);  
-            color: white;  
-            padding: 36px 24px;  
-            text-align: center;  
-            position: relative;  
-        }  
+        @keyframes skeletonLoading {
+            to { background-position: -200% 0; }
+        }
 
-        /* Professional Logo & Avatar Design */
-        .avatar-wrapper {  
-            position: relative;  
-            width: 96px;  
-            height: 96px;  
-            margin: 0 auto 16px;  
-            border-radius: 50%;
-            padding: 3px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.15));
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
-        }  
+        .skeleton-header {
+            height: 175px;
+            margin-bottom: 24px;
+        }
 
-        .avatar-box {  
-            width: 100%;  
-            height: 100%;  
-            background: #ffffff;  
-            color: var(--primary);  
-            border-radius: 50%;  
-            display: flex;  
-            align-items: center;  
-            justify-content: center;  
-            font-size: 38px;  
-            border: 4px solid #ffffff;  
+        .skeleton-title {
+            height: 26px;
+            width: 40%;
+            margin-bottom: 15px;
+        }
+
+        .skeleton-input {
+            height: 48px;
+            margin-bottom: 20px;
+        }
+
+        .skeleton-button {
+            height: 52px;
+            margin-top: 10px;
+        }
+
+        /* Main profile */
+        .profile-container {
+            width: 100%;
+            max-width: 680px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
             overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+            box-shadow: var(--shadow-lg);
+            animation: fadeIn .4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        .profile-header {
+            background: linear-gradient(135deg, #A8320B 0%, #FF6B35 58%, #FFA500 100%);
+            color: white;
+            padding: 32px 22px 28px;
+            text-align: center;
             position: relative;
-        }  
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 50%;
+            top: -150px;
+            right: -65px;
+            pointer-events: none;
+        }
+
+        .profile-header::after {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border: 1px solid rgba(255,255,255,.13);
+            border-radius: 50%;
+            bottom: -105px;
+            left: -45px;
+            pointer-events: none;
+        }
+
+        .avatar-action-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 17px;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            flex: 0 0 100px;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(135deg, white, rgba(255,255,255,.4));
+            box-shadow: 0 8px 25px rgba(70,25,0,.25);
+        }
+
+        .avatar-box {
+            width: 100%;
+            height: 100%;
+            background: white;
+            color: var(--primary);
+            border: 3px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-size: 38px;
+        }
 
         .avatar-box img {
             width: 100%;
@@ -144,1178 +206,1287 @@
             border-radius: 50%;
         }
 
-        .verified-badge {  
-            position: absolute;  
-            bottom: 2px;  
-            right: 2px;  
-            background: var(--success);  
-            color: white;  
-            width: 28px;  
-            height: 28px;  
-            border-radius: 50%;  
-            display: flex;  
-            align-items: center;  
-            justify-content: center;  
-            font-size: 13px;  
-            border: 2px solid white;  
-            box-shadow: var(--shadow-md);  
-            z-index: 2;
-        }  
+        .change-logo-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 12px;
+            color: white;
+            background: rgba(255,255,255,.17);
+            border: 1px solid rgba(255,255,255,.55);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: var(--transition);
+            backdrop-filter: blur(8px);
+        }
 
-        .profile-header h2 {  
-            font-size: 24px;  
-            font-weight: 700;  
-            margin-bottom: 4px;  
-            letter-spacing: -0.3px;  
-        }  
+        .change-logo-btn:hover {
+            background: white;
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
 
-        .profile-header p {  
-            font-size: 14px;  
-            color: rgba(255, 255, 255, 0.8);  
-            margin-bottom: 12px;  
-        }  
+        .profile-header h2 {
+            position: relative;
+            z-index: 1;
+            font-size: 25px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            overflow-wrap: anywhere;
+        }
 
-        .header-meta-group {  
-            display: flex;  
-            align-items: center;  
-            justify-content: center;  
-            gap: 10px;  
-            flex-wrap: wrap;  
-        }  
+        .profile-header > p {
+            position: relative;
+            z-index: 1;
+            font-size: 14px;
+            color: rgba(255,255,255,.9);
+            margin-bottom: 14px;
+        }
 
-        .uid-badge {  
-            display: inline-flex;  
-            align-items: center;  
-            gap: 6px;  
-            background: rgba(255, 255, 255, 0.12);  
-            backdrop-filter: blur(8px);  
-            padding: 4px 14px;  
-            border-radius: 20px;  
-            font-size: 12px;  
-            font-weight: 500;  
-            border: 1px solid rgba(255, 255, 255, 0.15);  
-            color: rgba(255, 255, 255, 0.95);  
-        }  
+        .header-meta-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
 
-        .status-pill {  
-            display: inline-flex;  
-            align-items: center;  
-            gap: 6px;  
-            background: rgba(22, 163, 74, 0.2);  
-            padding: 4px 12px;  
-            border-radius: 20px;  
-            font-size: 12px;  
-            font-weight: 500;  
-            color: #86efac;  
-            border: 1px solid rgba(134, 239, 172, 0.3);  
-        }  
+        .uid-badge,
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,.25);
+            background: rgba(255,255,255,.14);
+            color: white;
+        }
 
-        .status-dot {  
-            width: 7px;  
-            height: 7px;  
-            background-color: #4ade80;  
-            border-radius: 50%;  
-            box-shadow: 0 0 8px #4ade80;  
-        }  
+        .status-pill.is-active {
+            background: rgba(22,163,74,.2);
+            color: #E0FFE9;
+            border-color: rgba(220,255,230,.4);
+        }
 
-        /* Profile Summary Strip */  
-        .profile-summary-strip {  
-            background: #f1f5f9;  
-            border-bottom: 1px solid var(--border);  
-            padding: 12px 24px;  
-            display: flex;  
-            align-items: center;  
-            justify-content: space-between;  
-            font-size: 13px;  
-        }  
+        .status-pill.is-verified {
+            background: rgba(255,255,255,.18);
+            color: white;
+        }
 
-        .summary-store-title {  
-            display: flex;  
-            align-items: center;  
-            gap: 8px;  
-            font-weight: 600;  
-            color: var(--text-main);  
-        }  
+        .status-pill.is-inactive,
+        .status-pill.is-unverified {
+            background: rgba(127,29,29,.2);
+            color: #FFF1F1;
+            border-color: rgba(255,220,220,.3);
+        }
 
-        .summary-status {  
-            display: flex;  
-            align-items: center;  
-            gap: 6px;  
-            font-weight: 500;  
-            padding: 2px 10px;  
-            border-radius: 12px;  
-            transition: var(--transition);  
-        }  
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            background: currentColor;
+            border-radius: 50%;
+            flex: 0 0 7px;
+        }
 
-        .summary-status.clean {  
-            background: var(--success-bg);  
-            color: var(--success);  
-        }  
-
-        .summary-status.dirty {  
-            background: var(--warning-bg);  
-            color: var(--warning);  
-        }  
-
-        /* Form Body */  
-        .form-body {  
-            padding: 32px 28px;  
-        }  
-
-        .input-group {  
-            margin-bottom: 24px;  
-        }  
-
-        .input-group label {  
-            display: flex;  
-            align-items: center;  
-            justify-content: space-between;  
-            margin-bottom: 8px;  
-            font-weight: 600;  
-            color: var(--text-main);  
-            font-size: 14px;  
-        }  
-
-        .label-subtext {  
-            font-weight: 400;  
-            color: var(--text-muted);  
-            font-size: 12px;  
-        }  
-
-        .input-box {  
-            position: relative;  
-        }  
-
-        .input-box i.input-icon {  
-            position: absolute;  
-            left: 16px;  
-            top: 50%;  
-            transform: translateY(-50%);  
-            color: var(--text-muted);  
-            font-size: 16px;  
-            transition: var(--transition);  
-            pointer-events: none;  
-        }  
-
-        .input-box.textarea-box i.input-icon {  
-            top: 18px;  
-            transform: none;  
-        }  
-
-        input[type="text"],  
-        input[type="tel"],  
-        textarea {  
-            width: 100%;  
-            padding: 13px 16px 13px 46px;  
-            border: 1.5px solid var(--border);  
-            border-radius: var(--radius-md);  
-            background-color: #fff;  
-            color: var(--text-main);  
-            font-size: 15px;  
-            font-family: 'Hind Siliguri', sans-serif;  
-            outline: none;  
-            transition: var(--transition);  
-        }  
-
-        textarea {  
-            resize: none;  
-            height: 110px;  
-            line-height: 1.6;  
-        }  
-
-        input:focus, textarea:focus {  
-            border-color: var(--primary);  
-            box-shadow: 0 0 0 4px var(--primary-light);  
-        }  
-
-        .input-box:focus-within i.input-icon {  
-            color: var(--primary);  
-        }  
-
-        /* Error States */  
-        input.error-border, textarea.error-border {  
-            border-color: var(--danger) !important;  
-            background-color: var(--danger-bg);  
-        }  
-
-        input.error-border:focus, textarea.error-border:focus {  
-            box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.15) !important;  
-        }  
-
-        .error-message {  
-            color: var(--danger);  
-            font-size: 12px;  
-            margin-top: 6px;  
-            display: none;  
-            align-items: center;  
-            gap: 4px;  
-            font-weight: 500;  
-        }  
-
-        .error-message.visible {  
-            display: flex;  
-        }  
-
-        /* Character Counter */  
-        .char-counter-wrapper {  
-            display: flex;  
-            justify-content: space-between;  
-            align-items: center;  
-            margin-top: 6px;  
-        }  
-
-        .char-counter {  
-            font-size: 12px;  
-            color: var(--text-muted);  
-            font-weight: 500;  
-            margin-left: auto;  
-        }  
-
-        .char-counter.warning { color: var(--warning); }  
-        .char-counter.error { color: var(--danger); font-weight: 700; }  
-
-        /* Keyword Section UI */  
-        .keyword-input-wrapper {  
-            display: flex;  
-            gap: 10px;  
-            margin-bottom: 12px;  
-        }  
-
-        .keyword-input-wrapper input {  
-            padding-left: 16px;  
-        }  
-
-        .keyword-add-btn {  
-            background: var(--primary);  
-            color: white;  
-            border: none;  
-            padding: 0 20px;  
-            border-radius: var(--radius-md);  
-            cursor: pointer;  
-            font-weight: 600;  
-            font-family: 'Hind Siliguri', sans-serif;  
-            font-size: 14px;  
-            transition: var(--transition);  
-            white-space: nowrap;  
-            display: inline-flex;  
-            align-items: center;  
-            gap: 6px;  
-        }  
-
-        .keyword-add-btn:hover {  
-            background: var(--primary-dark);  
-            transform: translateY(-1px);  
-        }  
-
-        .keyword-add-btn:disabled {  
-            background: #cbd5e1;  
-            cursor: not-allowed;  
-            transform: none;  
-        }  
-
-        .keywords-container {  
-            display: flex;  
-            flex-wrap: wrap;  
-            gap: 8px;  
-            min-height: 52px;  
-            padding: 12px;  
-            background: var(--bg);  
-            border-radius: var(--radius-md);  
-            border: 1px dashed #cbd5e1;  
-            align-items: center;  
-        }  
-
-        .keyword-chip {  
-            background: white;  
-            color: var(--text-main);  
-            border: 1px solid var(--border);  
-            padding: 6px 14px;  
-            border-radius: 20px;  
-            font-size: 13px;  
-            font-weight: 500;  
-            display: inline-flex;  
-            align-items: center;  
-            gap: 8px;  
-            box-shadow: var(--shadow-sm);  
-            animation: popIn 0.2s ease-out;  
-            transition: var(--transition);  
-        }  
-
-        @keyframes popIn {  
-            from { transform: scale(0.8); opacity: 0; }  
-            to { transform: scale(1); opacity: 1; }  
-        }  
-
-        .keyword-chip:hover {  
-            border-color: var(--border-focus);  
-        }  
-
-        .keyword-chip .remove-btn {  
-            cursor: pointer;  
-            color: var(--text-muted);  
-            font-size: 13px;  
-            transition: var(--transition);  
-            display: flex;  
-            align-items: center;  
-            justify-content: center;  
-            width: 18px;  
-            height: 18px;  
-            border-radius: 50%;  
-        }  
-
-        .keyword-chip .remove-btn:hover {  
-            background: var(--danger-bg);  
-            color: var(--danger);  
-        }  
-
-        .empty-keywords-hint {  
-            color: var(--text-muted);  
-            font-size: 13px;  
-            width: 100%;  
-            text-align: center;  
-            user-select: none;  
-        }  
-
-        /* NEW ADDITION: UID Settings Card Styles */
-        .uid-settings-card {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 18px;
-            margin-bottom: 24px;
+        /* Summary strip */
+        .profile-summary-strip {
+            background: #FFF8F3;
+            border-bottom: 1px solid var(--border);
+            padding: 13px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
+            gap: 12px;
             flex-wrap: wrap;
-            transition: var(--transition);
+            font-size: 13px;
         }
 
-        .uid-info-box {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .uid-title-text {
-            font-weight: 700;
-            font-size: 14px;
-            color: var(--text-main);
+        .summary-store-title {
             display: flex;
             align-items: center;
             gap: 8px;
+            font-weight: 700;
         }
 
-        .uid-status-badge {
-            font-size: 13px;
-            font-weight: 600;
+        .summary-store-title i {
+            color: var(--primary);
+        }
+
+        .summary-status {
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
         }
 
-        .uid-status-badge.added {
+        .summary-status.clean {
+            background: var(--success-bg);
             color: var(--success);
         }
 
-        .uid-status-badge.not-added {
-            color: var(--danger);
+        .summary-status.dirty {
+            background: var(--warning-bg);
+            color: var(--warning);
         }
 
-        .btn-add-uid-trigger {
-            background: var(--dark);
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-weight: 600;
+        /* Form */
+        .form-body {
+            padding: 30px 28px;
+        }
+
+        .input-group {
+            margin-bottom: 23px;
+        }
+
+        .input-group label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 8px;
             font-size: 14px;
-            font-family: 'Hind Siliguri', sans-serif;
+            font-weight: 700;
+        }
+
+        .label-subtext {
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .input-box {
+            position: relative;
+        }
+
+        .input-box i.input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #A99A8F;
+            font-size: 16px;
             transition: var(--transition);
+            pointer-events: none;
+        }
+
+        .input-box.textarea-box i.input-icon {
+            top: 17px;
+            transform: none;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        textarea {
+            display: block;
+            width: 100%;
+            padding: 13px 15px 13px 45px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            background: white;
+            color: var(--text-main);
+            font-size: 15px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        textarea {
+            height: 110px;
+            resize: vertical;
+            line-height: 1.7;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255,107,53,.12);
+        }
+
+        .input-box:focus-within i.input-icon {
+            color: var(--primary);
+        }
+
+        input.error-border, textarea.error-border {
+            border-color: var(--danger) !important;
+            background: var(--danger-bg);
+        }
+
+        .error-message {
+            display: none;
+            align-items: center;
+            gap: 5px;
+            margin-top: 6px;
+            color: var(--danger);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .error-message.visible {
+            display: flex;
+        }
+
+        .char-counter-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .char-counter {
+            margin-left: auto;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .char-counter.warning {
+            color: var(--warning);
+        }
+
+        .char-counter.error {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        /* Keywords */
+        .keyword-input-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .keyword-input-wrapper input {
+            min-width: 0;
+            padding-left: 15px;
+        }
+
+        .keyword-add-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            flex: 0 0 auto;
+            padding: 0 18px;
+            border: 0;
+            border-radius: var(--radius-md);
+            background: var(--primary);
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .keyword-add-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .keyword-add-btn:disabled {
+            background: #D6C7BD;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .keywords-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            min-height: 52px;
+            padding: 12px;
+            background: #FFFAF6;
+            border: 1px dashed #EAC8B4;
+            border-radius: var(--radius-md);
+            align-items: center;
+        }
+
+        .keyword-chip {
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            padding: 6px 12px;
+            background: white;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            font-size: 13px;
             box-shadow: var(--shadow-sm);
+            animation: popIn .2s ease-out;
         }
 
-        .btn-add-uid-trigger:hover {
-            background: #1e293b;
+        @keyframes popIn {
+            from { transform: scale(.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .remove-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 19px;
+            height: 19px;
+            border-radius: 50%;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .remove-btn:hover {
+            color: var(--danger);
+            background: var(--danger-bg);
+        }
+
+        .empty-keywords-hint {
+            width: 100%;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Action buttons */
+        .btn-update {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 12px;
+            padding: 15px;
+            border: none;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, #FF6B35, #F04E16);
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(255,107,53,.24);
+            transition: var(--transition);
+        }
+
+        .btn-update:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 9px 22px rgba(255,107,53,.32);
+        }
+
+        .btn-update:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+        }
+
+        .btn-back {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            margin-top: 14px;
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .delete-section {
+            margin-top: 26px;
+            padding: 19px;
+            border: 1px solid #FECACA;
+            background: #FFF9F9;
+            border-radius: var(--radius-md);
+        }
+
+        .delete-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+            color: #991B1B;
+            font-size: 16px;
+        }
+
+        .delete-section p {
+            margin-bottom: 14px;
+            color: #7F4444;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .btn-delete {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            width: 100%;
+            padding: 13px 16px;
+            border: 1px solid #DC2626;
+            border-radius: var(--radius-md);
+            background: white;
+            color: #DC2626;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .btn-delete:hover {
+            background: #DC2626;
+            color: white;
             transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 6px 15px rgba(220,38,38,.16);
         }
 
-        .btn-add-uid-trigger:active {
-            transform: scale(0.98);
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            background: rgba(35,23,15,.58);
+            backdrop-filter: blur(5px);
         }
 
-        /* Buttons */  
-        .btn-update {  
-            background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);  
-            color: white;  
-            border: none;  
-            width: 100%;  
-            padding: 15px;  
-            border-radius: var(--radius-md);  
-            font-size: 16px;  
-            font-weight: 700;  
-            font-family: 'Hind Siliguri', sans-serif;  
-            cursor: pointer;  
-            margin-top: 12px;  
-            transition: var(--transition);  
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);  
-            display: flex;  
-            align-items: center;  
-            justify-content: center;  
-            gap: 10px;  
-        }  
+        .modal-card {
+            width: 100%;
+            max-width: 370px;
+            padding: 30px 25px;
+            border-radius: 22px;
+            background: white;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            animation: modalPop .25s ease-out;
+        }
 
-        .btn-update:hover:not(:disabled) {  
-            transform: translateY(-2px);  
-            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);  
-        }  
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(.94); }
+            to { opacity: 1; transform: scale(1); }
+        }
 
-        .btn-update:active:not(:disabled) {  
-            transform: scale(0.98);  
-        }  
+        .modal-icon-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            background: var(--success-bg);
+            color: var(--success);
+            font-size: 28px;
+        }
 
-        .btn-update:disabled {  
-            opacity: 0.65;  
-            cursor: not-allowed;  
-            box-shadow: none;  
-            transform: none;  
-        }  
+        .modal-card.error .modal-icon-box {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
 
-        .btn-back {  
-            display: inline-flex;  
-            align-items: center;  
-            justify-content: center;  
-            gap: 8px;  
-            width: 100%;  
-            text-align: center;  
-            margin-top: 20px;  
-            color: var(--text-muted);  
-            text-decoration: none;  
-            font-size: 14px;  
-            font-weight: 600;  
-            padding: 10px;  
-            border-radius: var(--radius-sm);  
-            transition: var(--transition);  
-        }  
+        .modal-card h3 {
+            margin-bottom: 8px;
+            font-size: 21px;
+        }
 
-        .btn-back:hover {  
-            color: var(--primary);  
-            background: var(--primary-light);  
-        }  
+        .modal-card p {
+            margin-bottom: 22px;
+            color: var(--text-muted);
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
 
-        /* Custom Modal System */  
-        .modal-overlay {  
-            position: fixed;  
-            inset: 0;  
-            background: rgba(15, 23, 42, 0.6);  
-            backdrop-filter: blur(6px);  
-            display: none;  
-            align-items: center;  
-            justify-content: center;  
-            z-index: 1000;  
-            padding: 20px;  
-            animation: fadeIn 0.2s ease-out;  
-        }  
+        .modal-btn {
+            width: 100%;
+            padding: 12px;
+            border: 0;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
 
-        .modal-card {  
-            background: white;  
-            padding: 32px 28px;  
-            border-radius: var(--radius-lg);  
-            text-align: center;  
-            max-width: 360px;  
-            width: 100%;  
-            box-shadow: var(--shadow-lg);  
-            transform: scale(0.95);  
-            animation: modalPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;  
-        }  
+        .modal-btn:hover {
+            background: var(--primary-dark);
+        }
 
-        @keyframes modalPop {  
-            to { transform: scale(1); }  
-        }  
+        @media (max-width: 480px) {
+            body {
+                padding: 10px 8px;
+                align-items: flex-start;
+            }
 
-        .modal-icon-box {  
-            width: 64px;  
-            height: 64px;  
-            border-radius: 50%;  
-            display: flex;  
-            align-items: center;  
-            justify-content: center;  
-            margin: 0 auto 16px;  
-            font-size: 28px;  
-        }  
+            .profile-container {
+                border-radius: 19px;
+            }
 
-        .modal-card.success .modal-icon-box {  
-            background: var(--success-bg);  
-            color: var(--success);  
-        }  
+            .profile-header {
+                padding: 27px 14px 24px;
+            }
 
-        .modal-card.error .modal-icon-box {  
-            background: var(--danger-bg);  
-            color: var(--danger);  
-        }  
+            .avatar-action-row {
+                gap: 12px;
+            }
 
-        .modal-card h3 {  
-            font-size: 20px;  
-            font-weight: 700;  
-            color: var(--text-main);  
-            margin-bottom: 8px;  
-        }  
+            .avatar-wrapper {
+                width: 84px;
+                height: 84px;
+                flex-basis: 84px;
+            }
 
-        .modal-card p {  
-            font-size: 14px;  
-            color: var(--text-muted);  
-            margin-bottom: 24px;  
-            line-height: 1.5;  
-        }  
+            .avatar-box {
+                font-size: 31px;
+            }
 
-        .modal-btn {  
-            width: 100%;  
-            padding: 12px;  
-            border: none;  
-            border-radius: var(--radius-md);  
-            font-weight: 600;  
-            font-family: 'Hind Siliguri', sans-serif;  
-            font-size: 15px;  
-            cursor: pointer;  
-            transition: var(--transition);  
-        }  
+            .change-logo-btn {
+                padding: 9px 11px;
+                font-size: 13px;
+            }
 
-        .modal-card.success .modal-btn {  
-            background: var(--primary);  
-            color: white;  
-        }  
+            .profile-header h2 {
+                font-size: 22px;
+            }
 
-        .modal-card.success .modal-btn:hover {  
-            background: var(--primary-dark);  
-        }  
+            .form-body {
+                padding: 23px 16px;
+            }
 
-        .modal-card.error .modal-btn {  
-            background: var(--text-main);  
-            color: white;  
-        }  
+            .profile-summary-strip {
+                padding: 12px 15px;
+            }
 
-        .modal-card.error .modal-btn:hover {  
-            background: #000;  
-        }  
+            .keyword-input-wrapper {
+                gap: 7px;
+            }
 
-        /* Responsive Breakpoints */  
-        @media (max-width: 480px) {  
-            body { padding: 12px 8px; }  
-            .form-body { padding: 24px 18px; }  
-            .profile-header { padding: 28px 16px; }  
-            .keyword-input-wrapper { flex-direction: row; }  
-            .keyword-add-btn { padding: 0 16px; }  
-            .uid-settings-card { flex-direction: column; align-items: flex-start; }
-            .btn-add-uid-trigger { width: 100%; justify-content: center; }
-        }  
-    </style>  
-</head>  
-<body>  
+            .keyword-add-btn {
+                padding: 0 13px;
+            }
 
-<!-- Skeleton Loader (Shown during initial load) -->  
-<div id="skeletonLoader" class="skeleton-container">  
-    <div class="skeleton-pulse skeleton-header"></div>  
-    <div class="skeleton-pulse skeleton-title"></div>  
-    <div class="skeleton-pulse skeleton-input"></div>  
-    <div class="skeleton-pulse skeleton-title"></div>  
-    <div class="skeleton-pulse skeleton-input"></div>  
-    <div class="skeleton-pulse skeleton-input" style="height: 90px;"></div>  
-    <div class="skeleton-pulse skeleton-button"></div>  
-</div>  
+            .delete-section {
+                padding: 15px;
+            }
+        }
 
-<!-- Main Profile Card Container -->  
-<div id="mainContainer" class="profile-container" style="display: none;">  
-    <div class="profile-header">  
-        <div class="avatar-wrapper">  
-            <div class="avatar-box" id="shopLogoBox">
-                <i class="fas fa-store"></i>
-            </div>  
-            <div class="verified-badge" title="যাচাইকৃত সেলার"><i class="fas fa-check"></i></div>  
-        </div>  
-        <h2 id="displayShopName">লোড হচ্ছে...</h2>  
-        <p>আপনার দোকানের তথ্য আপডেট করুন</p>  
-        <div class="header-meta-group">  
-            <div class="uid-badge">  
-                <i class="fas fa-fingerprint"></i> UID: <span id="uidText">...</span>  
-            </div>  
-            <div class="status-pill">  
-                <span class="status-dot"></span> ভেরিফাইড মার্চেন্ট  
-            </div>  
-        </div>  
-    </div>  
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
 
-    <div class="profile-summary-strip">  
-        <span class="summary-store-title">  
-            <i class="fas fa-shop" style="color: var(--primary);"></i> সেলার প্রোফাইল  
-        </span>  
-        <span id="unsavedIndicator" class="summary-status clean">  
-            <i class="fas fa-check-circle"></i> সব তথ্য সংরক্ষিত  
-        </span>  
-    </div>  
+<body>
 
-    <div class="form-body">  
-        <!-- NEW ADDITION: Add UID Settings Option -->
-        <div class="uid-settings-card">
-            <div class="uid-info-box">
-                <span class="uid-title-text">
-                    <i class="fas fa-fingerprint" style="color: var(--primary);"></i> সিকিউরিটি ও আইডেন্টিটি
-                </span>
-                <span id="uidStatusDisplay" class="uid-status-badge not-added">
-                    <i class="fas fa-times-circle"></i> UID যুক্ত করা হয়নি
-                </span>
-            </div>
-            <button type="button" id="openUidModalBtn" class="btn-add-uid-trigger">
-                <i class="fas fa-fingerprint"></i> Add UID
-            </button>
-        </div>
-
-        <!-- Shop Name Input -->  
-        <div class="input-group">  
-            <label for="shopName">  
-                <span>দোকানের নাম</span>  
-                <span class="label-subtext">প্রয়োজনীয়</span>  
-            </label>  
-            <div class="input-box">  
-                <i class="fas fa-shopping-bag input-icon"></i>  
-                <input type="text" id="shopName" placeholder="আপনার দোকানের নাম লিখুন">  
-            </div>  
-            <div id="shopNameError" class="error-message">  
-                <i class="fas fa-exclamation-circle"></i> <span>দোকানের নাম দেয়া আবশ্যক</span>  
-            </div>  
-        </div>  
-
-        <!-- WhatsApp Input -->  
-        <div class="input-group">  
-            <label for="whatsapp">  
-                <span>WhatsApp নাম্বার</span>  
-                <span class="label-subtext">গ্রাহক যোগাযোগের জন্য</span>  
-            </label>  
-            <div class="input-box">  
-                <i class="fab fa-whatsapp input-icon"></i>  
-                <input type="tel" id="whatsapp" placeholder="01XXXXXXXXX">  
-            </div>  
-            <div id="whatsappError" class="error-message">  
-                <i class="fas fa-exclamation-circle"></i> <span>সঠিক ১১ ডিজিটের WhatsApp নাম্বার দিন (যেমন: 01700000000)</span>  
-            </div>  
-        </div>  
-
-        <!-- Shop Description Input -->  
-        <div class="input-group">  
-            <label for="shopDescription">  
-                <span>শপের বর্ণনা (Shop Description)</span>  
-            </label>  
-            <div class="input-box textarea-box">  
-                <i class="fas fa-align-left input-icon"></i>  
-                <textarea id="shopDescription" placeholder="আপনার শপ সম্পর্কে সংক্ষেপে বিস্তারিত লিখুন..."></textarea>  
-            </div>  
-            <div class="char-counter-wrapper">  
-                <div id="descError" class="error-message">  
-                    <i class="fas fa-exclamation-circle"></i> <span>২০০ অক্ষরের সীমা অতিক্রম করেছে</span>  
-                </div>  
-                <span id="charCounter" class="char-counter">০ / ২০০</span>  
-            </div>  
-        </div>  
-
-        <!-- Shop Keywords Input -->  
-        <div class="input-group">  
-            <label for="keywordInput">  
-                <span>শপ সার্চ কিওয়ার্ড (Shop Keywords)</span>  
-                <span id="keywordCounterText" class="label-subtext">০ / ১০টি</span>  
-            </label>  
-            <div class="keyword-input-wrapper">  
-                <input type="text" id="keywordInput" placeholder="নতুন কিওয়ার্ড লিখুন (যেমন: ফ্যাশন)...">  
-                <button type="button" id="addKeywordBtn" class="keyword-add-btn">  
-                    <i class="fas fa-plus"></i> যোগ  
-                </button>  
-            </div>  
-            <div id="keywordsList" class="keywords-container">  
-                <!-- Keywords chips will be safely dynamically rendered here -->  
-            </div>  
-        </div>  
-
-        <!-- Update Button -->  
-        <button class="btn-update" id="upBtn">  
-            <i class="fas fa-save"></i> <span>তথ্য আপডেট করুন</span>  
-        </button>  
-
-        <!-- Back Link -->  
-        <a href="dashboard.html" class="btn-back">  
-            <i class="fas fa-arrow-left"></i> ড্যাশবোর্ডে ফিরে যান  
-        </a>  
-    </div>  
-</div>  
-
-<!-- Custom Modern Modal -->  
-<div id="customModal" class="modal-overlay">  
-    <div id="modalCard" class="modal-card success">  
-        <div class="modal-icon-box">  
-            <i id="modalIcon" class="fas fa-check"></i>  
-        </div>  
-        <h3 id="modalTitle">সফল হয়েছে!</h3>  
-        <p id="modalMessage">আপনার প্রোফাইল সফলভাবে আপডেট করা হয়েছে।</p>  
-        <button id="modalCloseBtn" class="modal-btn">ঠিক আছে</button>  
-    </div>  
-</div>  
-
-<!-- NEW ADDITION: Confirmation Modal for Add UID -->
-<div id="confirmUidModal" class="modal-overlay">  
-    <div class="modal-card">  
-        <div class="modal-icon-box" style="background: var(--primary-light); color: var(--primary);">  
-            <i class="fas fa-fingerprint"></i>  
-        </div>  
-        <h3>UID সংযুক্তিকরণ</h3>  
-        <p>আপনার Firebase UID আপনার প্রোফাইলে সংযুক্ত করা হবে।</p>  
-        <div style="display: flex; gap: 10px;">
-            <button id="cancelAddUidBtn" class="modal-btn" style="background: var(--bg); color: var(--text-main); border: 1px solid var(--border);">বাতিল</button>
-            <button id="confirmAddUidBtn" class="modal-btn" style="background: var(--primary); color: white;">নিশ্চিত করুন</button>
-        </div>
-    </div>  
+<!-- Loading -->
+<div id="skeletonLoader" class="skeleton-container">
+    <div class="skeleton-pulse skeleton-header"></div>
+    <div class="skeleton-pulse skeleton-title"></div>
+    <div class="skeleton-pulse skeleton-input"></div>
+    <div class="skeleton-pulse skeleton-title"></div>
+    <div class="skeleton-pulse skeleton-input"></div>
+    <div class="skeleton-pulse skeleton-input" style="height:90px"></div>
+    <div class="skeleton-pulse skeleton-button"></div>
 </div>
 
-<script type="module">  
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";  
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";  
-    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";  
+<!-- Main profile -->
+<div id="mainContainer" class="profile-container" style="display:none">
 
-    // Firebase Initialization  
-    const app = initializeApp({   
-        apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",   
-        projectId: "ghotimarket",  
-        authDomain: "ghotimarket.firebaseapp.com"  
-    });  
-    const auth = getAuth(app);  
-    const db = getFirestore(app);  
+    <div class="profile-header">
 
-    // App State Management  
-    let currentKeywords = [];  
-    let initialData = {  
-        shopName: "",  
-        whatsapp: "",  
-        shopDescription: "",  
-        shopKeywords: []  
-    };  
-    let currentUser = null;  
-    let storedUidInDoc = null; // Track UID field in Firestore
+        <div class="avatar-action-row">
+            <div class="avatar-wrapper">
+                <div class="avatar-box" id="shopLogoBox">
+                    <i class="fas fa-store"></i>
+                </div>
+            </div>
 
-    // Elements  
-    const skeletonLoader = document.getElementById('skeletonLoader');  
-    const mainContainer = document.getElementById('mainContainer');  
-    const shopLogoBox = document.getElementById('shopLogoBox');
-    const displayShopName = document.getElementById('displayShopName');  
-    const uidText = document.getElementById('uidText');  
-    const shopNameInput = document.getElementById('shopName');  
-    const whatsappInput = document.getElementById('whatsapp');  
-    const shopDescriptionInput = document.getElementById('shopDescription');  
-    const charCounter = document.getElementById('charCounter');  
-    const keywordInput = document.getElementById('keywordInput');  
-    const addKeywordBtn = document.getElementById('addKeywordBtn');  
-    const keywordsList = document.getElementById('keywordsList');  
-    const keywordCounterText = document.getElementById('keywordCounterText');  
-    const upBtn = document.getElementById('upBtn');  
-    const unsavedIndicator = document.getElementById('unsavedIndicator');  
+            <!-- Change logo -->
+            <a href="/upload-banner-logo" class="change-logo-btn">
+                <i class="fas fa-camera"></i>
+                Change
+            </a>
+        </div>
 
-    // NEW ELEMENTS FOR ADD UID FEATURE
-    const uidStatusDisplay = document.getElementById('uidStatusDisplay');
-    const openUidModalBtn = document.getElementById('openUidModalBtn');
-    const confirmUidModal = document.getElementById('confirmUidModal');
-    const cancelAddUidBtn = document.getElementById('cancelAddUidBtn');
-    const confirmAddUidBtn = document.getElementById('confirmAddUidBtn');
+        <h2 id="displayShopName">লোড হচ্ছে...</h2>
+        <p>আপনার দোকানের তথ্য আপডেট করুন</p>
 
-    // Error Message Elements  
-    const shopNameError = document.getElementById('shopNameError');  
-    const whatsappError = document.getElementById('whatsappError');  
-    const descError = document.getElementById('descError');  
+        <div class="header-meta-group">
+            <div class="uid-badge">
+                <i class="fas fa-fingerprint"></i>
+                UID: <span id="uidText">...</span>
+            </div>
 
-    // Modal Elements  
-    const customModal = document.getElementById('customModal');  
-    const modalCard = document.getElementById('modalCard');  
-    const modalIcon = document.getElementById('modalIcon');  
-    const modalTitle = document.getElementById('modalTitle');  
-    const modalMessage = document.getElementById('modalMessage');  
-    const modalCloseBtn = document.getElementById('modalCloseBtn');  
+            <!-- These statuses are generated from Firestore -->
+            <span id="activeStatus" class="status-pill is-inactive">
+                <span class="status-dot"></span>
+                Inactive
+            </span>
 
-    // Safe Shop Logo Rendering Logic
+            <span id="verifiedStatus" class="status-pill is-unverified">
+                <i class="fas fa-shield-halved"></i>
+                Unverified
+            </span>
+        </div>
+    </div>
+
+    <div class="profile-summary-strip">
+        <span class="summary-store-title">
+            <i class="fas fa-shop"></i>
+            সেলার প্রোফাইল
+        </span>
+
+        <span id="unsavedIndicator" class="summary-status clean">
+            <i class="fas fa-check-circle"></i>
+            সব তথ্য সংরক্ষিত
+        </span>
+    </div>
+
+    <div class="form-body">
+
+        <!-- Shop name -->
+        <div class="input-group">
+            <label for="shopName">
+                <span>দোকানের নাম</span>
+                <span class="label-subtext">প্রয়োজনীয়</span>
+            </label>
+
+            <div class="input-box">
+                <i class="fas fa-shopping-bag input-icon"></i>
+                <input type="text" id="shopName"
+                       placeholder="আপনার দোকানের নাম লিখুন"
+                       autocomplete="organization">
+            </div>
+
+            <div id="shopNameError" class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>দোকানের নাম দেওয়া আবশ্যক</span>
+            </div>
+        </div>
+
+        <!-- WhatsApp -->
+        <div class="input-group">
+            <label for="whatsapp">
+                <span>WhatsApp নাম্বার</span>
+                <span class="label-subtext">গ্রাহক যোগাযোগের জন্য</span>
+            </label>
+
+            <div class="input-box">
+                <i class="fab fa-whatsapp input-icon"></i>
+                <input type="tel" id="whatsapp"
+                       placeholder="01XXXXXXXXX"
+                       inputmode="numeric"
+                       autocomplete="tel">
+            </div>
+
+            <div id="whatsappError" class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>সঠিক ১১ ডিজিটের WhatsApp নাম্বার দিন (যেমন: 01700000000)</span>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="input-group">
+            <label for="shopDescription">
+                <span>শপের বর্ণনা (Shop Description)</span>
+            </label>
+
+            <div class="input-box textarea-box">
+                <i class="fas fa-align-left input-icon"></i>
+                <textarea id="shopDescription"
+                          placeholder="আপনার শপ সম্পর্কে বিস্তারিত লিখুন..."></textarea>
+            </div>
+
+            <div class="char-counter-wrapper">
+                <div id="descError" class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>২০০ অক্ষরের সীমা অতিক্রম করেছে</span>
+                </div>
+                <span id="charCounter" class="char-counter">০ / ২০০</span>
+            </div>
+        </div>
+
+        <!-- Search keywords -->
+        <div class="input-group">
+            <label for="keywordInput">
+                <span>শপ সার্চ কিওয়ার্ড</span>
+                <span id="keywordCounterText" class="label-subtext">০ / ১০টি</span>
+            </label>
+
+            <div class="keyword-input-wrapper">
+                <input type="text" id="keywordInput"
+                       placeholder="নতুন কিওয়ার্ড লিখুন (যেমন: ফ্যাশন)">
+                <button type="button" id="addKeywordBtn" class="keyword-add-btn">
+                    <i class="fas fa-plus"></i> যোগ
+                </button>
+            </div>
+
+            <div id="keywordsList" class="keywords-container"></div>
+        </div>
+
+        <!-- Save -->
+        <button type="button" class="btn-update" id="upBtn">
+            <i class="fas fa-save"></i>
+            <span>তথ্য আপডেট করুন</span>
+        </button>
+
+        <!-- Back -->
+        <a href="dashboard.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i>
+            ড্যাশবোর্ডে ফিরে যান
+        </a>
+
+        <!-- Delete account -->
+        <div class="delete-section">
+            <h3>
+                <i class="fas fa-triangle-exclamation"></i>
+                অ্যাকাউন্ট ডিলিট
+            </h3>
+
+            <p>
+                আপনি যদি আপনার GHOTI MARKET অ্যাকাউন্ট ডিলিট করতে চান,
+                তাহলে নিচের বাটনে ক্লিক করে অ্যাকাউন্ট ডিলিট পেজে যান।
+                অনুরোধ জমা দেওয়ার আগে সেখানে দেওয়া নির্দেশনাগুলো পড়ে নিন।
+            </p>
+
+            <a class="btn-delete"
+               href="https://app.ghotimarket.com/account-delete">
+                <i class="fas fa-trash-alt"></i>
+                Delete Account
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<!-- Notification modal -->
+<div id="customModal" class="modal-overlay" role="dialog"
+     aria-modal="true" aria-labelledby="modalTitle">
+    <div id="modalCard" class="modal-card">
+        <div class="modal-icon-box">
+            <i id="modalIcon" class="fas fa-check"></i>
+        </div>
+
+        <h3 id="modalTitle">সফল হয়েছে!</h3>
+        <p id="modalMessage">আপনার তথ্য সফলভাবে সংরক্ষণ করা হয়েছে।</p>
+
+        <button type="button" id="modalCloseBtn" class="modal-btn">
+            ঠিক আছে
+        </button>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp, getApps, getApp }
+        from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+    import { getAuth, onAuthStateChanged }
+        from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    import { getFirestore, doc, getDoc, updateDoc }
+        from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE",
+        authDomain: "ghotimarket.firebaseapp.com",
+        projectId: "ghotimarket"
+    };
+
+    // Avoid duplicate app initialization
+    const app = getApps().length
+        ? getApp()
+        : initializeApp(firebaseConfig);
+
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // State
+    let currentUser = null;
+    let currentKeywords = [];
+
+    let initialData = {
+        shopName: "",
+        whatsapp: "",
+        shopDescription: "",
+        shopKeywords: []
+    };
+
+    // Elements
+    const skeletonLoader = document.getElementById("skeletonLoader");
+    const mainContainer = document.getElementById("mainContainer");
+
+    const shopLogoBox = document.getElementById("shopLogoBox");
+    const displayShopName = document.getElementById("displayShopName");
+    const uidText = document.getElementById("uidText");
+
+    const activeStatus = document.getElementById("activeStatus");
+    const verifiedStatus = document.getElementById("verifiedStatus");
+
+    const shopNameInput = document.getElementById("shopName");
+    const whatsappInput = document.getElementById("whatsapp");
+    const shopDescriptionInput = document.getElementById("shopDescription");
+
+    const charCounter = document.getElementById("charCounter");
+    const keywordInput = document.getElementById("keywordInput");
+    const addKeywordBtn = document.getElementById("addKeywordBtn");
+    const keywordsList = document.getElementById("keywordsList");
+    const keywordCounterText = document.getElementById("keywordCounterText");
+
+    const upBtn = document.getElementById("upBtn");
+    const unsavedIndicator = document.getElementById("unsavedIndicator");
+
+    const shopNameError = document.getElementById("shopNameError");
+    const whatsappError = document.getElementById("whatsappError");
+    const descError = document.getElementById("descError");
+
+    const customModal = document.getElementById("customModal");
+    const modalCard = document.getElementById("modalCard");
+    const modalIcon = document.getElementById("modalIcon");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalMessage = document.getElementById("modalMessage");
+    const modalCloseBtn = document.getElementById("modalCloseBtn");
+
+    // Bengali number formatting
+    function toBengaliNum(value) {
+        const digits = ["০","১","২","৩","৪","৫","৬","৭","৮","৯"];
+        return String(value).replace(/\d/g, d => digits[Number(d)]);
+    }
+
+    // Modal
+    function showModal(title, message, type = "success") {
+        modalCard.className = `modal-card ${type}`;
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+
+        modalIcon.className = type === "success"
+            ? "fas fa-check"
+            : "fas fa-exclamation";
+
+        customModal.style.display = "flex";
+        modalCloseBtn.focus();
+    }
+
+    function closeModal() {
+        customModal.style.display = "none";
+    }
+
+    modalCloseBtn.addEventListener("click", closeModal);
+
+    customModal.addEventListener("click", event => {
+        if (event.target === customModal) closeModal();
+    });
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") closeModal();
+    });
+
+    // Safe logo rendering
     function renderShopLogo(logoUrl) {
-        shopLogoBox.innerHTML = '';
-        if (logoUrl && typeof logoUrl === 'string' && logoUrl.trim() !== '') {
-            const img = document.createElement('img');
+        shopLogoBox.replaceChildren();
+
+        if (typeof logoUrl === "string" && logoUrl.trim()) {
+            const img = document.createElement("img");
             img.src = logoUrl.trim();
-            img.alt = 'Shop Logo';
-            img.loading = 'eager';
+            img.alt = "Shop Logo";
+            img.loading = "eager";
+            img.referrerPolicy = "no-referrer";
+
             img.onerror = () => {
                 shopLogoBox.innerHTML = '<i class="fas fa-store"></i>';
             };
+
             shopLogoBox.appendChild(img);
         } else {
             shopLogoBox.innerHTML = '<i class="fas fa-store"></i>';
         }
     }
 
-    // Helper: Convert Numbers to Bengali Digits  
-    function toBengaliNum(num) {  
-        if (num === null || num === undefined) return '০';  
-        const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];  
-        return num.toString().replace(/\d/g, d => bnDigits[d]);  
-    }  
+    // Render actual Firestore account statuses.
+    // Only the boolean value true enables each status.
+    function renderAccountStatuses(data) {
+        const isActive = data.active === true;
+        const isVerified = data.verified === true;
 
-    // Helper: Show Custom Modal System  
-    function showModal(title, msg, type = 'success') {  
-        modalCard.className = `modal-card ${type}`;  
-        modalTitle.innerText = title;  
-        modalMessage.innerText = msg;  
-          
-        if (type === 'success') {  
-            modalIcon.className = 'fas fa-check';  
-        } else {  
-            modalIcon.className = 'fas fa-exclamation';  
-        }  
+        activeStatus.className = isActive
+            ? "status-pill is-active"
+            : "status-pill is-inactive";
 
-        customModal.style.display = 'flex';  
-    }  
+        activeStatus.replaceChildren();
 
-    modalCloseBtn.addEventListener('click', () => {  
-        customModal.style.display = 'none';  
-    });  
+        const activeDot = document.createElement("span");
+        activeDot.className = "status-dot";
+        activeStatus.appendChild(activeDot);
 
-    customModal.addEventListener('click', (e) => {  
-        if (e.target === customModal) {  
-            customModal.style.display = 'none';  
-        }  
-    });  
+        activeStatus.appendChild(
+            document.createTextNode(isActive ? "Active" : "Inactive")
+        );
 
-    // NEW ADDITION: Render UID Status Display
-    function renderUidStatus(uidVal) {
-        if (uidVal && currentUser && uidVal === currentUser.uid) {
-            uidStatusDisplay.className = 'uid-status-badge added';
-            uidStatusDisplay.innerHTML = '<i class="fas fa-check-circle"></i> UID যুক্ত করা হয়েছে ✓';
+        verifiedStatus.className = isVerified
+            ? "status-pill is-verified"
+            : "status-pill is-unverified";
+
+        verifiedStatus.replaceChildren();
+
+        const verifiedIcon = document.createElement("i");
+        verifiedIcon.className = isVerified
+            ? "fas fa-circle-check"
+            : "fas fa-circle-xmark";
+
+        verifiedStatus.appendChild(verifiedIcon);
+
+        verifiedStatus.appendChild(
+            document.createTextNode(
+                isVerified ? "Verified" : "Unverified"
+            )
+        );
+    }
+
+    // Unsaved change indicator
+    function checkUnsavedChanges() {
+        const changed =
+            shopNameInput.value.trim() !== initialData.shopName ||
+            whatsappInput.value.trim() !== initialData.whatsapp ||
+            shopDescriptionInput.value.trim() !== initialData.shopDescription ||
+            JSON.stringify(currentKeywords) !==
+                JSON.stringify(initialData.shopKeywords);
+
+        if (changed) {
+            unsavedIndicator.className = "summary-status dirty";
+            unsavedIndicator.innerHTML =
+                '<i class="fas fa-pen"></i> পরিবর্তন সংরক্ষণ করা হয়নি';
         } else {
-            uidStatusDisplay.className = 'uid-status-badge not-added';
-            uidStatusDisplay.innerHTML = '<i class="fas fa-times-circle"></i> UID যুক্ত করা হয়নি';
+            unsavedIndicator.className = "summary-status clean";
+            unsavedIndicator.innerHTML =
+                '<i class="fas fa-check-circle"></i> সব তথ্য সংরক্ষিত';
         }
     }
 
-    // Check Unsaved Changes  
-    function checkUnsavedChanges() {  
-        const sName = shopNameInput.value.trim();  
-        const wa = whatsappInput.value.trim();  
-        const sDesc = shopDescriptionInput.value.trim();  
+    // Description validation
+    function validateDescription() {
+        const length = shopDescriptionInput.value.length;
 
-        const isChanged =   
-            sName !== initialData.shopName ||  
-            wa !== initialData.whatsapp ||  
-            sDesc !== initialData.shopDescription ||  
-            JSON.stringify(currentKeywords) !== JSON.stringify(initialData.shopKeywords);  
+        charCounter.textContent =
+            `${toBengaliNum(length)} / ২০০`;
 
-        if (isChanged) {  
-            unsavedIndicator.className = 'summary-status dirty';  
-            unsavedIndicator.innerHTML = '<i class="fas fa-pen"></i> পরিবর্তন সংরক্ষণ করা হয়নি';  
-        } else {  
-            unsavedIndicator.className = 'summary-status clean';  
-            unsavedIndicator.innerHTML = '<i class="fas fa-check-circle"></i> সব তথ্য সংরক্ষিত';  
-        }  
-    }  
+        if (length > 200) {
+            shopDescriptionInput.classList.add("error-border");
+            charCounter.className = "char-counter error";
+            descError.classList.add("visible");
+            return false;
+        }
 
-    // Live Description Input Handler & Validation  
-    function validateDescription() {  
-        const length = shopDescriptionInput.value.length;  
-        charCounter.innerText = `${toBengaliNum(length)} / ২০০`;  
+        shopDescriptionInput.classList.remove("error-border");
+        charCounter.className =
+            length > 170 ? "char-counter warning" : "char-counter";
 
-        if (length > 200) {  
-            shopDescriptionInput.classList.add('error-border');  
-            charCounter.className = 'char-counter error';  
-            descError.classList.add('visible');  
-            return false;  
-        } else {  
-            shopDescriptionInput.classList.remove('error-border');  
-            charCounter.className = length > 170 ? 'char-counter warning' : 'char-counter';  
-            descError.classList.remove('visible');  
-            return true;  
-        }  
-    }  
+        descError.classList.remove("visible");
+        return true;
+    }
 
-    shopDescriptionInput.addEventListener('input', () => {  
-        validateDescription();  
-        checkUnsavedChanges();  
-    });  
+    // Shop name validation
+    function validateShopName() {
+        const valid = shopNameInput.value.trim().length > 0;
 
-    // Validate Shop Name  
-    function validateShopName() {  
-        const val = shopNameInput.value.trim();  
-        if (!val) {  
-            shopNameInput.classList.add('error-border');  
-            shopNameError.classList.add('visible');  
-            return false;  
-        } else {  
-            shopNameInput.classList.remove('error-border');  
-            shopNameError.classList.remove('visible');  
-            return true;  
-        }  
-    }  
+        shopNameInput.classList.toggle("error-border", !valid);
+        shopNameError.classList.toggle("visible", !valid);
 
-    shopNameInput.addEventListener('input', () => {  
-        validateShopName();  
-        checkUnsavedChanges();  
-    });  
+        return valid;
+    }
 
-    // Validate WhatsApp Number  
-    function validateWhatsApp() {  
-        const val = whatsappInput.value.trim();  
-        const isValid = /^01[3-9]\d{8}$/.test(val);  
-        if (!isValid) {  
-            whatsappInput.classList.add('error-border');  
-            whatsappError.classList.add('visible');  
-            return false;  
-        } else {  
-            whatsappInput.classList.remove('error-border');  
-            whatsappError.classList.remove('visible');  
-            return true;  
-        }  
-    }  
+    // Bangladesh mobile number validation
+    function validateWhatsApp() {
+        const value = whatsappInput.value.trim();
+        const valid = /^01[3-9]\d{8}$/.test(value);
 
-    whatsappInput.addEventListener('input', () => {  
-        validateWhatsApp();  
-        checkUnsavedChanges();  
-    });  
+        whatsappInput.classList.toggle("error-border", !valid);
+        whatsappError.classList.toggle("visible", !valid);
 
-    // XSS Safe DOM-based Tag Rendering  
-    function renderKeywords() {  
-        keywordsList.innerHTML = '';  
-        const count = currentKeywords.length;  
-        keywordCounterText.innerText = `${toBengaliNum(count)} / ১০টি`;  
+        return valid;
+    }
 
-        if (count >= 10) {  
-            addKeywordBtn.disabled = true;  
-            keywordInput.disabled = true;  
-            keywordInput.placeholder = "সর্বোচ্চ ১০টি কিওয়ার্ড সম্পন্ন হয়েছে";  
-        } else {  
-            addKeywordBtn.disabled = false;  
-            keywordInput.disabled = false;  
-            keywordInput.placeholder = "নতুন কিওয়ার্ড লিখুন (যেমন: ফ্যাশন)...";  
-        }  
+    shopNameInput.addEventListener("input", () => {
+        validateShopName();
+        checkUnsavedChanges();
+    });
 
-        if (count === 0) {  
-            const emptyHint = document.createElement('div');  
-            emptyHint.className = 'empty-keywords-hint';  
-            emptyHint.innerText = 'কোনো কিওয়ার্ড যোগ করা হয়নি';  
-            keywordsList.appendChild(emptyHint);  
-            return;  
-        }  
+    whatsappInput.addEventListener("input", () => {
+        validateWhatsApp();
+        checkUnsavedChanges();
+    });
 
-        currentKeywords.forEach((kw, index) => {  
-            const chip = document.createElement('div');  
-            chip.className = 'keyword-chip';  
+    shopDescriptionInput.addEventListener("input", () => {
+        validateDescription();
+        checkUnsavedChanges();
+    });
 
-            const textSpan = document.createElement('span');  
-            textSpan.textContent = kw;  
+    // Render keywords safely
+    function renderKeywords() {
+        keywordsList.replaceChildren();
 
-            const removeBtn = document.createElement('span');  
-            removeBtn.className = 'remove-btn';  
-            removeBtn.title = 'মুছে ফেলুন';  
-            removeBtn.innerHTML = '<i class="fas fa-times"></i>';  
-            removeBtn.addEventListener('click', () => removeKeyword(index));  
+        const count = currentKeywords.length;
 
-            chip.appendChild(textSpan);  
-            chip.appendChild(removeBtn);  
-            keywordsList.appendChild(chip);  
-        });  
-    }  
+        keywordCounterText.textContent =
+            `${toBengaliNum(count)} / ১০টি`;
 
-    function addKeyword() {  
-        if (currentKeywords.length >= 10) {  
-            showModal("সীমা অতিক্রম!", "আপনি সর্বোচ্চ ১০টি সার্চ কিওয়ার্ড যোগ করতে পারবেন।", 'error');  
-            return;  
-        }  
+        addKeywordBtn.disabled = count >= 10;
+        keywordInput.disabled = count >= 10;
 
-        const val = keywordInput.value.trim();  
-        if (!val) return;  
+        keywordInput.placeholder = count >= 10
+            ? "সর্বোচ্চ ১০টি কিওয়ার্ড সম্পন্ন হয়েছে"
+            : "নতুন কিওয়ার্ড লিখুন (যেমন: ফ্যাশন)";
 
-        if (currentKeywords.some(k => k.toLowerCase() === val.toLowerCase())) {  
-            showModal("সতর্কতা!", "এই কিওয়ার্ডটি ইতিমধ্যে যোগ করা হয়েছে।", 'error');  
-            return;  
-        }  
-
-        currentKeywords.push(val);  
-        keywordInput.value = '';  
-        renderKeywords();  
-        checkUnsavedChanges();  
-    }  
-
-    function removeKeyword(index) {  
-        currentKeywords.splice(index, 1);  
-        renderKeywords();  
-        checkUnsavedChanges();  
-    }  
-
-    addKeywordBtn.addEventListener('click', addKeyword);  
-
-    keywordInput.addEventListener('keypress', (e) => {  
-        if (e.key === 'Enter') {  
-            e.preventDefault();  
-            addKeyword();  
-        }  
-    });  
-
-    // Authentication and Initialization State  
-    onAuthStateChanged(auth, async (user) => {  
-        if (user) {  
-            currentUser = user;  
-            uidText.innerText = user.uid.substring(0, 8) + '...';  
-
-            try {  
-                const snap = await getDoc(doc(db, "users", user.uid));  
-                if (snap.exists()) {  
-                    const data = snap.data();  
-                    initialData = {  
-                        shopName: data.shopName || "",  
-                        whatsapp: data.whatsapp || "",  
-                        shopDescription: data.shopDescription || "",  
-                        shopKeywords: Array.isArray(data.shopKeywords) ? [...data.shopKeywords] : []  
-                    };  
-
-                    // Store existing UID field status
-                    storedUidInDoc = data.uid || null;
-                    renderUidStatus(storedUidInDoc);
-
-                    // Render Shop Logo from Firestore read-only field
-                    renderShopLogo(data.shopLogo || '');
-
-                    displayShopName.innerText = initialData.shopName || 'আমার শপ';  
-                    shopNameInput.value = initialData.shopName;  
-                    whatsappInput.value = initialData.whatsapp;  
-                    shopDescriptionInput.value = initialData.shopDescription;  
-                    currentKeywords = [...initialData.shopKeywords];  
-
-                    validateDescription();  
-                    renderKeywords();  
-                    checkUnsavedChanges();  
-                }  
-            } catch (err) {  
-                showModal("ত্রুটি!", "তথ্য লোড করতে সমস্যা হয়েছে: " + err.message, 'error');  
-            } finally {  
-                skeletonLoader.style.display = 'none';  
-                mainContainer.style.display = 'block';  
-            }  
-        } else {  
-            window.location.href = "login.html";  
-        }  
-    });  
-
-    // NEW ADDITION: ADD UID MODAL LOGIC
-    openUidModalBtn.addEventListener('click', () => {
-        if (!currentUser) return;
-
-        // Requirement 8: If already saved with same UID
-        if (storedUidInDoc && storedUidInDoc === currentUser.uid) {
-            showModal("তথ্য", "আপনার UID ইতিমধ্যে যুক্ত করা আছে।", 'success');
+        if (count === 0) {
+            const hint = document.createElement("div");
+            hint.className = "empty-keywords-hint";
+            hint.textContent = "কোনো কিওয়ার্ড যোগ করা হয়নি";
+            keywordsList.appendChild(hint);
             return;
         }
 
-        // Open Confirmation Dialog Modal
-        confirmUidModal.style.display = 'flex';
+        currentKeywords.forEach((keyword, index) => {
+            const chip = document.createElement("div");
+            chip.className = "keyword-chip";
+
+            const text = document.createElement("span");
+            text.textContent = keyword;
+
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "remove-btn";
+            removeBtn.title = "কিওয়ার্ড মুছুন";
+            removeBtn.setAttribute(
+                "aria-label",
+                `${keyword} কিওয়ার্ড মুছুন`
+            );
+
+            const icon = document.createElement("i");
+            icon.className = "fas fa-times";
+            removeBtn.appendChild(icon);
+
+            removeBtn.addEventListener("click", () => {
+                currentKeywords.splice(index, 1);
+                renderKeywords();
+                checkUnsavedChanges();
+            });
+
+            chip.append(text, removeBtn);
+            keywordsList.appendChild(chip);
+        });
+    }
+
+    // Add keyword
+    function addKeyword() {
+        if (currentKeywords.length >= 10) {
+            showModal(
+                "সীমা অতিক্রম!",
+                "সর্বোচ্চ ১০টি সার্চ কিওয়ার্ড যোগ করতে পারবেন।",
+                "error"
+            );
+            return;
+        }
+
+        const value = keywordInput.value.trim();
+        if (!value) return;
+
+        const duplicate = currentKeywords.some(
+            keyword => keyword.toLocaleLowerCase() === value.toLocaleLowerCase()
+        );
+
+        if (duplicate) {
+            showModal(
+                "সতর্কতা!",
+                "এই কিওয়ার্ডটি ইতিমধ্যে যোগ করা হয়েছে।",
+                "error"
+            );
+            return;
+        }
+
+        currentKeywords.push(value);
+        keywordInput.value = "";
+
+        renderKeywords();
+        checkUnsavedChanges();
+    }
+
+    addKeywordBtn.addEventListener("click", addKeyword);
+
+    keywordInput.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            addKeyword();
+        }
     });
 
-    cancelAddUidBtn.addEventListener('click', () => {
-        confirmUidModal.style.display = 'none';
+    // Authentication and profile loading
+    onAuthStateChanged(auth, async user => {
+        if (!user) {
+            window.location.href = "login.html";
+            return;
+        }
+
+        currentUser = user;
+        uidText.textContent = user.uid.substring(0, 8) + "...";
+
+        try {
+            const userRef = doc(db, "users", user.uid);
+            const snapshot = await getDoc(userRef);
+
+            if (!snapshot.exists()) {
+                showModal(
+                    "প্রোফাইল পাওয়া যায়নি",
+                    "আপনার users ডকুমেন্টটি Firestore-এ পাওয়া যায়নি।",
+                    "error"
+                );
+
+                mainContainer.style.display = "block";
+                upBtn.disabled = true;
+                return;
+            }
+
+            const data = snapshot.data();
+
+            initialData = {
+                shopName: data.shopName || "",
+                whatsapp: data.whatsapp || "",
+                shopDescription: data.shopDescription || "",
+                shopKeywords: Array.isArray(data.shopKeywords)
+                    ? [...data.shopKeywords]
+                    : []
+            };
+
+            shopNameInput.value = initialData.shopName;
+            whatsappInput.value = initialData.whatsapp;
+            shopDescriptionInput.value = initialData.shopDescription;
+
+            currentKeywords = [...initialData.shopKeywords];
+
+            displayShopName.textContent =
+                initialData.shopName || "আমার শপ";
+
+            renderShopLogo(data.shopLogo || "");
+            renderAccountStatuses(data);
+
+            validateDescription();
+            renderKeywords();
+            checkUnsavedChanges();
+
+        } catch (error) {
+            console.error("Profile Load Error:", error);
+
+            showModal(
+                "তথ্য লোড করতে সমস্যা হয়েছে",
+                "আপনার প্রোফাইল লোড করা যায়নি। Firebase সংযোগ ও Firestore Rules পরীক্ষা করুন।",
+                "error"
+            );
+
+            upBtn.disabled = true;
+
+        } finally {
+            skeletonLoader.style.display = "none";
+            mainContainer.style.display = "block";
+        }
     });
 
-    confirmAddUidBtn.addEventListener('click', async () => {
-        confirmUidModal.style.display = 'none';
-
+    // Save profile
+    upBtn.addEventListener("click", async () => {
         if (!currentUser) {
             window.location.href = "login.html";
             return;
         }
 
-        openUidModalBtn.disabled = true;
-        openUidModalBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> প্রসেসিং...';
+        const nameValid = validateShopName();
+        const whatsappValid = validateWhatsApp();
+        const descriptionValid = validateDescription();
+
+        if (!nameValid || !whatsappValid || !descriptionValid) {
+            showModal(
+                "সতর্কতা!",
+                "অনুগ্রহ করে ফর্মের ভুলগুলো সংশোধন করুন।",
+                "error"
+            );
+            return;
+        }
+
+        if (currentKeywords.length > 10) {
+            showModal(
+                "সতর্কতা!",
+                "সর্বোচ্চ ১০টি কিওয়ার্ড রাখা যাবে।",
+                "error"
+            );
+            return;
+        }
+
+        const shopName = shopNameInput.value.trim();
+        const whatsapp = whatsappInput.value.trim();
+        const shopDescription = shopDescriptionInput.value.trim();
+
+        upBtn.disabled = true;
+        upBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i><span>আপডেট হচ্ছে...</span>';
 
         try {
-            // Safety check: Fetch latest document before update
-            const userRef = doc(db, "users", currentUser.uid);
-            const userSnap = await getDoc(userRef);
-
-            if (userSnap.exists() && userSnap.data().uid === currentUser.uid) {
-                storedUidInDoc = currentUser.uid;
-                renderUidStatus(storedUidInDoc);
-                showModal("তথ্য", "আপনার UID ইতিমধ্যে যুক্ত করা আছে।", 'success');
-                return;
-            }
-
-            // Requirement 10 & 11: Safely update only the 'uid' field using currentUser.uid
-            await updateDoc(userRef, {
-                uid: currentUser.uid
+            // Only editable profile fields are updated.
+            // UID, active, verified and shopLogo are not overwritten.
+            await updateDoc(doc(db, "users", currentUser.uid), {
+                shopName,
+                whatsapp,
+                shopDescription,
+                shopKeywords: [...currentKeywords]
             });
 
-            storedUidInDoc = currentUser.uid;
-            renderUidStatus(storedUidInDoc);
+            initialData = {
+                shopName,
+                whatsapp,
+                shopDescription,
+                shopKeywords: [...currentKeywords]
+            };
 
-            showModal("সফল হয়েছে!", "আপনার UID সফলভাবে সংযুক্ত করা হয়েছে।", 'success');
-        } catch (err) {
-            console.error("UID Save Error:", err);
-            showModal("ব্যর্থ হয়েছে!", "UID সংযুক্ত করতে সমস্যা হয়েছে: " + err.message, 'error');
+            displayShopName.textContent = shopName;
+
+            checkUnsavedChanges();
+
+            showModal(
+                "সফল হয়েছে!",
+                "আপনার দোকানের প্রোফাইল তথ্য সফলভাবে আপডেট করা হয়েছে।",
+                "success"
+            );
+
+        } catch (error) {
+            console.error("Firestore Update Error:", error);
+
+            showModal(
+                "আপডেট ব্যর্থ হয়েছে!",
+                "তথ্য সংরক্ষণ করা যায়নি। ইন্টারনেট সংযোগ ও Firestore Rules পরীক্ষা করে আবার চেষ্টা করুন।",
+                "error"
+            );
+
         } finally {
-            openUidModalBtn.disabled = false;
-            openUidModalBtn.innerHTML = '<i class="fas fa-fingerprint"></i> Add UID';
+            upBtn.disabled = false;
+            upBtn.innerHTML =
+                '<i class="fas fa-save"></i><span>তথ্য আপডেট করুন</span>';
         }
     });
+</script>
 
-    // Profile Update Execution  
-    upBtn.addEventListener('click', async () => {  
-        const isNameValid = validateShopName();  
-        const isWaValid = validateWhatsApp();  
-        const isDescValid = validateDescription();  
-
-        if (!isNameValid || !isWaValid || !isDescValid) {  
-            showModal("সতর্কতা!", "অনুগ্রহ করে ফর্মের ভুলগুলো সংশোধন করুন।", 'error');  
-            return;  
-        }  
-
-        if (currentKeywords.length > 10) {  
-            showModal("সতর্কতা!", "সর্বোচ্চ ১০টি কিওয়ার্ড রাখা যাবে।", 'error');  
-            return;  
-        }  
-
-        const sName = shopNameInput.value.trim();  
-        const wa = whatsappInput.value.trim();  
-        const sDesc = shopDescriptionInput.value.trim();  
-
-        upBtn.disabled = true;  
-        upBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>আপডেট হচ্ছে...</span>';  
-
-        try {  
-            // Note: shopLogo field is intentionally omitted here to prevent overwrite
-            await updateDoc(doc(db, "users", currentUser.uid), {  
-                shopName: sName,  
-                whatsapp: wa,  
-                shopDescription: sDesc,  
-                shopKeywords: currentKeywords  
-            });  
-
-            // Update local initial state  
-            initialData = {  
-                shopName: sName,  
-                whatsapp: wa,  
-                shopDescription: sDesc,  
-                shopKeywords: [...currentKeywords]  
-            };  
-
-            displayShopName.innerText = sName;  
-            checkUnsavedChanges();  
-
-            showModal("সফল হয়েছে!", "আপনার দোকানের প্রোফাইল তথ্য সফলভাবে আপডেট করা হয়েছে।", 'success');  
-        } catch (err) {  
-            showModal("ব্যর্থ হয়েছে!", "আপডেট করার সময় সমস্যা হয়েছে। আবার চেষ্টা করুন।", 'error');  
-            console.error("Firestore Update Error:", err);  
-        } finally {  
-            upBtn.disabled = false;  
-            upBtn.innerHTML = '<i class="fas fa-save"></i> <span>তথ্য আপডেট করুন</span>';  
-        }  
-    });  
-</script>  
-</body>  
+</body>
 </html>
