@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghoti Market — Seller Landing Link Generator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Inter & Hind Siliguri for Bengali) -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind Custom Config for Orange Palette -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ghoti: {
+                            50: '#FFF5EC',
+                            100: '#FFE6D5',
+                            500: '#FF6A00',
+                            600: '#E65F00',
+                            700: '#CC5400',
+                            secondary: '#FF8C33'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Hind Siliguri', 'sans-serif'],
+                        bangla: ['Hind Siliguri', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Hind Siliguri', 'Inter', sans-serif;
+        }
+        /* Custom smooth transition and shadow utilities */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-ghoti-50 via-orange-50/30 to-white text-slate-800 min-h-screen flex flex-col justify-between selection:bg-ghoti-500 selection:text-white">
+
+    <!-- Header Navbar -->
+    <header class="w-full bg-white/80 backdrop-blur-md border-b border-orange-100 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <a href="/dashboard" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 group">
+                    <img src="https://seller.ghotimarket.com/logo.png" alt="Ghoti Market Logo" class="h-9 w-auto object-contain transition-transform group-hover:scale-105" onerror="this.src='https://placehold.co/120x40/FF6A00/FFFFFF?text=GHOTI+MARKET'">
+                </a>
+                <span class="hidden sm:inline-block text-xs font-semibold px-2.5 py-1 bg-ghoti-50 text-ghoti-600 rounded-full border border-ghoti-100">
+                    ਸeller Tool
+                </span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <a href="/dashboard" target="_blank" rel="noopener noreferrer" class="text-xs sm:text-sm font-medium text-slate-600 hover:text-ghoti-500 transition-colors flex items-center space-x-1.5 py-1.5 px-3 rounded-lg hover:bg-orange-50">
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                    <span>মেইন সাইটে যান</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-3xl w-full mx-auto px-4 py-8 sm:py-12 flex-grow">
+        <!-- Hero Title Section -->
+        <div class="text-center mb-8 sm:mb-10 animate-fade-in">
+            <div class="inline-flex items-center justify-center p-2 bg-ghoti-100 text-ghoti-600 rounded-2xl mb-4 shadow-sm">
+                <i data-lucide="sparkles" class="w-6 h-6"></i>
+            </div>
+            <h1 class="text-2xl sm:text-4xl font-bold text-slate-900 tracking-tight mb-3">
+                এক ক্লিকে ল্যান্ডিং পেজ তৈরি করুন!
+            </h1>
+            <p class="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                প্রথমে আপনার সেলার ড্যাশবোর্ড থেকে নির্দিষ্ট পণ্যের লিংক কপি করুন। তারপর নিচের বক্সে লিংকটি দিয়ে <span class="font-semibold text-ghoti-600">Generate</span> বাটনে চাপ দিন। আপনার কাস্টমারকে তৈরি হওয়া লিংকটি দিলেই তিনি লগইন ছাড়াই সরাসরি নিজের তথ্য দিয়ে অর্ডার করতে পারবেন।
+            </p>
+        </div>
+
+        <!-- Generator Card -->
+        <div class="bg-white rounded-2xl shadow-xl shadow-orange-500/5 border border-orange-100 p-5 sm:p-8 mb-8 transition-all">
+            <form id="generatorForm" onsubmit="event.preventDefault(); generateLandingLink();" class="space-y-6">
+                <div>
+                    <label for="productUrl" class="block text-sm sm:text-base font-semibold text-slate-700 mb-2 flex items-center justify-between">
+                        <span class="flex items-center space-x-2">
+                            <i data-lucide="link" class="w-4 h-4 text-ghoti-500"></i>
+                            <span>পণ্যের লিংক দিন</span>
+                        </span>
+                        <span class="text-xs text-slate-400 font-normal">HTTPS Required</span>
+                    </label>
+                    <div class="relative flex items-center">
+                        <input 
+                            type="url" 
+                            id="productUrl" 
+                            name="productUrl"
+                            placeholder="https://ghotimarket.com/product?forever-bright-toothgel-97uo" 
+                            class="w-full pl-4 pr-24 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-ghoti-500 focus:bg-white transition-all shadow-inner"
+                            autocomplete="off"
+                            required
+                        >
+                        <button 
+                            type="button" 
+                            id="pasteBtn" 
+                            onclick="pasteFromClipboard()"
+                            class="absolute right-2 px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs sm:text-sm font-medium rounded-lg transition-colors flex items-center space-x-1"
+                            title="ক্লিপবোর্ড থেকে পেস্ট করুন"
+                        >
+                            <i data-lucide="clipboard" class="w-3.5 h-3.5"></i>
+                            <span>পেস্ট</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Error Message Container -->
+                <div id="errorAlert" class="hidden p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm flex items-start space-x-3 animate-fade-in">
+                    <i data-lucide="alert-circle" class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"></i>
+                    <div id="errorMessage" class="flex-grow font-medium"></div>
+                </div>
+
+                <!-- Action Button -->
+                <button 
+                    type="submit" 
+                    id="generateBtn"
+                    class="w-full py-4 bg-gradient-to-r from-ghoti-500 to-ghoti-secondary hover:from-ghoti-600 hover:to-orange-500 text-white font-semibold rounded-xl shadow-lg shadow-ghoti-500/25 hover:shadow-ghoti-500/40 transform active:scale-[0.99] transition-all flex items-center justify-center space-x-2 text-base sm:text-lg"
+                >
+                    <i data-lucide="zap" class="w-5 h-5"></i>
+                    <span id="btnText">Generate Landing Link</span>
+                    <svg id="loadingSpinner" class="hidden animate-spin h-5 w-5 text-white ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+
+        <!-- Result Card (Hidden by Default) -->
+        <div id="resultCard" class="hidden bg-gradient-to-br from-white to-orange-50/50 rounded-2xl shadow-xl shadow-orange-500/10 border-2 border-orange-200 p-5 sm:p-8 mb-8 animate-fade-in">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="p-2.5 bg-green-100 text-green-600 rounded-xl">
+                    <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-900">আপনার ল্যান্ডিং পেজের লিংক তৈরি হয়েছে!</h2>
+                    <p class="text-xs sm:text-sm text-slate-500">নিচের লিংকটি কপি করে আপনার কাস্টমারকে পাঠান।</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="generatedUrlOutput" 
+                        readonly 
+                        class="w-full pl-4 pr-12 py-3 bg-white border border-orange-200 rounded-xl text-ghoti-700 font-mono text-xs sm:text-sm focus:outline-none shadow-sm select-all"
+                    >
+                    <div class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center pr-1">
+                        <button 
+                            type="button" 
+                            onclick="copyGeneratedUrl()" 
+                            class="p-2 text-slate-400 hover:text-ghoti-600 transition-colors rounded-lg hover:bg-orange-50"
+                            title="লিংক কপি করুন"
+                        >
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                    <button 
+                        type="button" 
+                        onclick="copyGeneratedUrl()"
+                        class="flex-1 py-3 px-4 bg-ghoti-500 hover:bg-ghoti-600 text-white font-medium rounded-xl shadow-md shadow-ghoti-500/20 transition-all flex items-center justify-center space-x-2 text-sm sm:text-base"
+                    >
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                        <span>লিংক কপি করুন</span>
+                    </button>
+                    <a 
+                        id="openUrlBtn" 
+                        href="#" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="flex-1 py-3 px-4 bg-white hover:bg-orange-50 text-ghoti-600 border border-ghoti-200 font-medium rounded-xl transition-all flex items-center justify-center space-x-2 text-sm sm:text-base shadow-sm"
+                    >
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                        <span>লিংক খুলুন</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Information Card -->
+        <div class="bg-white rounded-2xl shadow-md border border-slate-100 p-5 sm:p-8 space-y-5">
+            <div class="flex items-center space-x-3 border-b border-slate-100 pb-4">
+                <div class="p-2 bg-orange-100 text-ghoti-600 rounded-xl">
+                    <i data-lucide="help-circle" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-slate-900">আপনার কাস্টমার কীভাবে অর্ডার করবেন?</h3>
+            </div>
+            
+            <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                তৈরি হওয়া ল্যান্ডিং পেজের লিংকটি কাস্টমারকে পাঠিয়ে দিন। কাস্টমার কোনো লগইন ছাড়াই সরাসরি পণ্যের পেজে গিয়ে নিজের নাম, ফোন নম্বর ও প্রয়োজনীয় ঠিকানা দিয়ে অর্ডার করতে পারবেন।
+            </p>
+
+            <div class="p-4 bg-orange-50/70 border border-orange-200/60 rounded-xl flex items-start space-x-3">
+                <i data-lucide="info" class="w-5 h-5 text-ghoti-500 flex-shrink-0 mt-0.5"></i>
+                <div class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    <span class="font-semibold text-slate-900">নোট:</span> এই লিংকের মাধ্যমে করা অর্ডারগুলো আপনার সেলার ড্যাশবোর্ডের <span class="font-semibold text-ghoti-600">‘ল্যান্ডিং অর্ডার’</span> সেকশনে দেখতে পারবেন।
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification Component -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3 border border-slate-800">
+            <div class="bg-green-500 rounded-full p-1 text-white">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+            </div>
+            <span id="toastMessage" class="text-sm font-medium">লিংক সফলভাবে কপি হয়েছে!</span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full bg-white border-t border-slate-100 py-6 mt-12 text-center text-xs sm:text-sm text-slate-500">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p>&copy; 2026 <a href="https://ghotimarket.com" target="_blank" class="text-ghoti-600 font-medium hover:underline">Ghoti Market</a>. সমস্ত অধিকার সংরক্ষিত।</p>
+            <div class="flex items-center space-x-4 text-slate-400">
+                <span>Secure Seller Tool</span>
+                <span>•</span>
+                <span>No Login Required</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Initialize Lucide icons on load
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+
+        // Quick Clipboard Paste function
+        async function pasteFromClipboard() {
+            try {
+                if (navigator.clipboard && navigator.clipboard.readText) {
+                    const text = await navigator.clipboard.readText();
+                    document.getElementById('productUrl').value = text.trim();
+                    hideError();
+                } else {
+                    showError('আপনার ব্রাউজার থেকে সরাসরি পেস্ট করার অনুমতি নেই। অনুগ্রহ করে ম্যানুয়ালি পেস্ট করুন।');
+                }
+            } catch (err) {
+                showError('ক্লিপবোর্ড থেকে পড়তে সমস্যা হয়েছে। অনুগ্রহ করে ম্যানুয়ালি পেস্ট করুন।');
+            }
+        }
+
+        // Show Error Message Banner
+        function showError(msg) {
+            const errorAlert = document.getElementById('errorAlert');
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = msg;
+            errorAlert.classList.remove('hidden');
+            document.getElementById('resultCard').classList.add('hidden');
+        }
+
+        // Hide Error Message Banner
+        function hideError() {
+            const errorAlert = document.getElementById('errorAlert');
+            errorAlert.classList.add('hidden');
+        }
+
+        // Show Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        // Core URL Generation & Validation Logic
+        function generateLandingLink() {
+            hideError();
+            const inputField = document.getElementById('productUrl');
+            const rawUrl = inputField.value.trim();
+
+            if (!rawUrl) {
+                showError('অনুগ্রহ করে প্রথমে পণ্যের লিংক দিন।');
+                return;
+            }
+
+            // Button Loading State
+            const generateBtn = document.getElementById('generateBtn');
+            const btnText = document.getElementById('btnText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            generateBtn.disabled = true;
+            btnText.textContent = 'Generating...';
+            loadingSpinner.classList.remove('hidden');
+
+            setTimeout(() => {
+                try {
+                    let parsedUrl;
+                    try {
+                        parsedUrl = new URL(rawUrl);
+                    } catch (e) {
+                        throw new Error('দয়া করে একটি সঠিক ও বৈধ URL প্রদান করুন।');
+                    }
+
+                    // Check Protocol
+                    if (parsedUrl.protocol !== 'https:') {
+                        throw new Error('নিরাপত্তার জন্য শুধুমাত্র HTTPS প্রোটোকল সমর্থিত।');
+                    }
+
+                    // Check Domain
+                    const hostname = parsedUrl.hostname.toLowerCase();
+                    if (hostname !== 'ghotimarket.com' && !hostname.endsWith('.ghotimarket.com')) {
+                        throw new Error('শুধুমাত্র অনুমোদিত ghotimarket.com ডোমেইনের লিংক গ্রহণ করা হয়।');
+                    }
+
+                    let pathname = parsedUrl.pathname;
+
+                    // Handle path transformations robustly
+                    // Normalize trailing slashes if needed
+                    if (pathname.endsWith('/') && pathname.length > 1) {
+                        pathname = pathname.slice(0, -1);
+                    }
+
+                    // If already contains /seller/landing/product, handle cleanly without duplication
+                    if (pathname.includes('/seller/landing/product')) {
+                        // Keep query params intact
+                    } else if (pathname === '/product' || pathname.startsWith('/product/')) {
+                        // Replace /product with /seller/landing/product
+                        pathname = pathname.replace(/^\/product/, '/seller/landing/product');
+                    } else if (pathname === '' || pathname === '/') {
+                        throw new Error('এই লিঙ্কে কোনো নির্দিষ্ট পণ্যের পাথ (Product Path) পাওয়া যায়নি।');
+                    } else {
+                        // If path doesn't start with /product but is on ghotimarket.com, 
+                        // check if it's general URL or invalid product path
+                        throw new Error('লিংকটির পাথ সঠিক নয়। দয়া করে ড্যাশবোর্ড থেকে সঠিক পণ্যের লিংক কপি করুন।');
+                    }
+
+                    // Reconstruct final URL
+                    parsedUrl.pathname = pathname;
+                    const finalLandingUrl = parsedUrl.toString();
+
+                    // Display Result
+                    document.getElementById('generatedUrlOutput').value = finalLandingUrl;
+                    document.getElementById('openUrlBtn').href = finalLandingUrl;
+                    document.getElementById('resultCard').classList.remove('hidden');
+
+                    // Smooth scroll to result
+                    document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+                } catch (err) {
+                    showError(err.message);
+                } finally {
+                    // Reset Button State
+                    generateBtn.disabled = false;
+                    btnText.textContent = 'Generate Landing Link';
+                    loadingSpinner.classList.add('hidden');
+                }
+            }, 400); // Slight delay for professional feel
+        }
+
+        // Copy Generated URL with Fallback
+        function copyGeneratedUrl() {
+            const outputInput = document.getElementById('generatedUrlOutput');
+            const urlText = outputInput.value;
+
+            if (!urlText) return;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(urlText).then(() => {
+                    showToast('লিংক সফলভাবে কপি হয়েছে!');
+                }).catch(() => {
+                    fallbackCopy(outputInput);
+                });
+            } else {
+                fallbackCopy(outputInput);
+            }
+        }
+
+        // Fallback copy method for older browsers or iframe restrictions
+        function fallbackCopy(inputElement) {
+            inputElement.focus();
+            inputElement.select();
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast('লিংক সফলভাবে কপি হয়েছে!');
+                } else {
+                    showError('স্বয়ংক্রিয়ভাবে কপি করা যায়নি। অনুগ্রহ করে সিলেক্ট করে ম্যানুয়ালি কপি করুন।');
+                }
+            } catch (err) {
+                showError('কপি করতে সমস্যা হয়েছে। অনুগ্রহ করে ম্যানুয়ালি কপি করুন।');
+            }
+        }
+    </script>
+</body>
+</html>
