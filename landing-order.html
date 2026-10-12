@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ঘটি মার্কেট — সেলার অর্ডার ড্যাশবোর্ড</title>
+    <!-- Google Fonts: Hind Siliguri & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN for modern responsive utility styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ghotiOrange: '#FF6A00',
+                        ghotiHover: '#E85D00',
+                        ghotiBg: '#F7F8FA',
+                        ghotiCard: '#FFFFFF',
+                        ghotiText: '#202124',
+                        ghotiSecondary: '#6B7280',
+                        ghotiBorder: '#E8EAED',
+                    },
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', 'Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Firebase Compat SDK 9.23.0 -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <style>
+       
+/* =========================================
+   GHOTI MARKET — PREMIUM SELLER DASHBOARD
+   ========================================= */
+
+:root {
+    --gm-orange: #ff6a00;
+    --gm-orange-dark: #e85d00;
+    --gm-orange-soft: #fff3e9;
+    --gm-bg: #f5f6fa;
+    --gm-card: #ffffff;
+    --gm-text: #202124;
+    --gm-muted: #727784;
+    --gm-border: #e9ebf0;
+    --gm-shadow: 0 8px 30px rgba(22, 28, 45, 0.055);
+    --gm-shadow-hover: 0 16px 38px rgba(22, 28, 45, 0.10);
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background:
+        radial-gradient(ellipse at top left,
+            rgba(255, 106, 0, 0.055), transparent 32%),
+        var(--gm-bg) !important;
+    color: var(--gm-text);
+}
+
+button,
+input,
+select {
+    font-family: 'Hind Siliguri', 'Inter', sans-serif;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid rgba(255, 106, 0, 0.22);
+    outline-offset: 2px;
+}
+
+/* Premium Header */
+
+header.sticky {
+    background: rgba(255, 255, 255, 0.94) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(233, 235, 240, 0.9) !important;
+    box-shadow: 0 3px 18px rgba(25, 30, 45, 0.035) !important;
+}
+
+header.sticky > div {
+    min-height: 76px;
+}
+
+.ghoti-brand-logo {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #f0e5dd;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(255, 106, 0, 0.10);
+}
+
+.ghoti-brand-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 4px;
+}
+
+header h1 {
+    letter-spacing: -0.4px;
+}
+
+header .text-ghotiOrange {
+    font-size: 11px;
+    letter-spacing: 0.1px;
+}
+
+#logoutBtn {
+    border-radius: 12px;
+    min-height: 40px;
+    padding: 9px 12px;
+    background: #fff;
+}
+
+/* Main Dashboard Layout */
+
+main.max-w-7xl {
+    padding-top: 32px;
+    padding-bottom: 48px;
+    gap: 25px;
+}
+
+main h2 {
+    letter-spacing: -0.7px;
+    font-size: clamp(24px, 3vw, 32px) !important;
+    line-height: 1.35;
+}
+
+main h2 + p {
+    margin-top: 7px;
+    line-height: 1.8;
+    color: var(--gm-muted) !important;
+}
+
+/* Search Input */
+
+#searchInput {
+    min-height: 48px;
+    border-radius: 15px;
+    border-color: #e4e6ec !important;
+    box-shadow: 0 3px 12px rgba(25, 30, 45, 0.035);
+    transition: border-color .2s, box-shadow .2s;
+}
+
+#searchInput:focus {
+    border-color: var(--gm-orange) !important;
+    box-shadow: 0 0 0 4px rgba(255, 106, 0, 0.10);
+}
+
+#searchInput::placeholder {
+    color: #a0a4ad;
+}
+
+/* Status Filter Navigation */
+
+#statusFilters {
+    padding: 3px;
+    gap: 8px;
+}
+
+#statusFilters button {
+    min-height: 40px;
+    padding: 9px 16px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    transition: background .2s, color .2s, transform .2s;
+}
+
+#statusFilters button:hover {
+    transform: translateY(-1px);
+}
+
+#statusFilters button.bg-ghotiOrange {
+    background: linear-gradient(
+        135deg,
+        #ff8126,
+        #ff6a00 60%,
+        #e95c00
+    ) !important;
+    box-shadow: 0 5px 14px rgba(255, 106, 0, 0.20);
+}
+
+/* Order Card */
+
+#ordersGrid > div {
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+    padding: 21px !important;
+    border: 1px solid #eaecf1 !important;
+    border-radius: 22px !important;
+    background: rgba(255, 255, 255, 0.97) !important;
+    box-shadow: var(--gm-shadow) !important;
+    gap: 19px !important;
+    transition:
+        transform .22s ease,
+        box-shadow .22s ease,
+        border-color .22s ease;
+}
+
+#ordersGrid > div::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 22px;
+    right: 22px;
+    height: 3px;
+    border-radius: 0 0 8px 8px;
+    background: linear-gradient(90deg, #ffb16f, #ff6a00);
+    opacity: .75;
+}
+
+#ordersGrid > div:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--gm-shadow-hover) !important;
+    border-color: #ffd6ba !important;
+}
+
+#ordersGrid > div > div:first-child {
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 5px;
+}
+
+#ordersGrid [data-order-id] {
+    min-width: 0;
+}
+
+#ordersGrid img {
+    width: 68px;
+    height: 68px;
+    border-radius: 15px;
+    background: #f7f7f9;
+    border: 1px solid #eceef2;
+    object-fit: cover;
+}
+
+#ordersGrid h4 {
+    font-size: 14px;
+    line-height: 1.8;
+    font-weight: 700;
+}
+
+#ordersGrid .font-mono {
+    color: #525866;
+    font-size: 11px;
+}
+
+#ordersGrid .rounded-full {
+    line-height: 1.6;
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+}
+
+#ordersGrid > div > div:last-child {
+    padding-top: 15px;
+    border-color: #f0f1f4 !important;
+}
+
+#ordersGrid select {
+    min-height: 42px;
+    border-radius: 12px;
+    padding: 9px 10px;
+    font-weight: 600;
+    background-color: #f8f9fb;
+}
+
+#ordersGrid select:focus {
+    border-color: var(--gm-orange);
+}
+
+#ordersGrid button {
+    min-height: 40px;
+    border-radius: 12px;
+}
+
+#ordersGrid button.bg-orange-50 {
+    background: var(--gm-orange-soft) !important;
+    border: 1px solid #ffdfc9;
+}
+
+#ordersGrid button.bg-orange-50:hover {
+    background: var(--gm-orange) !important;
+    border-color: var(--gm-orange);
+}
+
+/* Empty & Error States */
+
+#emptyState,
+#errorState {
+    border-radius: 24px;
+    min-height: 310px;
+    box-shadow: var(--gm-shadow);
+}
+
+#emptyState h3,
+#errorState h3 {
+    font-size: 19px;
+}
+
+#emptyActionBtn,
+#errorState button {
+    min-height: 44px;
+    border-radius: 13px;
+}
+
+#emptyActionBtn,
+#errorState button,
+#loadMoreBtn {
+    transition: transform .2s, box-shadow .2s, background .2s;
+}
+
+#emptyActionBtn:hover,
+#errorState button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(255, 106, 0, 0.17);
+}
+
+/* Load More */
+
+#loadMoreBtn {
+    min-height: 48px;
+    min-width: 160px;
+    justify-content: center;
+    border-radius: 14px;
+    font-weight: 700;
+}
+
+#loadMoreBtn:hover {
+    border-color: var(--gm-orange);
+    color: var(--gm-orange);
+    box-shadow: 0 6px 18px rgba(30, 35, 50, 0.06);
+}
+
+#loadMoreBtn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+/* Details Modal */
+
+#orderDetailsModal {
+    z-index: 100;
+    padding: 16px;
+    overscroll-behavior: contain;
+}
+
+#orderDetailsModal > div {
+    border-radius: 25px;
+    border: 1px solid rgba(255,255,255,.4);
+    box-shadow: 0 30px 100px rgba(0,0,0,.25);
+    animation: gmModalEnter .22s ease-out;
+}
+
+#orderDetailsModal > div > div:first-child {
+    background: linear-gradient(135deg, #fff8f2, #fff);
+    padding: 18px 22px;
+}
+
+#orderDetailsModal .overflow-y-auto {
+    padding: 22px;
+}
+
+#orderDetailsModal .bg-gray-50 {
+    background: #fbfbfd !important;
+}
+
+#orderDetailsModal .rounded-2xl {
+    border-radius: 17px;
+}
+
+#orderDetailsModal h4 {
+    letter-spacing: .15px;
+    font-size: 12px;
+}
+
+#orderDetailsModal strong {
+    overflow-wrap: anywhere;
+}
+
+#orderDetailsModal #modalCustName,
+#orderDetailsModal #modalCustPhone,
+#orderDetailsModal #modalCustAddress {
+    display: inline-block;
+    line-height: 1.9;
+}
+
+#orderDetailsModal #modalProductImg {
+    width: 92px;
+    height: 92px;
+    flex-shrink: 0;
+    border-radius: 17px;
+}
+
+#orderDetailsModal #modalProductName {
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+#orderDetailsModal #modalVariantsList > div {
+    border-radius: 12px;
+    padding: 12px;
+    background: #fff;
+}
+
+#orderDetailsModal .bg-gradient-to-br {
+    background: linear-gradient(145deg, #fff8f0, #fffdfb) !important;
+    border-color: #ffe0c8 !important;
+}
+
+#priceTotal {
+    font-size: 19px;
+}
+
+#orderDetailsModal .text-ghotiOrange {
+    color: var(--gm-orange) !important;
+}
+
+/* Lightbox */
+
+#lightboxModal {
+    z-index: 110;
+    cursor: zoom-out;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+#lightboxImg {
+    animation: gmModalEnter .18s ease-out;
+}
+
+/* Toast */
+
+#toastContainer {
+    z-index: 120;
+    max-width: calc(100vw - 32px);
+}
+
+#toastContainer > div {
+    border-radius: 14px;
+    padding: 13px 17px;
+    box-shadow: 0 12px 35px rgba(20, 25, 40, .20);
+    font-size: 13px;
+}
+
+/* Loading Skeleton */
+
+#skeletonLoader > div {
+    border-radius: 21px;
+    border-color: #eceef2 !important;
+    background: white;
+}
+
+/* Animations */
+
+@keyframes gmModalEnter {
+    from {
+        opacity: 0;
+        transform: translateY(9px) scale(.99);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+/* Mobile Optimization */
+
+@media (max-width: 640px) {
+    header.sticky > div {
+        min-height: 68px;
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .ghoti-brand-logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 13px;
+    }
+
+    header h1 {
+        font-size: 16px !important;
+    }
+
+    main.max-w-7xl {
+        padding: 22px 13px 35px;
+        gap: 19px;
+    }
+
+    main h2 {
+        font-size: 24px !important;
+    }
+
+    #searchInput {
+        min-height: 47px;
+        font-size: 13px;
+    }
+
+    #statusFilters button {
+        min-height: 39px;
+        padding: 8px 12px;
+    }
+
+    #ordersGrid {
+        gap: 14px;
+    }
+
+    #ordersGrid > div {
+        padding: 17px !important;
+        border-radius: 19px !important;
+        gap: 16px !important;
+    }
+
+    #ordersGrid img {
+        width: 62px;
+        height: 62px;
+    }
+
+    #ordersGrid > div > div:last-child {
+        align-items: stretch;
+    }
+
+    #ordersGrid select {
+        font-size: 11px;
+        min-width: 0;
+    }
+
+    #ordersGrid button {
+        font-size: 11px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    #orderDetailsModal {
+        padding: 8px;
+        align-items: flex-end;
+    }
+
+    #orderDetailsModal > div {
+        max-height: 93dvh;
+        border-radius: 23px 23px 12px 12px;
+    }
+
+    #orderDetailsModal > div > div:first-child {
+        padding: 14px;
+    }
+
+    #orderDetailsModal .overflow-y-auto {
+        padding: 14px;
+        gap: 14px;
+    }
+
+    #orderDetailsModal #modalProductImg {
+        width: 76px;
+        height: 76px;
+    }
+
+    #priceTotal {
+        font-size: 17px;
+    }
+
+    #toastContainer {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+    }
+}
+
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-ghotiOrange selection:text-white">
+
+    <!-- Firebase Config Placeholder Modal / Setup Banner if not configured -->
+    <div id="configBanner" class="hidden bg-amber-50 border-b border-amber-200 p-3 text-center text-sm text-amber-800">
+        দয়া করে আপনার ফায়ারবেস কনফিগারেশন কোডে সেটআপ করুন।
+    </div>
+
+    <!-- Professional Header -->
+    <header class="sticky top-0 z-30 bg-white border-b border-ghotiBorder shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand Logo & Title -->
+            <div class="flex items-center space-x-3">
+              <div class="ghoti-brand-logo">
+    <img
+        src="https://seller.ghotimarket.com/logo.png"
+        alt="Ghoti Market Logo"
+        onerror="this.style.display='none'"
+    >
+</div>
+                <div>
+                    <h1 class="text-lg font-bold text-ghotiText tracking-tight leading-none">ঘটি মার্কেট</h1>
+                    <span class="text-xs font-medium text-ghotiOrange">সেলাড ড্যাশবোর্ড (অর্ডার ম্যানেজমেন্ট)</span>
+                </div>
+            </div>
+
+            <!-- Seller Profile / Auth Status -->
+            <div class="flex items-center space-x-3">
+                <div id="sellerProfileInfo" class="hidden sm:flex flex-col text-right">
+                    <span id="sellerEmailDisplay" class="text-xs font-semibold text-ghotiText truncate max-w-[180px]">seller@ghotimarket.com</span>
+                    <span class="text-[10px] text-ghotiSecondary font-mono" id="sellerUidDisplay">UID: ...</span>
+                </div>
+                <button id="logoutBtn" onclick="handleLogout()" title="লগআউট" class="p-2 text-ghotiSecondary hover:text-red-600 hover:bg-red-50 rounded-xl transition border border-ghotiBorder flex items-center space-x-1 text-xs font-medium">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                    <span class="hidden md:inline">প্রস্থান</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col space-y-6">
+
+        <!-- Page Title & Quick Summary Bar -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h2 class="text-2xl font-bold text-ghotiText">অর্ডার ম্যানেজমেন্ট</h2>
+                <p class="text-sm text-ghotiSecondary">আপনার দোকানের সমস্ত কাস্টমার অর্ডার তালিকা ও স্থিতি নিয়ন্ত্রণ করুন।</p>
+            </div>
+            <!-- Search Bar -->
+            <div class="w-full md:w-80">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ghotiSecondary">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </span>
+                    <input type="text" id="searchInput" oninput="handleSearchInput(event)" placeholder="অর্ডার আইডি দিয়ে খুঁজুন..." class="w-full pl-10 pr-10 py-2.5 bg-white border border-ghotiBorder rounded-xl text-sm text-ghotiText placeholder-ghotiSecondary/70 focus:outline-none focus:border-ghotiOrange focus:ring-1 focus:ring-ghotiOrange transition shadow-sm">
+                    <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-ghotiSecondary hover:text-ghotiText">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Filter Horizontal Scroll Bar -->
+        <div class="bg-white p-2 rounded-2xl border border-ghotiBorder shadow-sm overflow-x-auto custom-scrollbar">
+            <div id="statusFilters" class="flex items-center space-x-2 min-w-max pb-1">
+                <!-- Filters will be populated dynamically -->
+            </div>
+        </div>
+
+        <!-- Order List Section -->
+        <section class="flex-1 flex flex-col">
+            <!-- Loading Skeleton UI -->
+            <div id="skeletonLoader" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-pulse">
+                <div class="bg-white p-5 rounded-2xl border border-ghotiBorder h-48 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex justify-between"><div class="h-4 bg-gray-200 rounded w-1/3"></div><div class="h-6 bg-gray-200 rounded-full w-20"></div></div>
+                        <div class="h-12 bg-gray-200 rounded w-full"></div>
+                    </div>
+                    <div class="flex justify-between pt-3 border-t border-gray-100"><div class="h-8 bg-gray-200 rounded w-1/3"></div><div class="h-8 bg-gray-200 rounded w-1/4"></div></div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-ghotiBorder h-48 flex flex-col justify-between hidden md:flex">
+                    <div class="space-y-3">
+                        <div class="flex justify-between"><div class="h-4 bg-gray-200 rounded w-1/3"></div><div class="h-6 bg-gray-200 rounded-full w-20"></div></div>
+                        <div class="h-12 bg-gray-200 rounded w-full"></div>
+                    </div>
+                    <div class="flex justify-between pt-3 border-t border-gray-100"><div class="h-8 bg-gray-200 rounded w-1/3"></div><div class="h-8 bg-gray-200 rounded w-1/4"></div></div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-ghotiBorder h-48 flex flex-col justify-between hidden lg:flex">
+                    <div class="space-y-3">
+                        <div class="flex justify-between"><div class="h-4 bg-gray-200 rounded w-1/3"></div><div class="h-6 bg-gray-200 rounded-full w-20"></div></div>
+                        <div class="h-12 bg-gray-200 rounded w-full"></div>
+                    </div>
+                    <div class="flex justify-between pt-3 border-t border-gray-100"><div class="h-8 bg-gray-200 rounded w-1/3"></div><div class="h-8 bg-gray-200 rounded w-1/4"></div></div>
+                </div>
+            </div>
+
+            <!-- Empty State Container -->
+            <div id="emptyState" class="hidden flex-1 flex flex-col items-center justify-center py-16 px-4 bg-white rounded-2xl border border-ghotiBorder text-center">
+                <div class="w-16 h-16 bg-orange-50 text-ghotiOrange rounded-2xl flex items-center justify-center mb-4 shadow-sm">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+                </div>
+                <h3 id="emptyTitle" class="text-lg font-bold text-ghotiText mb-1">কোনো অর্ডার পাওয়া যায়নি</h3>
+                <p id="emptyDesc" class="text-sm text-ghotiSecondary max-w-sm mb-6">বর্তমানে এই ফিল্টার বা অনুসন্ধানে কোনো অর্ডার তালিকাভুক্ত নেই।</p>
+                <button id="emptyActionBtn" onclick="resetFilterAndSearch()" class="hidden px-4 py-2 bg-ghotiOrange text-white font-medium text-sm rounded-xl hover:bg-ghotiHover transition shadow-sm">সব অর্ডার দেখুন</button>
+            </div>
+
+            <!-- Error State Container -->
+            <div id="errorState" class="hidden flex-1 flex flex-col items-center justify-center py-16 px-4 bg-white rounded-2xl border border-red-100 text-center">
+                <div class="w-16 h-16 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center mb-4 shadow-sm">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </div>
+                <h3 class="text-lg font-bold text-ghotiText mb-1">সংযুক্তিতে সমস্যা হয়েছে</h3>
+                <p id="errorMessageText" class="text-sm text-ghotiSecondary max-w-sm mb-6">ফায়ারবেস থেকে ডেটা লোড করার সময় ত্রুটি ঘটেছে।</p>
+                <button onclick="loadOrders(true)" class="px-5 py-2.5 bg-ghotiOrange text-white font-medium text-sm rounded-xl hover:bg-ghotiHover transition shadow-sm flex items-center space-x-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    <span>পুনরায় চেষ্টা করুন</span>
+                </button>
+            </div>
+
+            <!-- Order Cards Grid -->
+            <div id="ordersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Order cards rendered dynamically -->
+            </div>
+
+            <!-- Load More Pagination Button -->
+            <div id="loadMoreContainer" class="hidden mt-8 text-center">
+                <button id="loadMoreBtn" onclick="loadMoreOrders()" class="px-6 py-2.5 bg-white border border-ghotiBorder text-ghotiText font-medium text-sm rounded-xl hover:bg-gray-50 hover:border-ghotiOrange transition shadow-sm inline-flex items-center space-x-2">
+                    <span>আরও দেখুন</span>
+                    <svg class="w-4 h-4 text-ghotiSecondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Order Details Modal -->
+    <div id="orderDetailsModal" class="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden transform transition-all">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 bg-gray-50 border-b border-ghotiBorder flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div id="modalStatusBadge" class="px-3 py-1 rounded-full text-xs font-semibold"></div>
+                    <span id="modalOrderId" class="text-xs font-mono font-medium text-ghotiSecondary">ID: ...</span>
+                </div>
+                <button onclick="closeDetailsModal()" class="p-2 text-ghotiSecondary hover:text-ghotiText hover:bg-gray-200/60 rounded-full transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <!-- Modal Body Content -->
+            <div class="p-6 overflow-y-auto custom-scrollbar space-y-6">
+                <!-- Customer Information -->
+                <div class="bg-gray-50 p-4 rounded-2xl border border-ghotiBorder space-y-3">
+                    <h4 class="text-xs font-bold text-ghotiSecondary uppercase tracking-wider flex items-center space-x-1.5">
+                        <svg class="w-4 h-4 text-ghotiOrange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        <span>কাস্টমারের তথ্য</span>
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                        <div><span class="text-ghotiSecondary block text-xs">কাস্টমারের নাম:</span><strong id="modalCustName" class="text-ghotiText font-medium">-</strong></div>
+                        <div><span class="text-ghotiSecondary block text-xs">কাস্টমারের ফোন:</span><strong id="modalCustPhone" class="text-ghotiText font-medium">-</strong></div>
+                        <div class="sm:col-span-2"><span class="text-ghotiSecondary block text-xs">পূর্ণ ঠিকানা:</span><strong id="modalCustAddress" class="text-ghotiText font-medium">-</strong></div>
+                    </div>
+                    <div id="modalNoteContainer" class="hidden pt-2 border-t border-gray-200">
+                        <span class="text-ghotiSecondary block text-xs">কাস্টমারের নোট:</span>
+                        <p id="modalCustNote" class="text-sm text-ghotiText bg-amber-50/70 border border-amber-200 p-2.5 rounded-xl mt-1"></p>
+                    </div>
+                </div>
+
+                <!-- Product Information -->
+                <div class="bg-gray-50 p-4 rounded-2xl border border-ghotiBorder space-y-3">
+                    <h4 class="text-xs font-bold text-ghotiSecondary uppercase tracking-wider flex items-center space-x-1.5">
+                        <svg class="w-4 h-4 text-ghotiOrange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                        <span>পণ্যের বিবরণ</span>
+                    </h4>
+                    <div class="flex items-start space-x-4">
+                        <img id="modalProductImg" src="" alt="Product Image" onerror="this.src='https://via.placeholder.com/150?text=No+Image'" class="w-20 h-20 object-cover rounded-xl border border-ghotiBorder cursor-pointer shadow-sm hover:opacity-95 transition" onclick="openLightbox(this.src)">
+                        <div class="flex-1">
+                            <h3 id="modalProductName" class="text-base font-bold text-ghotiText mb-1">-</h3>
+                            <div class="text-xs text-ghotiSecondary flex items-center space-x-2">
+                                <span>পরিমাণ: <strong id="modalQuantity" class="text-ghotiText font-semibold">1</strong></span>
+                                <span>•</span>
+                                <span>ডেলিভারি এলাকা: <strong id="modalDeliverySite" class="text-ghotiText font-semibold">-</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Variants -->
+                    <div id="modalVariantsContainer" class="pt-3 border-t border-gray-200">
+                        <span class="text-ghotiSecondary block text-xs mb-1.5">নির্বাচিত ভ্যারিয়েন্টসমূহ:</span>
+                        <div id="modalVariantsList" class="space-y-1.5 text-sm">
+                            <!-- Variant items -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Breakdown Card -->
+                <div class="bg-gradient-to-br from-orange-50/50 to-amber-50/30 p-4 rounded-2xl border border-orange-100 space-y-2.5">
+                    <h4 class="text-xs font-bold text-ghotiOrange uppercase tracking-wider flex items-center space-x-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        <span>মূল্য বিবরণী</span>
+                    </h4>
+                    <div class="space-y-1.5 text-sm divide-y divide-orange-100/60">
+                        <div class="flex justify-between pt-1"><span class="text-ghotiSecondary">পণ্যের মূল দাম:</span><span id="priceProduct" class="font-medium text-ghotiText">৳0</span></div>
+                        <div class="flex justify-between pt-1.5"><span class="text-ghotiSecondary">ভ্যারিয়েন্ট মূল্য:</span><span id="priceVariant" class="font-medium text-ghotiText">৳0</span></div>
+                        <div class="flex justify-between pt-1.5"><span class="text-ghotiSecondary">সাবটোটাল:</span><span id="priceSubtotal" class="font-medium text-ghotiText">৳0</span></div>
+                        <div class="flex justify-between pt-1.5"><span class="text-ghotiSecondary">ডেলিভারি চার্জ:</span><span id="priceDelivery" class="font-medium text-ghotiText">৳0</span></div>
+                        <div class="flex justify-between pt-2.5 text-base font-bold text-ghotiOrange border-t border-orange-200"><span>কাস্টমার মোট প্রদান করবেন:</span><span id="priceTotal">৳0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Lightbox Modal -->
+    <div id="lightboxModal" class="fixed inset-0 z-60 bg-black/80 hidden flex items-center justify-center p-4" onclick="closeLightbox()">
+        <img id="lightboxImg" src="" class="max-w-full max-h-[85vh] rounded-2xl object-contain shadow-2xl">
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <!-- Firebase Configuration & Main Logic Script -->
+    <script>
+      const firebaseConfig = { 
+            apiKey: "AIzaSyBUhNhYvuo_FTvZ5RZR6Gn-4hsUY21S0XE", 
+            authDomain: "ghotimarket.firebaseapp.com", 
+            projectId: "ghotimarket", 
+            storageBucket: "ghotimarket.firebasestorage.app", 
+            messagingSenderId: "481257644093", 
+            appId: "1:481257644093:web:0dfc3699d6b3c86afeca54" 
+        };
+
+        // Initialize Firebase Compat
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        } else {
+            firebase.app();
+        }
+
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // ==========================================
+        // APP CONSTANTS & STATUS DEFINITIONS
+        // ==========================================
+        const STATUS_CONFIG = {
+            'pending': { label: 'নতুন অর্ডার', bg: 'bg-amber-100', text: 'text-amber-800', border: 'border-amber-200' },
+            'confirmed': { label: 'অর্ডার কনফার্ম করা হয়েছে!', bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
+            'packaging': { label: 'অর্ডার প্যাকেজ করা হয়েছে!', bg: 'bg-indigo-100', text: 'text-indigo-800', border: 'border-indigo-200' },
+            'processing': { label: 'অর্ডার কোরিয়ার করা হয়েছে!', bg: 'bg-purple-100', text: 'text-purple-800', border: 'border-purple-200' },
+            'delivered': { label: 'সফল ভাবে ডেলিভারি করা হয়েছে!', bg: 'bg-emerald-100', text: 'text-emerald-800', border: 'border-emerald-200' },
+            'cancel': { label: 'অর্ডার বাতিল করা হয়েছে!', bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200' },
+            'returned': { label: 'রিটার্ন করা হয়েছে!', bg: 'bg-rose-100', text: 'text-rose-800', border: 'border-rose-200' }
+        };
+
+        const FINAL_STATUSES = ['delivered', 'cancel', 'returned'];
+        const ALL_STATUS_KEYS = ['all', 'pending', 'confirmed', 'packaging', 'processing', 'delivered', 'cancel', 'returned'];
+
+        const FILTER_LABELS = {
+            'all': 'সব অর্ডার',
+            'pending': 'নতুন অর্ডার',
+            'confirmed': 'অর্ডার কনফার্ম করা হয়েছে!',
+            'packaging': 'অর্ডার প্যাকেজ করা হয়েছে!',
+            'processing': 'অর্ডার কোরিয়ার করা হয়েছে!',
+            'delivered': 'সফল ভাবে ডেলিভারি করা হয়েছে!',
+            'cancel': 'অর্ডার বাতিল করা হয়েছে!',
+            'returned': 'রিটার্ন করা হয়েছে!'
+        };
+
+        // State Management Variables
+        let currentSellerUid = null;
+        let selectedStatusFilter = 'all';
+        let lastVisibleDoc = null;
+        let isLoading = false;
+        let hasMoreData = true;
+        let currentOrdersList = [];
+        let searchActive = false;
+        let searchKeyword = '';
+
+        // ==========================================
+        // AUTHENTICATION & INITIAL LOAD
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            renderStatusFilters();
+            
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    currentSellerUid = user.uid;
+                    document.getElementById('sellerEmailDisplay').textContent = user.email || 'Seller Account';
+                    document.getElementById('sellerUidDisplay').textContent = `UID: ${user.uid.substring(0, 8)}...`;
+                    
+                    // Initial load
+                    loadOrders(true);
+                } else {
+                    // Redirect to login or show auth error
+                    window.location.href = 'login.html'; // Adjust as per existing project login system
+                }
+            });
+        });
+
+        function handleLogout() {
+            auth.signOut().then(() => {
+                window.location.href = 'login.html';
+            }).catch((error) => {
+                showToast('লগআউট করতে সমস্যা হয়েছে', 'error');
+            });
+        }
+
+        // ==========================================
+        // RENDER STATUS FILTER TABS
+        // ==========================================
+        function renderStatusFilters() {
+            const container = document.getElementById('statusFilters');
+            container.innerHTML = '';
+
+            ALL_STATUS_KEYS.forEach(key => {
+                const btn = document.createElement('button');
+                const isActive = selectedStatusFilter === key;
+                btn.className = `px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition flex items-center space-x-1.5 ${
+                    isActive 
+                        ? 'bg-ghotiOrange text-white shadow-sm shadow-orange-500/20' 
+                        : 'bg-gray-50 text-ghotiSecondary hover:bg-gray-100 hover:text-ghotiText border border-ghotiBorder'
+                }`;
+                btn.textContent = FILTER_LABELS[key];
+                btn.onclick = () => selectStatusFilter(key);
+                container.appendChild(btn);
+            });
+        }
+
+        function selectStatusFilter(statusKey) {
+            if (selectedStatusFilter === statusKey && !searchActive) return;
+            selectedStatusFilter = statusKey;
+            searchActive = false;
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            
+            renderStatusFilters();
+            loadOrders(true);
+        }
+
+        // ==========================================
+        // FIRESTORE QUERY & PAGINATION LOGIC
+        // ==========================================
+        async function loadOrders(reset = false) {
+            if (isLoading || !currentSellerUid) return;
+            isLoading = true;
+
+            if (reset) {
+                lastVisibleDoc = null;
+                hasMoreData = true;
+                currentOrdersList = [];
+                document.getElementById('ordersGrid').innerHTML = '';
+                document.getElementById('skeletonLoader').classList.remove('hidden');
+                document.getElementById('emptyState').classList.add('hidden');
+                document.getElementById('errorState').classList.add('hidden');
+                document.getElementById('loadMoreContainer').classList.add('hidden');
+            }
+
+            try {
+                let queryRef = db.collection('seller_landing_orders')
+                    .where('sellerId', '==', currentSellerUid);
+
+                // Apply Status Filter if not 'all'
+                if (selectedStatusFilter !== 'all') {
+                    queryRef = queryRef.where('status', '==', selectedStatusFilter);
+                }
+
+                // Order by createdAt descending for recent orders first
+                queryRef = queryRef.orderBy('createdAt', 'desc').limit(20);
+
+                if (lastVisibleDoc && !reset) {
+                    queryRef = queryRef.startAfter(lastVisibleDoc);
+                }
+
+                const snapshot = await queryRef.get();
+                document.getElementById('skeletonLoader').classList.add('hidden');
+
+                if (snapshot.empty && reset) {
+                    showEmptyState();
+                    isLoading = false;
+                    return;
+                }
+
+                if (snapshot.docs.length < 20) {
+                    hasMoreData = false;
+                    document.getElementById('loadMoreContainer').classList.add('hidden');
+                } else {
+                    hasMoreData = true;
+                    document.getElementById('loadMoreContainer').classList.remove('hidden');
+                }
+
+                if (!snapshot.empty) {
+                    lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
+                    snapshot.forEach(doc => {
+                        const orderData = doc.data();
+                        orderData.id = doc.id;
+                        currentOrdersList.push(orderData);
+                        renderSingleOrderCard(orderData);
+                    });
+                } else if (reset) {
+                    showEmptyState();
+                }
+
+            } catch (error) {
+                console.error("Error loading orders: ", error);
+                document.getElementById('skeletonLoader').classList.add('hidden');
+                if (reset) {
+                    document.getElementById('errorState').classList.remove('hidden');
+                    document.getElementById('errorMessageText').textContent = error.message.includes('index') 
+                        ? 'ফায়ারবেস কম্পোজিট ইনডেক্স প্রয়োজন। কনসোলের লিঙ্ক থেকে ইনডেক্স তৈরি করুন।' 
+                        : error.message;
+                } else {
+                    showToast('ডেটা লোড করতে সমস্যা হয়েছে', 'error');
+                }
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        function loadMoreOrders() {
+            if (!hasMoreData || isLoading || searchActive) return;
+            loadOrders(false);
+        }
+
+        // ==========================================
+        // ORDER SEARCH BY DOCUMENT ID
+        // ==========================================
+        let searchTimeout = null;
+        function handleSearchInput(e) {
+            const val = e.target.value.trim();
+            searchKeyword = val;
+            const clearBtn = document.getElementById('clearSearchBtn');
+            
+            if (val.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+                if (searchActive) {
+                    searchActive = false;
+                    loadOrders(true);
+                }
+                return;
+            }
+
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                executeDocumentIdSearch(val);
+            }, 400);
+        }
+
+        async function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            searchActive = false;
+            searchKeyword = '';
+            loadOrders(true);
+        }
+
+        async function executeDocumentIdSearch(docId) {
+            if (!currentSellerUid) return;
+            searchActive = true;
+            isLoading = true;
+
+            document.getElementById('ordersGrid').innerHTML = '';
+            document.getElementById('skeletonLoader').classList.remove('hidden');
+            document.getElementById('emptyState').classList.add('hidden');
+            document.getElementById('errorState').classList.add('hidden');
+            document.getElementById('loadMoreContainer').classList.add('hidden');
+
+            try {
+                const docRef = await db.collection('seller_landing_orders').doc(docId).get();
+                document.getElementById('skeletonLoader').classList.add('hidden');
+
+                if (docRef.exists) {
+                    const orderData = docRef.data();
+                    orderData.id = docRef.id;
+
+                    // Strict Security Check: Verify sellerId matches current seller
+                    if (orderData.sellerId === currentSellerUid) {
+                        currentOrdersList = [orderData];
+                        renderSingleOrderCard(orderData);
+                    } else {
+                        showSearchEmptyState();
+                    }
+                } else {
+                    showSearchEmptyState();
+                }
+            } catch (error) {
+                console.error("Search error: ", error);
+                document.getElementById('skeletonLoader').classList.add('hidden');
+                showSearchEmptyState();
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        function showEmptyState() {
+            document.getElementById('emptyState').classList.remove('hidden');
+            document.getElementById('emptyTitle').textContent = 'কোনো অর্ডার পাওয়া যায়নি';
+            document.getElementById('emptyDesc').textContent = 'বর্তমানে এই ফিল্টারে কোনো অর্ডার তালিকাভুক্ত নেই।';
+            document.getElementById('emptyActionBtn').classList.add('hidden');
+        }
+
+        function showSearchEmptyState() {
+            document.getElementById('emptyState').classList.remove('hidden');
+            document.getElementById('emptyTitle').textContent = 'এই অর্ডার আইডিতে কোনো অর্ডার পাওয়া যায়নি';
+            document.getElementById('emptyDesc').textContent = 'সঠিক ডকুমেন্ট আইডি দিয়ে পুনরায় অনুসন্ধান করুন অথবা অন্য ফিল্টার ব্যবহার করুন।';
+            document.getElementById('emptyActionBtn').classList.remove('hidden');
+        }
+
+        function resetFilterAndSearch() {
+            selectedStatusFilter = 'all';
+            searchActive = false;
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            renderStatusFilters();
+            loadOrders(true);
+        }
+
+        // ==========================================
+        // RENDER ORDER CARD (SAFE DOM RENDERING)
+        // ==========================================
+        function renderSingleOrderCard(order) {
+            const grid = document.getElementById('ordersGrid');
+            const statusInfo = STATUS_CONFIG[order.status] || { label: order.status || 'অজানা', bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' };
+            const isFinal = FINAL_STATUSES.includes(order.status);
+
+            const card = document.createElement('div');
+            card.className = `bg-white rounded-2xl border border-ghotiBorder p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-4`;
+            card.setAttribute('data-order-id', order.id);
+
+            // Top: Document ID & Copy Button & Status Badge
+            const topDiv = document.createElement('div');
+            topDiv.className = 'flex items-start justify-between gap-2';
+
+            const idDiv = document.createElement('div');
+            idDiv.className = 'flex items-center space-x-1.5';
+            
+            const idSpan = document.createElement('span');
+            idSpan.className = 'text-xs font-mono font-bold text-ghotiText truncate max-w-[140px]';
+            idSpan.textContent = `ID: ${order.id}`;
+
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'p-1 text-ghotiSecondary hover:text-ghotiOrange rounded transition';
+            copyBtn.title = 'আইডি কপি করুন';
+            copyBtn.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>`;
+            copyBtn.onclick = () => {
+                navigator.clipboard.writeText(order.id);
+                showToast('অর্ডার আইডি কপি করা হয়েছে!', 'success');
+            };
+
+            idDiv.appendChild(idSpan);
+            idDiv.appendChild(copyBtn);
+
+            const statusBadge = document.createElement('span');
+            statusBadge.className = `px-2.5 py-1 rounded-full text-[11px] font-semibold border ${statusInfo.bg} ${statusInfo.text} ${statusInfo.border}`;
+            statusBadge.textContent = statusInfo.label;
+
+            topDiv.appendChild(idDiv);
+            topDiv.appendChild(statusBadge);
+
+            // Middle: Product Image & Name
+            const middleDiv = document.createElement('div');
+            middleDiv.className = 'flex items-center space-x-3.5';
+
+            const img = document.createElement('img');
+            img.src = order.productImage || 'https://via.placeholder.com/150?text=Product';
+            img.alt = order.productName || 'Product';
+            img.className = 'w-14 h-14 object-cover rounded-xl border border-ghotiBorder shrink-0 bg-gray-50';
+            img.onerror = function() { this.src = 'https://via.placeholder.com/150?text=No+Image'; };
+
+            const prodName = document.createElement('h4');
+            prodName.className = 'text-sm font-semibold text-ghotiText line-clamp-2 leading-snug';
+            prodName.textContent = order.productName || 'নামবিহীন পণ্য';
+
+            middleDiv.appendChild(img);
+            middleDiv.appendChild(prodName);
+
+            // Bottom: Status Update Action & Details Button
+            const bottomDiv = document.createElement('div');
+            bottomDiv.className = 'pt-3 border-t border-ghotiBorder flex items-center justify-between gap-2';
+
+            // Status Update Dropdown
+            const selectWrapper = document.createElement('div');
+            selectWrapper.className = 'relative flex-1';
+
+            const select = document.createElement('select');
+            select.className = `w-full text-xs font-medium py-2 px-3 rounded-xl border border-ghotiBorder bg-gray-50 text-ghotiText focus:outline-none focus:border-ghotiOrange transition ${isFinal ? 'opacity-60 cursor-not-allowed bg-gray-100' : 'cursor-pointer hover:bg-gray-100'}`;
+            select.disabled = isFinal;
+
+            const allStatuses = ['pending', 'confirmed', 'packaging', 'processing', 'delivered', 'cancel', 'returned'];
+            allStatuses.forEach(st => {
+                const opt = document.createElement('option');
+                opt.value = st;
+                opt.textContent = STATUS_CONFIG[st] ? STATUS_CONFIG[st].label : st;
+                if (order.status === st) opt.selected = true;
+                select.appendChild(opt);
+            });
+
+            if (!isFinal) {
+                select.onchange = (e) => updateOrderStatus(order.id, e.target.value, order.status);
+            }
+
+            selectWrapper.appendChild(select);
+
+            // Details Button
+            const detailsBtn = document.createElement('button');
+            detailsBtn.className = 'px-3.5 py-2 bg-orange-50 text-ghotiOrange hover:bg-ghotiOrange hover:text-white rounded-xl text-xs font-semibold transition flex items-center space-x-1 shrink-0';
+            detailsBtn.innerHTML = `<span>বিস্তারিত</span><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>`;
+            detailsBtn.onclick = () => openDetailsModal(order);
+
+            bottomDiv.appendChild(selectWrapper);
+            bottomDiv.appendChild(detailsBtn);
+
+            card.appendChild(topDiv);
+            card.appendChild(middleDiv);
+            card.appendChild(bottomDiv);
+
+            grid.appendChild(card);
+        }
+
+        // ==========================================
+        // ORDER STATUS UPDATE SYSTEM
+        // ==========================================
+        async function updateOrderStatus(orderId, newStatus, currentStatus) {
+            if (!currentSellerUid) return;
+
+            if (FINAL_STATUSES.includes(currentStatus)) {
+                showToast('এই অর্ডারটি চূড়ান্ত পর্যায়ে রয়েছে, স্ট্যাটাস পরিবর্তন করা যাবে না।', 'error');
+                return;
+            }
+
+            try {
+                // Verify order ownership & current status via Firestore transaction or direct update
+                const orderRef = db.collection('seller_landing_orders').doc(orderId);
+                const docSnap = await orderRef.get();
+
+                if (!docSnap.exists) {
+                    showToast('অর্ডারটি পাওয়া যায়নি!', 'error');
+                    return;
+                }
+
+                const data = docSnap.data();
+                if (data.sellerId !== currentSellerUid) {
+                    showToast('আপনার এই অর্ডার আপডেট করার অনুমতি নেই!', 'error');
+                    return;
+                }
+
+                if (FINAL_STATUSES.includes(data.status)) {
+                    showToast('ফাইনাল স্ট্যাটাস পরিবর্তনযোগ্য নয়!', 'error');
+                    return;
+                }
+
+                // Update only status field
+                await orderRef.update({
+                    status: newStatus
+                });
+
+                showToast('অর্ডারের স্ট্যাটাস সফলভাবে আপডেট করা হয়েছে!', 'success');
+                
+                // Refresh local list state
+                const targetOrder = currentOrdersList.find(o => o.id === orderId);
+                if (targetOrder) targetOrder.status = newStatus;
+
+                // Reload or update UI card badge
+                loadOrders(true);
+
+            } catch (error) {
+                console.error("Status update error: ", error);
+                showToast('স্ট্যাটাস আপডেট ব্যর্থ হয়েছে: ' + error.message, 'error');
+                loadOrders(true); // Revert UI
+            }
+        }
+
+        // ==========================================
+        // ORDER DETAILS MODAL
+        // ==========================================
+        function openDetailsModal(order) {
+            document.getElementById('modalOrderId').textContent = `ID: ${order.id}`;
+            
+            const badge = document.getElementById('modalStatusBadge');
+            const statusInfo = STATUS_CONFIG[order.status] || { label: order.status, bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' };
+            badge.className = `px-3 py-1 rounded-full text-xs font-semibold border ${statusInfo.bg} ${statusInfo.text} ${statusInfo.border}`;
+            badge.textContent = statusInfo.label;
+
+            // Customer Info
+            document.getElementById('modalCustName').textContent = order.name || 'অজানা কাস্টমার';
+            document.getElementById('modalCustPhone').textContent = order.phone || '-';
+            
+            const fullAddress = `${order.upojela || ''}, ${order.jela || ''}, ${order.vibag || ''}`.replace(/^,\s*|,\s*$/g, '') || 'ঠিকানা পাওয়া যায়নি';
+            document.getElementById('modalCustAddress').textContent = fullAddress;
+
+            const noteContainer = document.getElementById('modalNoteContainer');
+            if (order.note && order.note.trim() !== '') {
+                document.getElementById('modalCustNote').textContent = order.note;
+                noteContainer.classList.remove('hidden');
+            } else {
+                noteContainer.classList.add('hidden');
+            }
+
+            // Product Info
+            document.getElementById('modalProductName').textContent = order.productName || 'নামবিহীন পণ্য';
+            document.getElementById('modalProductImg').src = order.productImage || 'https://via.placeholder.com/150';
+            document.getElementById('modalQuantity').textContent = order.quantity || 1;
+
+            let deliveryText = order.deliverySite;
+            if (order.deliverySite === 'inside_dhaka') deliveryText = 'ঢাকার ভেতরে';
+            else if (order.deliverySite === 'outside_dhaka') deliveryText = 'ঢাকার বাইরে';
+            else deliveryText = order.deliverySite || 'অজানা ডেলিভারি টাইপ';
+            document.getElementById('modalDeliverySite').textContent = deliveryText;
+
+            // Variants
+            const variantsList = document.getElementById('modalVariantsList');
+            variantsList.innerHTML = '';
+            if (order.variants && Array.isArray(order.variants) && order.variants.length > 0) {
+                document.getElementById('modalVariantsContainer').classList.remove('hidden');
+                order.variants.forEach(v => {
+                    const vItem = document.createElement('div');
+                    vItem.className = 'bg-gray-100/70 p-2.5 rounded-xl border border-gray-200';
+                    
+                    const topRow = document.createElement('div');
+                    topRow.className = 'flex justify-between items-center text-xs font-medium text-ghotiText';
+                    topRow.innerHTML = `<span>${v.name || 'ভ্যারিয়েন্ট'}: <strong>${v.value || '-'}</strong></span>`;
+                    vItem.appendChild(topRow);
+
+                    if (v.extraPrice && Number(v.extraPrice) > 0) {
+                        const extraNote = document.createElement('span');
+                        extraNote.className = 'text-[11px] text-ghotiOrange block mt-1 font-medium';
+                        extraNote.textContent = `এই Variant-এর জন্য Extra Price নেওয়া হয়েছে! (৳${Number(v.extraPrice).toLocaleString('en-US')})`;
+                        vItem.appendChild(extraNote);
+                    }
+                    variantsList.appendChild(vItem);
+                });
+            } else {
+                document.getElementById('modalVariantsContainer').classList.add('hidden');
+            }
+
+            // Price Breakdown
+            const formatMoney = (amount) => `৳${Number(amount || 0).toLocaleString('en-US')}`;
+            document.getElementById('priceProduct').textContent = formatMoney(order.productPrice);
+            document.getElementById('priceVariant').textContent = formatMoney(order.variantPrice);
+            document.getElementById('priceSubtotal').textContent = formatMoney(order.subtotal);
+            document.getElementById('priceDelivery').textContent = formatMoney(order.deliveryCharge);
+            document.getElementById('priceTotal').textContent = formatMoney(order.total);
+
+            document.getElementById('orderDetailsModal').classList.remove('hidden');
+        }
+
+        function closeDetailsModal() {
+            document.getElementById('orderDetailsModal').classList.add('hidden');
+        }
+
+        // ==========================================
+        // LIGHTBOX VIEWER
+        // ==========================================
+        function openLightbox(imgSrc) {
+            document.getElementById('lightboxImg').src = imgSrc;
+            document.getElementById('lightboxModal').classList.remove('hidden');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightboxModal').classList.add('hidden');
+        }
+
+        // ==========================================
+        // TOAST NOTIFICATION SYSTEM
+        // ==========================================
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            const isSuccess = type === 'success';
+            toast.className = `pointer-events-auto px-4 py-3 rounded-2xl shadow-xl text-white text-xs font-semibold flex items-center space-x-2 transition transform translate-y-2 opacity-0 ${
+                isSuccess ? 'bg-emerald-600' : 'bg-red-600'
+            }`;
+            
+            toast.innerHTML = `
+                <span>${isSuccess ? '✓' : '✕'}</span>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
