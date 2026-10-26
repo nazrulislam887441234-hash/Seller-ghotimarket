@@ -242,7 +242,16 @@ input:checked +.slider:before{transform:translateX(22px);}
         <input type="number" id="affiliateDiscount" placeholder="যেমন ১০">  
       </div>  
     </div>  
-
+    <!-- Free Delivery Section -->  
+    <div class="card">  
+      <div class="form-group">  
+        <label>Free Delivery</label>  
+        <select id="freeDelivery">  
+            <option value="off">Free Delivery OFF (চার্জ লাগবে)</option>  
+            <option value="on">Free Delivery ON (ফ্রি ডেলিভারি)</option>  
+        </select>  
+      </div>  
+    </div>
     <!-- Product Variants System Card -->    
     <section class="card">    
         <div class="card-head" style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 8px;">    
@@ -591,7 +600,13 @@ async function loadProduct(){
         discountGroup.style.display = 'none';  
         affiliateDiscountInput.value = '';  
     }  
-  
+      // Load Free Delivery
+    const freeDeliverySelect = document.getElementById('freeDelivery');
+    if (productData.freeDelivery === true) {
+        freeDeliverySelect.value = 'on';
+    } else {
+        freeDeliverySelect.value = 'off';
+    }
     keywords = productData.keywords || [];  
     oldImages = productData.images || [];  
   
@@ -754,7 +769,8 @@ document.getElementById('editForm').onsubmit = async (e) => {
 
     const affiliateStatus = document.getElementById('affiliate').value;  
     const affiliateDiscountInput = document.getElementById('affiliateDiscount').value;  
-  
+        const freeDeliveryStatus = document.getElementById('freeDelivery').value;
+    const freeDeliveryBool = freeDeliveryStatus === 'on' ? true : false;
     if (affiliateStatus === 'on') {  
         if (!affiliateDiscountInput) {  
             throw new Error("অ্যাফিলিয়েট ডিসকাউন্ট অবশ্যই লিখতে হবে");  
@@ -797,7 +813,8 @@ document.getElementById('editForm').onsubmit = async (e) => {
       categorySlug: categorySlug,  
       categoryName: categoryName,  
       updatedAt: Date.now(),   
-      ...affiliateData,  
+      ...affiliateData,
+      freeDelivery: freeDeliveryBool, 
       variants: variantsData  
     });  
   
