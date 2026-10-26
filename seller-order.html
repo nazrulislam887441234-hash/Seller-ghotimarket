@@ -119,6 +119,18 @@ header{
   .order-actions{width:100%;justify-content:space-between;}
   .status-select{flex:1;}
 }
+.free-delivery-badge{
+  background:#D1FAE5;
+  color:#065F46;
+  border:1px solid #A7F3D0;
+  padding:4px 10px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:800;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+}
 </style>
 </head>
 <body>
@@ -507,6 +519,15 @@ function renderOrders() {
         </div>
       `;
     }
+    let freeDeliveryHtml = '';
+    const isFreeDelivery = o.deliveryCharge === 0 || o.deliveryCharge === '0' || o.freeDelivery === true;
+    if (isFreeDelivery) {
+      freeDeliveryHtml = `
+        <div style="background:#ECFDF5; border:1px dashed #10B981; padding:10px 12px; border-radius:10px; margin-bottom:12px; display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; color:#065F46;">
+          <i class="fas fa-truck-fast"></i> FREE DELIVERY - এই অর্ডারে কোনো ডেলিভারি চার্জ নেই
+        </div>
+      `;
+    }
 
     return `
     <div class="order-card">
@@ -522,9 +543,10 @@ function renderOrders() {
         <div><b>ঠিকানা:</b> ${escapeHTML(o.division || '')}, ${escapeHTML(o.district || '')}, ${escapeHTML(o.upazila || '')}</div>
       </div>
 
+    
       ${itemsHtml}
       ${affiliateHtml}
-
+      ${freeDeliveryHtml}
       <div class="order-footer-bar">
         <div class="order-total-price">সর্বমোট: ৳${escapeHTML(o.grandTotal || 0)}</div>
         <div class="order-actions">
@@ -560,7 +582,6 @@ window.viewDetails = (id) => {
     const variantsHtml = renderVariants(item.selectedVariants || o.selectedVariants);
     const extraPriceLine = calc.extraPrice > 0 ? `<p>ভ্যারিয়েন্ট অতিরিক্ত মূল্য: +৳${calc.extraPrice}</p>` : '';
     const basePriceDisplay = item.basePrice !== undefined ? item.basePrice : item.price;
-
     return `
       <div style="display:flex;gap:15px;align-items:flex-start;background:#fff;padding:12px;border-radius:12px;border:1px solid var(--border);margin-bottom:10px;">
         <img src="${escapeHTML(item.image || o.productImage || '')}" style="width:75px;height:75px;border-radius:10px;object-fit:cover;" onerror="this.src='https://via.placeholder.com/75'">
@@ -580,7 +601,6 @@ window.viewDetails = (id) => {
   if (o.affiliateApplied === true) {
     const originalSub = o.originalSubtotal !== undefined ? o.originalSubtotal : (o.subtotal || 0);
     const discountedSub = o.discountedSubtotal !== undefined ? o.discountedSubtotal : (originalSub - (o.affiliateDiscount || 0));
-    
     affiliateSectionHtml = `
       <div class="modal-section">
         <h3><i class="fas fa-tag"></i> এফিলিয়েট তথ্য</h3>
@@ -595,6 +615,17 @@ window.viewDetails = (id) => {
     `;
   }
 
+  let freeDeliverySectionHtml = '';
+  if (o.deliveryCharge === 0 || o.deliveryCharge === '0' || o.freeDelivery === true) {
+    freeDeliverySectionHtml = `
+      <div class="modal-section" style="background:#ECFDF5; border-color:#A7F3D0;">
+        <h3 style="color:#065F46;"><i class="fas fa-truck-fast"></i> ফ্রি ডেলিভারি অর্ডার</h3>
+        <p><b>ডেলিভারি চার্জ:</b> <span style="color:#10B981; font-weight:800;">৳0 (FREE)</span></p>
+        <p style="font-size:12px; color:#065F46; margin-top:4px;">এই অর্ডারে প্রোডাক্ট Free Delivery ছিল, তাই কাস্টমার থেকে ডেলিভারি চার্জ নেওয়া হয়নি।</p>
+      </div>
+    `;
+  }
+
   document.getElementById('modalBody').innerHTML = `
     <div class="modal-section">
       <h3><i class="fas fa-info-circle"></i> অর্ডার সারাংশ</h3>
@@ -604,14 +635,12 @@ window.viewDetails = (id) => {
       <p><b>ডেলিভারি স্ট্যাটাস:</b> ${escapeHTML(deliveryStatus)}</p>
       <p><b>নোট:</b> ${escapeHTML(o.orderNote || 'কোনো নোট নেই')}</p>
     </div>
-
     <div class="modal-section">
       <h3><i class="fas fa-user"></i> গ্রাহকের তথ্য</h3>
       <p><b>নাম:</b> ${escapeHTML(o.customerName || 'N/A')}</p>
       <p><b>ফোন:</b> ${escapeHTML(o.customerPhone || 'N/A')}</p>
       <p><b>ইমেইল:</b> ${escapeHTML(o.email || 'N/A')}</p>
     </div>
-
     <div class="modal-section">
       <h3><i class="fas fa-map-marker-alt"></i> শিপিং ঠিকানা</h3>
       <p><b>বিভাগ:</b> ${escapeHTML(o.division || 'N/A')}</p>
@@ -619,20 +648,17 @@ window.viewDetails = (id) => {
       <p><b>উপজেলা:</b> ${escapeHTML(o.upazila || 'N/A')}</p>
       <p><b>সম্পূর্ণ ঠিকানা:</b> ${escapeHTML(o.fullAddress || o.address || 'N/A')}</p>
     </div>
-
     <div class="modal-section">
       <h3><i class="fas fa-box"></i> পণ্যের বিবরণ</h3>
       ${productsModalHtml}
     </div>
-
     ${affiliateSectionHtml}
-
+    ${freeDeliverySectionHtml}
     <div class="modal-section">
       <h3><i class="fas fa-credit-card"></i> পেমেন্ট তথ্য</h3>
       <p><b>পেমেন্ট পদ্ধতি:</b> ${escapeHTML(o.paymentMethod || 'Cash On Delivery')}</p>
       <p><b>পেমেন্ট স্ট্যাটাস:</b> ${escapeHTML(o.paymentStatus || 'Pending')}</p>
     </div>
-
     <div class="modal-section" style="background:#FFF4EC;">
       <h3><i class="fas fa-calculator"></i> আর্থিক হিসাব</h3>
       <p>অরিজিনাল সাবটোটাল: ৳${escapeHTML(o.originalSubtotal !== undefined ? o.originalSubtotal : (o.subtotal || 0))}</p>
@@ -642,7 +668,6 @@ window.viewDetails = (id) => {
       <p style="font-size:16px;font-weight:800;color:var(--primary);margin-top:6px;">সর্বমোট পেমেন্ট: ৳${escapeHTML(o.grandTotal || 0)}</p>
     </div>
   `;
-
   document.getElementById('detailsModal').classList.add('show');
 }
 
